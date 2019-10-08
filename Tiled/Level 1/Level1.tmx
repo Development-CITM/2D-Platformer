@@ -9,35 +9,71 @@
   </tile>
   <tile id="119">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="120">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="121">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="122">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="123">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="124">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="8" height="16"/>
+    <object id="1" x="0" y="0" width="8" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="177">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
     <object id="1" x="3" y="0" width="13" height="16"/>
    </objectgroup>
@@ -49,144 +85,189 @@
   </tile>
   <tile id="194">
    <objectgroup draworder="index">
-    <object id="1" x="5" y="0" width="11" height="16"/>
+    <object id="1" x="5" y="0" width="11" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="195">
    <objectgroup draworder="index">
-    <object id="2" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="196">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="197">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="199">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="201">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="202">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="203">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="204">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="11" height="16"/>
+    <object id="1" x="0" y="0" width="11" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="207">
    <objectgroup draworder="index">
-    <object id="1" x="9" y="8" width="7" height="8"/>
+    <object id="1" x="9" y="8" width="7" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="208">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="8" width="16" height="8"/>
+    <object id="1" x="0" y="8" width="16" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="209">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="8" width="8" height="8"/>
+    <object id="1" x="0" y="8" width="8" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="211">
    <objectgroup draworder="index">
-    <object id="1" x="9" y="8" width="7" height="8"/>
+    <object id="1" x="9" y="8" width="7" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="212">
    <objectgroup draworder="index">
-    <object id="2" x="0" y="8" width="16" height="8"/>
+    <object id="2" x="0" y="8" width="16" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="213">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="8" width="16" height="8"/>
+    <object id="1" x="0" y="8" width="16" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="214">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="8" width="8" height="8"/>
+    <object id="1" x="0" y="8" width="8" height="8">
+     <properties>
+      <property name="Jumpable" type="bool" value="true"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="235">
    <objectgroup draworder="index">
-    <object id="1" x="8" y="0" width="8" height="1"/>
-    <object id="2" x="12" y="1" width="4" height="6"/>
+    <object id="2" x="12" y="0" width="4" height="7"/>
    </objectgroup>
   </tile>
   <tile id="236">
    <objectgroup draworder="index">
-    <object id="2" x="7" y="0" width="9" height="16"/>
-    <object id="3" x="0" y="0" width="3" height="10"/>
-    <object id="7" x="3" y="0" width="4" height="14"/>
+    <object id="7" x="0" y="0" width="16" height="12"/>
+   </objectgroup>
+  </tile>
+  <tile id="237">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="12"/>
+   </objectgroup>
+  </tile>
+  <tile id="238">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="12"/>
    </objectgroup>
   </tile>
   <tile id="239">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="5"/>
-    <object id="2" x="0" y="5" width="14" height="5"/>
-    <object id="3" x="0" y="10" width="8" height="4"/>
+    <object id="2" x="0" y="0" width="16" height="12"/>
    </objectgroup>
   </tile>
   <tile id="252">
    <objectgroup draworder="index">
-    <object id="1" x="11" y="0" width="5" height="16"/>
+    <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="262">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="6" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="265">
-   <objectgroup draworder="index">
-    <object id="1" x="9" y="0" width="7" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="267">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="9" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="269">
-   <objectgroup draworder="index">
-    <object id="1" x="9" y="0" width="7" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="272">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="9" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="294">
-   <objectgroup draworder="index">
-    <object id="1" x="7" y="0" width="9" height="5"/>
-   </objectgroup>
-  </tile>
-  <tile id="295">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="6"/>
-    <object id="2" x="1" y="6" width="14" height="2"/>
-    <object id="3" x="5" y="8" width="10" height="3"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="296">
@@ -196,43 +277,20 @@
   </tile>
   <tile id="310">
    <objectgroup draworder="index">
-    <object id="1" x="10" y="0" width="6" height="16"/>
+    <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="320">
    <objectgroup draworder="index">
-    <object id="2" x="0" y="0" width="5" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="323">
-   <objectgroup draworder="index">
-    <object id="1" x="11" y="0" width="5" height="7"/>
-   </objectgroup>
-  </tile>
-  <tile id="324">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="8"/>
-   </objectgroup>
-  </tile>
-  <tile id="325">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="4" height="4"/>
-   </objectgroup>
-  </tile>
-  <tile id="327">
-   <objectgroup draworder="index">
-    <object id="1" x="11" y="0" width="5" height="4"/>
-   </objectgroup>
-  </tile>
-  <tile id="328">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="7"/>
-   </objectgroup>
-  </tile>
-  <tile id="329">
-   <objectgroup draworder="index">
-    <object id="2" x="0" y="0" width="9" height="8"/>
-    <object id="3" x="9" y="0" width="7" height="2"/>
+    <object id="2" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="330">
@@ -242,105 +300,166 @@
   </tile>
   <tile id="368">
    <objectgroup draworder="index">
-    <object id="1" x="10" y="0" width="6" height="16"/>
+    <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="378">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="5" height="16"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="427">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="6"/>
-    <object id="2" x="4" y="6" width="12" height="6"/>
-    <object id="3" x="10" y="12" width="6" height="4"/>
+    <object id="2" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="435">
    <objectgroup draworder="index">
-    <object id="3" x="0" y="0" width="16" height="6"/>
-    <object id="4" x="0" y="6" width="12" height="6"/>
-    <object id="5" x="0" y="12" width="6" height="4"/>
+    <object id="4" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="467">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="1" y="0" width="15" height="16"/>
+    <object id="1" x="1" y="0" width="15" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="468">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="469">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="486">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="12"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="487">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="12"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="489">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="11"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="491">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="12"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="492">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="12"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="525">
    <objectgroup draworder="index">
-    <object id="1" x="8" y="0" width="8" height="10"/>
-    <object id="2" x="1" y="0" width="7" height="7"/>
+    <object id="1" x="1" y="0" width="15" height="10">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="526">
    <objectgroup draworder="index">
-    <object id="1" x="7" y="0" width="9" height="16"/>
-    <object id="2" x="0" y="0" width="7" height="13"/>
+    <object id="1" x="0" y="0" width="16" height="10">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="527">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="7"/>
-    <object id="2" x="0" y="7" width="9" height="8"/>
-   </objectgroup>
-  </tile>
-  <tile id="674">
-   <objectgroup draworder="index">
-    <object id="1" x="15" y="15" width="1" height="1"/>
+    <object id="1" x="0" y="0" width="16" height="10">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="675">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="12" width="16" height="4"/>
+    <object id="1" x="0" y="12" width="16" height="4">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="676">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="12" width="16" height="4"/>
+    <object id="1" x="0" y="12" width="16" height="4">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="678">
    <objectgroup draworder="index">
-    <object id="2" x="0" y="11" width="5" height="5"/>
-    <object id="3" x="5" y="12" width="11" height="4"/>
+    <object id="3" x="0" y="12" width="16" height="4"/>
    </objectgroup>
   </tile>
   <tile id="679">
@@ -350,72 +469,124 @@
   </tile>
   <tile id="681">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="12" width="16" height="4"/>
+    <object id="1" x="0" y="12" width="16" height="4">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="682">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="12" width="16" height="4"/>
-   </objectgroup>
-  </tile>
-  <tile id="683">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="15" width="1" height="1"/>
+    <object id="1" x="0" y="12" width="16" height="4">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="698">
    <objectgroup draworder="index">
-    <object id="1" x="8" y="0" width="8" height="16"/>
+    <object id="2" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="699">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="700">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="701">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="702">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="703">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="708">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="709">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="710">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="712">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="713">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="720">
@@ -429,18 +600,33 @@
    </objectgroup>
   </tile>
   <tile id="728">
+   <properties>
+    <property name="Jumpable" type="bool" value="false"/>
+   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="729">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="730">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="8" height="16"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="732">
@@ -455,23 +641,29 @@
   </tile>
   <tile id="756">
    <objectgroup draworder="index">
-    <object id="1" x="5" y="0" width="11" height="5"/>
-    <object id="2" x="11" y="5" width="5" height="11"/>
+    <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="788">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="6" height="16"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="814">
    <objectgroup draworder="index">
-    <object id="1" x="10" y="0" width="6" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="833">
-   <objectgroup draworder="index">
-    <object id="1" x="7" y="12" width="9" height="4"/>
+    <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="838">
@@ -481,92 +673,56 @@
   </tile>
   <tile id="846">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="6" height="16"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="872">
    <objectgroup draworder="index">
-    <object id="1" x="9" y="0" width="7" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="890">
-   <objectgroup draworder="index">
-    <object id="1" x="11" y="3" width="5" height="13"/>
-    <object id="2" x="3" y="6" width="8" height="10"/>
-    <object id="3" x="0" y="10" width="3" height="6"/>
-   </objectgroup>
-  </tile>
-  <tile id="897">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="3" width="2" height="13"/>
-    <object id="2" x="2" y="5" width="9" height="11"/>
-    <object id="3" x="11" y="8" width="5" height="8"/>
+    <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="904">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="7" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="908">
-   <objectgroup draworder="index">
-    <object id="4" x="12" y="0" width="4" height="16"/>
-    <object id="8" x="6" y="4" width="6" height="12"/>
-    <object id="9" x="0" y="11" width="6" height="5"/>
-   </objectgroup>
-  </tile>
-  <tile id="911">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="4" height="16"/>
-    <object id="2" x="4" y="4" width="5" height="12"/>
-    <object id="3" x="9" y="8" width="6" height="8"/>
-    <object id="4" x="15" y="12" width="1" height="4"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="930">
    <objectgroup draworder="index">
-    <object id="1" x="10" y="0" width="6" height="16"/>
+    <object id="2" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="962">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="8" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="965">
-   <objectgroup draworder="index">
-    <object id="1" x="13" y="0" width="3" height="16"/>
-    <object id="2" x="6" y="2" width="7" height="14"/>
-    <object id="3" x="2" y="10" width="4" height="6"/>
-    <object id="4" x="0" y="13" width="2" height="3"/>
-   </objectgroup>
-  </tile>
-  <tile id="970">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="1" width="10" height="15"/>
-    <object id="2" x="10" y="10"/>
-    <object id="3" x="10" y="10" width="6" height="6"/>
+    <object id="1" x="0" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="988">
    <objectgroup draworder="index">
-    <object id="1" x="8" y="0" width="8" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="1022">
-   <objectgroup draworder="index">
-    <object id="1" x="11" y="0" width="5" height="16"/>
-    <object id="2" x="8" y="4" width="3" height="12"/>
-    <object id="3" x="4" y="8" width="4" height="8"/>
-    <object id="4" x="0" y="11" width="4" height="5"/>
-   </objectgroup>
-  </tile>
-  <tile id="1029">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="6" height="16"/>
-    <object id="2" x="6" y="5" width="2" height="11"/>
-    <object id="3" x="8" y="8" width="4" height="8"/>
-    <object id="4" x="12" y="11" width="4" height="5"/>
+    <object id="3" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
  </tileset>
@@ -32536,7 +32692,7 @@
    <tile gid="805"/>
    <tile gid="806"/>
    <tile gid="807"/>
-   <tile gid="459"/>
+   <tile gid="576"/>
    <tile/>
    <tile gid="569"/>
    <tile gid="570"/>
@@ -32743,13 +32899,13 @@
    <tile gid="863"/>
    <tile gid="864"/>
    <tile gid="865"/>
-   <tile gid="576"/>
-   <tile gid="577"/>
+   <tile gid="635"/>
+   <tile gid="636"/>
    <tile gid="627"/>
    <tile gid="628"/>
    <tile gid="629"/>
-   <tile/>
-   <tile/>
+   <tile gid="629"/>
+   <tile gid="629"/>
    <tile/>
    <tile/>
    <tile/>
@@ -32950,13 +33106,13 @@
    <tile gid="921"/>
    <tile gid="922"/>
    <tile gid="923"/>
-   <tile gid="744"/>
    <tile gid="400"/>
+   <tile gid="401"/>
    <tile gid="455"/>
    <tile gid="456"/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="629"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
    <tile/>
    <tile/>
    <tile/>
@@ -33157,13 +33313,13 @@
    <tile gid="979"/>
    <tile gid="980"/>
    <tile gid="981"/>
-   <tile gid="744"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="458"/>
+   <tile gid="459"/>
+   <tile gid="397"/>
+   <tile gid="398"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
    <tile/>
    <tile/>
    <tile/>
@@ -33366,11 +33522,11 @@
    <tile gid="1039"/>
    <tile gid="744"/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="397"/>
+   <tile gid="398"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
    <tile/>
    <tile/>
    <tile/>
@@ -33573,11 +33729,11 @@
    <tile gid="1097"/>
    <tile gid="744"/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="455"/>
+   <tile gid="456"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
+   <tile gid="629"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41019,8 +41175,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="608"/>
-   <tile gid="609"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -41225,14 +41381,14 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile gid="666"/>
-   <tile gid="667"/>
-   <tile/>
-   <tile/>
+   <tile gid="607"/>
+   <tile gid="608"/>
+   <tile gid="609"/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="358"/>
+   <tile gid="359"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41428,6 +41584,112 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="383"/>
+   <tile gid="384"/>
+   <tile gid="385"/>
+   <tile gid="386"/>
+   <tile gid="665"/>
+   <tile gid="666"/>
+   <tile gid="667"/>
+   <tile/>
+   <tile gid="836"/>
+   <tile gid="837"/>
+   <tile gid="416"/>
+   <tile gid="417"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -41529,19 +41791,18 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="441"/>
+   <tile gid="442"/>
+   <tile gid="443"/>
+   <tile gid="444"/>
+   <tile gid="723"/>
    <tile gid="724"/>
    <tile gid="725"/>
    <tile/>
+   <tile gid="894"/>
+   <tile gid="895"/>
+   <tile gid="474"/>
+   <tile gid="475"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41737,123 +41998,18 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="499"/>
+   <tile gid="500"/>
+   <tile gid="501"/>
+   <tile gid="502"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="952"/>
+   <tile gid="953"/>
+   <tile gid="532"/>
+   <tile gid="533"/>
    <tile/>
    <tile/>
    <tile/>
@@ -73960,9 +74116,9 @@
    <tile/>
    <tile/>
    <tile gid="833"/>
-   <tile gid="834"/>
-   <tile gid="139"/>
-   <tile gid="140"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="139"/>
    <tile gid="140"/>
    <tile/>
@@ -74165,11 +74321,11 @@
    <tile/>
    <tile/>
    <tile gid="833"/>
-   <tile gid="834"/>
-   <tile gid="891"/>
-   <tile gid="892"/>
-   <tile gid="197"/>
-   <tile gid="198"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="197"/>
    <tile gid="198"/>
    <tile/>
@@ -74360,23 +74516,23 @@
    <tile/>
    <tile/>
    <tile gid="833"/>
-   <tile gid="834"/>
-   <tile gid="836"/>
-   <tile gid="837"/>
-   <tile gid="836"/>
-   <tile gid="837"/>
-   <tile gid="839"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="840"/>
    <tile/>
    <tile/>
    <tile gid="833"/>
-   <tile gid="834"/>
-   <tile gid="891"/>
-   <tile gid="892"/>
-   <tile gid="949"/>
-   <tile gid="950"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="952"/>
    <tile gid="952"/>
    <tile/>
@@ -74538,9 +74694,9 @@
    <tile gid="318"/>
    <tile gid="318"/>
    <tile gid="318"/>
-   <tile gid="318"/>
-   <tile gid="318"/>
-   <tile gid="912"/>
+   <tile gid="961"/>
+   <tile gid="962"/>
+   <tile gid="963"/>
    <tile gid="913"/>
    <tile gid="914"/>
    <tile/>
@@ -74566,24 +74722,24 @@
    <tile gid="138"/>
    <tile gid="139"/>
    <tile gid="140"/>
-   <tile gid="891"/>
-   <tile gid="892"/>
-   <tile gid="894"/>
-   <tile gid="895"/>
-   <tile gid="894"/>
-   <tile gid="895"/>
-   <tile gid="897"/>
-   <tile gid="898"/>
-   <tile gid="836"/>
-   <tile gid="837"/>
-   <tile gid="891"/>
-   <tile gid="892"/>
-   <tile gid="949"/>
-   <tile gid="950"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
+   <tile gid="142"/>
+   <tile gid="142"/>
+   <tile gid="142"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="142"/>
+   <tile gid="144"/>
+   <tile gid="145"/>
+   <tile gid="146"/>
+   <tile gid="147"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="952"/>
    <tile gid="952"/>
    <tile/>
@@ -74745,10 +74901,10 @@
    <tile gid="318"/>
    <tile gid="318"/>
    <tile gid="318"/>
-   <tile gid="318"/>
-   <tile gid="318"/>
-   <tile gid="970"/>
-   <tile gid="971"/>
+   <tile gid="903"/>
+   <tile gid="904"/>
+   <tile gid="905"/>
+   <tile/>
    <tile gid="972"/>
    <tile/>
    <tile/>
@@ -74773,24 +74929,24 @@
    <tile gid="196"/>
    <tile gid="197"/>
    <tile gid="198"/>
-   <tile gid="949"/>
-   <tile gid="950"/>
-   <tile gid="952"/>
-   <tile gid="953"/>
-   <tile gid="952"/>
-   <tile gid="953"/>
-   <tile gid="955"/>
-   <tile gid="956"/>
-   <tile gid="894"/>
-   <tile gid="895"/>
-   <tile gid="949"/>
-   <tile gid="950"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
+   <tile gid="200"/>
+   <tile gid="200"/>
+   <tile gid="200"/>
+   <tile gid="202"/>
+   <tile gid="202"/>
+   <tile gid="202"/>
+   <tile gid="202"/>
+   <tile gid="202"/>
+   <tile gid="202"/>
+   <tile gid="200"/>
+   <tile gid="202"/>
+   <tile gid="203"/>
+   <tile gid="204"/>
+   <tile gid="205"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="952"/>
    <tile/>
    <tile/>
@@ -74952,11 +75108,11 @@
    <tile gid="318"/>
    <tile gid="318"/>
    <tile gid="318"/>
-   <tile gid="318"/>
-   <tile gid="318"/>
-   <tile gid="1028"/>
-   <tile gid="1029"/>
-   <tile gid="1030"/>
+   <tile gid="961"/>
+   <tile gid="962"/>
+   <tile gid="963"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -74984,20 +75140,20 @@
    <tile gid="952"/>
    <tile gid="952"/>
    <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
-   <tile gid="952"/>
+   <tile gid="260"/>
+   <tile gid="260"/>
+   <tile gid="260"/>
+   <tile gid="260"/>
+   <tile gid="260"/>
+   <tile gid="258"/>
+   <tile gid="260"/>
+   <tile gid="261"/>
+   <tile gid="262"/>
+   <tile gid="263"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="952"/>
    <tile/>
    <tile/>
@@ -81022,11 +81178,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="679"/>
+   <tile gid="680"/>
+   <tile gid="682"/>
+   <tile gid="683"/>
+   <tile gid="684"/>
    <tile/>
    <tile/>
    <tile/>
@@ -81229,11 +81385,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="737"/>
+   <tile gid="738"/>
+   <tile gid="740"/>
+   <tile gid="741"/>
+   <tile gid="742"/>
    <tile/>
    <tile/>
    <tile/>
@@ -81436,11 +81592,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="795"/>
+   <tile gid="796"/>
+   <tile gid="798"/>
+   <tile gid="799"/>
+   <tile gid="800"/>
    <tile/>
    <tile/>
    <tile/>
@@ -82657,10 +82813,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="212"/>
+   <tile gid="213"/>
+   <tile gid="214"/>
+   <tile gid="215"/>
    <tile/>
    <tile/>
    <tile/>
@@ -82864,10 +83020,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="270"/>
+   <tile gid="271"/>
+   <tile gid="272"/>
+   <tile gid="273"/>
    <tile/>
    <tile/>
    <tile/>
@@ -83071,10 +83227,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="328"/>
+   <tile gid="329"/>
+   <tile gid="330"/>
+   <tile gid="331"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91703,7 +91859,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="97" name="Deco front 2" width="207" height="40">
+ <layer id="97" name="Deco front 2" width="207" height="40" visible="0">
   <data>
    <tile/>
    <tile/>
