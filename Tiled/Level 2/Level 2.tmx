@@ -587,6 +587,24 @@
     </object>
    </objectgroup>
   </tile>
+  <tile id="720">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="721">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
   <tile id="728">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">

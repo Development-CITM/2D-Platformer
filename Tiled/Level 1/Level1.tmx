@@ -2,11 +2,6 @@
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="207" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="102" nextobjectid="1">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
   <image source="../Level 1 Assets/Magic Cliff/tileset.png" width="928" height="320"/>
-  <tile id="66">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="11" width="8" height="5"/>
-   </objectgroup>
-  </tile>
   <tile id="119">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
@@ -26,9 +21,6 @@
    </objectgroup>
   </tile>
   <tile id="121">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
      <properties>
@@ -38,9 +30,6 @@
    </objectgroup>
   </tile>
   <tile id="122">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
      <properties>
@@ -50,9 +39,6 @@
    </objectgroup>
   </tile>
   <tile id="123">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
      <properties>
@@ -71,16 +57,21 @@
    </objectgroup>
   </tile>
   <tile id="177">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
-    <object id="1" x="3" y="0" width="13" height="16"/>
+    <object id="1" x="3" y="0" width="13" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="181">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="194">
@@ -229,27 +220,47 @@
   </tile>
   <tile id="235">
    <objectgroup draworder="index">
-    <object id="2" x="12" y="0" width="4" height="7"/>
+    <object id="2" x="12" y="0" width="4" height="7">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="236">
    <objectgroup draworder="index">
-    <object id="7" x="0" y="0" width="16" height="12"/>
+    <object id="7" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="237">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="12"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="238">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="12"/>
+    <object id="1" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="239">
    <objectgroup draworder="index">
-    <object id="2" x="0" y="0" width="16" height="12"/>
+    <object id="2" x="0" y="0" width="16" height="12">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="252">
@@ -270,11 +281,6 @@
     </object>
    </objectgroup>
   </tile>
-  <tile id="296">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="13" height="6"/>
-   </objectgroup>
-  </tile>
   <tile id="310">
    <objectgroup draworder="index">
     <object id="1" x="14" y="0" width="2" height="16">
@@ -291,11 +297,6 @@
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
     </object>
-   </objectgroup>
-  </tile>
-  <tile id="330">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="2" height="1"/>
    </objectgroup>
   </tile>
   <tile id="368">
@@ -335,9 +336,6 @@
    </objectgroup>
   </tile>
   <tile id="467">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
     <object id="1" x="1" y="0" width="15" height="16">
      <properties>
@@ -356,9 +354,6 @@
    </objectgroup>
   </tile>
   <tile id="469">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
      <properties>
@@ -459,12 +454,20 @@
   </tile>
   <tile id="678">
    <objectgroup draworder="index">
-    <object id="3" x="0" y="12" width="16" height="4"/>
+    <object id="3" x="0" y="12" width="16" height="4">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="679">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="12" width="16" height="4"/>
+    <object id="1" x="0" y="12" width="16" height="4">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="681">
@@ -496,8 +499,7 @@
   </tile>
   <tile id="699">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-    <object id="2" x="0" y="0" width="16" height="16">
+    <object id="3" x="0" y="0" width="16" height="16">
      <properties>
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
@@ -506,8 +508,7 @@
   </tile>
   <tile id="700">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-    <object id="2" x="0" y="0" width="16" height="16">
+    <object id="1" x="0" y="0" width="16" height="16">
      <properties>
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
@@ -516,8 +517,7 @@
   </tile>
   <tile id="701">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-    <object id="2" x="0" y="0" width="16" height="16">
+    <object id="1" x="0" y="0" width="16" height="16">
      <properties>
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
@@ -526,8 +526,7 @@
   </tile>
   <tile id="702">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-    <object id="2" x="0" y="0" width="16" height="16">
+    <object id="1" x="0" y="0" width="16" height="16">
      <properties>
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
@@ -536,8 +535,7 @@
   </tile>
   <tile id="703">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-    <object id="2" x="0" y="0" width="16" height="16">
+    <object id="1" x="0" y="0" width="16" height="16">
      <properties>
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
@@ -591,18 +589,23 @@
   </tile>
   <tile id="720">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="721">
    <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
    </objectgroup>
   </tile>
   <tile id="728">
-   <properties>
-    <property name="Jumpable" type="bool" value="false"/>
-   </properties>
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
      <properties>
@@ -627,16 +630,6 @@
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
     </object>
-   </objectgroup>
-  </tile>
-  <tile id="732">
-   <objectgroup draworder="index">
-    <object id="1" x="14" y="0" width="2" height="2"/>
-   </objectgroup>
-  </tile>
-  <tile id="741">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="2" height="2"/>
    </objectgroup>
   </tile>
   <tile id="756">
@@ -666,11 +659,6 @@
     </object>
    </objectgroup>
   </tile>
-  <tile id="838">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="12" width="9" height="4"/>
-   </objectgroup>
-  </tile>
   <tile id="846">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="2" height="16">
@@ -683,6 +671,24 @@
   <tile id="872">
    <objectgroup draworder="index">
     <object id="1" x="14" y="0" width="2" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="893">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16">
+     <properties>
+      <property name="Jumpable" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="894">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16">
      <properties>
       <property name="Jumpable" type="bool" value="false"/>
      </properties>
