@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="207" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="102" nextobjectid="1">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
-  <image source="../Level 1 Assets/Magic Cliff/tileset.png" width="928" height="320"/>
+  <image source="Assets/tileset.png" width="928" height="320"/>
   <tile id="119">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16">
@@ -733,13 +733,13 @@
   </tile>
  </tileset>
  <tileset firstgid="1161" name="clouds" tilewidth="16" tileheight="16" tilecount="476" columns="34">
-  <image source="../Level 1 Assets/Magic Cliff/clouds.png" width="544" height="236"/>
+  <image source="Assets/clouds.png" width="544" height="236"/>
  </tileset>
  <tileset firstgid="1637" name="sea" tilewidth="16" tileheight="16" tilecount="42" columns="7">
-  <image source="../Level 1 Assets/Magic Cliff/sea.png" width="112" height="96"/>
+  <image source="Assets/sea.png" width="112" height="96"/>
  </tileset>
  <tileset firstgid="1679" name="sky" tilewidth="16" tileheight="16" tilecount="133" columns="7">
-  <image source="../Level 1 Assets/Magic Cliff/sky.png" width="112" height="304"/>
+  <image source="Assets/sky.png" width="112" height="304"/>
  </tileset>
  <layer id="100" name="Sky" width="207" height="40">
   <data>
