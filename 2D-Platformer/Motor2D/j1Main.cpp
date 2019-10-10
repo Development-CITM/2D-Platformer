@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include "MemLeaks.h"
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -25,6 +25,7 @@ j1App* App = NULL;
 
 int main(int argc, char* args[])
 {
+	ReportMemoryLeaks();
 	LOG("Engine starting ... %d");
 
 	MainState state = MainState::CREATE;

@@ -41,11 +41,11 @@ void j1Map::Draw()
 	TileSet* tileset = tile->data;
 	
 	int num = 0;
-	for (int t = 0; t < data.layers.count(); t++)
+	for (int t = 0; t < (int)data.layers.count(); t++)
 	{	
-		for (uint i = 0; i < layer->num_tile_height; i++)
+		for (int i = 0; i < layer->num_tile_height; i++)
 		{
-			for (uint j = 0; j < layer->num_tile_width; j++)
+			for (int j = 0; j < layer->num_tile_width; j++)
 			{
 				int n = layer->Get(j, i);
 
@@ -55,7 +55,7 @@ void j1Map::Draw()
 					{
 						num = 0;
 					}
-					 /* if (layer->data[n] > array_Tileset[1].firstgid && layer->data[n] < array_Tileset[2].firstgid) {
+				/*	  if (layer->data[n] > array_Tileset[1].firstgid && layer->data[n] < array_Tileset[2].firstgid) {
 						num = 1;
 					}*/
 					else if (layer->data[n] > array_Tileset[2].firstgid && layer->data[n] < array_Tileset[3].firstgid) {
@@ -218,7 +218,7 @@ bool j1Map::Load(const char* file_name)
 	int num = data.tilesets.count();
 	tile = data.tilesets.start;
 	array_Tileset = new TileSet[num]();
-	for (int i = 0; i < data.tilesets.count(); i++)
+	for (int i = 0; i < (int)data.tilesets.count(); i++)
 	{
 		array_Tileset[i] = *tile->data;
 		if(tile->next != nullptr)
@@ -427,13 +427,13 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
-		layer->data = new uint[layer->num_tile_width*layer->num_tile_height];
+		layer->data = new int[layer->num_tile_width*layer->num_tile_height];
 		memset(layer->data, 0, layer->num_tile_width*layer->num_tile_height);
 
 		int i = 0;
 		for(pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
-			layer->data[i++] = tile.attribute("gid").as_int(0);
+			layer->data[i++] = (int)tile.attribute("gid").as_int(0);
 		}
 	}
 

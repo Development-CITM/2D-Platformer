@@ -12,7 +12,7 @@ struct MapLayer
 	p2SString	name;
 	int			num_tile_width;
 	int			num_tile_height;
-	uint*		data;
+	int*		data;
 
 	MapLayer() : data(NULL)
 	{}
