@@ -30,6 +30,7 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 
 void j1Tilesets::Draw()
 {
+	
 	if(map_loaded == false)
 		return;
 
@@ -41,7 +42,6 @@ void j1Tilesets::Draw()
 	tile = data.tilesets.start;
 	TileSet* tileset = tile->data;
 	
-	int num = 0;
 	for (int t = 0; t < (int)data.layers.count(); t++)
 	{	
 		for (int i = 0; i < layer->num_tile_height; i++)
@@ -62,13 +62,14 @@ void j1Tilesets::Draw()
 						else ret = true;
 					}
 					ret = false;
-						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]),2.5f);
+					map_file.child("child").
+						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]));
 				}
 			}
 
 		}
 		
-		
+		App->render->DrawQuad({ 0,0,16,16 }, 255, 255, 255,50);
 
 		
 		if (lay->next != nullptr) {
@@ -211,22 +212,7 @@ bool j1Tilesets::Load(const char* file_name)
 
 		data.tilesets.add(set);
 	}
-
-	int num = data.tilesets.count();
-	tile = data.tilesets.start;
-	array_Tileset = new TileSet[num]();
-	for (int i = 0; i < (int)data.tilesets.count(); i++)
-	{
-		array_Tileset[i] = *tile->data;
-		if(tile->next != nullptr)
-		tile = tile->next;
-	}
-	tile = data.tilesets.start;
-	for (int i = 0; i < 4; i++)
-	{
-		LOG("%d", array_Tileset[i].firstgid);
-	}
-
+	
 
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
