@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="19" tileheight="34" infinite="0" nextlayerid="16" nextobjectid="1">
+ <properties>
+  <property name="offset_x" type="float" value="0"/>
+  <property name="offset_y" type="float" value="0"/>
+  <property name="speed" type="float" value="3"/>
+ </properties>
+ <tileset firstgid="1" name="Player Sheet" tilewidth="19" tileheight="34" tilecount="880" columns="40">
+  <properties>
+   <property name="player" type="bool" value="true"/>
+  </properties>
+  <image source="Player Sheet.png" width="768" height="768"/>
+ </tileset>
+ <layer id="1" name="Idle 1" width="1" height="1">
+  <data>
+   <tile gid="1"/>
+  </data>
+ </layer>
+ <layer id="4" name="Idle 2" width="1" height="1">
+  <data>
+   <tile gid="2"/>
+  </data>
+ </layer>
+ <layer id="5" name="Idle 3" width="1" height="1">
+  <data>
+   <tile gid="3"/>
+  </data>
+ </layer>
+ <layer id="7" name="Idle 4" width="1" height="1">
+  <data>
+   <tile gid="4"/>
+  </data>
+ </layer>
+ <layer id="8" name="Idle 5" width="1" height="1">
+  <data>
+   <tile gid="5"/>
+  </data>
+ </layer>
+ <layer id="9" name="Idle 6" width="1" height="1">
+  <data>
+   <tile gid="6"/>
+  </data>
+ </layer>
+ <layer id="10" name="Idle 7" width="1" height="1">
+  <data>
+   <tile gid="7"/>
+  </data>
+ </layer>
+ <layer id="11" name="Idle 8" width="1" height="1">
+  <data>
+   <tile gid="8"/>
+  </data>
+ </layer>
+ <layer id="12" name="Idle 9" width="1" height="1">
+  <data>
+   <tile gid="9"/>
+  </data>
+ </layer>
+ <layer id="13" name="Idle 10" width="1" height="1">
+  <data>
+   <tile gid="10"/>
+  </data>
+ </layer>
+ <layer id="14" name="Idle 11" width="1" height="1">
+  <data>
+   <tile gid="11"/>
+  </data>
+ </layer>
+ <layer id="15" name="Idle 12" width="1" height="1">
+  <data>
+   <tile gid="12"/>
+  </data>
+ </layer>
+</map>
