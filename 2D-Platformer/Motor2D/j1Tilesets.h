@@ -71,14 +71,14 @@ struct MapData
 };
 
 // ----------------------------------------------------
-class j1Map : public j1Module
+class j1Tilesets : public j1Module
 {
 public:
 
-	j1Map();
+	j1Tilesets();
 
 	// Destructor
-	virtual ~j1Map();
+	virtual ~j1Tilesets();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);

@@ -3,20 +3,20 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
-#include "j1Map.h"
+#include "j1Tilesets.h"
 #include <math.h>
 
-j1Map::j1Map() : j1Module(), map_loaded(false)
+j1Tilesets::j1Tilesets() : j1Module(), map_loaded(false)
 {
 	name.create("map");
 }
 
 // Destructor
-j1Map::~j1Map()
+j1Tilesets::~j1Tilesets()
 {}
 
 // Called before render is available
-bool j1Map::Awake(pugi::xml_node& config)
+bool j1Tilesets::Awake(pugi::xml_node& config)
 {
 	maxFrames = 5;
 	currentFrame = 0;
@@ -28,13 +28,14 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-void j1Map::Draw()
+void j1Tilesets::Draw()
 {
 	if(map_loaded == false)
 		return;
 
 	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
 	 // for now we just use the first layer and tileset
+	bool ret = false;
 	lay = data.layers.start;
 	MapLayer* layer = lay->data;
 	tile = data.tilesets.start;
@@ -51,20 +52,17 @@ void j1Map::Draw()
 
 				if (layer->data[n] != 0)
 				{	
-					if (layer->data[n] > array_Tileset[0].firstgid && layer->data[n] < array_Tileset[1].firstgid)
-					{
-						num = 0;
+					while (ret == false) {
+						if (tile->next != NULL && tile->next->data->firstgid <= layer->data[n]) {
+							tile = tile->next;
+						}
+						else if (tile->prev != NULL && tile->data->firstgid > layer->data[n]) {
+							tile = tile->prev;
+						}
+						else ret = true;
 					}
-				/*	  if (layer->data[n] > array_Tileset[1].firstgid && layer->data[n] < array_Tileset[2].firstgid) {
-						num = 1;
-					}*/
-					else if (layer->data[n] > array_Tileset[2].firstgid && layer->data[n] < array_Tileset[3].firstgid) {
-						num = 2;
-					}
-					else if(layer->data[n] >= array_Tileset[3].firstgid) {
-						num = 3;
-					}
-						App->render->Blit(array_Tileset[num].texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(&array_Tileset[num], layer->data[n]),3.0f);
+					ret = false;
+						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]),2.5f);
 				}
 			}
 
@@ -93,12 +91,11 @@ void j1Map::Draw()
 		//}
 		
 	}
-	//lay = data.layers.start;
 
 	// TODO 10(old): Complete the draw function
 }
 
-iPoint j1Map::MapToWorld(int x, int y) const
+iPoint j1Tilesets::MapToWorld(int x, int y) const
 {
 	iPoint ret(0,0);
 	// TODO 8(old): Create a method that translates x,y coordinates from map positions to world positions
@@ -121,7 +118,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 }
 
 
-iPoint j1Map::WorldToMap(int x, int y) const
+iPoint j1Tilesets::WorldToMap(int x, int y) const
 {
 	iPoint ret(0,0);
 	// TODO 2: Add orthographic world to map coordinates
@@ -144,7 +141,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 
 
 // Called before quitting
-bool j1Map::CleanUp()
+bool j1Tilesets::CleanUp()
 {
 	LOG("Unloading map");
 
@@ -177,7 +174,7 @@ bool j1Map::CleanUp()
 }
 
 // Load new map
-bool j1Map::Load(const char* file_name)
+bool j1Tilesets::Load(const char* file_name)
 {
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
@@ -277,7 +274,7 @@ bool j1Map::Load(const char* file_name)
 }
 
 // Load map general properties
-bool j1Map::LoadMap()
+bool j1Tilesets::LoadMap()
 {
 	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
@@ -342,7 +339,7 @@ bool j1Map::LoadMap()
 	return ret;
 }
 
-bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	set->name.create(tileset_node.attribute("name").as_string());
@@ -374,7 +371,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool j1Tilesets::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
@@ -410,7 +407,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
+bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
 
@@ -440,7 +437,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-SDL_Rect j1Map::GetRect(TileSet* tileset, int id)
+SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 {
 
 	//----NO PERFORMANCE-----

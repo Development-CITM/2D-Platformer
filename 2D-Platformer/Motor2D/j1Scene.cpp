@@ -6,7 +6,7 @@
 #include "j1Audio.h"
 #include "j1Render.h"
 #include "j1Window.h"
-#include "j1Map.h"
+#include "j1Tilesets.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -31,7 +31,7 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	//App->map->Load("maps/hello2.tmx");
-	App->map->Load("maps/Level1.tmx");
+	App->tiles->Load("maps/Level1.tmx");
 	
 	return true;
 }
@@ -52,26 +52,26 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 5;
+		App->render->camera.y += 3;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 5;
+		App->render->camera.y -= 3;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 5;
+		App->render->camera.x += 3;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 5;
+		App->render->camera.x -= 3;
 
-	App->map->Draw();
+	App->tiles->Draw();
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
+	iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(),
+					App->tiles->data.width, App->tiles->data.height,
+					App->tiles->data.tile_width, App->tiles->data.tile_height,
+					App->tiles->data.tilesets.count(),
 					map_coordinates.x, map_coordinates.y);
 
 	App->win->SetTitle(title.GetString());
