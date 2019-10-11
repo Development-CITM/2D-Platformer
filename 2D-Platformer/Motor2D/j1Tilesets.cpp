@@ -61,6 +61,29 @@ void j1Tilesets::Draw()
 			layer = lay->data;
 		}
 	}
+	p2List_item<Collider*>* collider = this->map_Data.colliders.start;
+	SDL_Rect collider_rect;
+	for (int i = 0; i < map_Data.colliders.count(); i++)
+	{
+		collider_rect = { collider->data->x,collider->data->y,collider->data->width,collider->data->height };
+		switch (collider->data->type)
+		{
+		case BARRIER:
+			App->render->DrawQuad(collider_rect, 255, 0, 0, 40, true, true);
+			break;
+		case JUMPABLE:
+			App->render->DrawQuad(collider_rect, 0, 0, 255, 100, true, true);
+			break;
+		case DEAD:
+			App->render->DrawQuad(collider_rect, 0, 0, 0, 100, true, true);
+			break;
+		}
+		
+		if (collider->next != nullptr)
+		{
+			collider = collider->next;
+		}
+	}
 	//App->render->DrawQuad(App->render->camera, 255, 255, 255, 50,true,false);
 
 }
@@ -290,6 +313,21 @@ bool j1Tilesets::Load(const char* file_name)
 			map_Data.layers.add(lay);
 	}
 
+	//Load Objects (Colliders) info ----------------------------------
+	pugi::xml_node object;
+	for (object = map_file.child("map").child("objectgroup").child("object"); object && ret; object = object.next_sibling("object"))
+	{
+		Collider* collider = new Collider();
+		
+		ret = LoadObject(object, collider);
+
+		if (ret == true)
+		{
+			map_Data.colliders.add(collider);
+		}
+	}
+
+
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -485,6 +523,31 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 
 	return ret;
+}
+
+bool j1Tilesets::LoadObject(pugi::xml_node& node, Collider* collider)
+{
+	bool ret = true;
+	collider->x = node.attribute("x").as_int();
+	collider->y = node.attribute("y").as_int();
+	collider->width = node.attribute("width").as_int();
+	collider->height = node.attribute("height").as_int();
+
+	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
+	{
+		collider->type = JUMPABLE;
+	}
+	if (strcmp(node.attribute("type").as_string(), "Dead") == 0)
+	{
+		collider->type = DEAD;
+	}
+	if (strcmp(node.attribute("type").as_string(), "Barrier") == 0)
+	{
+		collider->type = BARRIER;
+	}
+	
+	return ret;
+
 }
 
 SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
