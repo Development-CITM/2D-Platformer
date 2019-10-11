@@ -62,7 +62,6 @@ void j1Tilesets::Draw()
 						else ret = true;
 					}
 					ret = false;
-					map_file.child("child").
 						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]));
 				}
 			}
