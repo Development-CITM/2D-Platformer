@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Tilesets.h"
+#include "j1Input.h"
 #include <math.h>
 
 j1Tilesets::j1Tilesets() : j1Module(), map_loaded(false)
@@ -61,27 +62,31 @@ void j1Tilesets::Draw()
 			layer = lay->data;
 		}
 	}
-	p2List_item<Collider*>* collider = this->map_Data.colliders.start;
-	SDL_Rect collider_rect;
-	for (int i = 0; i < map_Data.colliders.count(); i++)
+	ShowColliders();
+	if (collider_debug)
 	{
-		collider_rect = { collider->data->x,collider->data->y,collider->data->width,collider->data->height };
-		switch (collider->data->type)
+		p2List_item<Collider*>* collider = this->map_Data.colliders.start;
+		SDL_Rect collider_rect;
+		for (int i = 0; i < map_Data.colliders.count(); i++)
 		{
-		case BARRIER:
-			App->render->DrawQuad(collider_rect, 255, 0, 0, 40, true, true);
-			break;
-		case JUMPABLE:
-			App->render->DrawQuad(collider_rect, 0, 0, 255, 100, true, true);
-			break;
-		case DEAD:
-			App->render->DrawQuad(collider_rect, 0, 0, 0, 100, true, true);
-			break;
-		}
-		
-		if (collider->next != nullptr)
-		{
-			collider = collider->next;
+			collider_rect = { collider->data->x,collider->data->y,collider->data->width,collider->data->height };
+			switch (collider->data->type)
+			{
+			case BARRIER:
+				App->render->DrawQuad(collider_rect, 255, 0, 0, 40, true, true);
+				break;
+			case JUMPABLE:
+				App->render->DrawQuad(collider_rect, 0, 0, 255, 100, true, true);
+				break;
+			case DEAD:
+				App->render->DrawQuad(collider_rect, 0, 0, 0, 100, true, true);
+				break;
+			}
+
+			if (collider->next != nullptr)
+			{
+				collider = collider->next;
+			}
 		}
 	}
 	//App->render->DrawQuad(App->render->camera, 255, 255, 255, 50,true,false);
@@ -548,6 +553,18 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node, Collider* collider)
 	
 	return ret;
 
+}
+
+void j1Tilesets::ShowColliders()
+{
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN &&collider_debug==false)
+	{
+		collider_debug = true;
+	}
+	else if(App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && collider_debug == true)
+	{
+		collider_debug = false;
+	}
 }
 
 SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)

@@ -126,6 +126,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
+	void ShowColliders();
 	SDL_Rect GetRect(TileSet* ,int id);
 
 public:
@@ -144,6 +145,7 @@ private:
 	TileSet* array_Tileset = nullptr;
 	int					currentFrame;
 	int					maxFrames;
+	bool collider_debug = false;
 };
 
 #endif // __j1MAP_H__
