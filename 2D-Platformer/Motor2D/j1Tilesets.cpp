@@ -53,6 +53,11 @@ void j1Tilesets::Draw()
 
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
+<<<<<<< HEAD
+=======
+					ret = false;
+						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]));
+>>>>>>> aba881ab3fb9f25bcde4daee681adcf9a81aece8
 				}
 			}
 		}
