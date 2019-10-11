@@ -109,11 +109,14 @@ private:
 
 public:
 
-	MapData data;
+	MapData map_Data;
+	MapData player_Data;
 
 private:
 
 	pugi::xml_document	map_file;
+	pugi::xml_document	player_file;
+
 	p2SString			folder;
 	bool				map_loaded;
 	p2List_item<MapLayer*>* lay = nullptr;
