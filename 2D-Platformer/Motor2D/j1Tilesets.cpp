@@ -33,13 +33,13 @@ void j1Tilesets::Draw()
 		return;
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
-	p2List_item<MapLayer*>* lay = this->data.layers.start;
+	p2List_item<MapLayer*>* lay = this->map_Data.layers.start;
 	MapLayer* layer = lay->data;
-	for (int i = 0; i < data.layers.count(); i++)
+	for (int i = 0; i < map_Data.layers.count(); i++)
 	{
-		for (int y = 0; y < data.height; ++y)
+		for (int y = 0; y < map_Data.height; ++y)
 		{
-			for (int x = 0; x < data.width; ++x)
+			for (int x = 0; x < map_Data.width; ++x)
 			{
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
@@ -135,7 +135,7 @@ TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
 	// TODO 3: Complete this method so we pick the right
 	bool ret = false;
 	p2List_item<TileSet*>* tile = nullptr;
-	tile = data.tilesets.start;
+	tile = map_Data.tilesets.start;
 	while (ret == false) {
 		if (tile->next != NULL && tile->next->data->firstgid <= id) {
 			tile = tile->next;
@@ -155,15 +155,15 @@ iPoint j1Tilesets::MapToWorld(int x, int y) const
 	// TODO 8(old): Create a method that translates x,y coordinates from map positions to world positions
 
 	// TODO 1: Add isometric map to world coordinates
-	switch (data.type)
+	switch (map_Data.type)
 	{
 	case MapTypes::MAPTYPE_ORTHOGONAL:
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
+		ret.x = x * map_Data.tile_width;
+		ret.y = y * map_Data.tile_height;
 		break;
 	case MapTypes::MAPTYPE_ISOMETRIC:
-		ret.x = (x - y) * data.tile_width / 2;
-		ret.y = (x + y) * data.tile_height / 2;
+		ret.x = (x - y) * map_Data.tile_width / 2;
+		ret.y = (x + y) * map_Data.tile_height / 2;
 	
 		break;
 
@@ -176,15 +176,15 @@ iPoint j1Tilesets::WorldToMap(int x, int y) const
 {
 	iPoint ret(0,0);
 	// TODO 2: Add orthographic world to map coordinates
-	switch (data.type)
+	switch (map_Data.type)
 	{
 	case MapTypes::MAPTYPE_ORTHOGONAL:
-		ret.x = x / data.tile_width;
-		ret.y = y / data.tile_height;
+		ret.x = x / map_Data.tile_width;
+		ret.y = y / map_Data.tile_height;
 		break;
 	case MapTypes::MAPTYPE_ISOMETRIC:
-		ret.x = (x / data.tile_width / 2 + y / data.tile_height / 2) / 2;
-		ret.y = (y / data.tile_height / 2 - (x / data.tile_width / 2)) / 2;
+		ret.x = (x / map_Data.tile_width / 2 + y / map_Data.tile_height / 2) / 2;
+		ret.y = (y / map_Data.tile_height / 2 - (x / map_Data.tile_width / 2)) / 2;
 	default:
 		break;
 	}
@@ -211,25 +211,25 @@ bool j1Tilesets::CleanUp()
 
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
+	item = map_Data.tilesets.start;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->next;
 	}
-	data.tilesets.clear();
+	map_Data.tilesets.clear();
 
 	// Remove all layers
 	p2List_item<MapLayer*>* item2;
-	item2 = data.layers.start;
+	item2 = map_Data.layers.start;
 
 	while(item2 != NULL)
 	{
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
-	data.layers.clear();
+	map_Data.layers.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -241,9 +241,10 @@ bool j1Tilesets::CleanUp()
 bool j1Tilesets::Load(const char* file_name)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
+	p2SString tmp("%s%s", folder.GetString(), file_name); 
 
 	pugi::xml_parse_result result = map_file.load_file(file_name);
+	
 
 	if(result == NULL)
 	{
@@ -273,7 +274,7 @@ bool j1Tilesets::Load(const char* file_name)
 			ret = LoadTilesetImage(tileset, set);
 		}
 
-		data.tilesets.add(set);
+		map_Data.tilesets.add(set);
 	}
 	
 
@@ -286,16 +287,16 @@ bool j1Tilesets::Load(const char* file_name)
 		ret = LoadLayer(layer, lay);
 
 		if(ret == true)
-			data.layers.add(lay);
+			map_Data.layers.add(lay);
 	}
 
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
-		LOG("width: %d height: %d", data.width, data.height);
-		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
+		LOG("width: %d height: %d", map_Data.width, map_Data.height);
+		LOG("tile_width: %d tile_height: %d", map_Data.tile_width, map_Data.tile_height);
 
-		p2List_item<TileSet*>* item = data.tilesets.start;
+		p2List_item<TileSet*>* item = map_Data.tilesets.start;
 		while(item != NULL)
 		{
 			TileSet* s = item->data;
@@ -306,7 +307,7 @@ bool j1Tilesets::Load(const char* file_name)
 			item = item->next;
 		}
 
-		p2List_item<MapLayer*>* item_layer = data.layers.start;
+		p2List_item<MapLayer*>* item_layer = map_Data.layers.start;
 		while(item_layer != NULL)
 		{
 			MapLayer* l = item_layer->data;
@@ -335,16 +336,16 @@ bool j1Tilesets::LoadMap()
 	}
 	else
 	{
-		data.width = map.attribute("width").as_int();
-		data.height = map.attribute("height").as_int();
-		data.tile_width = map.attribute("tilewidth").as_int();
-		data.tile_height = map.attribute("tileheight").as_int();
+		map_Data.width = map.attribute("width").as_int();
+		map_Data.height = map.attribute("height").as_int();
+		map_Data.tile_width = map.attribute("tilewidth").as_int();
+		map_Data.tile_height = map.attribute("tileheight").as_int();
 		p2SString bg_color(map.attribute("backgroundcolor").as_string());
 
-		data.background_color.r = 0;
-		data.background_color.g = 0;
-		data.background_color.b = 0;
-		data.background_color.a = 0;
+		map_Data.background_color.r = 0;
+		map_Data.background_color.g = 0;
+		map_Data.background_color.b = 0;
+		map_Data.background_color.a = 0;
 
 		if(bg_color.Length() > 0)
 		{
@@ -356,32 +357,32 @@ bool j1Tilesets::LoadMap()
 			int v = 0;
 
 			sscanf_s(red.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.r = v;
+			if(v >= 0 && v <= 255) map_Data.background_color.r = v;
 
 			sscanf_s(green.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.g = v;
+			if(v >= 0 && v <= 255) map_Data.background_color.g = v;
 
 			sscanf_s(blue.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.b = v;
+			if(v >= 0 && v <= 255) map_Data.background_color.b = v;
 		}
 
 		p2SString orientation(map.attribute("orientation").as_string());
 
 		if(orientation == "orthogonal")
 		{
-			data.type = MAPTYPE_ORTHOGONAL;
+			map_Data.type = MAPTYPE_ORTHOGONAL;
 		}
 		else if(orientation == "isometric")
 		{
-			data.type = MAPTYPE_ISOMETRIC;
+			map_Data.type = MAPTYPE_ISOMETRIC;
 		}
 		else if(orientation == "staggered")
 		{
-			data.type = MAPTYPE_STAGGERED;
+			map_Data.type = MAPTYPE_STAGGERED;
 		}
 		else
 		{
-			data.type = MAPTYPE_UNKNOWN;
+			map_Data.type = MAPTYPE_UNKNOWN;
 		}
 	}
 
@@ -518,12 +519,12 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 	int height = 0;
 	if (tileset->isPlayer) {
 
-		width = x * data.tile_width + tileset->margin;
-		height = y * data.tile_width + tileset->spacing;
+		width = x * map_Data.tile_width + tileset->margin;
+		height = y * map_Data.tile_width + tileset->spacing;
 	}
 	else {
-		width = x * data.tile_width + (x+ tileset->margin) * tileset->margin;
-		height = y * data.tile_width + (y+ tileset->spacing) * tileset->spacing;
+		width = x * map_Data.tile_width + (x+ tileset->margin) * tileset->margin;
+		height = y * map_Data.tile_width + (y+ tileset->spacing) * tileset->spacing;
 	}
 
 	SDL_Rect rect = { width,height,tileset->tile_width,tileset->tile_height };

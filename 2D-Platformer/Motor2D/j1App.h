@@ -13,6 +13,7 @@ class j1Textures;
 class j1Audio;
 class j1Scene;
 class j1Tilesets;
+class j1Player;
 
 class j1App
 {
@@ -82,7 +83,8 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1Scene*			scene;
-	j1Tilesets*				tiles;
+	j1Tilesets*			tiles;
+	j1Player*			player;
 
 private:
 

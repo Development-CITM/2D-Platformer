@@ -16,28 +16,35 @@ public:
 	j1Player();
 
 	// Destructor
-	virtual ~j1Player();
+	virtual ~j1Player() {};
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
 
+	// Called before the first frame
+	bool Start();
+
+	// Called before all Updates
+	bool PreUpdate();
+
 	// Called each loop iteration
-	void Draw();
+	bool Update(float dt);
+
+	// Called before all Updates
+	bool PostUpdate();
 
 	// Called before quitting
 	bool CleanUp();
 
-	// Load new map
 	bool Load(const char* path);
 
 
 private:
 
-	bool LoadMap();
-	bool LoadTilesetDetails(pugi::xml_node& tileset_node);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node);
-	bool LoadLayer(pugi::xml_node& node);
-
+	//bool LoadMap();
+	//bool LoadTilesetDetails(pugi::xml_node& tileset_node);
+	//bool LoadTilesetImage(pugi::xml_node& tileset_node);
+	//bool LoadLayer(pugi::xml_node& node);
 
 
 private:

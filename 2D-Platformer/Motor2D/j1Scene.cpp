@@ -31,7 +31,7 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	App->tiles->Load("maps/Level1.tmx");
-	//App->tiles->Load("maps/Level1.tmx");
+	//App->tiles->Load("maps/iso.tmx");
 	
 	return true;
 }
@@ -69,9 +69,9 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-					App->tiles->data.width, App->tiles->data.height,
-					App->tiles->data.tile_width, App->tiles->data.tile_height,
-					App->tiles->data.tilesets.count(),
+					App->tiles->map_Data.width, App->tiles->map_Data.height,
+					App->tiles->map_Data.tile_width, App->tiles->map_Data.tile_height,
+					App->tiles->map_Data.tilesets.count(),
 					map_coordinates.x, map_coordinates.y);
 
 	App->win->SetTitle(title.GetString());
