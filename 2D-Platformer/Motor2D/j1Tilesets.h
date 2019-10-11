@@ -24,7 +24,7 @@ struct MapLayer
 
 	// TODO 6 (old): Short function to get the value of x,y
 	inline uint Get(int x, int y) const {
-		return (y * num_tile_width) + x;
+		return data[(y* num_tile_width) + x];
 	}
 };
 
@@ -91,6 +91,8 @@ public:
 
 	// Load new map
 	bool Load(const char* path);
+
+	TileSet* GetTilesetFromTileId(int id) const;
 
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;

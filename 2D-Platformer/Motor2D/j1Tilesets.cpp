@@ -27,75 +27,128 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 
 	return ret;
 }
-
 void j1Tilesets::Draw()
 {
-	
-	if(map_loaded == false)
+	if (map_loaded == false)
 		return;
 
-	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-	 // for now we just use the first layer and tileset
-	bool ret = false;
-	lay = data.layers.start;
+	// TODO 4: Make sure we draw all the layers and not just the first one
+	p2List_item<MapLayer*>* lay = this->data.layers.start;
 	MapLayer* layer = lay->data;
-	tile = data.tilesets.start;
-	TileSet* tileset = tile->data;
-	
-	for (int t = 0; t < (int)data.layers.count(); t++)
-	{	
-		for (int i = 0; i < layer->num_tile_height; i++)
+	for (int i = 0; i < data.layers.count(); i++)
+	{
+		for (int y = 0; y < data.height; ++y)
 		{
-			for (int j = 0; j < layer->num_tile_width; j++)
+			for (int x = 0; x < data.width; ++x)
 			{
-				int n = layer->Get(j, i);
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
+				{
 
-				if (layer->data[n] != 0)
-				{	
-					while (ret == false) {
-						if (tile->next != NULL && tile->next->data->firstgid <= layer->data[n]) {
-							tile = tile->next;
-						}
-						else if (tile->prev != NULL && tile->data->firstgid > layer->data[n]) {
-							tile = tile->prev;
-						}
-						else ret = true;
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != nullptr)
+					{
+						SDL_Rect r = tileset->GetTileRect(tile_id);
+						iPoint pos = MapToWorld(x, y);
+
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
-					ret = false;
-					map_file.child("child").
-						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]));
 				}
 			}
-
 		}
-		
-		App->render->DrawQuad({ 0,0,16,16 }, 255, 255, 255,50);
-
-		
 		if (lay->next != nullptr) {
 			lay = lay->next;
 			layer = lay->data;
 		}
-	
-		//if (currentFrame == maxFrames) {
-		//	if (lay->next != nullptr) {
-		//		lay = lay->next;
-		//		layer = lay->data;
-		//		currentFrame = 0;
-		//	}
-		//	else {
-		//		lay = data.layers.start;
-		//		currentFrame = 0;
-		//	}
-		//}else{
-		//	currentFrame++;
-		//}
-		
 	}
 
-	// TODO 10(old): Complete the draw function
-}
 
+}
+//void j1Tilesets::Draw()
+//{
+//	
+//	if(map_loaded == false)
+//		return;
+//
+//	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
+//	 // for now we just use the first layer and tileset
+//	bool ret = false;
+//	lay = data.layers.start;
+//	MapLayer* layer = lay->data;
+//	tile = data.tilesets.start;
+//	TileSet* tileset = tile->data;
+//	
+//	for (int t = 0; t < (int)data.layers.count(); t++)
+//	{	
+//		for (int i = 0; i < layer->num_tile_height; i++)
+//		{
+//			for (int j = 0; j < layer->num_tile_width; j++)
+//			{
+//				int n = layer->Get(j, i);
+//
+//				if (layer->data[n] != 0)
+//				{	
+//					while (ret == false) {
+//						if (tile->next != NULL && tile->next->data->firstgid <= layer->data[n]) {
+//							tile = tile->next;
+//						}
+//						else if (tile->prev != NULL && tile->data->firstgid > layer->data[n]) {
+//							tile = tile->prev;
+//						}
+//						else ret = true;
+//					}
+//					ret = false;
+//						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]));
+//				}
+//			}
+//
+//		}
+//		
+//		App->render->DrawQuad({ 0,0,16,16 }, 255, 255, 255,50);
+//
+//		
+//		if (lay->next != nullptr) {
+//			lay = lay->next;
+//			layer = lay->data;
+//		}
+//	
+//		//if (currentFrame == maxFrames) {
+//		//	if (lay->next != nullptr) {
+//		//		lay = lay->next;
+//		//		layer = lay->data;
+//		//		currentFrame = 0;
+//		//	}
+//		//	else {
+//		//		lay = data.layers.start;
+//		//		currentFrame = 0;
+//		//	}
+//		//}else{
+//		//	currentFrame++;
+//		//}
+//		
+//	}
+//
+//	// TODO 10(old): Complete the draw function
+//}
+TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
+{
+	// TODO 3: Complete this method so we pick the right
+	bool ret = false;
+	p2List_item<TileSet*>* tile = nullptr;
+	tile = data.tilesets.start;
+	while (ret == false) {
+		if (tile->next != NULL && tile->next->data->firstgid <= id) {
+			tile = tile->next;
+		}
+		else if (tile->prev != NULL && tile->data->firstgid > id) {
+			tile = tile->prev;
+		}
+		else ret = true;
+	}
+	// Tileset based on a tile id
+
+	return tile->data;
+}
 iPoint j1Tilesets::MapToWorld(int x, int y) const
 {
 	iPoint ret(0,0);
@@ -140,6 +193,16 @@ iPoint j1Tilesets::WorldToMap(int x, int y) const
 	return ret;
 }
 
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+	int relative_id = id - firstgid;
+	SDL_Rect rect;
+	rect.w = tile_width;
+	rect.h = tile_height;
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+	return rect;
+}
 
 // Called before quitting
 bool j1Tilesets::CleanUp()
