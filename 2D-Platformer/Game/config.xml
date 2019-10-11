@@ -26,4 +26,8 @@
     <folder>maps/</folder>
   </map>
 
+  <player>
+    <folder>animations</folder>
+  </player>
+
 </config>

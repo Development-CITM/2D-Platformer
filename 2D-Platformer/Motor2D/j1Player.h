@@ -6,7 +6,23 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+
+enum MapTypes;
 // ----------------------------------------------------
+struct ObjectLayer
+{
+	p2SString	name;
+	p2List<SDL_Rect*> rects;
+};
+struct PlayerTMXData {
+	uint					width;
+	uint					height;
+	uint					tile_width;
+	uint					tile_height;
+	SDL_Texture*			texture;
+	MapTypes				type;
+	p2List<ObjectLayer*>	layers;
+};
 
 
 class j1Player : public j1Module
@@ -38,18 +54,21 @@ public:
 
 	bool Load(const char* path);
 
+	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
+
 
 private:
 
-	//bool LoadMap();
+	bool LoadMap();
 	//bool LoadTilesetDetails(pugi::xml_node& tileset_node);
 	//bool LoadTilesetImage(pugi::xml_node& tileset_node);
 	//bool LoadLayer(pugi::xml_node& node);
-
+public:
+	PlayerTMXData player_tmx_data;
 
 private:
 
-	pugi::xml_document	map_file;
+	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded;
 	int					currentFrame;

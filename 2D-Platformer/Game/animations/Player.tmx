@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="23" tileheight="41" infinite="0" nextlayerid="9" nextobjectid="37">
- <imagelayer id="2" name="PlayerSheet">
+ <imagelayer id="2" name="Capa de Imagen 1">
   <image source="Player Sheet.png" width="256" height="256"/>
  </imagelayer>
  <objectgroup id="4" name="Idle">
