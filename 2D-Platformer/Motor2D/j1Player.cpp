@@ -44,22 +44,23 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	if (animations[1]->repeatFrames > 6) {
-		if (animations[1]->numFrame < animations[1]->numRects - 1)
+	int num = 3;
+	if (animations[num]->repeatFrames > 6) {
+		if (animations[num]->numFrame < animations[num]->numRects - 1)
 		{
 			//App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &idle->rects[idle->numFrame],App->render->drawsize);
-			animations[1]->numFrame++;
+			animations[num]->numFrame++;
 		}
 		else {
-			animations[1]->numFrame = 0;
+			animations[num]->numFrame = 0;
 		}
-		animations[1]->repeatFrames = 0;
+		animations[num]->repeatFrames = 0;
 		
 	}
 	else {
-		animations[1]->repeatFrames++;
+		animations[num]->repeatFrames++;
 	}
-	App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &animations[1]->rects[animations[1]->numFrame],App->render->drawsize);
+	App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &animations[num]->rects[animations[num]->numFrame],App->render->drawsize);
 	
 	
 }
