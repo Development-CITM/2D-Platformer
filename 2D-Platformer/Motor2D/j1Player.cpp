@@ -44,8 +44,8 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	p2List<SDL_Rect*> rect = player_tmx_data.layers.start->data->rects;
-	p2List_item<SDL_Rect*>* r =  rect.start;
+	//p2List<SDL_Rect*> rect = player_tmx_data.layers.start->data->rects;
+	//p2List_item<SDL_Rect*>* r =  rect.start;
 
 	App->render->Blit(player_tmx_data.spriteSheet.texture, 200,472, player_tmx_data.layers.start->data->rects.start->data,2.F);
 	
@@ -137,9 +137,8 @@ bool j1Player::LoadMap()
 		player_tmx_data.tile_height = map.attribute("tileheight").as_int();
 		
 		LoadSpriteSheet(map);
-
-		return ret;
 	}
+	return ret;
 }
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 {

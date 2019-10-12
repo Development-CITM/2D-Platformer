@@ -163,7 +163,6 @@ bool j1Tilesets::CleanUp()
 		item2 = item2->next;
 	}
 	map_Data.layers.clear();
-
 	// Clean up the pugui tree
 	map_file.reset();
 
