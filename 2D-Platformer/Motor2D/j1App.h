@@ -14,6 +14,7 @@ class j1Audio;
 class j1Scene;
 class j1Tilesets;
 class j1Player;
+class j1Colliders;
 
 class j1App
 {
@@ -85,6 +86,7 @@ public:
 	j1Scene*			scene;
 	j1Tilesets*			tiles;
 	j1Player*			player;
+	j1Colliders*		collider;
 
 private:
 

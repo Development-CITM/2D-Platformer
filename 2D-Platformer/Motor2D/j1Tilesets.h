@@ -50,22 +50,6 @@ struct TileSet
 
 };
 
-enum ColliderType
-{
-	BARRIER,
-	JUMPABLE,
-	DEAD
-};
-
-struct Collider
-{
-	int x;
-	int y;
-	int width;
-	int height;
-	ColliderType type;
-};
-
 enum MapTypes
 {
 	MAPTYPE_UNKNOWN = 0,
@@ -73,9 +57,6 @@ enum MapTypes
 	MAPTYPE_ISOMETRIC,
 	MAPTYPE_STAGGERED
 };
-
-
-
 
 // ----------------------------------------------------
 struct MapData
@@ -88,7 +69,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
-	p2List<Collider*>	colliders;
+
 };
 
 // ----------------------------------------------------
@@ -125,8 +106,6 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadObject(pugi::xml_node& node, Collider* collider);
-	void ShowColliders();
 	SDL_Rect GetRect(TileSet* ,int id);
 
 public:
@@ -141,11 +120,9 @@ private:
 	bool				map_loaded;
 	p2List_item<MapLayer*>* lay = nullptr;
 	p2List_item<TileSet*>* tile = nullptr;
-	p2List_item<Collider*>* collider = nullptr;
 	TileSet* array_Tileset = nullptr;
 	int					currentFrame;
 	int					maxFrames;
-	bool collider_debug = false;
 };
 
 #endif // __j1MAP_H__

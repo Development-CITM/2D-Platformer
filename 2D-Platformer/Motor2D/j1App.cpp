@@ -12,6 +12,7 @@
 #include "j1Scene.h"
 #include "j1Tilesets.h"
 #include "j1Player.h"
+#include "j1Colliders.h"
 #include "j1App.h"
 
 // Constructor
@@ -28,6 +29,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	tiles = new j1Tilesets();
 	player = new j1Player();
+	collider = new j1Colliders();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -38,6 +40,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tiles);
 	AddModule(scene);
 	AddModule(player);
+	AddModule(collider);
 
 	// render last to swap buffer
 	AddModule(render);

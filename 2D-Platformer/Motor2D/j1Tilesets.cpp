@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Tilesets.h"
+#include "j1Colliders.h"
 #include "j1Input.h"
 #include <math.h>
 
@@ -62,102 +63,11 @@ void j1Tilesets::Draw()
 			layer = lay->data;
 		}
 	}
-	ShowColliders();
-	if (collider_debug)
-	{
-		p2List_item<Collider*>* collider = this->map_Data.colliders.start;
-		SDL_Rect collider_rect;
-		for (int i = 0; i < map_Data.colliders.count(); i++)
-		{
-			collider_rect = { collider->data->x,collider->data->y,collider->data->width,collider->data->height };
-			switch (collider->data->type)
-			{
-			case BARRIER:
-				App->render->DrawQuad(collider_rect, 255, 0, 0, 40, true, true);
-				break;
-			case JUMPABLE:
-				App->render->DrawQuad(collider_rect, 0, 0, 255, 100, true, true);
-				break;
-			case DEAD:
-				App->render->DrawQuad(collider_rect, 0, 0, 0, 100, true, true);
-				break;
-			}
-
-			if (collider->next != nullptr)
-			{
-				collider = collider->next;
-			}
-		}
-	}
+	
 	//App->render->DrawQuad(App->render->camera, 255, 255, 255, 50,true,false);
 
 }
-//void j1Tilesets::Draw()
-//{
-//	
-//	if(map_loaded == false)
-//		return;
-//
-//	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-//	 // for now we just use the first layer and tileset
-//	bool ret = false;
-//	lay = data.layers.start;
-//	MapLayer* layer = lay->data;
-//	tile = data.tilesets.start;
-//	TileSet* tileset = tile->data;
-//	
-//	for (int t = 0; t < (int)data.layers.count(); t++)
-//	{	
-//		for (int i = 0; i < layer->num_tile_height; i++)
-//		{
-//			for (int j = 0; j < layer->num_tile_width; j++)
-//			{
-//				int n = layer->Get(j, i);
-//
-//				if (layer->data[n] != 0)
-//				{	
-//					while (ret == false) {
-//						if (tile->next != NULL && tile->next->data->firstgid <= layer->data[n]) {
-//							tile = tile->next;
-//						}
-//						else if (tile->prev != NULL && tile->data->firstgid > layer->data[n]) {
-//							tile = tile->prev;
-//						}
-//						else ret = true;
-//					}
-//					ret = false;
-//						App->render->Blit(tile->data->texture, MapToWorld(j, i).x, MapToWorld(j, i).y, &GetRect(tile->data, layer->data[n]));
-//				}
-//			}
-//
-//		}
-//		
-//		App->render->DrawQuad({ 0,0,16,16 }, 255, 255, 255,50);
-//
-//		
-//		if (lay->next != nullptr) {
-//			lay = lay->next;
-//			layer = lay->data;
-//		}
-//	
-//		//if (currentFrame == maxFrames) {
-//		//	if (lay->next != nullptr) {
-//		//		lay = lay->next;
-//		//		layer = lay->data;
-//		//		currentFrame = 0;
-//		//	}
-//		//	else {
-//		//		lay = data.layers.start;
-//		//		currentFrame = 0;
-//		//	}
-//		//}else{
-//		//	currentFrame++;
-//		//}
-//		
-//	}
-//
-//	// TODO 10(old): Complete the draw function
-//}
+
 TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
 {
 	// TODO 3: Complete this method so we pick the right
@@ -180,9 +90,7 @@ TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
 iPoint j1Tilesets::MapToWorld(int x, int y) const
 {
 	iPoint ret(0,0);
-	// TODO 8(old): Create a method that translates x,y coordinates from map positions to world positions
 
-	// TODO 1: Add isometric map to world coordinates
 	switch (map_Data.type)
 	{
 	case MapTypes::MAPTYPE_ORTHOGONAL:
@@ -194,7 +102,6 @@ iPoint j1Tilesets::MapToWorld(int x, int y) const
 		ret.y = (x + y) * map_Data.tile_height / 2;
 	
 		break;
-
 	}
 	return ret;
 }
@@ -203,7 +110,7 @@ iPoint j1Tilesets::MapToWorld(int x, int y) const
 iPoint j1Tilesets::WorldToMap(int x, int y) const
 {
 	iPoint ret(0,0);
-	// TODO 2: Add orthographic world to map coordinates
+
 	switch (map_Data.type)
 	{
 	case MapTypes::MAPTYPE_ORTHOGONAL:
@@ -216,8 +123,6 @@ iPoint j1Tilesets::WorldToMap(int x, int y) const
 	default:
 		break;
 	}
-
-	// TODO 3: Add the case for isometric maps to WorldToMap
 	return ret;
 }
 
@@ -301,7 +206,6 @@ bool j1Tilesets::Load(const char* file_name)
 		{
 			ret = LoadTilesetImage(tileset, set);
 		}
-
 		map_Data.tilesets.add(set);
 	}
 	
@@ -320,18 +224,8 @@ bool j1Tilesets::Load(const char* file_name)
 
 	//Load Objects (Colliders) info ----------------------------------
 	pugi::xml_node object;
-	for (object = map_file.child("map").child("objectgroup").child("object"); object && ret; object = object.next_sibling("object"))
-	{
-		Collider* collider = new Collider();
-		
-		ret = LoadObject(object, collider);
-
-		if (ret == true)
-		{
-			map_Data.colliders.add(collider);
-		}
-	}
-
+	object = map_file.child("map").child("objectgroup").child("object");
+	App->collider->Load(object);
 
 	if(ret == true)
 	{
@@ -360,7 +254,6 @@ bool j1Tilesets::Load(const char* file_name)
 			item_layer = item_layer->next;
 		}
 	}
-
 	map_loaded = ret;
 
 	return ret;
@@ -530,67 +423,9 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-bool j1Tilesets::LoadObject(pugi::xml_node& node, Collider* collider)
-{
-	bool ret = true;
-	collider->x = node.attribute("x").as_int();
-	collider->y = node.attribute("y").as_int();
-	collider->width = node.attribute("width").as_int();
-	collider->height = node.attribute("height").as_int();
-
-	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
-	{
-		collider->type = JUMPABLE;
-	}
-	if (strcmp(node.attribute("type").as_string(), "Dead") == 0)
-	{
-		collider->type = DEAD;
-	}
-	if (strcmp(node.attribute("type").as_string(), "Barrier") == 0)
-	{
-		collider->type = BARRIER;
-	}
-	
-	return ret;
-
-}
-
-void j1Tilesets::ShowColliders()
-{
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN &&collider_debug==false)
-	{
-		collider_debug = true;
-	}
-	else if(App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && collider_debug == true)
-	{
-		collider_debug = false;
-	}
-}
 
 SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 {
-
-	//----NO PERFORMANCE-----
-	//int i = 0;
-	//int j = 0;
-	//int num = 0;
-	//int target = id;
-	//int width = 0;
-	//int height = 0;
-	//for (i = 0; i < data.tilesets[0]->num_tiles_height && num < target; i++)
-	//{
-
-	//	for (j = 0; j < data.tilesets[0]->num_tiles_width && num < target; j++)
-	//	{
-	//		num++;
-	//	}
-	//
-	//}
-	//width = (j - 1) * data.tile_width + j ;
-	//height = (i - 1) * data.tile_width + i;
-	//SDL_Rect rect = {width,height,32,32};
-
-	//-----PERFORMANCE-----
 	int num = id;
 
 	int x = (num - tileset->firstgid) % tileset->num_tiles_width;
