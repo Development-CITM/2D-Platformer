@@ -111,7 +111,6 @@ private:
 public:
 
 	MapData map_Data;
-	bool	onscreen;
 
 private:
 
@@ -124,7 +123,6 @@ private:
 	TileSet* array_Tileset = nullptr;
 	int					currentFrame;
 	int					maxFrames;
-
 };
 
 #endif // __j1MAP_H__

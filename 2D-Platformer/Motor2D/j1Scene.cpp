@@ -9,7 +9,6 @@
 #include "j1Tilesets.h"
 #include "j1Player.h"
 #include "j1Colliders.h"
-#include "j1Fade2Black.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -33,14 +32,9 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	if (map % 2 == 0)
-	{
-		App->tiles->Load("maps/Level1.tmx");
-	}
-	if (map % 2 != 0)
-	{
-		App->tiles->Load("maps/Level2.tmx");
-	}
+	App->tiles->Load("maps/Level1.tmx");
+	//App->tiles->Load("maps/iso.tmx");
+	
 	return true;
 }
 
@@ -53,27 +47,26 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y += 3;
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y -= 3;
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		App->render->camera.x += 3;
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 3;
 
-		App->tiles->Draw();
-	
-	
+	App->tiles->Draw();
+
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
@@ -102,8 +95,6 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	App->tiles->CleanUp();
-	App->collider->CleanUp();
-	map++;
+
 	return true;
 }

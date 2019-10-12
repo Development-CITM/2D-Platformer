@@ -32,8 +32,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-
-	int map = 0;
 private:
 };
 

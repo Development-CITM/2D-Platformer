@@ -24,23 +24,30 @@ bool j1Colliders::Awake(pugi::xml_node & conf)
 
 void j1Colliders::Draw()
 {
+	int scale = App->win->GetScale();
+	int size = App->render->drawsize;
 	ShowColliders();
 	if (collider_debug)
 	{
 		p2List_item<Collider*>* collider = this->colliders.start;
-
+		SDL_Rect collider_rect;
 		for (int i = 0; i < colliders.count(); i++)
 		{
+			collider_rect.x = collider->data->x * scale * size;
+			collider_rect.y = collider->data->y * scale * size;
+			collider_rect.w = collider->data->width * scale * size;
+			collider_rect.h = collider->data->height * scale * size;
+
 			switch (collider->data->type)
 			{
 			case BARRIER:
-				App->render->DrawQuad(collider->data->rect, 255, 0, 0, 40, true, true);
+				App->render->DrawQuad(collider_rect, 255, 0, 0, 40, true, true);
 				break;
 			case JUMPABLE:
-				App->render->DrawQuad(collider->data->rect, 0, 0, 255, 100, true, true);
+				App->render->DrawQuad(collider_rect, 0, 0, 255, 100, true, true);
 				break;
 			case DEAD:
-				App->render->DrawQuad(collider->data->rect, 0, 0, 0, 100, true, true);
+				App->render->DrawQuad(collider_rect, 0, 0, 0, 100, true, true);
 				break;
 			}
 
@@ -69,23 +76,19 @@ bool j1Colliders::CleanUp()
 
 bool j1Colliders::Load(pugi::xml_node object)
 {
-	scale = App->win->GetScale();
-	size = App->render->drawsize;
 	bool ret = true;
-	
-		for (object.child("object"); object && ret; object = object.next_sibling("object"))
+	for (object; object && ret; object = object.next_sibling("object"))
+	{
+		Collider* collider = new Collider();
+
+		ret = LoadObject(object, collider);
+
+		if (ret == true)
 		{
-			Collider* collider = new Collider();
-
-			ret = LoadObject(object, collider);
-
-			if (ret == true)
-			{
-
-				colliders.add(collider);
-			}
+			collider_loaded = ret;
+			colliders.add(collider);
 		}
-	
+	}
 	return ret;
 }
 
@@ -109,10 +112,10 @@ bool j1Colliders::PostUpdate()
 bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 {
 	bool ret = true;
-	collider->rect.x = node.attribute("x").as_int() * size * scale;
-	collider->rect.y = node.attribute("y").as_int() * size * scale;
-	collider->rect.w = node.attribute("width").as_int() * size * scale;
-	collider->rect.h = node.attribute("height").as_int() * size * scale;
+	collider->x = node.attribute("x").as_int();
+	collider->y = node.attribute("y").as_int();
+	collider->width = node.attribute("width").as_int();
+	collider->height = node.attribute("height").as_int();
 
 	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
 	{

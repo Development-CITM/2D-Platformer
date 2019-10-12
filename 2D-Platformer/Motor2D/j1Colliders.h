@@ -15,7 +15,10 @@ enum ColliderType
 
 struct Collider
 {
-	SDL_Rect rect;
+	int x;
+	int y;
+	int width;
+	int height;
 	ColliderType type;
 };
 
@@ -59,8 +62,6 @@ private:
 	p2List_item<Collider*>* collider = nullptr;
 	bool collider_debug = false;
 	bool collider_loaded = false;
-	int scale;
-	int size;
 
 };
 #endif
