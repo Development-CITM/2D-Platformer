@@ -89,15 +89,14 @@ public:
 	PlayerTMXData player_tmx_data;
 
 private:
-	Animation** animations;
-	Animation*	currentAnimation;
-	Animation* idle;
+	Animation**			animations;
+	Animation*			currentAnimation;
+	Animation*			idle;
 	p2List<SDL_Rect*>	rect;
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded;
 
-	int* numAnimations;
 };
 
 #endif // __j1PLAYER_H__

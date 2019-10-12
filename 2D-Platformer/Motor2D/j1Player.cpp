@@ -67,6 +67,35 @@ void j1Player::Draw()
 
 bool j1Player::CleanUp()
 {
+	// Remove all rects
+	p2List_item<SDL_Rect*>* item1;
+	
+	item1 = rect.start;
+
+	while (item1 != NULL)
+	{
+		RELEASE(item1->data);
+		item1 = item1->next;
+	}
+	rect.clear();
+
+	// Remove all layers
+	p2List_item<ObjectLayer*>* item2;
+	item2 = player_tmx_data.layers.start;
+
+	while (item2 != NULL)
+	{
+		RELEASE(item2->data);
+		item2 = item2->next;
+	}
+	player_tmx_data.layers.clear();
+
+	// Clean up the pugui tree
+	player_file.reset();
+
+
+	RELEASE_ARRAY(animations);
+
 	return true;
 }
 
