@@ -44,10 +44,24 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	//p2List<SDL_Rect*> rect = player_tmx_data.layers.start->data->rects;
-	//p2List_item<SDL_Rect*>* r =  rect.start;
-
-	App->render->Blit(player_tmx_data.spriteSheet.texture, 200,472, player_tmx_data.layers.start->data->rects.start->data,2.F);
+	int num = 3;
+	if (animations[num]->repeatFrames > 6) {
+		if (animations[num]->numFrame < animations[num]->numRects - 1)
+		{
+			//App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &idle->rects[idle->numFrame],App->render->drawsize);
+			animations[num]->numFrame++;
+		}
+		else {
+			animations[num]->numFrame = 0;
+		}
+		animations[num]->repeatFrames = 0;
+		
+	}
+	else {
+		animations[num]->repeatFrames++;
+	}
+	App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &animations[num]->rects[animations[num]->numFrame],App->render->drawsize);
+	
 	
 }
 
@@ -93,31 +107,61 @@ bool j1Player::Load(const char* file_name)
 
 
 		p2List_item<ObjectLayer*>* item_layer = player_tmx_data.layers.start;
+		animations = new Animation*[player_tmx_data.layers.count()];
+		int i = 0;
 		while (item_layer != NULL)
 		{
+			animations[i] = new Animation;
 			ObjectLayer* l = item_layer->data;
 			LOG("Layer ----");
 			LOG("name: %s", l->name.GetString());
 			
 			LOG("Rects count: %d", l->rects.count());
+			animations[i]->name = l->name.GetString();
+
 			p2List_item<SDL_Rect*>* rect = l->rects.start;
 			SDL_Rect* r = rect->data;
-			for (int i = 0; i < l->rects.count(); i++)
+			animations[i]->rects = new SDL_Rect[l->rects.count()];
+			animations[i]->numRects = l->rects.count();
+			for (int j = 0; j < l->rects.count(); j++)
 			{	 
+				animations[i]->rects[j] = *l->rects[j];
+			
 				LOG("x= %d y= %d width= %d height= %d", r->x, r->y, r->w, r->h);
 				if (rect->next != nullptr) {
 					rect = rect->next;
 					r = rect->data;
 				}
+				
 			}
+			i++;
 			item_layer = item_layer->next;
 		}
 	}
-
+	LoadAnimations();
 	map_loaded = ret;
 
 	return ret;
 }
+
+void j1Player::LoadAnimations() {
+	idle = animations[0]; 
+	LOG("Animation name: %s", idle->name.GetString());
+	for (int i = 0; i < player_tmx_data.layers.count(); i++)
+	{	
+		SDL_Rect* r = animations[i]->rects;
+		LOG("ADDING ANIMATIONS---");
+		LOG("Animation name: %s", animations[i]->name.GetString());		
+		LOG("Num rects: %d", animations[i]->numRects);
+		for (int j = 0; j < animations[i]->numRects; j++)
+		{
+		LOG("x= %d y= %d width= %d height= %d", animations[i]->rects[j].x, animations[i]->rects[j].y, animations[i]->rects[j].w, animations[i]->rects[j].h);
+
+		}
+		
+	}
+}
+
 // Load map general properties
 bool j1Player::LoadMap()
 {
@@ -137,8 +181,9 @@ bool j1Player::LoadMap()
 		player_tmx_data.tile_height = map.attribute("tileheight").as_int();
 		
 		LoadSpriteSheet(map);
+
+		return ret;
 	}
-	return ret;
 }
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 {

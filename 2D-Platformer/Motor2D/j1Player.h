@@ -9,6 +9,15 @@
 
 enum MapTypes;
 // ----------------------------------------------------
+struct Animation {
+	int numRects = 0;
+	p2SString name;
+	SDL_Rect* rects;
+	int numFrame = 0;
+	bool loop = false;
+	int repeatFrames = 0;
+};
+
 struct ObjectLayer
 {
 	p2SString			name;
@@ -63,6 +72,8 @@ public:
 
 	bool Load(const char* path);
 
+	void LoadAnimations();
+
 	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
 
 	bool LoadSpriteSheet(pugi::xml_node& node);
@@ -78,12 +89,15 @@ public:
 	PlayerTMXData player_tmx_data;
 
 private:
-
+	Animation** animations;
+	Animation*	currentAnimation;
+	Animation* idle;
+	p2List<SDL_Rect*>	rect;
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded;
-	int					currentFrame;
-	int					maxFrames;
+
+	int* numAnimations;
 };
 
 #endif // __j1PLAYER_H__
