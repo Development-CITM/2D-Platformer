@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Tilesets.h"
 #include "j1Colliders.h"
+#include "j1Window.h"
 #include "j1Input.h"
 #include <math.h>
 
@@ -23,6 +24,8 @@ bool j1Colliders::Awake(pugi::xml_node & conf)
 
 void j1Colliders::Draw()
 {
+	int scale = App->win->GetScale();
+	int size = App->render->drawsize;
 	ShowColliders();
 	if (collider_debug)
 	{
@@ -30,7 +33,11 @@ void j1Colliders::Draw()
 		SDL_Rect collider_rect;
 		for (int i = 0; i < colliders.count(); i++)
 		{
-			collider_rect = { collider->data->x,collider->data->y,collider->data->width,collider->data->height };
+			collider_rect.x = collider->data->x * scale * size;
+			collider_rect.y = collider->data->y * scale * size;
+			collider_rect.w = collider->data->width * scale * size;
+			collider_rect.h = collider->data->height * scale * size;
+
 			switch (collider->data->type)
 			{
 			case BARRIER:
@@ -83,6 +90,22 @@ bool j1Colliders::Load(pugi::xml_node object)
 		}
 	}
 	return ret;
+}
+
+bool j1Colliders::PreUpdate()
+{
+	return true;
+}
+
+bool j1Colliders::Update(float dt)
+{
+	Draw();
+	return true;
+}
+
+bool j1Colliders::PostUpdate()
+{
+	return true;
 }
 
 

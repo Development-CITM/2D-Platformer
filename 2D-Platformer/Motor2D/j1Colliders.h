@@ -35,6 +35,15 @@ public:
 
 	bool Load(pugi::xml_node object);
 
+	// Called before all Updates
+	bool PreUpdate();
+
+	// Called each loop iteration
+	bool Update(float dt);
+
+	// Called before all Updates
+	bool PostUpdate();
+
 	// Called each loop iteration
 	void Draw();
 

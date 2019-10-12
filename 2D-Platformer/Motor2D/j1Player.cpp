@@ -33,7 +33,7 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
-
+	Draw();
 	return true;
 }
 
@@ -44,8 +44,8 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	//p2List<SDL_Rect*> rect = player_tmx_data.layers.start->data->rects;
-	//p2List_item<SDL_Rect*>* r =  rect.start;
+	p2List<SDL_Rect*> rect = player_tmx_data.layers.start->data->rects;
+	p2List_item<SDL_Rect*>* r =  rect.start;
 
 	App->render->Blit(player_tmx_data.spriteSheet.texture, 200,472, player_tmx_data.layers.start->data->rects.start->data,2.F);
 	

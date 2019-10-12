@@ -33,7 +33,8 @@ void j1Tilesets::Draw()
 	if (map_loaded == false)
 		return;
 
-	// TODO 4: Make sure we draw all the layers and not just the first one
+	//----------------------------------------------------------------------------------
+	float size = 2.0f;
 	p2List_item<MapLayer*>* lay = this->map_Data.layers.start;
 	MapLayer* layer = lay->data;
 	for (int i = 0; i < map_Data.layers.count(); i++)
@@ -52,7 +53,7 @@ void j1Tilesets::Draw()
 						SDL_Rect r = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
 
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r,2.F);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r,App->render->drawsize);
 					}
 				}
 			}
