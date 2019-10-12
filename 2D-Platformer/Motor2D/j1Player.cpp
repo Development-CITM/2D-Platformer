@@ -33,12 +33,22 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
+
 	return true;
 }
 
 bool j1Player::PostUpdate()
 {
 	return true;
+}
+
+void j1Player::Draw()
+{
+	//p2List<SDL_Rect*> rect = player_tmx_data.layers.start->data->rects;
+	//p2List_item<SDL_Rect*>* r =  rect.start;
+
+	App->render->Blit(player_tmx_data.spriteSheet.texture, 200,472, player_tmx_data.layers.start->data->rects.start->data,2.F);
+	
 }
 
 bool j1Player::CleanUp()
@@ -88,7 +98,18 @@ bool j1Player::Load(const char* file_name)
 			ObjectLayer* l = item_layer->data;
 			LOG("Layer ----");
 			LOG("name: %s", l->name.GetString());
-			LOG("tile width: %d tile height: %d", l->rects.start->data->w, l->rects.start->data->h);
+			
+			LOG("Rects count: %d", l->rects.count());
+			p2List_item<SDL_Rect*>* rect = l->rects.start;
+			SDL_Rect* r = rect->data;
+			for (int i = 0; i < l->rects.count(); i++)
+			{	 
+				LOG("x= %d y= %d width= %d height= %d", r->x, r->y, r->w, r->h);
+				if (rect->next != nullptr) {
+					rect = rect->next;
+					r = rect->data;
+				}
+			}
 			item_layer = item_layer->next;
 		}
 	}
@@ -114,7 +135,8 @@ bool j1Player::LoadMap()
 		player_tmx_data.height = map.attribute("height").as_int();
 		player_tmx_data.tile_width = map.attribute("tilewidth").as_int();
 		player_tmx_data.tile_height = map.attribute("tileheight").as_int();
-
+		
+		LoadSpriteSheet(map);
 
 		return ret;
 	}
@@ -144,6 +166,26 @@ bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 			layer->rects.add(rect);
 		}
 	}
+
+	return ret;
+}
+
+bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
+{
+	bool ret = true;
+	pugi::xml_node image = node.child("imagelayer").child("image");
+	p2SString source = image.attribute("source").as_string();
+	source.create("animations/%s", source.GetString());
+	player_tmx_data.spriteSheet.texture = App->tex->Load(source.GetString());
+	if (player_tmx_data.spriteSheet.texture != nullptr) {
+		LOG("Texture loaded successfull");
+	}
+	player_tmx_data.spriteSheet.width = image.attribute("width").as_uint();
+	player_tmx_data.spriteSheet.height = image.attribute("height").as_uint();
+
+	LOG("Texture source: %s", source.GetString());
+	LOG("Texture width: %d", player_tmx_data.spriteSheet.width);
+	LOG("Texture height: %d", player_tmx_data.spriteSheet.height);
 
 	return ret;
 }

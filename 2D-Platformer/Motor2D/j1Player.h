@@ -11,15 +11,21 @@ enum MapTypes;
 // ----------------------------------------------------
 struct ObjectLayer
 {
-	p2SString	name;
-	p2List<SDL_Rect*> rects;
+	p2SString			name;
+	p2List<SDL_Rect*>	rects;
+};
+
+struct SpriteSheet {
+	SDL_Texture*	texture = nullptr;
+	uint			width = 0u;
+	uint			height = 0u;
 };
 struct PlayerTMXData {
 	uint					width;
 	uint					height;
 	uint					tile_width;
 	uint					tile_height;
-	SDL_Texture*			texture;
+	SpriteSheet				spriteSheet;
 	MapTypes				type;
 	p2List<ObjectLayer*>	layers;
 };
@@ -49,12 +55,17 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
+	// Called each loop iteration
+	void Draw();
+
 	// Called before quitting
 	bool CleanUp();
 
 	bool Load(const char* path);
 
 	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
+
+	bool LoadSpriteSheet(pugi::xml_node& node);
 
 
 private:

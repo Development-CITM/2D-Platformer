@@ -20,8 +20,7 @@ j1Tilesets::~j1Tilesets()
 // Called before render is available
 bool j1Tilesets::Awake(pugi::xml_node& config)
 {
-	maxFrames = 5;
-	currentFrame = 0;
+
 	LOG("Loading Map Parser");
 	bool ret = true;
 
@@ -53,7 +52,7 @@ void j1Tilesets::Draw()
 						SDL_Rect r = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
 
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r,2.F);
 					}
 				}
 			}
