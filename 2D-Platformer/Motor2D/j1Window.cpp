@@ -108,7 +108,17 @@ void j1Window::GetWindowSize(uint& width, uint& height) const
 	height = this->height;
 }
 
-uint j1Window::GetScale() const
+int j1Window::GetWidth()
+{
+	return width;
+}
+
+int j1Window::GetHeight()
+{
+	return height;
+}
+
+int j1Window::GetScale() 
 {
 	return scale;
 }
