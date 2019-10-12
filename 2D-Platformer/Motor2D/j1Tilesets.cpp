@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Tilesets.h"
 #include "j1Colliders.h"
+#include "j1Audio.h"
 #include "j1Input.h"
 #include <math.h>
 
@@ -163,7 +164,7 @@ bool j1Tilesets::CleanUp()
 		item2 = item2->next;
 	}
 	map_Data.layers.clear();
-	// Clean up the pugui tree
+	// Clean up the pugi tree
 	map_file.reset();
 
 	return true;
@@ -221,10 +222,14 @@ bool j1Tilesets::Load(const char* file_name)
 			map_Data.layers.add(lay);
 	}
 
-	//Load Objects (Colliders) info ----------------------------------
+	//Load objects info -----------------------------------------------
 	pugi::xml_node object;
-	object = map_file.child("map").child("objectgroup").child("object");
-	App->collider->Load(object);
+	for (object = map_file.child("map").child("objectgroup"); object; object=object.next_sibling("objectgroup"))
+	{
+		LoadObject(object);
+	}
+
+
 
 	if(ret == true)
 	{
@@ -443,4 +448,21 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 
 	SDL_Rect rect = { width,height,tileset->tile_width,tileset->tile_height };
 	return	rect;
+}
+
+bool j1Tilesets::LoadObject(pugi::xml_node& node)
+{
+	bool ret = true;
+	pugi::xml_node object = node;
+	if (strcmp(node.attribute("name").as_string(), "Colliders") == 0)
+	{
+		object = node.child("object");
+		App->collider->Load(object);
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Music") == 0)
+	{
+		object = node.child("object").child("properties").child("property");
+		App->audio->PlayMusic(object.attribute("value").as_string());
+	}
+	return ret;
 }

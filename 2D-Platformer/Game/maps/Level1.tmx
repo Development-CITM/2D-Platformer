@@ -1,34 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="207" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="125" nextobjectid="128">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="207" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="126" nextobjectid="129">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
   <image source="Assets/tileset.png" width="928" height="320"/>
-  <tile id="525">
-   <objectgroup draworder="index">
-    <object id="1" x="1" y="0" width="15" height="10">
-     <properties>
-      <property name="Jumpable" type="bool" value="false"/>
-     </properties>
-    </object>
-   </objectgroup>
-  </tile>
-  <tile id="526">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="10">
-     <properties>
-      <property name="Jumpable" type="bool" value="false"/>
-     </properties>
-    </object>
-   </objectgroup>
-  </tile>
-  <tile id="527">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="10">
-     <properties>
-      <property name="Jumpable" type="bool" value="false"/>
-     </properties>
-    </object>
-   </objectgroup>
-  </tile>
  </tileset>
  <tileset firstgid="1161" name="seaskycloud" tilewidth="16" tileheight="16" tilecount="912" columns="48">
   <image source="Assets/seaskycloud.png" width="768" height="304"/>
@@ -49790,5 +49763,12 @@
   <object id="124" type="Jumpable" x="2921" y="539" width="48" height="15"/>
   <object id="126" type="Jumpable" x="3041" y="496" width="47" height="19"/>
   <object id="127" type="Dead" x="385" y="632" width="2766" height="8"/>
+ </objectgroup>
+ <objectgroup id="125" name="Music">
+  <object id="128" name="Music" x="0" y="0" width="31" height="31">
+   <properties>
+    <property name="source" value="audio/music/lvl1.ogg"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

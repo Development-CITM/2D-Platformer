@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="23" tileheight="41" infinite="0" nextlayerid="9" nextobjectid="37">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="23" tileheight="41" infinite="0" nextlayerid="12" nextobjectid="44">
  <imagelayer id="2" name="Capa de Imagen 1">
   <image source="Player Sheet.png" width="256" height="256"/>
  </imagelayer>
@@ -37,8 +37,15 @@
  </objectgroup>
  <objectgroup id="8" name="Jump">
   <object id="32" name="jmp_01" x="0" y="164" width="23" height="41"/>
-  <object id="33" name="jmp_02" x="23" y="164" width="23" height="41"/>
-  <object id="34" name="jmp_03" x="46" y="164" width="23" height="41"/>
-  <object id="35" name="jmp_04" x="69" y="164" width="23" height="41"/>
+ </objectgroup>
+ <objectgroup id="10" name="MidAir">
+  <object id="40" name="midair_01" x="23" y="164" width="23" height="41"/>
+  <object id="41" name="midair_02" x="46" y="164" width="23" height="41"/>
+ </objectgroup>
+ <objectgroup id="11" name="Falling">
+  <object id="42" name="fall_01" x="69" y="164" width="23" height="41"/>
+ </objectgroup>
+ <objectgroup id="9" name="Collider">
+  <object id="38" x="3" y="8" width="13" height="31"/>
  </objectgroup>
 </map>

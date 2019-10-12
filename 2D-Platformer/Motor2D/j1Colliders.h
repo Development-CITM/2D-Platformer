@@ -47,17 +47,17 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-private:
-	
+	//Loads all collider objects
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
-	void ShowColliders();
 
+public:
 
+	bool collider_debug = false;
+	
 private:
 	
 	p2List<Collider*>	colliders;
 	p2List_item<Collider*>* collider = nullptr;
-	bool collider_debug = false;
 	bool collider_loaded = false;
 	int scale;
 	int size;

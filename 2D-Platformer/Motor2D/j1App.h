@@ -16,6 +16,7 @@ class j1Tilesets;
 class j1Player;
 class j1Colliders;
 class j1Fade2Black;
+class j1Debug;
 
 class j1App
 {
@@ -89,6 +90,7 @@ public:
 	j1Player*			player;
 	j1Colliders*		collider;
 	j1Fade2Black*		fade2black;
+	j1Debug*			 debug;
 
 private:
 

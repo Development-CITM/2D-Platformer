@@ -34,12 +34,6 @@ bool j1Fade2Black::Start()
 
 bool j1Fade2Black::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_REPEAT)
-	{
-		App->fade2black->FadeToBlack(App->scene, App->scene);
-		//App->tiles->Load("maps/Level2.tmx");
-	}
-
 	if (current_step == fade_step::none)
 		return true;
 

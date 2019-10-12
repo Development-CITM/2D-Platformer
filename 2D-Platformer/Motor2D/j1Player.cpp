@@ -44,7 +44,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	int num = 3;
+	int num = 1;
 	if (animations[num]->repeatFrames > 6) {
 		if (animations[num]->numFrame < animations[num]->numRects - 1)
 		{

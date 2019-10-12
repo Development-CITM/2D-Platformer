@@ -128,7 +128,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 			}
 		}
 	}
-
+	Mix_VolumeMusic(30);	//TODO EUDALD: Add volume to config
 	LOG("Successfully playing %s", path);
 	return ret;
 }

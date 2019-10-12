@@ -24,7 +24,6 @@ bool j1Colliders::Awake(pugi::xml_node & conf)
 
 void j1Colliders::Draw()
 {
-	ShowColliders();
 	if (collider_debug)
 	{
 		p2List_item<Collider*>* collider = this->colliders.start;
@@ -130,16 +129,4 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	return ret;
 }
 
-void j1Colliders::ShowColliders()
-{
-
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && collider_debug == false)
-	{
-		collider_debug = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && collider_debug == true)
-	{
-		collider_debug = false;
-	}
-}
 
