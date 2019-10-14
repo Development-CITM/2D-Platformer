@@ -45,7 +45,7 @@ public:
 
 public:
 
-	float				drawsize = 2.0f;
+	float			drawsize = 2.0f;
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;

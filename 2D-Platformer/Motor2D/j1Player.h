@@ -8,6 +8,7 @@
 
 
 enum MapTypes;
+struct Collider;
 // ----------------------------------------------------
 struct Animation {
 	int numRects = 0;
@@ -97,28 +98,29 @@ private:
 	void MoveToPosition(p2Point<int> targetPos);
 
 public:
-	PlayerTMXData player_tmx_data;
+	PlayerTMXData		player_tmx_data;
 
 private:
+	Collider*			player_Collider = nullptr;
 
 	p2Point<int>		playerPos = { 0,0 };
 	p2Point<int>		forwardVector = { 2,0 };
 	p2Point<int>		backwardVector = { -2,0 };
 
-	PlayerState			state;
+	PlayerState			state = ST_IDLE;
 
 
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
-	Animation**			animations;
-	Animation*			currentAnimation;
-	Animation*			previousAnimation;
-	Animation*			idle;
-	Animation*			run;
+	Animation**			animations = nullptr;
+	Animation*			currentAnimation = nullptr;
+	Animation*			previousAnimation = nullptr;
+	Animation*			idle = nullptr;
+	Animation*			run = nullptr;
 	p2List<SDL_Rect*>	rect;
 	pugi::xml_document	player_file;
 	p2SString			folder;
-	bool				map_loaded;
+	bool				map_loaded = false;
 
 };
 

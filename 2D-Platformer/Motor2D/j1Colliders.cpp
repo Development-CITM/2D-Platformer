@@ -19,6 +19,8 @@ j1Colliders::~j1Colliders()
 
 bool j1Colliders::Awake(pugi::xml_node & conf)
 {
+	scale = App->win->GetScale();
+	size = App->render->drawsize;
 	return true;
 }
 
@@ -30,18 +32,27 @@ void j1Colliders::Draw()
 
 		for (int i = 0; i < colliders.count(); i++)
 		{
+			SDL_Rect rect = { 0,0,0,0 };
+			rect.x =  collider->data->rect.x * size * scale;
+			rect.y = collider->data->rect.y * size * scale;
+			rect.w = collider->data->rect.w * size * scale;
+			rect.h = collider->data->rect.h * size * scale;
 			switch (collider->data->type)
 			{
 			case BARRIER:
-				App->render->DrawQuad(collider->data->rect, 255, 0, 0, 40, true, true);
+				App->render->DrawQuad(rect, 255, 0, 0, 40, true, true);
 				break;
 			case JUMPABLE:
-				App->render->DrawQuad(collider->data->rect, 0, 0, 255, 100, true, true);
+				App->render->DrawQuad(rect, 0, 0, 255, 100, true, true);
 				break;
 			case DEAD:
-				App->render->DrawQuad(collider->data->rect, 0, 0, 0, 100, true, true);
+				App->render->DrawQuad(rect, 0, 0, 0, 100, true, true);
+				break;
+			case PLAYER:
+				App->render->DrawQuad(rect, 0, 255, 0, 100, true, true);
 				break;
 			}
+			
 
 			if (collider->next != nullptr)
 			{
@@ -68,8 +79,7 @@ bool j1Colliders::CleanUp()
 
 bool j1Colliders::Load(pugi::xml_node object)
 {
-	scale = App->win->GetScale();
-	size = App->render->drawsize;
+
 	bool ret = true;
 	
 		for (object.child("object"); object && ret; object = object.next_sibling("object"))
@@ -108,10 +118,10 @@ bool j1Colliders::PostUpdate()
 bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 {
 	bool ret = true;
-	collider->rect.x = node.attribute("x").as_int() * size * scale;
-	collider->rect.y = node.attribute("y").as_int() * size * scale;
-	collider->rect.w = node.attribute("width").as_int() * size * scale;
-	collider->rect.h = node.attribute("height").as_int() * size * scale;
+	collider->rect.x = node.attribute("x").as_int();
+	collider->rect.y = node.attribute("y").as_int();
+	collider->rect.w = node.attribute("width").as_int();
+	collider->rect.h = node.attribute("height").as_int();
 
 	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
 	{
@@ -126,7 +136,24 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 		collider->type = BARRIER;
 	}
 
+
 	return ret;
+}
+
+bool j1Colliders::CreateCollider(Collider* collider,int type)
+{
+	ColliderType collType;
+	switch (type)
+	{
+	case 1:
+		collType = PLAYER;
+		collider->type = collType;
+		colliders.add(collider);
+	default:
+		break;
+	}
+
+	return true;
 }
 
 

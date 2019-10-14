@@ -5,9 +5,11 @@
 #include "j1Textures.h"
 #include "j1Player.h"
 #include "j1Input.h"
+#include "j1Colliders.h"
+
 #include <math.h>
 
-
+struct Collider;
 j1Player::j1Player()
 {
 	name.create("player");
@@ -158,6 +160,21 @@ bool j1Player::Load(const char* file_name)
 	{
 		ret = LoadMap();
 	}
+	//Load Collider
+	pugi::xml_node collider;
+	collider = player_file.child("map").child("properties").child("property");
+	Collider* c = new Collider();
+	int collHeight = collider.attribute("value").as_int();
+	collider = collider.next_sibling();
+	int collWidth = collider.attribute("value").as_int();
+	collider = collider.next_sibling();
+	c->offset.y = collider.attribute("value").as_int();
+	collider = collider.next_sibling();
+	c->offset.x  = collider.attribute("value").as_int();
+	c->rect = { playerPos.x + c->offset.x ,playerPos.y + c->offset.y,collWidth,collHeight };
+	player_Collider = c;
+	
+	App->collider->CreateCollider(c,1);
 
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
@@ -182,8 +199,10 @@ bool j1Player::Load(const char* file_name)
 		int i = 0;
 		while (item_layer != NULL)
 		{
-			animations[i] = new Animation;
+
 			ObjectLayer* l = item_layer->data;
+			
+			animations[i] = new Animation;
 			LOG("Layer ----");
 			LOG("name: %s", l->name.GetString());
 			
@@ -261,6 +280,7 @@ bool j1Player::LoadMap()
 void j1Player::MoveToPosition(p2Point<int> targetPos)
 {
 	playerPos += targetPos;
+	player_Collider->MoveCollider(playerPos);
 
 }
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)

@@ -8,6 +8,8 @@
 
 enum ColliderType
 {
+	NONE,
+	PLAYER,
 	BARRIER,
 	JUMPABLE,
 	DEAD
@@ -17,6 +19,18 @@ struct Collider
 {
 	SDL_Rect rect;
 	ColliderType type;
+	p2Point<int> offset;
+
+	Collider() {
+		rect = { 0,0,0,0 };
+		type = NONE;
+	}
+
+	void MoveCollider(p2Point<int> pos) {
+		rect.x = pos.x + offset.x;
+		rect.y = pos.y + offset.y;
+
+	}
 };
 
 class j1Colliders : public j1Module
@@ -49,6 +63,8 @@ public:
 
 	//Loads all collider objects
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
+
+	bool CreateCollider(Collider* collider,int type);
 
 public:
 

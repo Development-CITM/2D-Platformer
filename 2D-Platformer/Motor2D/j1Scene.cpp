@@ -26,13 +26,15 @@ bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	
 	return ret;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->render->camera = { -150,-400 };
+
 	if (map % 2 == 0)
 	{
 		App->tiles->Load("maps/Level1.tmx");
