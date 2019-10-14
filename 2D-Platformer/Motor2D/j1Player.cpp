@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Player.h"
+#include "j1Input.h"
 #include <math.h>
 
 
@@ -16,6 +17,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 {
 	LOG("Loading Player");
 	bool ret = true;
+	playerPos = { 200,472 };
 
 	return ret;
 }
@@ -23,6 +25,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	Load("animations/Player.tmx");
+	state = ST_IDLE;
 	return true;
 }
 
@@ -33,6 +36,46 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		state = ST_RUNNING;
+		flip = SDL_FLIP_NONE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		state = ST_IDLE;
+	}	
+	
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		state = ST_RUNNING;
+		flip = SDL_FLIP_HORIZONTAL;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		state = ST_IDLE;
+	}
+	switch (state)
+	{
+	case ST_IDLE:
+		if (currentAnimation != idle) {
+			previousAnimation = currentAnimation;
+			previousAnimation->ResetAnim();
+			currentAnimation = idle;
+		}
+
+		break;
+	case ST_RUNNING:
+		if (currentAnimation != run) {
+			previousAnimation = currentAnimation;
+			previousAnimation->ResetAnim();
+			currentAnimation = run;			
+		}
+		if (flip == SDL_FLIP_HORIZONTAL) {
+			MoveToPosition(backwardVector);
+		}
+		else {
+			MoveToPosition(forwardVector);
+		}
+		break;
+	}
 	Draw();
 	return true;
 }
@@ -44,23 +87,22 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	int num = 1;
-	if (animations[num]->repeatFrames > 6) {
-		if (animations[num]->numFrame < animations[num]->numRects - 1)
+	
+	if (currentAnimation->repeatFrames > 6) {
+		if (currentAnimation->numFrame < currentAnimation->numRects - 1)
 		{
-			//App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &idle->rects[idle->numFrame],App->render->drawsize);
-			animations[num]->numFrame++;
+			currentAnimation->numFrame++;
 		}
 		else {
-			animations[num]->numFrame = 0;
+			currentAnimation->numFrame = 0;
 		}
-		animations[num]->repeatFrames = 0;
+		currentAnimation->repeatFrames = 0;
 		
 	}
 	else {
-		animations[num]->repeatFrames++;
+		currentAnimation->repeatFrames++;
 	}
-	App->render->Blit(player_tmx_data.spriteSheet.texture, 200, 472, &animations[num]->rects[animations[num]->numFrame],App->render->drawsize);
+	App->render->Blit(player_tmx_data.spriteSheet.texture, playerPos.x, playerPos.y, &currentAnimation->rects[currentAnimation->numFrame], App->render->drawsize, flip);
 	
 	
 }
@@ -175,6 +217,7 @@ bool j1Player::Load(const char* file_name)
 
 void j1Player::LoadAnimations() {
 	idle = animations[0]; 
+	run = animations[1];
 	LOG("Animation name: %s", idle->name.GetString());
 	for (int i = 0; i < player_tmx_data.layers.count(); i++)
 	{	
@@ -189,6 +232,7 @@ void j1Player::LoadAnimations() {
 		}
 		
 	}
+	currentAnimation = idle;
 }
 
 // Load map general properties
@@ -213,6 +257,11 @@ bool j1Player::LoadMap()
 
 		return ret;
 	}
+}
+void j1Player::MoveToPosition(p2Point<int> targetPos)
+{
+	playerPos += targetPos;
+
 }
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 {

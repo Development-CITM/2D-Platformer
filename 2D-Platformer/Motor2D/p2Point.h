@@ -73,7 +73,8 @@ public:
 		y += v.y;
 
 		return(*this);
-	}
+	}	
+	
 
 	bool operator ==(const p2Point& v) const
 	{

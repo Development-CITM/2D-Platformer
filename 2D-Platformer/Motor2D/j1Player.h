@@ -16,6 +16,15 @@ struct Animation {
 	int numFrame = 0;
 	bool loop = false;
 	int repeatFrames = 0;
+	
+	void ResetAnim() {
+		numFrame = 0;
+	}
+};
+
+enum PlayerState {
+	ST_IDLE,
+	ST_RUNNING,
 };
 
 struct ObjectLayer
@@ -38,6 +47,8 @@ struct PlayerTMXData {
 	MapTypes				type;
 	p2List<ObjectLayer*>	layers;
 };
+
+
 
 
 class j1Player : public j1Module
@@ -82,16 +93,28 @@ public:
 private:
 
 	bool LoadMap();
-	//bool LoadTilesetDetails(pugi::xml_node& tileset_node);
-	//bool LoadTilesetImage(pugi::xml_node& tileset_node);
-	//bool LoadLayer(pugi::xml_node& node);
+	
+	void MoveToPosition(p2Point<int> targetPos);
+
 public:
 	PlayerTMXData player_tmx_data;
 
 private:
+
+	p2Point<int>		playerPos = { 0,0 };
+	p2Point<int>		forwardVector = { 2,0 };
+	p2Point<int>		backwardVector = { -2,0 };
+
+	PlayerState			state;
+
+
+	SDL_RendererFlip	flip = SDL_FLIP_NONE;
+
 	Animation**			animations;
 	Animation*			currentAnimation;
+	Animation*			previousAnimation;
 	Animation*			idle;
+	Animation*			run;
 	p2List<SDL_Rect*>	rect;
 	pugi::xml_document	player_file;
 	p2SString			folder;
