@@ -103,8 +103,8 @@ private:
 public:
 	PlayerTMXData		player_tmx_data;
 
-private:
 	Collider*			player_Collider = nullptr;
+private:
 
 	p2Point<int>		playerPos = { 0,0 };
 	p2Point<int>		forwardVector = { 2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)

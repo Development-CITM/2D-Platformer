@@ -7,6 +7,7 @@
 #include "j1Colliders.h"
 #include "j1Window.h"
 #include "j1Input.h"
+#include "j1Player.h"
 #include <math.h>
 
 j1Colliders::j1Colliders():j1Module()
@@ -100,6 +101,27 @@ bool j1Colliders::Load(pugi::xml_node object)
 
 bool j1Colliders::PreUpdate()
 {
+	Collider* c2;
+	collider = colliders.start;
+	for (int i = 0; i < colliders.count(); i++)
+	{
+		c2 = collider->data;
+		if (c2 != App->player->player_Collider)
+		{
+			if (App->player->player_Collider->CheckCollision(c2->rect)) {
+				switch (c2->type)
+				{
+
+				default:
+					break;
+				}
+				LOG("COLLISION DETECTED");
+			}
+		}
+		if (collider->next != nullptr) {
+			collider = collider->next;
+		}
+	}
 	return true;
 }
 
@@ -163,6 +185,26 @@ Collider* j1Colliders::CreateCollider(pugi::xml_node& collider,p2Point<int> pos,
 	}
 
 	return c;
+}
+
+bool Collider::CheckCollision(const SDL_Rect& r) const
+{
+	bool detectedX = true;
+	bool detectedY = true;
+	// TODO 0: Return true if there is an overlap
+	// between argument "r" and property "rect"
+
+	if ((rect.x + rect.w) < r.x || (r.x + r.w) < rect.x) {
+		detectedX = false;
+	}
+
+	if ((rect.y + rect.h) < r.y || (r.y + r.h) < rect.y)
+	{
+		detectedY = false;
+	}
+
+	return detectedX && detectedY;
+
 }
 
 

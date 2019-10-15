@@ -31,6 +31,8 @@ struct Collider
 		rect.y = pos.y + offset.y;
 
 	}
+
+	bool Collider::CheckCollision(const SDL_Rect& r) const;
 };
 
 class j1Colliders : public j1Module
@@ -65,6 +67,7 @@ public:
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
 
 	Collider* CreateCollider(pugi::xml_node& collider,p2Point<int> pos ,int type);
+
 
 public:
 
