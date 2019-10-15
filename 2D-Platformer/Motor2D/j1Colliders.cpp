@@ -101,6 +101,7 @@ bool j1Colliders::Load(pugi::xml_node object)
 
 bool j1Colliders::PreUpdate()
 {
+	bool ret = false;
 	Collider* c2;
 	collider = colliders.start;
 	for (int i = 0; i < colliders.count(); i++)
@@ -111,13 +112,28 @@ bool j1Colliders::PreUpdate()
 			if (App->player->player_Collider->CheckCollision(c2->rect)) {
 				switch (c2->type)
 				{
-
-				default:
+				case NONE:
+					break;
+				case PLAYER:
+					
+					LOG("COLLISION PLAYER");
+					break;
+				case BARRIER:
+					ret = true;
+					LOG("COLLISION BARRIER");
+					break;
+				case JUMPABLE:
+					LOG("COLLISION JUMPABLE");
+					break;
+				case DEAD:
+					LOG("COLLISION DEAD");
 					break;
 				}
-				LOG("COLLISION DETECTED");
 			}
+
 		}
+		App->player->SetDetectedCollision(ret);
+
 		if (collider->next != nullptr) {
 			collider = collider->next;
 		}
@@ -191,8 +207,6 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	bool detectedX = true;
 	bool detectedY = true;
-	// TODO 0: Return true if there is an overlap
-	// between argument "r" and property "rect"
 
 	if ((rect.x + rect.w) < r.x || (r.x + r.w) < rect.x) {
 		detectedX = false;

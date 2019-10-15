@@ -37,11 +37,6 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
-	return true;
-}
-
-bool j1Player::Update(float dt)
-{
 
 	//Run forward
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
@@ -50,8 +45,8 @@ bool j1Player::Update(float dt)
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		state = ST_IDLE;
-	}	
-	
+	}
+
 	//Run backward
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		state = ST_RUNNING;
@@ -61,7 +56,17 @@ bool j1Player::Update(float dt)
 		state = ST_IDLE;
 	}
 
-	//Change States
+	////Run UP
+	//if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+	//	MoveToPosition({ 0,-2 });
+	//}
+
+
+	////Run DOWN
+	//if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+	//	MoveToPosition({ 0,2 });
+	//}
+		//Change States
 	switch (state)
 	{
 	case ST_IDLE:
@@ -76,16 +81,28 @@ bool j1Player::Update(float dt)
 		if (currentAnimation != run) {
 			previousAnimation = currentAnimation;
 			previousAnimation->ResetAnim();
-			currentAnimation = run;			
+			currentAnimation = run;
 		}
 		if (flip == SDL_FLIP_HORIZONTAL) {
-			MoveToPosition(backwardVector); //Move to passed vector
+			WantToMove(backwardVector); //Move to passed vector
 		}
 		else {
-			MoveToPosition(forwardVector);	//Move to passed vector
+			WantToMove(forwardVector);	//Move to passed vector
 		}
 		break;
 	}
+	return true;
+}
+
+bool j1Player::Update(float dt)
+{
+	if (GetDetectedCollision()) {
+		MoveToPosition(previousPos);
+	}
+	else {
+		MoveToPosition(playerPos);
+	}
+
 	Draw(); //Draw all the player
 	return true;
 }
@@ -97,6 +114,9 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
+	LOG("%i", detected_Collision);
+	LOG("Player pos: %d,%d", playerPos);
+	LOG("Previous pos: %d,%d", previousPos);
 	//First check how many frames should repeat before change its sprite frame
 	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
 		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
@@ -280,9 +300,18 @@ bool j1Player::LoadMap()
 }
 void j1Player::MoveToPosition(p2Point<int> targetPos)
 {
-	playerPos += targetPos;
+	playerPos = targetPos;
 	player_Collider->MoveCollider(playerPos);
 
+}
+bool j1Player::WantToMove(p2Point<int> targetPos)
+{
+	previousPos = playerPos;
+	playerPos += targetPos;
+	player_Collider->MoveCollider(playerPos);
+	bool ret = true;
+
+	return ret;
 }
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 {
@@ -323,6 +352,7 @@ bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
 	if (player_tmx_data.spriteSheet.texture != nullptr) {
 		LOG("Texture loaded successfull");
 	}
+
 	player_tmx_data.spriteSheet.width = image.attribute("width").as_uint();
 	player_tmx_data.spriteSheet.height = image.attribute("height").as_uint();
 

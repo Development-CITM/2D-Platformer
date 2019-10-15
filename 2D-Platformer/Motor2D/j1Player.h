@@ -100,13 +100,19 @@ private:
 	
 	void MoveToPosition(p2Point<int> targetPos);
 
+	bool WantToMove(p2Point<int> targetPos);
+
 public:
 	PlayerTMXData		player_tmx_data;
 
 	Collider*			player_Collider = nullptr;
+
+	bool				GetDetectedCollision() { return detected_Collision; }
+	bool				SetDetectedCollision(bool set) { return detected_Collision = set; }
 private:
 
 	p2Point<int>		playerPos = { 0,0 };
+	p2Point<int>		previousPos = { 0,0 };
 	p2Point<int>		forwardVector = { 2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 	p2Point<int>		backwardVector = { -2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 
@@ -123,6 +129,8 @@ private:
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded = false;
+
+	bool				detected_Collision = false;
 
 };
 
