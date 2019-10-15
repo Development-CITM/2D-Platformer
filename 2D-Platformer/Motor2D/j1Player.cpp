@@ -12,6 +12,7 @@
 struct Collider;
 j1Player::j1Player()
 {
+	//Set module name
 	name.create("player");
 }
 
@@ -19,6 +20,8 @@ bool j1Player::Awake(pugi::xml_node& conf)
 {
 	LOG("Loading Player");
 	bool ret = true;
+	
+	//Init player pos
 	playerPos = { 200,472 };
 
 	return ret;
@@ -26,8 +29,9 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 bool j1Player::Start()
 {
+	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
-	state = ST_IDLE;
+	state = ST_IDLE;	//Set initial state
 	return true;
 }
 
@@ -39,6 +43,7 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 
+	//Run forward
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		state = ST_RUNNING;
 		flip = SDL_FLIP_NONE;
@@ -47,13 +52,16 @@ bool j1Player::Update(float dt)
 		state = ST_IDLE;
 	}	
 	
+	//Run backward
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		state = ST_RUNNING;
-		flip = SDL_FLIP_HORIZONTAL;
+		flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		state = ST_IDLE;
 	}
+
+	//Change States
 	switch (state)
 	{
 	case ST_IDLE:
@@ -71,14 +79,14 @@ bool j1Player::Update(float dt)
 			currentAnimation = run;			
 		}
 		if (flip == SDL_FLIP_HORIZONTAL) {
-			MoveToPosition(backwardVector);
+			MoveToPosition(backwardVector); //Move to passed vector
 		}
 		else {
-			MoveToPosition(forwardVector);
+			MoveToPosition(forwardVector);	//Move to passed vector
 		}
 		break;
 	}
-	Draw();
+	Draw(); //Draw all the player
 	return true;
 }
 
@@ -89,56 +97,50 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	
-	if (currentAnimation->repeatFrames > 6) {
-		if (currentAnimation->numFrame < currentAnimation->numRects - 1)
+	//First check how many frames should repeat before change its sprite frame
+	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
+		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
 		{
 			currentAnimation->numFrame++;
 		}
 		else {
 			currentAnimation->numFrame = 0;
 		}
-		currentAnimation->repeatFrames = 0;
+
+		currentAnimation->repeatFrames = 0; //Reset repeat frames to start again the count of the same sprite. but this should be a function (maybe)
 		
 	}
 	else {
-		currentAnimation->repeatFrames++;
+		currentAnimation->repeatFrames++; // Increse num of frames before change its animations sprite
 	}
-	App->render->Blit(player_tmx_data.spriteSheet.texture, playerPos.x, playerPos.y, &currentAnimation->rects[currentAnimation->numFrame], App->render->drawsize, flip);
+	App->render->Blit(player_tmx_data.spriteSheet.texture,		//Texture loaded from tmx
+		playerPos.x,											//Player position.x
+		playerPos.y, 											//Player position.y
+		&currentAnimation->rects[currentAnimation->numFrame],	//Current rect from animation rects
+		App->render->drawsize,									//DrawSize is a multiplier to scale sprites
+		flip);													//Orientation to flip sprites
 	
 	
 }
 
 bool j1Player::CleanUp()
 {
-	// Remove all rects
-	p2List_item<SDL_Rect*>* item1;
 	
-	item1 = rect.start;
-
-	while (item1 != NULL)
-	{
-		RELEASE(item1->data);
-		item1 = item1->next;
-	}
-	rect.clear();
-
 	// Remove all layers
 	p2List_item<ObjectLayer*>* item2;
-	item2 = player_tmx_data.layers.start;
+	item2 = player_tmx_data.object_Layers.start;
 
 	while (item2 != NULL)
 	{
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
-	player_tmx_data.layers.clear();
+	player_tmx_data.object_Layers.clear();
 
 	// Clean up the pugui tree
 	player_file.reset();
 
 
-	RELEASE_ARRAY(animations);
 
 	return true;
 }
@@ -160,33 +162,29 @@ bool j1Player::Load(const char* file_name)
 	{
 		ret = LoadMap();
 	}
-	//Load Collider
+
+
+	//Load Collider ---------------------------------------------------
 	pugi::xml_node collider;
-	collider = player_file.child("map").child("properties").child("property");
-	Collider* c = new Collider();
-	int collHeight = collider.attribute("value").as_int();
-	collider = collider.next_sibling();
-	int collWidth = collider.attribute("value").as_int();
-	collider = collider.next_sibling();
-	c->offset.y = collider.attribute("value").as_int();
-	collider = collider.next_sibling();
-	c->offset.x  = collider.attribute("value").as_int();
-	c->rect = { playerPos.x + c->offset.x ,playerPos.y + c->offset.y,collWidth,collHeight };
-	player_Collider = c;
+	collider = player_file.child("map").child("properties").child("property"); //Node to colliders root from Player.tmx
 	
-	App->collider->CreateCollider(c,1);
+	player_Collider = App->collider->CreateCollider(collider,playerPos, 1); //Create collider, collider param is the node, playerPos: pos to collider
+																			//And num 1 (need to change to param, now it sets enum PLAYER collider type)
+
 
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
 	for (layer = player_file.child("map").child("objectgroup"); layer && ret; layer = layer.next_sibling("objectgroup"))
 	{
-		ObjectLayer* lay = new ObjectLayer();
+		
+		ObjectLayer* lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
 
-		ret = LoadLayer(layer, lay);
+		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
 
-		if (ret == true)
-			player_tmx_data.layers.add(lay);
+		if (ret == true) //if LoadLayer wents well, it return a true
+			player_tmx_data.object_Layers.add(lay); //Add filled ObjectLayer to the list of ObjectLayers
 	}
+
 	if (ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -194,9 +192,10 @@ bool j1Player::Load(const char* file_name)
 		LOG("tile_width: %d tile_height: %d", player_tmx_data.tile_width, player_tmx_data.tile_height);
 
 
-		p2List_item<ObjectLayer*>* item_layer = player_tmx_data.layers.start;
-		animations = new Animation*[player_tmx_data.layers.count()];
-		int i = 0;
+		p2List_item<ObjectLayer*>* item_layer = player_tmx_data.object_Layers.start; //Pointer to the first item of object_Layers
+		Animation** animations = new Animation*[player_tmx_data.object_Layers.count()]; //Create dynamic array, object_Layers sized
+		
+		int i = 0; //count to iterate animations
 		while (item_layer != NULL)
 		{
 
@@ -227,34 +226,36 @@ bool j1Player::Load(const char* file_name)
 			i++;
 			item_layer = item_layer->next;
 		}
+
+	SetAnimations(animations);
 	}
-	LoadAnimations();
 	map_loaded = ret;
 
 	return ret;
 }
 
-void j1Player::LoadAnimations() {
-	idle = animations[0]; 
-	run = animations[1];
-	LOG("Animation name: %s", idle->name.GetString());
-	for (int i = 0; i < player_tmx_data.layers.count(); i++)
+void j1Player::SetAnimations(Animation** animations) {
+
+	for (int i = 0; i < player_tmx_data.object_Layers.count(); i++)
 	{	
 		SDL_Rect* r = animations[i]->rects;
-		LOG("ADDING ANIMATIONS---");
-		LOG("Animation name: %s", animations[i]->name.GetString());		
-		LOG("Num rects: %d", animations[i]->numRects);
-		for (int j = 0; j < animations[i]->numRects; j++)
-		{
-		LOG("x= %d y= %d width= %d height= %d", animations[i]->rects[j].x, animations[i]->rects[j].y, animations[i]->rects[j].w, animations[i]->rects[j].h);
+		p2SString name = animations[i]->name.GetString();
+		
+		if (strcmp(name.GetString(), "Idle") == 0) {
 
+			idle = animations[i];
+		}
+		else if (strcmp(name.GetString(), "Running") == 0) {
+			run = animations[i];
 		}
 		
+		
 	}
+	RELEASE_ARRAY(animations);
 	currentAnimation = idle;
 }
 
-// Load map general properties
+// Load map general properties ---------------------------------------------------
 bool j1Player::LoadMap()
 {
 	bool ret = true;

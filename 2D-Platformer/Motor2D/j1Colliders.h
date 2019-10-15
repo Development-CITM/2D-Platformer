@@ -19,7 +19,7 @@ struct Collider
 {
 	SDL_Rect rect;
 	ColliderType type;
-	p2Point<int> offset;
+	p2Point<int> offset = { 0, 0};
 
 	Collider() {
 		rect = { 0,0,0,0 };
@@ -64,7 +64,7 @@ public:
 	//Loads all collider objects
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
 
-	bool CreateCollider(Collider* collider,int type);
+	Collider* CreateCollider(pugi::xml_node& collider,p2Point<int> pos ,int type);
 
 public:
 

@@ -12,11 +12,14 @@ struct Collider;
 // ----------------------------------------------------
 struct Animation {
 	int numRects = 0;
-	p2SString name;
-	SDL_Rect* rects;
 	int numFrame = 0;
-	bool loop = false;
 	int repeatFrames = 0;
+
+	p2SString name;
+
+	SDL_Rect* rects = nullptr;
+
+	bool loop = false;
 	
 	void ResetAnim() {
 		numFrame = 0;
@@ -40,13 +43,13 @@ struct SpriteSheet {
 	uint			height = 0u;
 };
 struct PlayerTMXData {
-	uint					width;
-	uint					height;
-	uint					tile_width;
-	uint					tile_height;
+	uint					width = 0u;
+	uint					height = 0u;
+	uint					tile_width = 0u;
+	uint					tile_height = 0u;
 	SpriteSheet				spriteSheet;
 	MapTypes				type;
-	p2List<ObjectLayer*>	layers;
+	p2List<ObjectLayer*>	object_Layers;
 };
 
 
@@ -84,7 +87,7 @@ public:
 
 	bool Load(const char* path);
 
-	void LoadAnimations();
+	void SetAnimations(Animation**);
 
 	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
 
@@ -104,20 +107,19 @@ private:
 	Collider*			player_Collider = nullptr;
 
 	p2Point<int>		playerPos = { 0,0 };
-	p2Point<int>		forwardVector = { 2,0 };
-	p2Point<int>		backwardVector = { -2,0 };
+	p2Point<int>		forwardVector = { 2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
+	p2Point<int>		backwardVector = { -2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 
 	PlayerState			state = ST_IDLE;
 
-
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
-	Animation**			animations = nullptr;
 	Animation*			currentAnimation = nullptr;
 	Animation*			previousAnimation = nullptr;
+
 	Animation*			idle = nullptr;
 	Animation*			run = nullptr;
-	p2List<SDL_Rect*>	rect;
+
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded = false;

@@ -140,20 +140,29 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	return ret;
 }
 
-bool j1Colliders::CreateCollider(Collider* collider,int type)
+Collider* j1Colliders::CreateCollider(pugi::xml_node& collider,p2Point<int> pos, int type)
 {
 	ColliderType collType;
+	Collider* c = new Collider();
+	int collHeight = collider.attribute("value").as_int();
+	collider = collider.next_sibling();
+	int collWidth = collider.attribute("value").as_int();
+	collider = collider.next_sibling();
+	c->offset.y = collider.attribute("value").as_int();
+	collider = collider.next_sibling();
+	c->offset.x = collider.attribute("value").as_int();
+	c->rect = { pos.x + c->offset.x ,pos.y + c->offset.y,collWidth,collHeight };
 	switch (type)
 	{
 	case 1:
 		collType = PLAYER;
-		collider->type = collType;
-		colliders.add(collider);
+		c->type = collType;
+		colliders.add(c);
 	default:
 		break;
 	}
 
-	return true;
+	return c;
 }
 
 
