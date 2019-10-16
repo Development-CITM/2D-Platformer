@@ -184,14 +184,6 @@ bool j1Player::Load(const char* file_name)
 	}
 
 
-	//Load Collider ---------------------------------------------------
-	pugi::xml_node collider;
-	collider = player_file.child("map").child("properties").child("property"); //Node to colliders root from Player.tmx
-	
-	player_Collider = App->collider->CreateCollider(collider,playerPos, 1); //Create collider, collider param is the node, playerPos: pos to collider
-																			//And num 1 (need to change to param, now it sets enum PLAYER collider type)
-
-
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
 	for (layer = player_file.child("map").child("objectgroup"); layer && ret; layer = layer.next_sibling("objectgroup"))
@@ -201,8 +193,13 @@ bool j1Player::Load(const char* file_name)
 
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
 
-		if (ret == true) //if LoadLayer wents well, it return a true
-			player_tmx_data.object_Layers.add(lay); //Add filled ObjectLayer to the list of ObjectLayers
+		if (ret == true && strcmp(lay->name.GetString(), "Collider") != 0) {//if LoadLayer wents well, it return a true
+			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
+		}
+		else {
+			player_Collider = App->collider->CreateCollider(lay->rects.start->data, playerPos, 1); //Create collider, collider param is the node, playerPos: pos to collider
+																			//And num 1 (need to change to param, now it sets enum PLAYER collider type)
+		}
 	}
 
 	if (ret == true)

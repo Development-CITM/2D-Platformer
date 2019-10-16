@@ -8,11 +8,11 @@
 
 enum ColliderType
 {
-	NONE,
-	PLAYER,
-	BARRIER,
-	JUMPABLE,
-	DEAD
+	COLLIDER_NONE,
+	COLLIDER_PLAYER,
+	COLLIDER_WALL_SOLID,
+	COLLIDER_WALL_TRASPASSABLE,
+	COLLIDER_DEAD
 };
 
 struct Collider
@@ -23,7 +23,7 @@ struct Collider
 
 	Collider() {
 		rect = { 0,0,0,0 };
-		type = NONE;
+		type = COLLIDER_NONE;
 	}
 
 	void MoveCollider(p2Point<int> pos) {
@@ -33,6 +33,7 @@ struct Collider
 	}
 
 	bool Collider::CheckCollision(const SDL_Rect& r) const;
+	bool Collider::OnCollider(j1Module* module,Collider* collider);
 };
 
 class j1Colliders : public j1Module
@@ -66,7 +67,9 @@ public:
 	//Loads all collider objects
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
 
-	Collider* CreateCollider(pugi::xml_node& collider,p2Point<int> pos ,int type);
+	Collider* CreateCollider(SDL_Rect* rect,p2Point<int> pos ,int type);
+
+	void SetMatrix();
 
 
 public:
@@ -80,6 +83,9 @@ private:
 	bool collider_loaded = false;
 	int scale;
 	int size;
+
+	
+	bool** collider_matrix;
 
 };
 #endif

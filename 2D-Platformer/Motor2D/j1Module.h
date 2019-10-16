@@ -92,6 +92,8 @@ public:
 		}
 	}
 
+	virtual bool OnCollision() { return true; }
+
 public:
 
 	p2SString	name;

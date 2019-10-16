@@ -13,6 +13,11 @@
 j1Colliders::j1Colliders():j1Module()
 {
 	name.create("colliders");
+
+	collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_SOLID] = true;
+	collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_TRASPASSABLE] = true;
+	collider_matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
+
 }
 
 j1Colliders::~j1Colliders()
@@ -40,16 +45,16 @@ void j1Colliders::Draw()
 			rect.h = collider->data->rect.h * size * scale;
 			switch (collider->data->type)
 			{
-			case BARRIER:
+			case COLLIDER_WALL_SOLID:
 				App->render->DrawQuad(rect, 255, 0, 0, 40, true, true);
 				break;
-			case JUMPABLE:
+			case COLLIDER_WALL_TRASSPASABLE:
 				App->render->DrawQuad(rect, 0, 0, 255, 100, true, true);
 				break;
-			case DEAD:
+			case COLLIDER_DEAD:
 				App->render->DrawQuad(rect, 0, 0, 0, 100, true, true);
 				break;
-			case PLAYER:
+			case COLLIDER_PLAYER:
 				App->render->DrawQuad(rect, 0, 255, 0, 100, true, true);
 				break;
 			}
@@ -102,37 +107,35 @@ bool j1Colliders::Load(pugi::xml_node object)
 bool j1Colliders::PreUpdate()
 {
 	bool ret = false;
-	Collider* c2;
+	Collider* c1 = App->player->player_Collider;
+	Collider* c2 = nullptr;
 	collider = colliders.start;
 	for (int i = 0; i < colliders.count(); i++)
 	{
 		c2 = collider->data;
-		if (c2 != App->player->player_Collider)
-		{
-			if (App->player->player_Collider->CheckCollision(c2->rect)) {
-				switch (c2->type)
-				{
-				case NONE:
-					break;
-				case PLAYER:
-					
-					LOG("COLLISION PLAYER");
-					break;
-				case BARRIER:
-					ret = true;
-					LOG("COLLISION BARRIER");
-					break;
-				case JUMPABLE:
-					LOG("COLLISION JUMPABLE");
-					break;
-				case DEAD:
-					LOG("COLLISION DEAD");
-					break;
-				}
-			}
 
+		if (c1->CheckCollision(c2->rect)) {
+			switch (c2->type)
+			{
+			case COLLIDER_NONE:
+				break;
+			case COLLIDER_PLAYER:
+				LOG("COLLISION PLAYER");
+				break;
+			case COLLIDER_WALL_SOLID:
+				LOG("COLLISION BARRIER");
+				break;
+			case COLLIDER_WALL_TRASSPASABLE:
+				LOG("COLLISION JUMPABLE");
+				break;
+			case COLLIDER_DEAD:
+				LOG("COLLISION DEAD");
+				break;
+			}
 		}
-		App->player->SetDetectedCollision(ret);
+
+			c1->OnCollider(App->player,c2);
+		
 
 		if (collider->next != nullptr) {
 			collider = collider->next;
@@ -163,37 +166,34 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 
 	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
 	{
-		collider->type = JUMPABLE;
+		collider->type = COLLIDER_WALL_TRASSPASABLE;
 	}
 	if (strcmp(node.attribute("type").as_string(), "Dead") == 0)
 	{
-		collider->type = DEAD;
+		collider->type = COLLIDER_DEAD;
 	}
 	if (strcmp(node.attribute("type").as_string(), "Barrier") == 0)
 	{
-		collider->type = BARRIER;
+		collider->type = COLLIDER_WALL_SOLID;
 	}
 
 
 	return ret;
 }
 
-Collider* j1Colliders::CreateCollider(pugi::xml_node& collider,p2Point<int> pos, int type)
+Collider* j1Colliders::CreateCollider(SDL_Rect* collider,p2Point<int> pos, int type)
 {
 	ColliderType collType;
 	Collider* c = new Collider();
-	int collHeight = collider.attribute("value").as_int();
-	collider = collider.next_sibling();
-	int collWidth = collider.attribute("value").as_int();
-	collider = collider.next_sibling();
-	c->offset.y = collider.attribute("value").as_int();
-	collider = collider.next_sibling();
-	c->offset.x = collider.attribute("value").as_int();
-	c->rect = { pos.x + c->offset.x ,pos.y + c->offset.y,collWidth,collHeight };
+
+	c->offset.y = collider->y;
+	c->offset.x = collider->x;
+
+	c->rect = { pos.x + c->offset.x ,pos.y + c->offset.y,collider->w,collider->h };
 	switch (type)
 	{
 	case 1:
-		collType = PLAYER;
+		collType = COLLIDER_PLAYER;
 		c->type = collType;
 		colliders.add(c);
 	default:
@@ -201,6 +201,11 @@ Collider* j1Colliders::CreateCollider(pugi::xml_node& collider,p2Point<int> pos,
 	}
 
 	return c;
+}
+
+void j1Colliders::SetMatrix()
+{
+
 }
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
@@ -219,6 +224,12 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 
 	return detectedX && detectedY;
 
+}
+
+bool Collider::OnCollider(j1Module* module, Collider* collider)
+{
+	module->OnCollision();
+	return true;
 }
 
 
