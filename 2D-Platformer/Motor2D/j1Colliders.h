@@ -12,7 +12,8 @@ enum ColliderType
 	COLLIDER_PLAYER,
 	COLLIDER_WALL_SOLID,
 	COLLIDER_WALL_TRASPASSABLE,
-	COLLIDER_DEAD
+	COLLIDER_DEAD,
+	COLLIDER_GROUND_CHECKER,
 };
 
 struct Collider
@@ -36,7 +37,10 @@ struct Collider
 		rect(rectangle),
 		type(type),
 		callback(callback),
-		ColliderDamage(Damage) {}
+		ColliderDamage(Damage) {
+		offset.x = rect.x;
+		offset.y = rect.y;
+	}
 
 
 	void MoveCollider(p2Point<int> pos) {

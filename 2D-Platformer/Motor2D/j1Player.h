@@ -7,8 +7,9 @@
 #include "j1Module.h"
 
 
-enum MapTypes;
 struct Collider;
+enum MapTypes;
+
 // ----------------------------------------------------
 struct Animation {
 	int numRects = 0;
@@ -86,7 +87,7 @@ public:
 	bool CleanUp();
 
 	//Called when collided
-	void OnCollision() override;
+	void OnCollision(Collider*,Collider*);
 
 
 	bool Load(const char* path);
@@ -110,6 +111,7 @@ public:
 	PlayerTMXData		player_tmx_data;
 
 	Collider*			player_Collider = nullptr;
+	Collider*			ground_Collider = nullptr;
 
 	bool				GetDetectedCollision() { return detected_Collision; }
 	bool				SetDetectedCollision(bool set) { return detected_Collision = set; }
@@ -117,6 +119,7 @@ private:
 
 	p2Point<int>		playerPos = { 0,0 };
 	p2Point<int>		previousPos = { 0,0 };
+
 	p2Point<int>		forwardVector = { 2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 	p2Point<int>		backwardVector = { -2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 
@@ -135,6 +138,8 @@ private:
 	bool				map_loaded = false;
 
 	bool				detected_Collision = false;
+
+	bool				onGround = false;
 
 };
 

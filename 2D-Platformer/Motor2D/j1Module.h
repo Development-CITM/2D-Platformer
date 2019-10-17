@@ -10,7 +10,7 @@
 #include "PugiXml\src\pugixml.hpp"
 
 class j1App;
-
+struct Collider;
 class j1Module
 {
 
@@ -92,7 +92,7 @@ public:
 		}
 	}
 
-	virtual void OnCollision() {}
+	virtual void OnCollision(Collider*,Collider*) {}
 
 public:
 

@@ -29,6 +29,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 bool j1Player::Start()
 {
+	ground_Collider = App->collider->AddCollider({ 0,28,13,5 }, COLLIDER_GROUND_CHECKER, this);
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 	state = ST_IDLE;	//Set initial state
@@ -37,7 +38,8 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
-
+	onGround = false;
+	SetDetectedCollision(false);
 	//Run forward
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		state = ST_RUNNING;
@@ -96,13 +98,10 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
+	LOG("On ground: %i",onGround);
 	if (GetDetectedCollision()) {
-		MoveToPosition(previousPos);
+		MoveToPosition(previousPos); //TODO JORDI: Try to improve this function to avoid move, instead of moving to previous pos before move
 	}
-	else {
-		MoveToPosition(playerPos);
-	}
-
 	Draw(); //Draw all the player
 	return true;
 }
@@ -114,9 +113,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	LOG("%i", detected_Collision);
-	LOG("Player pos: %d,%d", playerPos);
-	LOG("Previous pos: %d,%d", previousPos);
+
 	//First check how many frames should repeat before change its sprite frame
 	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
 		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
@@ -165,9 +162,41 @@ bool j1Player::CleanUp()
 	return true;
 }
 
-void j1Player::OnCollision()
+void j1Player::OnCollision(Collider* c1,Collider* c2)
 {
-	LOG("PLAYER COLLIDED");
+	switch (c1->type)
+	{
+	case COLLIDER_PLAYER:
+		switch (c2->type)
+		{
+		case COLLIDER_WALL_SOLID:
+			LOG("WALL SOLID COLLIDED");
+			SetDetectedCollision(true);
+			break;
+		case COLLIDER_WALL_TRASPASSABLE:
+			LOG("WALL TRASPASSBLE COLLIDED");
+			break;
+		case COLLIDER_DEAD:
+			break;
+		}
+		break;
+	case COLLIDER_GROUND_CHECKER:
+		switch (c2->type)
+		{
+		case COLLIDER_WALL_SOLID:
+			onGround = true;
+			break;
+		case COLLIDER_WALL_TRASPASSABLE:
+			LOG("WALL TRASPASSBLE COLLIDED");
+			break;
+
+		}
+		break;
+	default:
+		onGround = false;
+		break;
+	}
+
 }
 
 bool j1Player::Load(const char* file_name)
@@ -202,7 +231,7 @@ bool j1Player::Load(const char* file_name)
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
 		}
 		else {
-			player_Collider = App->collider->AddCollider(*lay->rects.start->data,COLLIDER_PLAYER,this); //Create collider, collider param is the node, playerPos: pos to collider
+			player_Collider = App->collider->AddCollider(*lay->rects.start->data, COLLIDER_PLAYER,this); //Create collider, collider param is the node, playerPos: pos to collider
 																			//And num 1 (need to change to param, now it sets enum PLAYER collider type)
 		}
 	}
@@ -305,12 +334,14 @@ void j1Player::MoveToPosition(p2Point<int> targetPos)
 	playerPos = targetPos;
 	player_Collider->MoveCollider(playerPos);
 
+
 }
 bool j1Player::WantToMove(p2Point<int> targetPos)
 {
 	previousPos = playerPos;
 	playerPos += targetPos;
 	player_Collider->MoveCollider(playerPos);
+	ground_Collider->MoveCollider({ player_Collider->rect.x,player_Collider->rect.y });
 	bool ret = true;
 
 	return ret;

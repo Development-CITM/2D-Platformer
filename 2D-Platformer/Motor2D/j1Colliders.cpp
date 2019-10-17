@@ -46,16 +46,19 @@ void j1Colliders::Draw()
 			switch (collider->data->type)
 			{
 			case COLLIDER_WALL_SOLID:
-				App->render->DrawQuad(rect, 255, 0, 0, 40, true, true);
+				App->render->DrawQuad(rect, 255, 0, 0, 40);
 				break;
 			case COLLIDER_WALL_TRASPASSABLE:
-				App->render->DrawQuad(rect, 0, 0, 255, 100, true, true);
+				App->render->DrawQuad(rect, 0, 0, 255, 100);
 				break;
 			case COLLIDER_DEAD:
-				App->render->DrawQuad(rect, 0, 0, 0, 100, true, true);
+				App->render->DrawQuad(rect, 0, 0, 0, 100);
 				break;
 			case COLLIDER_PLAYER:
-				App->render->DrawQuad(rect, 0, 255, 0, 100, true, true);
+				App->render->DrawQuad(rect, 0, 255, 0, 100);
+				break;
+			case COLLIDER_GROUND_CHECKER:
+				App->render->DrawQuad(rect, 255, 255, 0, 100);
 				break;
 			}
 			
@@ -106,20 +109,21 @@ bool j1Colliders::Load(pugi::xml_node object)
 
 bool j1Colliders::PreUpdate()
 {
+	p2List_item<Collider*>* collider = colliders.start;
 	// Remove all colliders scheduled for deletion
-	//for (uint i = 0; i < colliders.count(); ++i)
-	//{
-	//	if (colliders[i] != nullptr && colliders[i]->to_delete == true)
-	//	{
-	//		delete colliders[i];
-	//		colliders[i] = nullptr;
-	//	}
-	//}
+	for (uint i = 0; i < colliders.count(); ++i)
+	{
+		if (collider != nullptr && collider->data->to_delete == true)
+		{
+			colliders.del(collider);
+		}
+		collider = collider->next;
+	}
 
 	// Calculate collisions
 	Collider* c1 = nullptr;
 	Collider* c2 = nullptr;
-	p2List_item<Collider*>* collider = colliders.start;
+	collider = colliders.start;
 	p2List_item<Collider*>* collider2 = nullptr;
 	uint i = 0;
 	for (i = 0; i < colliders.count(); ++i)
@@ -133,7 +137,7 @@ bool j1Colliders::PreUpdate()
 			c2 = collider2->data;
 			if (c2 != c1) {
 				if (c1->CheckCollision(c2->rect) && c1->callback) {
-					c1->callback->OnCollision();
+					c1->callback->OnCollision(c1,c2);
 				}
 			}
 			collider2 = collider2->next;
