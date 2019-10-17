@@ -5,6 +5,8 @@
 #include "j1Textures.h"
 #include "j1Tilesets.h"
 #include "j1Colliders.h"
+#include "j1Scene.h"
+#include "j1Window.h"
 #include "j1Audio.h"
 #include "j1Input.h"
 #include <math.h>
@@ -51,10 +53,22 @@ void j1Tilesets::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					if (tileset != nullptr)
 					{
+						
 						SDL_Rect r = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
-
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r,App->render->drawsize);
+						if (strcmp(layer->name.GetString(), "Clouds") == 0)
+						{
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE, 1.1f);
+						}
+						else if (strcmp(layer->name.GetString(), "Sea") == 0)
+						{
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE, 0.9f);
+						}
+						else
+						{
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
+						}
+						
 					}
 				}
 			}
@@ -64,6 +78,7 @@ void j1Tilesets::Draw()
 			layer = lay->data;
 		}
 	}
+
 
 }
 
@@ -364,35 +379,35 @@ bool j1Tilesets::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
 
-	if(image == NULL)
+if (image == NULL)
+{
+	LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
+	ret = false;
+}
+else
+{
+	set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+	int w, h;
+	SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
+	set->tex_width = image.attribute("width").as_int();
+
+	if (set->tex_width <= 0)
 	{
-		LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
-		ret = false;
-	}
-	else
-	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
-		int w, h;
-		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
-		set->tex_width = image.attribute("width").as_int();
-
-		if(set->tex_width <= 0)
-		{
-			set->tex_width = w;
-		}
-
-		set->tex_height = image.attribute("height").as_int();
-
-		if(set->tex_height <= 0)
-		{
-			set->tex_height = h;
-		}
-
-		set->num_tiles_width = set->tex_width / set->tile_width;
-		set->num_tiles_height = set->tex_height / set->tile_height;
+		set->tex_width = w;
 	}
 
-	return ret;
+	set->tex_height = image.attribute("height").as_int();
+
+	if (set->tex_height <= 0)
+	{
+		set->tex_height = h;
+	}
+
+	set->num_tiles_width = set->tex_width / set->tile_width;
+	set->num_tiles_height = set->tex_height / set->tile_height;
+}
+
+return ret;
 }
 
 bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
@@ -404,7 +419,7 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->num_tile_height = node.attribute("height").as_int();
 	pugi::xml_node layer_data = node.child("data");
 
-	if(layer_data == NULL)
+	if (layer_data == NULL)
 	{
 		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
 		ret = false;
@@ -412,11 +427,11 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
-		layer->data = new int[layer->num_tile_width*layer->num_tile_height];
-		memset(layer->data, 0, layer->num_tile_width*layer->num_tile_height);
+		layer->data = new int[layer->num_tile_width * layer->num_tile_height];
+		memset(layer->data, 0, layer->num_tile_width * layer->num_tile_height);
 
 		int i = 0;
-		for(pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
 			layer->data[i++] = (int)tile.attribute("gid").as_int(0);
 		}
@@ -440,8 +455,8 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 		height = y * map_Data.tile_width + tileset->spacing;
 	}
 	else {
-		width = x * map_Data.tile_width + (x+ tileset->margin) * tileset->margin;
-		height = y * map_Data.tile_width + (y+ tileset->spacing) * tileset->spacing;
+		width = x * map_Data.tile_width + (x + tileset->margin) * tileset->margin;
+		height = y * map_Data.tile_width + (y + tileset->spacing) * tileset->spacing;
 	}
 
 	SDL_Rect rect = { width,height,tileset->tile_width,tileset->tile_height };
@@ -461,6 +476,11 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 	{
 		object = node.child("object").child("properties").child("property");
 		App->audio->PlayMusic(object.attribute("value").as_string());
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0)
+	{
+		object = node.child("object");
+		App->scene->LoadSceneLimits(object);
 	}
 	return ret;
 }
