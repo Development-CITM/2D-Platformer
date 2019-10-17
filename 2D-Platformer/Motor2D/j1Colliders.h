@@ -18,13 +18,26 @@ enum ColliderType
 struct Collider
 {
 	SDL_Rect rect;
-	ColliderType type;
+	bool to_delete = false;
+	j1Module* callback = nullptr;
+	bool Enabled = true;
+
+	int ColliderDamage = 0;
+
+	ColliderType type = COLLIDER_NONE;
 	p2Point<int> offset = { 0, 0};
 
 	Collider() {
+		ColliderDamage = 0;
 		rect = { 0,0,0,0 };
 		type = COLLIDER_NONE;
 	}
+	Collider(SDL_Rect rectangle, ColliderType type, j1Module* callback = nullptr, int Damage = 0) :
+		rect(rectangle),
+		type(type),
+		callback(callback),
+		ColliderDamage(Damage) {}
+
 
 	void MoveCollider(p2Point<int> pos) {
 		rect.x = pos.x + offset.x;
@@ -33,7 +46,6 @@ struct Collider
 	}
 
 	bool Collider::CheckCollision(const SDL_Rect& r) const;
-	bool Collider::OnCollider(j1Module* module,Collider* collider);
 };
 
 class j1Colliders : public j1Module
@@ -67,10 +79,12 @@ public:
 	//Loads all collider objects
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
 
-	Collider* CreateCollider(SDL_Rect* rect,p2Point<int> pos ,int type);
+	//Collider* CreateCollider(SDL_Rect* rect,p2Point<int> pos ,int type);
+	Collider* AddCollider(SDL_Rect rect, ColliderType type, j1Module* callback = nullptr, int Damage = 0);
 
-	void SetMatrix();
 
+private:
+	bool CheckCollisionTypes(Collider* c1, Collider* c2);
 
 public:
 
@@ -79,7 +93,7 @@ public:
 private:
 	
 	p2List<Collider*>	colliders;
-	p2List_item<Collider*>* collider = nullptr;
+
 	bool collider_loaded = false;
 	int scale;
 	int size;

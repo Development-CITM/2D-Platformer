@@ -92,7 +92,7 @@ public:
 		}
 	}
 
-	virtual bool OnCollision() { return true; }
+	virtual void OnCollision() {}
 
 public:
 

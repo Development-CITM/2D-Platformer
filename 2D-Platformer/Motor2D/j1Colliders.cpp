@@ -14,9 +14,9 @@ j1Colliders::j1Colliders():j1Module()
 {
 	name.create("colliders");
 
-	collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_SOLID] = true;
-	collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_TRASPASSABLE] = true;
-	collider_matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
+	//collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_SOLID] = true;
+	//collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_TRASPASSABLE] = true;
+	//collider_matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
 
 }
 
@@ -48,7 +48,7 @@ void j1Colliders::Draw()
 			case COLLIDER_WALL_SOLID:
 				App->render->DrawQuad(rect, 255, 0, 0, 40, true, true);
 				break;
-			case COLLIDER_WALL_TRASSPASABLE:
+			case COLLIDER_WALL_TRASPASSABLE:
 				App->render->DrawQuad(rect, 0, 0, 255, 100, true, true);
 				break;
 			case COLLIDER_DEAD:
@@ -106,41 +106,52 @@ bool j1Colliders::Load(pugi::xml_node object)
 
 bool j1Colliders::PreUpdate()
 {
-	bool ret = false;
-	Collider* c1 = App->player->player_Collider;
-	Collider* c2 = nullptr;
-	collider = colliders.start;
-	for (int i = 0; i < colliders.count(); i++)
-	{
-		c2 = collider->data;
+	// Remove all colliders scheduled for deletion
+	//for (uint i = 0; i < colliders.count(); ++i)
+	//{
+	//	if (colliders[i] != nullptr && colliders[i]->to_delete == true)
+	//	{
+	//		delete colliders[i];
+	//		colliders[i] = nullptr;
+	//	}
+	//}
 
-		if (c1->CheckCollision(c2->rect)) {
-			switch (c2->type)
+	// Calculate collisions
+	Collider* c1;
+	Collider* c2;
+	p2List_item<Collider*>* collider = colliders.start;
+
+	for (uint i = 0; i < colliders.count(); ++i)
+	{
+		if (colliders[i]->Enabled == true)
+		{
+			c1 = collider->data;
+			
+			// avoid checking collisions already checked
+			for (uint k = i + 1; k < colliders.count(); ++k)
 			{
-			case COLLIDER_NONE:
-				break;
-			case COLLIDER_PLAYER:
-				LOG("COLLISION PLAYER");
-				break;
-			case COLLIDER_WALL_SOLID:
-				LOG("COLLISION BARRIER");
-				break;
-			case COLLIDER_WALL_TRASSPASABLE:
-				LOG("COLLISION JUMPABLE");
-				break;
-			case COLLIDER_DEAD:
-				LOG("COLLISION DEAD");
-				break;
+				// skip empty colliders
+				if (colliders[k] == nullptr)
+					continue;
+				c2 = colliders[k];
+
+				if (c1->CheckCollision(c2->rect) == true)
+				{
+					if (CheckCollisionTypes(c1, c2) && c1->callback) {
+						c1->callback->OnCollision();
+					}
+					//if (matrix[c1->type][c2->type] && c1->callback)
+					//	c1->callback->OnCollision(c1, c2);
+
+					//if (matrix[c2->type][c1->type] && c2->callback)
+					//	c2->callback->OnCollision(c2, c1);
+				}
 			}
 		}
 
-			c1->OnCollider(App->player,c2);
-		
 
-		if (collider->next != nullptr) {
-			collider = collider->next;
-		}
 	}
+
 	return true;
 }
 
@@ -166,7 +177,7 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 
 	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
 	{
-		collider->type = COLLIDER_WALL_TRASSPASABLE;
+		collider->type = COLLIDER_WALL_TRASPASSABLE;
 	}
 	if (strcmp(node.attribute("type").as_string(), "Dead") == 0)
 	{
@@ -181,31 +192,57 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	return ret;
 }
 
-Collider* j1Colliders::CreateCollider(SDL_Rect* collider,p2Point<int> pos, int type)
+//Collider* j1Colliders::CreateCollider(SDL_Rect* collider,p2Point<int> pos, int type)
+//{
+//	ColliderType collType;
+//	Collider* c = new Collider();
+//
+//	c->offset.y = collider->y;
+//	c->offset.x = collider->x;
+//
+//	c->rect = { pos.x + c->offset.x ,pos.y + c->offset.y,collider->w,collider->h };
+//	switch (type)
+//	{
+//	case 1:
+//		collType = COLLIDER_PLAYER;
+//		c->type = collType;
+//		colliders.add(c);
+//	default:
+//		break;
+//	}
+//
+//	return c;
+//}
+
+Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type, j1Module* callback, int Damage)
 {
-	ColliderType collType;
-	Collider* c = new Collider();
+	Collider* c = nullptr;
 
-	c->offset.y = collider->y;
-	c->offset.x = collider->x;
-
-	c->rect = { pos.x + c->offset.x ,pos.y + c->offset.y,collider->w,collider->h };
-	switch (type)
-	{
-	case 1:
-		collType = COLLIDER_PLAYER;
-		c->type = collType;
-		colliders.add(c);
-	default:
-		break;
-	}
+	c = new Collider(rect, type, callback, Damage);
+	colliders.add(c);
 
 	return c;
+
 }
 
-void j1Colliders::SetMatrix()
-{
 
+bool j1Colliders::CheckCollisionTypes(Collider* c1, Collider* c2)
+{
+	bool ret = false;
+	switch (c1->type)
+	{
+	case COLLIDER_PLAYER:
+		ret = true;
+		switch (c2->type)
+		{
+		case COLLIDER_WALL_SOLID:
+			ret = true;
+			LOG("PLAYER-WALL_SOLID");
+			break;
+		}
+		break;
+	}
+	return ret;
 }
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
@@ -226,10 +263,5 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 
 }
 
-bool Collider::OnCollider(j1Module* module, Collider* collider)
-{
-	module->OnCollision();
-	return true;
-}
 
 

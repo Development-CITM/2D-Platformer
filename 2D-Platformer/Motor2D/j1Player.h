@@ -85,6 +85,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Called when collided
+	void OnCollision() override;
+
+
 	bool Load(const char* path);
 
 	void SetAnimations(Animation**);

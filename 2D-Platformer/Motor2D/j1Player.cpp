@@ -165,6 +165,11 @@ bool j1Player::CleanUp()
 	return true;
 }
 
+void j1Player::OnCollision()
+{
+	LOG("PLAYER COLLIDED");
+}
+
 bool j1Player::Load(const char* file_name)
 {
 	bool ret = true;
@@ -197,7 +202,7 @@ bool j1Player::Load(const char* file_name)
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
 		}
 		else {
-			player_Collider = App->collider->CreateCollider(lay->rects.start->data, playerPos, 1); //Create collider, collider param is the node, playerPos: pos to collider
+			player_Collider = App->collider->AddCollider(*lay->rects.start->data,COLLIDER_PLAYER,this); //Create collider, collider param is the node, playerPos: pos to collider
 																			//And num 1 (need to change to param, now it sets enum PLAYER collider type)
 		}
 	}

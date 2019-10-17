@@ -64,8 +64,6 @@ void j1Tilesets::Draw()
 			layer = lay->data;
 		}
 	}
-	
-	//App->render->DrawQuad(App->render->camera, 255, 255, 255, 50,true,false);
 
 }
 
