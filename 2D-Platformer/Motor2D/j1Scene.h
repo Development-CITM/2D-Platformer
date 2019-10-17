@@ -5,6 +5,12 @@
 
 struct SDL_Texture;
 
+struct Cameralimit
+{
+	SDL_Rect rect;
+};
+
+
 class j1Scene : public j1Module
 {
 public:
@@ -32,9 +38,18 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool LoadSceneLimits(pugi::xml_node object);
+	
+
 
 	int map = 0;
 private:
+	
+
+public:
+	Cameralimit limitright;
+	Cameralimit limitleft;
+
 };
 
 #endif // __j1SCENE_H__

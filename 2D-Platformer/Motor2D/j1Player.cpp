@@ -113,7 +113,6 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-
 	//First check how many frames should repeat before change its sprite frame
 	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
 		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)

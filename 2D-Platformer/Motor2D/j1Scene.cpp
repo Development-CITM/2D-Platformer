@@ -68,10 +68,14 @@ bool j1Scene::Update(float dt)
 		App->render->camera.y -= 3;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		if (App->render->camera.x + 3 < -limitleft.rect.w)
 		App->render->camera.x += 3;
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		if (App->render->camera.x - App->win->GetWidth() - 3 > -limitright.rect.x * (int)App->render->drawsize)
 		App->render->camera.x -= 3;
+	
+		
 
 		App->tiles->Draw();
 	
@@ -110,3 +114,29 @@ bool j1Scene::CleanUp()
 	map++;
 	return true;
 }
+
+bool j1Scene::LoadSceneLimits(pugi::xml_node object)
+{
+	Cameralimit* limit = new Cameralimit();
+	for (object.child("object"); object; object = object.next_sibling("object"))
+	{
+		if (strcmp(object.attribute("type").as_string(), "Right") == 0)
+		{
+			limitright.rect.x = object.attribute("x").as_int();
+			limitright.rect.y = object.attribute("y").as_int();
+			limitright.rect.w = object.attribute("width").as_int();
+			limitright.rect.h = object.attribute("height").as_int();
+		}
+		else if (strcmp(object.attribute("type").as_string(), "Left") == 0)
+		{
+			limitleft.rect.x = object.attribute("x").as_int();
+			limitleft.rect.y = object.attribute("y").as_int();
+			limitleft.rect.w = object.attribute("width").as_int();
+			limitleft.rect.h = object.attribute("height").as_int();
+		}
+	}
+
+		return true;
+}
+
+
