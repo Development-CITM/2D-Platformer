@@ -115,41 +115,29 @@ bool j1Colliders::PreUpdate()
 	//		colliders[i] = nullptr;
 	//	}
 	//}
-
 	// Calculate collisions
-	Collider* c1;
-	Collider* c2;
+	Collider* c1 = nullptr;
+	Collider* c2 = nullptr;
 	p2List_item<Collider*>* collider = colliders.start;
-
-	for (uint i = 0; i < colliders.count(); ++i)
+	
+	for (uint i = 0; i < colliders.count(); i++)
 	{
-		if (colliders[i]->Enabled == true)
-		{
-			c1 = collider->data;
-			
-			// avoid checking collisions already checked
-			for (uint k = i + 1; k < colliders.count(); ++k)
-			{
-				// skip empty colliders
-				if (colliders[k] == nullptr)
-					continue;
-				c2 = colliders[k];
-
-				if (c1->CheckCollision(c2->rect) == true)
-				{
-					if (CheckCollisionTypes(c1, c2) && c1->callback) {
-						c1->callback->OnCollision();
-					}
-					//if (matrix[c1->type][c2->type] && c1->callback)
-					//	c1->callback->OnCollision(c1, c2);
-
-					//if (matrix[c2->type][c1->type] && c2->callback)
-					//	c2->callback->OnCollision(c2, c1);
-				}
-			}
+		c1 = collider->data;
+		if (collider->next != nullptr) {
+			c2 = collider->next->data;
 		}
+		else {
+			c2 = colliders.start->data;
+		}
+		if(collider->next != nullptr)
+		collider = collider->next;
 
-
+		if (c1->CheckCollision(c2->rect)&& c1->callback){
+			LOG("DETECTED");
+		}
+		//LOG("c1: %i", c1->type);
+		//LOG("c2: %i", c2->type);
+		
 	}
 
 	return true;
@@ -192,47 +180,23 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	return ret;
 }
 
-//Collider* j1Colliders::CreateCollider(SDL_Rect* collider,p2Point<int> pos, int type)
-//{
-//	ColliderType collType;
-//	Collider* c = new Collider();
-//
-//	c->offset.y = collider->y;
-//	c->offset.x = collider->x;
-//
-//	c->rect = { pos.x + c->offset.x ,pos.y + c->offset.y,collider->w,collider->h };
-//	switch (type)
-//	{
-//	case 1:
-//		collType = COLLIDER_PLAYER;
-//		c->type = collType;
-//		colliders.add(c);
-//	default:
-//		break;
-//	}
-//
-//	return c;
-//}
 
 Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type, j1Module* callback, int Damage)
-{
-	Collider* c = nullptr;
-
-	c = new Collider(rect, type, callback, Damage);
+{	
+	Collider* c = new Collider(rect, type, callback, Damage);
 	colliders.add(c);
 
 	return c;
-
 }
 
 
 bool j1Colliders::CheckCollisionTypes(Collider* c1, Collider* c2)
 {
 	bool ret = false;
+
 	switch (c1->type)
 	{
 	case COLLIDER_PLAYER:
-		ret = true;
 		switch (c2->type)
 		{
 		case COLLIDER_WALL_SOLID:
