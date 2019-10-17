@@ -115,31 +115,35 @@ bool j1Colliders::PreUpdate()
 	//		colliders[i] = nullptr;
 	//	}
 	//}
+
 	// Calculate collisions
 	Collider* c1 = nullptr;
 	Collider* c2 = nullptr;
 	p2List_item<Collider*>* collider = colliders.start;
-	
-	for (uint i = 0; i < colliders.count(); i++)
-	{
+	p2List_item<Collider*>* collider2 = nullptr;
+	uint i = 0;
+	for (i = 0; i < colliders.count(); ++i)
+	{		
 		c1 = collider->data;
-		if (collider->next != nullptr) {
-			c2 = collider->next->data;
+		//LOG("C1: %i ---------------------", c1->type);
+		int count = 0;
+		collider2 = colliders.start;
+		for (uint j = 0; j < colliders.count(); ++j)
+		{
+			c2 = collider2->data;
+			if (c2 != c1) {
+				if (c1->CheckCollision(c2->rect) && c1->callback) {
+					c1->callback->OnCollision();
+				}
+			}
+			collider2 = collider2->next;
+				
 		}
-		else {
-			c2 = colliders.start->data;
-		}
-		if(collider->next != nullptr)
-		collider = collider->next;
-
-		if (c1->CheckCollision(c2->rect)&& c1->callback){
-			LOG("DETECTED");
-		}
+		//LOG("Count: %d", count);
 		//LOG("c1: %i", c1->type);
 		//LOG("c2: %i", c2->type);
-		
+		collider = collider->next;
 	}
-
 	return true;
 }
 
