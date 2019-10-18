@@ -23,6 +23,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	
 	//Init player pos
 	playerPos = { 200,472 };
+	nextPos = playerPos;
 
 	return ret;
 }
@@ -38,69 +39,76 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
+
 	onGround = false;
 	SetDetectedCollision(false);
-	//Run forward
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		state = ST_RUNNING;
-		flip = SDL_FLIP_NONE;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		state = ST_IDLE;
-	}
-
-	//Run backward
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		state = ST_RUNNING;
-		flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		state = ST_IDLE;
-	}
-
-	////Run UP
-	//if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-	//	MoveToPosition({ 0,-2 });
-	//}
-
-
-	////Run DOWN
-	//if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-	//	MoveToPosition({ 0,2 });
-	//}
-		//Change States
+	lastPos = playerPos;
+	//Hold Movements
 	switch (state)
 	{
 	case ST_IDLE:
-		if (currentAnimation != idle) {
-			previousAnimation = currentAnimation;
-			previousAnimation->ResetAnim();
-			currentAnimation = idle;
-		}
-
+		HoldHorizontalMove();
 		break;
 	case ST_RUNNING:
-		if (currentAnimation != run) {
-			previousAnimation = currentAnimation;
-			previousAnimation->ResetAnim();
-			currentAnimation = run;
-		}
-		if (flip == SDL_FLIP_HORIZONTAL) {
-			WantToMove(backwardVector); //Move to passed vector
+		HoldHorizontalMove();
+		break;
+
+	}
+
+
+	Jump();
+
+
+	currentVelocity.x = playerPos.x - lastPos.x;
+	currentVelocity.y = playerPos.y - lastPos.y;
+	LOG("Velocity: (%i,%i)", currentVelocity.x, currentVelocity.y);
+	//LOG("Previous: (%i,%i)", previousPos.x, previousPos.y);
+	LOG("Actual Pos: (%i,%i)", playerPos.x, playerPos.y);
+	
+
+	return true;
+
+}
+
+void j1Player::Jump()
+{
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+		jumping = true;
+		maxVerticalJump.y = playerPos.y - 40;
+	}
+
+	switch (jumping)
+	{
+	case true:
+		if (playerPos.y > maxVerticalJump.y) {
+			WantToMove({ 0,-6 });
+			
 		}
 		else {
-			WantToMove(forwardVector);	//Move to passed vector
+			jumping = false;
 		}
 		break;
 	}
-	return true;
+}
+
+void j1Player::ChangeAnimation(Animation* anim)
+{
+	if (currentAnimation != anim) {
+		previousAnimation = currentAnimation;
+		previousAnimation->ResetAnim();
+		currentAnimation = anim;
+	}
 }
 
 bool j1Player::Update(float dt)
 {
-	LOG("On ground: %i",onGround);
-	if (GetDetectedCollision()) {
-		MoveToPosition(previousPos); //TODO JORDI: Try to improve this function to avoid move, instead of moving to previous pos before move
+
+	if (!GetDetectedCollision()) {
+		MoveToPosition(nextPos);
+		 //TODO JORDI: Try to improve this function to avoid move, instead of moving to previous pos before move
+	}
+	else {
+		MoveToPosition(playerPos);
 	}
 	Draw(); //Draw all the player
 	return true;
@@ -298,11 +306,38 @@ void j1Player::SetAnimations(Animation** animations) {
 		else if (strcmp(name.GetString(), "Running") == 0) {
 			run = animations[i];
 		}
+		else if (strcmp(name.GetString(), "Jump") == 0) {
+			jump = animations[i];
+		}
+		
 		
 		
 	}
 	RELEASE_ARRAY(animations);
 	currentAnimation = idle;
+}
+
+void j1Player::HoldHorizontalMove()
+{
+	//Run forward
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		WantToMove(forwardVector);
+		flip = SDL_FLIP_NONE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		last_input = IN_IDLE;
+	}
+
+	//Run backward
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		WantToMove(backwardVector);
+		flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		last_input = IN_IDLE;
+	}
+
+	state = ST_RUNNING;
 }
 
 // Load map general properties ---------------------------------------------------
@@ -333,15 +368,16 @@ void j1Player::MoveToPosition(p2Point<int> targetPos)
 	playerPos = targetPos;
 	player_Collider->MoveCollider(playerPos);
 
-
 }
 bool j1Player::WantToMove(p2Point<int> targetPos)
 {
-	previousPos = playerPos;
-	playerPos += targetPos;
-	player_Collider->MoveCollider(playerPos);
-	ground_Collider->MoveCollider({ player_Collider->rect.x,player_Collider->rect.y });
 	bool ret = true;
+
+	nextPos.x = playerPos.x + targetPos.x;
+	nextPos.y = playerPos.y + targetPos.y;
+	LOG("Next Pos: (%i,%i)", nextPos.x, nextPos.y);
+	player_Collider->MoveCollider(nextPos);
+	ground_Collider->MoveCollider({ player_Collider->rect.x,player_Collider->rect.y });
 
 	return ret;
 }

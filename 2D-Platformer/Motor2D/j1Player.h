@@ -30,6 +30,17 @@ struct Animation {
 enum PlayerState {
 	ST_IDLE,
 	ST_RUNNING,
+	ST_JUMP,
+	ST_MIDAIR,
+	ST_FALL,
+	ST_JUMP_FINISHED,
+};
+
+enum Input {
+	IN_IDLE,
+	IN_RUNNING,
+	IN_JUMP,
+	IN_JUMP_FINISHED,
 };
 
 struct ObjectLayer
@@ -74,6 +85,10 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
+	void Jump();
+
+	void ChangeAnimation(Animation*);
+
 	// Called each loop iteration
 	bool Update(float dt);
 
@@ -101,6 +116,9 @@ public:
 
 private:
 
+	//Movement Functions
+	void HoldHorizontalMove();
+
 	bool LoadMap();
 	
 	void MoveToPosition(p2Point<int> targetPos);
@@ -118,12 +136,16 @@ public:
 private:
 
 	p2Point<int>		playerPos = { 0,0 };
+	p2Point<int>		lastPos = { 0,0 };
+	p2Point<int>		nextPos = { 0,0 };
 	p2Point<int>		previousPos = { 0,0 };
 
 	p2Point<int>		forwardVector = { 2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 	p2Point<int>		backwardVector = { -2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
+	p2Point<int>		upVector = { 0,-2 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
 
 	PlayerState			state = ST_IDLE;
+	Input				last_input = IN_IDLE;
 
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
@@ -132,6 +154,7 @@ private:
 
 	Animation*			idle = nullptr;
 	Animation*			run = nullptr;
+	Animation*			jump = nullptr;
 
 	pugi::xml_document	player_file;
 	p2SString			folder;
@@ -140,6 +163,13 @@ private:
 	bool				detected_Collision = false;
 
 	bool				onGround = false;
+
+	p2Point<int>		maxVerticalJump{ 0,0 };
+	int					jumpDistance = -40;
+
+	bool				jumping = false;
+
+	p2Point<int>		currentVelocity{ 0,0 };
 
 };
 
