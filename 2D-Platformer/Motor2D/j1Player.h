@@ -178,6 +178,14 @@ private:
 	p2Point<int>		currentVelocity{ 0,0 };
 
 	Directions			direction = DIR_RIGHT;
+	Directions			last_Direction = DIR_RIGHT;
+
+	p2Point<int>		speed{ 0,0 };
+
+
+	bool move_To_right = false;
+	bool move_To_Left = false;
+	bool move_To_Up = false;
 
 };
 

@@ -43,6 +43,7 @@ bool j1Player::PreUpdate()
 	onGround = false;
 	SetDetectedCollision(false);
 	//Hold Movements
+	Jump();
 	switch (state)
 	{
 	case ST_IDLE:
@@ -51,33 +52,134 @@ bool j1Player::PreUpdate()
 	case ST_RUNNING:
 		HoldHorizontalMove();
 		break;
-
 	}
 
 
-	Jump();
-
-
-	currentVelocity.x = playerPos.x - lastPos.x;
-	currentVelocity.y = playerPos.y - lastPos.y;
-	LOG("Velocity: (%i,%i)", currentVelocity.x, currentVelocity.y);
-	//LOG("Previous: (%i,%i)", previousPos.x, previousPos.y);
-	LOG("Actual Pos: (%i,%i)", playerPos.x, playerPos.y);
-	
 
 	return true;
-
 }
+
+bool j1Player::Update(float dt)
+{
+	MoveToPosition();
+
+	Draw(); //Draw all the player
+	return true;
+}
+
+bool j1Player::PostUpdate()
+{
+	return true;
+}
+
 
 void j1Player::Jump()
 {
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
 		jumping = true;
-		maxVerticalJump.y = playerPos.y - 40;
+		maxVerticalJump.y = player_Collider->GetPosition().y - 40;
 	}
 	if(jumping)
 		WantToMove(DIR_UP);
 
+}
+
+void j1Player::HoldHorizontalMove()
+{
+	////Run forward
+	//if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	//	WantToMove(DIR_RIGHT);
+	//	flip = SDL_FLIP_NONE;
+	//}
+	//else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+	//	last_input = IN_IDLE;
+	//}
+
+	////Run backward
+	//if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+	//	WantToMove(DIR_LEFT);
+	//	flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
+	//}
+	//else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+	//	last_input = IN_IDLE;
+	//}
+
+	//state = ST_RUNNING;
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		move_To_right = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		move_To_right = false;
+	}
+
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
+		move_To_Left = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		move_To_Left = false;
+	}
+
+	if (move_To_right) {
+		if (move_To_Left) {
+			move_To_right = false;
+		}
+	}
+	else if (move_To_Left) {
+		if (move_To_right) {
+			move_To_Left = false;
+		}
+	}
+	if (move_To_Left) {
+		WantToMove(DIR_LEFT);
+	}
+	else if (move_To_right) {
+		WantToMove(DIR_RIGHT);
+	}
+
+
+	LOG("RIGHT: %i", move_To_right);
+	LOG("LEFT: %i", move_To_Left);
+}
+
+void j1Player::MoveToPosition()
+{
+	if (!GetDetectedCollision()) {
+		p2Point<int> newPos{ 0,0 };
+		newPos.x = player_Collider->GetPosition().x - player_Collider->offset.x;
+		newPos.y = player_Collider->GetPosition().y - player_Collider->offset.y;
+		playerPos = newPos;
+
+	}
+	else {
+
+		player_Collider->MoveCollider(lastPos);
+		jumping = false;
+	}
+
+}
+bool j1Player::WantToMove(Directions dir)
+{
+	bool ret = true;
+	lastPos = player_Collider->GetPosition();
+	nextPos = player_Collider->GetPosition();
+	switch (dir)
+	{
+	case DIR_LEFT:
+		nextPos.x -= forwardVector.x;
+		break;
+	case DIR_RIGHT:
+		nextPos.x += forwardVector.x;
+		break;
+	case DIR_UP:
+		if (player_Collider->GetPosition().y > maxVerticalJump.y) {
+			nextPos.y += upVector.y;
+		}
+		break;
+
+	}
+	player_Collider->MoveCollider(nextPos);
+	return ret;
 }
 
 void j1Player::ChangeAnimation(Animation* anim)
@@ -89,18 +191,9 @@ void j1Player::ChangeAnimation(Animation* anim)
 	}
 }
 
-bool j1Player::Update(float dt)
-{
-	MoveToPosition();
-	
-	Draw(); //Draw all the player
-	return true;
-}
 
-bool j1Player::PostUpdate()
-{
-	return true;
-}
+
+
 
 void j1Player::Draw()
 {
@@ -190,6 +283,7 @@ void j1Player::OnCollision(Collider* c1,Collider* c2)
 
 }
 
+#pragma region LOAD INFO
 bool j1Player::Load(const char* file_name)
 {
 	bool ret = true;
@@ -213,7 +307,7 @@ bool j1Player::Load(const char* file_name)
 	pugi::xml_node layer;
 	for (layer = player_file.child("map").child("objectgroup"); layer && ret; layer = layer.next_sibling("objectgroup"))
 	{
-		
+
 		ObjectLayer* lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
 
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
@@ -228,7 +322,7 @@ bool j1Player::Load(const char* file_name)
 			offset.y = rect.y;
 			rect.x += playerPos.x;
 			rect.y += playerPos.y;
-			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER,offset,this); //Create collider, collider param is the node, playerPos: pos to collider
+			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER, offset, this); //Create collider, collider param is the node, playerPos: pos to collider
 															//And num 1 (need to change to param, now it sets enum PLAYER collider type)
 		}
 	}
@@ -241,18 +335,18 @@ bool j1Player::Load(const char* file_name)
 
 
 		p2List_item<ObjectLayer*>* item_layer = player_tmx_data.object_Layers.start; //Pointer to the first item of object_Layers
-		Animation** animations = new Animation*[player_tmx_data.object_Layers.count()]; //Create dynamic array, object_Layers sized
-		
+		Animation** animations = new Animation * [player_tmx_data.object_Layers.count()]; //Create dynamic array, object_Layers sized
+
 		int i = 0; //count to iterate animations
 		while (item_layer != NULL)
 		{
 
 			ObjectLayer* l = item_layer->data;
-			
+
 			animations[i] = new Animation;
 			LOG("Layer ----");
 			LOG("name: %s", l->name.GetString());
-			
+
 			LOG("Rects count: %d", l->rects.count());
 			animations[i]->name = l->name.GetString();
 
@@ -261,21 +355,21 @@ bool j1Player::Load(const char* file_name)
 			animations[i]->rects = new SDL_Rect[l->rects.count()];
 			animations[i]->numRects = l->rects.count();
 			for (int j = 0; j < l->rects.count(); j++)
-			{	 
+			{
 				animations[i]->rects[j] = *l->rects[j];
-			
+
 				LOG("x= %d y= %d width= %d height= %d", r->x, r->y, r->w, r->h);
 				if (rect->next != nullptr) {
 					rect = rect->next;
 					r = rect->data;
 				}
-				
+
 			}
 			i++;
 			item_layer = item_layer->next;
 		}
 
-	SetAnimations(animations);
+		SetAnimations(animations);
 	}
 	map_loaded = ret;
 
@@ -285,10 +379,10 @@ bool j1Player::Load(const char* file_name)
 void j1Player::SetAnimations(Animation** animations) {
 
 	for (int i = 0; i < player_tmx_data.object_Layers.count(); i++)
-	{	
+	{
 		SDL_Rect* r = animations[i]->rects;
 		p2SString name = animations[i]->name.GetString();
-		
+
 		if (strcmp(name.GetString(), "Idle") == 0) {
 
 			idle = animations[i];
@@ -299,42 +393,20 @@ void j1Player::SetAnimations(Animation** animations) {
 		else if (strcmp(name.GetString(), "Jump") == 0) {
 			jump = animations[i];
 		}
-		
-		
-		
+
+
+
 	}
 	RELEASE_ARRAY(animations);
 	currentAnimation = idle;
 }
 
-void j1Player::HoldHorizontalMove()
-{
-	//Run forward
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		WantToMove(DIR_RIGHT);
-		flip = SDL_FLIP_NONE;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		last_input = IN_IDLE;
-	}
-
-	//Run backward
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		WantToMove(DIR_LEFT);
-		flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		last_input = IN_IDLE;
-	}
-
-	state = ST_RUNNING;
-}
 
 // Load map general properties ---------------------------------------------------
 bool j1Player::LoadMap()
 {
 	bool ret = true;
-	pugi::xml_node map =  player_file.child("map");
+	pugi::xml_node map = player_file.child("map");
 
 	if (map == NULL)
 	{
@@ -347,51 +419,13 @@ bool j1Player::LoadMap()
 		player_tmx_data.height = map.attribute("height").as_int();
 		player_tmx_data.tile_width = map.attribute("tilewidth").as_int();
 		player_tmx_data.tile_height = map.attribute("tileheight").as_int();
-		
+
 		LoadSpriteSheet(map);
 
 		return ret;
 	}
 }
-void j1Player::MoveToPosition()
-{
-	if (!GetDetectedCollision()) {
-		p2Point<int> newPos{ 0,0 };
-		newPos.x = player_Collider->GetPosition().x - player_Collider->offset.x;
-		newPos.y = player_Collider->GetPosition().y - player_Collider->offset.y;
-		playerPos = newPos;
-		
-	}
-	else {
-		
-		player_Collider->MoveCollider(lastPos);
-		jumping = false;
-	}
 
-}
-bool j1Player::WantToMove(Directions dir)
-{
-	bool ret = true;
-	lastPos = player_Collider->GetPosition();
-	nextPos = player_Collider->GetPosition();
-	switch (dir)
-	{
-	case DIR_RIGHT:
-		nextPos.x += forwardVector.x;
-
-		break;
-	case DIR_LEFT:
-		nextPos.x -= forwardVector.x;
-		break;
-	case DIR_UP:
-		if (playerPos.y > maxVerticalJump.y) {
-			nextPos.y += upVector.y;
-		}
-		break;
-	}
-	player_Collider->MoveCollider(nextPos);
-	return ret;
-}
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 {
 	bool ret = true;
@@ -408,7 +442,7 @@ bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 	else
 	{
 		for (pugi::xml_node object = layer_data; object; object = object.next_sibling("object"))
-		{	
+		{
 			SDL_Rect* rect = new SDL_Rect;
 			rect->x = object.attribute("x").as_int();
 			rect->y = object.attribute("y").as_int();
@@ -441,3 +475,7 @@ bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
 
 	return ret;
 }
+#pragma endregion
+
+
+
