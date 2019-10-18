@@ -13,11 +13,6 @@
 j1Colliders::j1Colliders():j1Module()
 {
 	name.create("colliders");
-
-	//collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_SOLID] = true;
-	//collider_matrix[COLLIDER_PLAYER][COLLIDER_WALL_TRASPASSABLE] = true;
-	//collider_matrix[COLLIDER_PLAYER][COLLIDER_DEAD] = true;
-
 }
 
 j1Colliders::~j1Colliders()
@@ -58,7 +53,7 @@ void j1Colliders::Draw()
 				App->render->DrawQuad(rect, 0, 255, 0, 100);
 				break;
 			case COLLIDER_GROUND_CHECKER:
-				App->render->DrawQuad(rect, 255, 255, 0, 100);
+				App->render->DrawQuad(rect, 0, 255, 255, 200);
 				break;
 			}
 			
@@ -189,9 +184,9 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 }
 
 
-Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type, j1Module* callback, int Damage)
+Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>offset, j1Module* callback, int Damage)
 {	
-	Collider* c = new Collider(rect, type, callback, Damage);
+	Collider* c = new Collider(rect, type,offset, callback, Damage);
 	colliders.add(c);
 
 	return c;

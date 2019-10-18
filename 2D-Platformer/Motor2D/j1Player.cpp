@@ -23,14 +23,14 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	
 	//Init player pos
 	playerPos = { 200,472 };
-	nextPos = playerPos;
 
 	return ret;
 }
 
 bool j1Player::Start()
 {
-	ground_Collider = App->collider->AddCollider({ 0,28,13,5 }, COLLIDER_GROUND_CHECKER, this);
+	ground_Collider = App->collider->AddCollider({ 0,28,13,5 }, COLLIDER_GROUND_CHECKER, { 0,0 },this);
+
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 	state = ST_IDLE;	//Set initial state
@@ -42,7 +42,6 @@ bool j1Player::PreUpdate()
 
 	onGround = false;
 	SetDetectedCollision(false);
-	lastPos = playerPos;
 	//Hold Movements
 	switch (state)
 	{
@@ -76,19 +75,9 @@ void j1Player::Jump()
 		jumping = true;
 		maxVerticalJump.y = playerPos.y - 40;
 	}
+	if(jumping)
+		WantToMove(DIR_UP);
 
-	switch (jumping)
-	{
-	case true:
-		if (playerPos.y > maxVerticalJump.y) {
-			WantToMove({ 0,-6 });
-			
-		}
-		else {
-			jumping = false;
-		}
-		break;
-	}
 }
 
 void j1Player::ChangeAnimation(Animation* anim)
@@ -102,14 +91,8 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 bool j1Player::Update(float dt)
 {
-
-	if (!GetDetectedCollision()) {
-		MoveToPosition(nextPos);
-		 //TODO JORDI: Try to improve this function to avoid move, instead of moving to previous pos before move
-	}
-	else {
-		MoveToPosition(playerPos);
-	}
+	MoveToPosition();
+	
 	Draw(); //Draw all the player
 	return true;
 }
@@ -182,6 +165,7 @@ void j1Player::OnCollision(Collider* c1,Collider* c2)
 			break;
 		case COLLIDER_WALL_TRASPASSABLE:
 			LOG("WALL TRASPASSBLE COLLIDED");
+			SetDetectedCollision(true);
 			break;
 		case COLLIDER_DEAD:
 			break;
@@ -238,8 +222,14 @@ bool j1Player::Load(const char* file_name)
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
 		}
 		else {
-			player_Collider = App->collider->AddCollider(*lay->rects.start->data, COLLIDER_PLAYER,this); //Create collider, collider param is the node, playerPos: pos to collider
-																			//And num 1 (need to change to param, now it sets enum PLAYER collider type)
+			SDL_Rect rect = *lay->rects.start->data;
+			p2Point<int> offset{ 0, 0 };
+			offset.x = rect.x;
+			offset.y = rect.y;
+			rect.x += playerPos.x;
+			rect.y += playerPos.y;
+			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER,offset,this); //Create collider, collider param is the node, playerPos: pos to collider
+															//And num 1 (need to change to param, now it sets enum PLAYER collider type)
 		}
 	}
 
@@ -321,7 +311,7 @@ void j1Player::HoldHorizontalMove()
 {
 	//Run forward
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		WantToMove(forwardVector);
+		WantToMove(DIR_RIGHT);
 		flip = SDL_FLIP_NONE;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
@@ -330,7 +320,7 @@ void j1Player::HoldHorizontalMove()
 
 	//Run backward
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		WantToMove(backwardVector);
+		WantToMove(DIR_LEFT);
 		flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
@@ -363,22 +353,43 @@ bool j1Player::LoadMap()
 		return ret;
 	}
 }
-void j1Player::MoveToPosition(p2Point<int> targetPos)
+void j1Player::MoveToPosition()
 {
-	playerPos = targetPos;
-	player_Collider->MoveCollider(playerPos);
+	if (!GetDetectedCollision()) {
+		p2Point<int> newPos{ 0,0 };
+		newPos.x = player_Collider->GetPosition().x - player_Collider->offset.x;
+		newPos.y = player_Collider->GetPosition().y - player_Collider->offset.y;
+		playerPos = newPos;
+		
+	}
+	else {
+		
+		player_Collider->MoveCollider(lastPos);
+		jumping = false;
+	}
 
 }
-bool j1Player::WantToMove(p2Point<int> targetPos)
+bool j1Player::WantToMove(Directions dir)
 {
 	bool ret = true;
+	lastPos = player_Collider->GetPosition();
+	nextPos = player_Collider->GetPosition();
+	switch (dir)
+	{
+	case DIR_RIGHT:
+		nextPos.x += forwardVector.x;
 
-	nextPos.x = playerPos.x + targetPos.x;
-	nextPos.y = playerPos.y + targetPos.y;
-	LOG("Next Pos: (%i,%i)", nextPos.x, nextPos.y);
+		break;
+	case DIR_LEFT:
+		nextPos.x -= forwardVector.x;
+		break;
+	case DIR_UP:
+		if (playerPos.y > maxVerticalJump.y) {
+			nextPos.y += upVector.y;
+		}
+		break;
+	}
 	player_Collider->MoveCollider(nextPos);
-	ground_Collider->MoveCollider({ player_Collider->rect.x,player_Collider->rect.y });
-
 	return ret;
 }
 bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)

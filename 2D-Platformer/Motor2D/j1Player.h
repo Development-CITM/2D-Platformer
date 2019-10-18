@@ -9,7 +9,13 @@
 
 struct Collider;
 enum MapTypes;
-
+enum Directions
+{
+	DIR_RIGHT,
+	DIR_LEFT,
+	DIR_UP,
+	DIR_DOWN,
+};
 // ----------------------------------------------------
 struct Animation {
 	int numRects = 0;
@@ -121,9 +127,9 @@ private:
 
 	bool LoadMap();
 	
-	void MoveToPosition(p2Point<int> targetPos);
+	void MoveToPosition();
 
-	bool WantToMove(p2Point<int> targetPos);
+	bool WantToMove(Directions dir);
 
 public:
 	PlayerTMXData		player_tmx_data;
@@ -170,6 +176,8 @@ private:
 	bool				jumping = false;
 
 	p2Point<int>		currentVelocity{ 0,0 };
+
+	Directions			direction = DIR_RIGHT;
 
 };
 
