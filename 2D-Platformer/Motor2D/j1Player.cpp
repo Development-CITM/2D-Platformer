@@ -61,7 +61,7 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
-	MoveToPosition();
+
 
 	Draw(); //Draw all the player
 	return true;
@@ -80,7 +80,7 @@ void j1Player::Jump()
 		maxVerticalJump.y = player_Collider->GetPosition().y - 40;
 	}
 	if(jumping)
-		WantToMove(DIR_UP);
+		MoveTo(DIR_UP);
 
 }
 
@@ -131,55 +131,48 @@ void j1Player::HoldHorizontalMove()
 		}
 	}
 	if (move_To_Left) {
-		WantToMove(DIR_LEFT);
+		MoveTo(DIR_LEFT);
 	}
 	else if (move_To_right) {
-		WantToMove(DIR_RIGHT);
+		MoveTo(DIR_RIGHT);
 	}
-
-
-	LOG("RIGHT: %i", move_To_right);
-	LOG("LEFT: %i", move_To_Left);
 }
 
-void j1Player::MoveToPosition()
+void j1Player::MoveTo(Directions dir)
 {
-	if (!GetDetectedCollision()) {
-		p2Point<int> newPos{ 0,0 };
-		newPos.x = player_Collider->GetPosition().x - player_Collider->offset.x;
-		newPos.y = player_Collider->GetPosition().y - player_Collider->offset.y;
-		playerPos = newPos;
+	p2Point<int> previousPos{ 0,0 };
+	previousPos.x = player_Collider->rect.x;
+	p2Point<int> previousPlayerPos{ 0,0 };
+	previousPlayerPos.x = playerPos.x;
+	
 
-	}
-	else {
-
-		player_Collider->MoveCollider(lastPos);
-		jumping = false;
-	}
-
-}
-bool j1Player::WantToMove(Directions dir)
-{
-	bool ret = true;
-	lastPos = player_Collider->GetPosition();
-	nextPos = player_Collider->GetPosition();
 	switch (dir)
 	{
-	case DIR_LEFT:
-		nextPos.x -= forwardVector.x;
-		break;
 	case DIR_RIGHT:
-		nextPos.x += forwardVector.x;
-		break;
-	case DIR_UP:
-		if (player_Collider->GetPosition().y > maxVerticalJump.y) {
-			nextPos.y += upVector.y;
+		player_Collider->rect.x += 2;
+		playerPos.x += 2;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.x = previousPos.x;
+			playerPos.x = previousPlayerPos.x;
 		}
 		break;
-
+	case DIR_LEFT:
+		player_Collider->rect.x -= 2;
+		playerPos.x -= 2;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.x = previousPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		break;
+	case DIR_UP:
+		break;
+	case DIR_DOWN:
+		break;
+	default:
+		break;
 	}
-	player_Collider->MoveCollider(nextPos);
-	return ret;
+
+
 }
 
 void j1Player::ChangeAnimation(Animation* anim)

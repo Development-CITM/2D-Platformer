@@ -127,9 +127,8 @@ private:
 
 	bool LoadMap();
 	
-	void MoveToPosition();
 
-	bool WantToMove(Directions dir);
+	void MoveTo(Directions dir);
 
 public:
 	PlayerTMXData		player_tmx_data;

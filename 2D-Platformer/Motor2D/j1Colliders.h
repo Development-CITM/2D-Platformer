@@ -87,11 +87,9 @@ public:
 	//Collider* CreateCollider(SDL_Rect* rect,p2Point<int> pos ,int type);
 	Collider* AddCollider(SDL_Rect rect, ColliderType type, p2Point<int> offset = { 0, 0 },j1Module * callback = nullptr, int Damage = 0);
 
-
-private:
-	bool CheckCollisionTypes(Collider* c1, Collider* c2);
-
 public:
+
+	bool CheckCollision(Collider*);
 
 	bool collider_debug = false;
 	

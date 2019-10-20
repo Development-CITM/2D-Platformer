@@ -112,37 +112,10 @@ bool j1Colliders::PreUpdate()
 		{
 			colliders.del(collider);
 		}
+
 		collider = collider->next;
 	}
 
-	// Calculate collisions
-	Collider* c1 = nullptr;
-	Collider* c2 = nullptr;
-	collider = colliders.start;
-	p2List_item<Collider*>* collider2 = nullptr;
-	uint i = 0;
-	for (i = 0; i < colliders.count(); ++i)
-	{		
-		c1 = collider->data;
-		//LOG("C1: %i ---------------------", c1->type);
-		int count = 0;
-		collider2 = colliders.start;
-		for (uint j = 0; j < colliders.count(); ++j)
-		{
-			c2 = collider2->data;
-			if (c2 != c1) {
-				if (c1->CheckCollision(c2->rect) && c1->callback) {
-					c1->callback->OnCollision(c1,c2);
-				}
-			}
-			collider2 = collider2->next;
-				
-		}
-		//LOG("Count: %d", count);
-		//LOG("c1: %i", c1->type);
-		//LOG("c2: %i", c2->type);
-		collider = collider->next;
-	}
 	return true;
 }
 
@@ -192,25 +165,31 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 	return c;
 }
 
-
-bool j1Colliders::CheckCollisionTypes(Collider* c1, Collider* c2)
+bool j1Colliders::CheckCollision(Collider* c1)
 {
 	bool ret = false;
-
-	switch (c1->type)
+	Collider* c2 = nullptr;
+	p2List_item<Collider*>* c = colliders.start;
+	c2 = c->data;
+	for (uint i = 0; i < colliders.count(); i++)
 	{
-	case COLLIDER_PLAYER:
-		switch (c2->type)
-		{
-		case COLLIDER_WALL_SOLID:
-			ret = true;
-			LOG("PLAYER-WALL_SOLID");
-			break;
+		if (c1 != c2) {
+			ret = c1->CheckCollision(c2->rect);
+			if (ret) {
+				if (c1->callback) {
+					c1->callback->OnCollision(c1, c2);
+				}
+				return ret;
+			}
 		}
-		break;
+		if(c->next != NULL)
+		c = c->next;
+		c2 = c->data;
 	}
+
 	return ret;
 }
+
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
