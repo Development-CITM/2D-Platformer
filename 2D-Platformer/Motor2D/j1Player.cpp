@@ -41,7 +41,6 @@ bool j1Player::PreUpdate()
 {
 
 	onGround = false;
-	SetDetectedCollision(false);
 	//Hold Movements
 	Jump();
 	switch (state)
@@ -75,12 +74,11 @@ bool j1Player::PostUpdate()
 
 void j1Player::Jump()
 {
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-		jumping = true;
-		maxVerticalJump.y = player_Collider->GetPosition().y - 40;
-	}
-	if(jumping)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		MoveTo(DIR_UP);
+		//maxVerticalJump.y = player_Collider->GetPosition().y - 40;
+	}
+
 
 }
 
@@ -142,8 +140,10 @@ void j1Player::MoveTo(Directions dir)
 {
 	p2Point<int> previousPos{ 0,0 };
 	previousPos.x = player_Collider->rect.x;
+	previousPos.y = player_Collider->rect.y;
 	p2Point<int> previousPlayerPos{ 0,0 };
 	previousPlayerPos.x = playerPos.x;
+	previousPlayerPos.y = playerPos.y;
 	
 
 	switch (dir)
@@ -165,6 +165,12 @@ void j1Player::MoveTo(Directions dir)
 		}
 		break;
 	case DIR_UP:
+		player_Collider->rect.y -= 2;
+		playerPos.y -= 2;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.y = previousPos.y;
+			playerPos.y = previousPlayerPos.y;
+		}
 		break;
 	case DIR_DOWN:
 		break;
@@ -247,11 +253,9 @@ void j1Player::OnCollision(Collider* c1,Collider* c2)
 		{
 		case COLLIDER_WALL_SOLID:
 			LOG("WALL SOLID COLLIDED");
-			SetDetectedCollision(true);
 			break;
 		case COLLIDER_WALL_TRASPASSABLE:
 			LOG("WALL TRASPASSBLE COLLIDED");
-			SetDetectedCollision(true);
 			break;
 		case COLLIDER_DEAD:
 			break;
