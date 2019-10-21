@@ -6,8 +6,9 @@
 #include "j1Player.h"
 #include "j1Input.h"
 #include "j1Colliders.h"
-
 #include <math.h>
+
+#pragma region Constructor/Awake/Start/CleanUp
 
 struct Collider;
 j1Player::j1Player()
@@ -29,202 +30,16 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 bool j1Player::Start()
 {
-	ground_Collider = App->collider->AddCollider({ 0,28,13,5 }, COLLIDER_GROUND_CHECKER, { 0,0 },this);
-
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
+
 	state = ST_IDLE;	//Set initial state
 	return true;
 }
 
-bool j1Player::PreUpdate()
-{
-
-	onGround = false;
-	//Hold Movements
-	Jump();
-	switch (state)
-	{
-	case ST_IDLE:
-		HoldHorizontalMove();
-		break;
-	case ST_RUNNING:
-		HoldHorizontalMove();
-		break;
-	}
-
-
-
-	return true;
-}
-
-bool j1Player::Update(float dt)
-{
-
-
-	Draw(); //Draw all the player
-	return true;
-}
-
-bool j1Player::PostUpdate()
-{
-	return true;
-}
-
-
-void j1Player::Jump()
-{
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		MoveTo(DIR_UP);
-		//maxVerticalJump.y = player_Collider->GetPosition().y - 40;
-	}
-
-
-}
-
-void j1Player::HoldHorizontalMove()
-{
-	////Run forward
-	//if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-	//	WantToMove(DIR_RIGHT);
-	//	flip = SDL_FLIP_NONE;
-	//}
-	//else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-	//	last_input = IN_IDLE;
-	//}
-
-	////Run backward
-	//if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-	//	WantToMove(DIR_LEFT);
-	//	flip = SDL_FLIP_HORIZONTAL; //Flipped bc it's going to back
-	//}
-	//else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-	//	last_input = IN_IDLE;
-	//}
-
-	//state = ST_RUNNING;
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		move_To_right = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		move_To_right = false;
-	}
-
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
-		move_To_Left = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		move_To_Left = false;
-	}
-
-	if (move_To_right) {
-		if (move_To_Left) {
-			move_To_right = false;
-		}
-	}
-	else if (move_To_Left) {
-		if (move_To_right) {
-			move_To_Left = false;
-		}
-	}
-	if (move_To_Left) {
-		MoveTo(DIR_LEFT);
-	}
-	else if (move_To_right) {
-		MoveTo(DIR_RIGHT);
-	}
-}
-
-void j1Player::MoveTo(Directions dir)
-{
-	p2Point<int> previousPos{ 0,0 };
-	previousPos.x = player_Collider->rect.x;
-	previousPos.y = player_Collider->rect.y;
-	p2Point<int> previousPlayerPos{ 0,0 };
-	previousPlayerPos.x = playerPos.x;
-	previousPlayerPos.y = playerPos.y;
-	
-
-	switch (dir)
-	{
-	case DIR_RIGHT:
-		player_Collider->rect.x += 2;
-		playerPos.x += 2;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.x = previousPos.x;
-			playerPos.x = previousPlayerPos.x;
-		}
-		break;
-	case DIR_LEFT:
-		player_Collider->rect.x -= 2;
-		playerPos.x -= 2;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.x = previousPos.x;
-			playerPos.x = previousPlayerPos.x;
-		}
-		break;
-	case DIR_UP:
-		player_Collider->rect.y -= 2;
-		playerPos.y -= 2;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.y = previousPos.y;
-			playerPos.y = previousPlayerPos.y;
-		}
-		break;
-	case DIR_DOWN:
-		break;
-	default:
-		break;
-	}
-
-
-}
-
-void j1Player::ChangeAnimation(Animation* anim)
-{
-	if (currentAnimation != anim) {
-		previousAnimation = currentAnimation;
-		previousAnimation->ResetAnim();
-		currentAnimation = anim;
-	}
-}
-
-
-
-
-
-void j1Player::Draw()
-{
-	//First check how many frames should repeat before change its sprite frame
-	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
-		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
-		{
-			currentAnimation->numFrame++;
-		}
-		else {
-			currentAnimation->numFrame = 0;
-		}
-
-		currentAnimation->repeatFrames = 0; //Reset repeat frames to start again the count of the same sprite. but this should be a function (maybe)
-		
-	}
-	else {
-		currentAnimation->repeatFrames++; // Increse num of frames before change its animations sprite
-	}
-	App->render->Blit(player_tmx_data.spriteSheet.texture,		//Texture loaded from tmx
-		playerPos.x,											//Player position.x
-		playerPos.y, 											//Player position.y
-		&currentAnimation->rects[currentAnimation->numFrame],	//Current rect from animation rects
-		App->render->drawsize,									//DrawSize is a multiplier to scale sprites
-		flip);													//Orientation to flip sprites
-	
-	
-}
-
 bool j1Player::CleanUp()
 {
-	
+
 	// Remove all layers
 	p2List_item<ObjectLayer*>* item2;
 	item2 = player_tmx_data.object_Layers.start;
@@ -244,43 +59,9 @@ bool j1Player::CleanUp()
 	return true;
 }
 
-void j1Player::OnCollision(Collider* c1,Collider* c2)
-{
-	switch (c1->type)
-	{
-	case COLLIDER_PLAYER:
-		switch (c2->type)
-		{
-		case COLLIDER_WALL_SOLID:
-			LOG("WALL SOLID COLLIDED");
-			break;
-		case COLLIDER_WALL_TRASPASSABLE:
-			LOG("WALL TRASPASSBLE COLLIDED");
-			break;
-		case COLLIDER_DEAD:
-			break;
-		}
-		break;
-	case COLLIDER_GROUND_CHECKER:
-		switch (c2->type)
-		{
-		case COLLIDER_WALL_SOLID:
-			onGround = true;
-			break;
-		case COLLIDER_WALL_TRASPASSABLE:
-			LOG("WALL TRASPASSBLE COLLIDED");
-			break;
+#pragma endregion
 
-		}
-		break;
-	default:
-		onGround = false;
-		break;
-	}
-
-}
-
-#pragma region LOAD INFO
+#pragma region Load Info
 bool j1Player::Load(const char* file_name)
 {
 	bool ret = true;
@@ -319,8 +100,10 @@ bool j1Player::Load(const char* file_name)
 			offset.y = rect.y;
 			rect.x += playerPos.x;
 			rect.y += playerPos.y;
-			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER, offset, this); //Create collider, collider param is the node, playerPos: pos to collider
-															//And num 1 (need to change to param, now it sets enum PLAYER collider type)
+			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER, offset, this);	
+
+			//Create ground checker with the collider data from player.tmx
+			ground_Collider = App->collider->AddCollider(rect, COLLIDER_GROUND_CHECKER, { offset.x,offset.y + 20 }, this);
 		}
 	}
 
@@ -472,7 +255,188 @@ bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
 
 	return ret;
 }
+
 #pragma endregion
 
+#pragma region Pre/Update/Post
+
+bool j1Player::PreUpdate()
+{
+	onGround = false;
+
+	//Hold Movements
+	JumpInput();
+	HorizontalInput();
+
+	return true;
+}
+
+bool j1Player::Update(float dt)
+{
+	Jump();
+	Move();
+	Draw(); //Draw all the player
+	return true;
+}
+
+bool j1Player::PostUpdate()
+{
+	return true;
+}
+
+#pragma endregion
+
+#pragma region Inputs
+
+void j1Player::JumpInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+		maxJump = player_Collider->rect.y - jumpDistance;
+		jumping = true;
+	}
+}
+
+void j1Player::HorizontalInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		move_To_Right = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		move_To_Right = false;
+	}
+
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
+		move_To_Left = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		move_To_Left = false;
+	}
+
+}
+#pragma endregion
+
+#pragma region MoveLogic
+
+void j1Player::Move() {
+	if (move_To_Left) {
+		MoveTo(DIR_LEFT);
+	}
+	else if (move_To_Right) {
+		MoveTo(DIR_RIGHT);
+	}
+}
+
+void j1Player::Jump()
+{
+	if (jumping) {
+		if (player_Collider->rect.y > maxJump) {
+			MoveTo(DIR_UP);
+		}
+		else {
+			jumping = false;
+		}
+	}
+}
+
+void j1Player::MoveTo(Directions dir)
+{
+	p2Point<int> previousPos{ 0,0 };
+	previousPos.x = player_Collider->rect.x;
+	previousPos.y = player_Collider->rect.y;
+	p2Point<int> previousPlayerPos{ 0,0 };
+	previousPlayerPos.x = playerPos.x;
+	previousPlayerPos.y = playerPos.y;
+	
+
+	switch (dir)
+	{
+	case DIR_RIGHT:
+		player_Collider->rect.x += 2;
+		playerPos.x += 2;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.x = previousPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		break;
+	case DIR_LEFT:
+		player_Collider->rect.x -= 2;
+		playerPos.x -= 2;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.x = previousPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		break;
+	case DIR_UP:
+		player_Collider->rect.y -= 2;
+		playerPos.y -= 2;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.y = previousPos.y;
+			playerPos.y = previousPlayerPos.y;
+			jumping = false;
+		}
+		break;
+	case DIR_DOWN:
+		break;
+	}
+
+}
+#pragma endregion
+
+#pragma region Render
+
+void j1Player::Draw()
+{
+	//First check how many frames should repeat before change its sprite frame
+	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
+		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
+		{
+			currentAnimation->numFrame++;
+		}
+		else {
+			currentAnimation->numFrame = 0;
+		}
+
+		currentAnimation->repeatFrames = 0; //Reset repeat frames to start again the count of the same sprite. but this should be a function (maybe)
+		
+	}
+	else {
+		currentAnimation->repeatFrames++; // Increse num of frames before change its animations sprite
+	}
+	App->render->Blit(player_tmx_data.spriteSheet.texture,		//Texture loaded from tmx
+		playerPos.x,											//Player position.x
+		playerPos.y, 											//Player position.y
+		&currentAnimation->rects[currentAnimation->numFrame],	//Current rect from animation rects
+		App->render->drawsize,									//DrawSize is a multiplier to scale sprites
+		flip);													//Orientation to flip sprites
+	
+	
+}
 
 
+#pragma endregion
+
+#pragma region Animations
+void j1Player::ChangeAnimation(Animation* anim)
+{
+	if (currentAnimation != anim) {
+		previousAnimation = currentAnimation;
+		previousAnimation->ResetAnim();
+		currentAnimation = anim;
+	}
+}
+
+#pragma endregion
+
+#pragma region CollisionLogic
+
+void j1Player::OnCollision(Collider* c2)
+{
+	//TODO JORDI: Think how to difference between Player_Collider and Ground_Collider and its logic when collides but ignore themselves
+}
+
+bool j1Player::GroundCheck()
+{
+	return App->collider->CheckCollision(ground_Collider);
+}
+
+#pragma endregion

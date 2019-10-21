@@ -5,33 +5,13 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "Animation.h"
 
-
+//Forward Declarations
 struct Collider;
 enum MapTypes;
-enum Directions
-{
-	DIR_RIGHT,
-	DIR_LEFT,
-	DIR_UP,
-	DIR_DOWN,
-};
-// ----------------------------------------------------
-struct Animation {
-	int numRects = 0;
-	int numFrame = 0;
-	int repeatFrames = 0;
 
-	p2SString name;
-
-	SDL_Rect* rects = nullptr;
-
-	bool loop = false;
-	
-	void ResetAnim() {
-		numFrame = 0;
-	}
-};
+#pragma region Enums
 
 enum PlayerState {
 	ST_IDLE,
@@ -48,6 +28,16 @@ enum Input {
 	IN_JUMP,
 	IN_JUMP_FINISHED,
 };
+enum Directions
+{
+	DIR_RIGHT,
+	DIR_LEFT,
+	DIR_UP,
+	DIR_DOWN,
+};
+#pragma endregion
+
+#pragma region Structs
 
 struct ObjectLayer
 {
@@ -69,12 +59,12 @@ struct PlayerTMXData {
 	MapTypes				type;
 	p2List<ObjectLayer*>	object_Layers;
 };
-
-
+#pragma endregion
 
 
 class j1Player : public j1Module
 {
+//------------FUNCTIONS-----------//
 public:
 
 	j1Player();
@@ -91,69 +81,71 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
-	void Jump();
-
-	void ChangeAnimation(Animation*);
-
 	// Called each loop iteration
 	bool Update(float dt);
 
 	// Called before all Updates
 	bool PostUpdate();
 
-	// Called each loop iteration
+	// Called each loop iteration if has one
+	bool Load(const char* path);
+
+	// Called each loop iteration if has one
 	void Draw();
 
 	// Called before quitting
 	bool CleanUp();
 
 	//Called when collided
-	void OnCollision(Collider*,Collider*);
-
-
-	bool Load(const char* path);
-
-	void SetAnimations(Animation**);
-
-	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
-
-	bool LoadSpriteSheet(pugi::xml_node& node);
+	void OnCollision(Collider*);
 
 
 private:
+	//Holding Movement Functions
+	void HorizontalInput();
+	void JumpInput();
 
-	//Movement Functions
-	void HoldHorizontalMove();
-
-	bool LoadMap();
-	
-
+	//Logic Movements
+	void Move();
+	void Jump();
 	void MoveTo(Directions dir);
 
+	//Load Functions
+	bool LoadMap();
+	void SetAnimations(Animation**);
+	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
+	bool LoadSpriteSheet(pugi::xml_node& node);
+
+	//Animation Functions
+	void ChangeAnimation(Animation*);
+
+	//Checking Functions
+	bool GroundCheck();
+
+
+//---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
 
-	Collider*			player_Collider = nullptr;
-	Collider*			ground_Collider = nullptr;
-
-	bool				GetDetectedCollision() { return detected_Collision; }
-	bool				SetDetectedCollision(bool set) { return detected_Collision = set; }
 private:
 
-	p2Point<int>		playerPos = { 0,0 };
-	p2Point<int>		lastPos = { 0,0 };
-	p2Point<int>		nextPos = { 0,0 };
-	p2Point<int>		previousPos = { 0,0 };
-
-	p2Point<int>		forwardVector = { 2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
-	p2Point<int>		backwardVector = { -2,0 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
-	p2Point<int>		upVector = { 0,-2 };	//Need to change to variable speed (do a operator overload to multiply or sum that variable)
-
+	//Enums
 	PlayerState			state = ST_IDLE;
-	Input				last_input = IN_IDLE;
-
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
+	Directions			direction = DIR_RIGHT;
+	Directions			last_Direction = DIR_RIGHT;
+
+	//Positions
+	p2Point<int>		playerPos = { 0,0 };
+	p2Point<int>		previousPos = { 0,0 };
+	p2Point<int>		currentVelocity{ 0,0 };
+
+	//Jump Variables
+	int					maxJump = 0;
+	int					jumpDistance = 40;
+
+	//Animations
 	Animation*			currentAnimation = nullptr;
 	Animation*			previousAnimation = nullptr;
 
@@ -161,31 +153,24 @@ private:
 	Animation*			run = nullptr;
 	Animation*			jump = nullptr;
 
+	//Colliders
+	Collider*			player_Collider = nullptr;
+	Collider*			ground_Collider = nullptr;
+
+	//Checkers
+	bool				detected_Collision = false;
+	bool				onGround = false;
+	bool				jumping = false;
+
+	bool				move_To_Right = false;
+	bool				move_To_Left = false;
+	bool				move_To_Up = false;
+
+	//XML Stuff
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded = false;
-
-	bool				detected_Collision = false;
-
-	bool				onGround = false;
-
-	p2Point<int>		maxVerticalJump{ 0,0 };
-	int					jumpDistance = -40;
-
-	bool				jumping = false;
-
-	p2Point<int>		currentVelocity{ 0,0 };
-
-	Directions			direction = DIR_RIGHT;
-	Directions			last_Direction = DIR_RIGHT;
-
-	p2Point<int>		speed{ 0,0 };
-
-
-	bool move_To_right = false;
-	bool move_To_Left = false;
-	bool move_To_Up = false;
-
 };
+
 
 #endif // __j1PLAYER_H__
