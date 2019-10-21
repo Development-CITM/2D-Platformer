@@ -33,7 +33,6 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->render->camera = { -150,-400 };
 
 	if (map % 2 == 0)
 	{
@@ -61,21 +60,29 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		App->SaveGame("save_game.xml");
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 3;
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 3;
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		if (App->render->camera.x + 3 < -limitleft.rect.w)
-		App->render->camera.x += 3;
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		if (App->render->camera.x - App->win->GetWidth() - 3 > -limitright.rect.x * (int)App->render->drawsize)
-		App->render->camera.x -= 3;
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+		App->render->camera.y += 4;
+		App->tiles->culling_Collider->rect.y -= 2;
+	}
 	
-		
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+		App->render->camera.y -= 4;
+		App->tiles->culling_Collider->rect.y += 2;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+		App->render->camera.x += 4;
+		App->tiles->culling_Collider->rect.x -= 2;
+	}
+		//if (App->render->camera.x + 3 < -limitleft.rect.w)
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+		//if (App->render->camera.x - App->win->GetWidth() - 3 > -limitright.rect.x * (int)App->render->drawsize)
+		App->render->camera.x -= 4;
+		App->tiles->culling_Collider->rect.x += 2;
+
+	}
 
 		App->tiles->Draw();
 	

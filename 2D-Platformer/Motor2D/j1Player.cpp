@@ -267,9 +267,24 @@ bool j1Player::PreUpdate()
 {
 
 	//Hold Movements
+	switch (state)
+	{
+	case ST_IDLE:
+		JumpInput();
+		HorizontalInput();
+		break;
+	case ST_RUNNING:
+		JumpInput();
+		HorizontalInput();
+		break;
+	case ST_JUMP:
+		HorizontalInput();
+		break;
+	case ST_MIDAIR:
+		HorizontalInput();
+		break;
+	}
 
-	JumpInput();
-	HorizontalInput();
 
 
 	return true;
@@ -279,9 +294,39 @@ bool j1Player::Update(float dt)
 {
 	int HorizontalSpeed = playerPos.x;
 	int VerticalSpeed = playerPos.y;
-	Gravity();
-	Jump();
-	Move();
+	
+	switch (state)
+	{
+	case ST_IDLE:
+		Gravity();
+		Jump();
+		Move();
+		break;
+	case ST_RUNNING:
+		Gravity();
+		Jump();
+		Move();
+		break;
+	case ST_JUMP:
+		Gravity();
+		Move();
+		StartMidAir();
+		break;
+	case ST_MIDAIR:
+		Move();
+		Gravity();
+		break;
+	case ST_FALL:
+		Gravity();
+		Jump();
+		Move();
+		break;
+	case ST_JUMP_FINISHED:
+		break;
+	default:
+		break;
+	}
+
 	HorizontalSpeed -= playerPos.x;
 	VerticalSpeed -= playerPos.y;
 	if (HorizontalSpeed != 0 && VerticalSpeed == 0) {
@@ -296,6 +341,8 @@ bool j1Player::Update(float dt)
 		ChangeAnimation(jump);
 	}
 	Draw(); //Draw all the player
+
+	LOG("%i", state);
 	return true;
 }
 
@@ -313,6 +360,8 @@ void j1Player::JumpInput()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && onGround) {
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
+		jumpSpeed = 4;
+		state = ST_JUMP;
 	}
 }
 
@@ -323,6 +372,8 @@ void j1Player::HorizontalInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		move_To_Right = false;
+		if(state != ST_MIDAIR)
+		state = ST_IDLE;
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
@@ -330,6 +381,8 @@ void j1Player::HorizontalInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		move_To_Left = false;
+		if (state != ST_MIDAIR)
+		state = ST_IDLE;
 	}
 
 }
@@ -341,11 +394,24 @@ void j1Player::Move() {
 	if (move_To_Left) {
 		MoveTo(DIR_LEFT);
 		flip = SDL_FLIP_HORIZONTAL;
+		if (state != ST_MIDAIR)
+			state = ST_RUNNING;
 	}
 	else if (move_To_Right) {
 		MoveTo(DIR_RIGHT);
 		flip = SDL_FLIP_NONE;
+		if (state != ST_MIDAIR)
+			state = ST_RUNNING;
 	}
+}
+
+void j1Player::StartMidAir() {
+
+	//if (currentTimeAir < timeOnAir) {
+	//	currentTimeAir++;
+	//}
+
+	
 }
 
 void j1Player::Jump()
@@ -354,11 +420,25 @@ void j1Player::Jump()
 		if (player_Collider->rect.y > maxJump) {
 			gravityForce = 0;
 			MoveTo(DIR_UP);
+			if (player_Collider->rect.y < maxJump + 20) {
+				jumpSpeed = 3;
+			}	
+			if (player_Collider->rect.y < maxJump + 10) {
+				jumpSpeed = 1;
+			}
+			onGround = false;
 		}
 		else {
-			gravityForce = max_gravityForce;
 			jumping = false;
+			state = ST_MIDAIR;
+			onGround = false;
+			currentTimeAir = 0;
+			gravityForce = max_gravityForce;
+		
 		}
+	}
+	else {
+		gravityForce = max_gravityForce;
 	}
 }
 
@@ -402,18 +482,24 @@ void j1Player::MoveTo(Directions dir)
 			player_Collider->rect.y = previousPos.y;
 			playerPos.y = previousPlayerPos.y;
 			jumping = false;
+			gravityForce = max_gravityForce;
 		}
 		break;
 	case DIR_DOWN:
-		player_Collider->rect.y += gravityForce;
-		playerPos.y += gravityForce;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.y = previousPos.y;
-			playerPos.y = previousPlayerPos.y;
-			onGround = true;
-		}
-		else {
-			onGround = false;
+		for (int i = 0; i < 5; i++)
+		{
+			player_Collider->rect.y += gravityForce;
+			playerPos.y += gravityForce;
+			if (App->collider->CheckCollision(player_Collider)) {
+				player_Collider->rect.y = previousPos.y;
+				playerPos.y = previousPlayerPos.y;
+				onGround = true;
+				state = ST_IDLE;
+			}
+			else {
+				onGround = false;
+			}
+
 		}
 		break;
 	}
@@ -426,7 +512,7 @@ void j1Player::MoveTo(Directions dir)
 void j1Player::Draw()
 {
 	//First check how many frames should repeat before change its sprite frame
-	if (currentAnimation->repeatFrames > 6) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
+	if (currentAnimation->repeatFrames > 2) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
 		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
 		{
 			currentAnimation->numFrame++;
@@ -473,7 +559,7 @@ void j1Player::OnCollision(Collider* c1,Collider* c2)
 	switch (c1->type)
 	{
 	case COLLIDER_PLAYER: break;
-	case COLLIDER_GROUND_CHECKER:   break;
+	case COLLIDER_WINDOW:   break;
 	}
 }
 

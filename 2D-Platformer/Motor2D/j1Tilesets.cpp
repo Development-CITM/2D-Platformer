@@ -28,11 +28,26 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-
+	culling_Collider = App->collider->AddCollider({ 74,200,App->win->GetWidth()/2,App->win->GetHeight()/2 }, COLLIDER_WINDOW);
 	return ret;
 }
 void j1Tilesets::Draw()
 {
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) {
+		culling_Collider->rect.x += 2;
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
+		culling_Collider->rect.x -= 2;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		culling_Collider->rect.y += 2;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) {
+		culling_Collider->rect.y -= 2;
+	}
+
+	LOG("%d, %d", culling_Collider->rect.x, culling_Collider->rect.y);
 	if (map_loaded == false)
 		return;
 
@@ -58,14 +73,17 @@ void j1Tilesets::Draw()
 						iPoint pos = MapToWorld(x, y);
 						if (strcmp(layer->name.GetString(), "Clouds") == 0)
 						{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE, 1.1f);
+							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE/*, 1.1f*/);
 						}
 						else if (strcmp(layer->name.GetString(), "Sea") == 0)
 						{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE, 0.9f);
+							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE/*, 0.9f*/);
 						}
 						else
 						{
+							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
 						}
 						

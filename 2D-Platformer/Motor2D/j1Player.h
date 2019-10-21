@@ -109,6 +109,7 @@ private:
 	void Move();
 	void Jump();
 	void Gravity();
+	void StartMidAir();
 
 	void MoveTo(Directions dir);
 
@@ -146,11 +147,13 @@ private:
 	//Jump Variables
 	int					maxJump = 0;
 	int					jumpDistance = 80;
+	int					timeOnAir = 2;
+	int					currentTimeAir = 0;
 
 	//Speeds
 	int					jumpSpeed = 4;
-	int					gravityForce = 3;
-	int					max_gravityForce = 3;
+	int					gravityForce = 0;
+	int					max_gravityForce = 1;
 	int					runSpeed = 2;
 
 	//Animations

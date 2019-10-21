@@ -22,6 +22,7 @@ bool j1Colliders::Awake(pugi::xml_node & conf)
 {
 	scale = App->win->GetScale();
 	size = App->render->drawsize;
+	
 	return true;
 }
 
@@ -43,7 +44,7 @@ void j1Colliders::Draw()
 			case COLLIDER_WALL_SOLID:
 				App->render->DrawQuad(rect, 255, 0, 0, 40);
 				break;
-			case COLLIDER_WALL_TRASPASSABLE:
+			case COLLIDER_WALL_TRASPASSABLE:			
 				App->render->DrawQuad(rect, 0, 0, 255, 100);
 				break;
 			case COLLIDER_DEAD:
@@ -52,8 +53,8 @@ void j1Colliders::Draw()
 			case COLLIDER_PLAYER:
 				App->render->DrawQuad(rect, 0, 255, 0, 100);
 				break;
-			case COLLIDER_GROUND_CHECKER:
-				App->render->DrawQuad(rect, 0, 255, 255, 200);
+			case COLLIDER_WINDOW:
+				App->render->DrawQuad(rect, 0, 255, 255, 100);
 				break;
 			}
 			
@@ -83,7 +84,7 @@ bool j1Colliders::CleanUp()
 
 bool j1Colliders::Load(pugi::xml_node object)
 {
-
+	
 	bool ret = true;
 	
 		for (object.child("object"); object && ret; object = object.next_sibling("object"))
@@ -116,6 +117,7 @@ bool j1Colliders::PreUpdate()
 		collider = collider->next;
 	}
 
+	
 	return true;
 }
 
@@ -173,7 +175,7 @@ bool j1Colliders::CheckCollision(Collider* c1)
 	c2 = c->data;
 	for (uint i = 0; i < colliders.count(); i++)
 	{
-		if (c1 != c2) {
+		if (c1 != c2 && c2->type != COLLIDER_WINDOW) {
 			ret = c1->CheckCollision(c2->rect);
 			if (ret) {
 				if (c1->callback) {

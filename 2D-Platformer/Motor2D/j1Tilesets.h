@@ -114,6 +114,7 @@ public:
 	MapData map_Data;
 	bool	onscreen;
 
+	Collider*			culling_Collider = nullptr;
 private:
 
 	pugi::xml_document	map_file;

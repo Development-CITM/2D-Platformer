@@ -48,12 +48,14 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = 0;
 	}
 
+	camera = { -150,-400 };
 	return ret;
 }
 
 // Called before the first frame
 bool j1Render::Start()
 {
+
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
@@ -160,8 +162,6 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	}
 
 
-	//LOG("%d,%d", p->x, p->y);
-
 	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
@@ -182,8 +182,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(camera.x  + rect.x * scale);
+		rec.y = (int)(camera.y  + rect.y * scale);
 		rec.w *= scale;
 		rec.h *= scale;
 	}
