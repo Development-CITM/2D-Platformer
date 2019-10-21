@@ -111,7 +111,7 @@ private:
 	void Gravity();
 	void StartMidAir();
 
-	void MoveTo(Directions dir);
+	bool MoveTo(Directions dir);
 
 	//Load Functions
 	bool LoadMap();
@@ -147,13 +147,14 @@ private:
 	//Jump Variables
 	int					maxJump = 0;
 	int					jumpDistance = 80;
-	int					timeOnAir = 2;
+	int					timeOnAir = 3;
 	int					currentTimeAir = 0;
 
 	//Speeds
-	int					jumpSpeed = 4;
+	int					jumpSpeed = 0;
+	int					max_jumpSpeed = 5;
 	int					gravityForce = 0;
-	int					max_gravityForce = 1;
+	int					max_gravityForce = 8;
 	int					runSpeed = 2;
 
 	//Animations
@@ -178,6 +179,10 @@ private:
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
 
+	bool				FixedPos = false;
+
+	int HorizontalSpeed = 0;
+	int VerticalSpeed = 0;
 	//XML Stuff
 	pugi::xml_document	player_file;
 	p2SString			folder;

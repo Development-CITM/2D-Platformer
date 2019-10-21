@@ -34,6 +34,7 @@ bool j1Player::Start()
 	Load("animations/Player.tmx");
 
 	state = ST_IDLE;	//Set initial state
+	gravityForce = max_gravityForce;
 	return true;
 }
 
@@ -265,7 +266,10 @@ bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
 
 bool j1Player::PreUpdate()
 {
+	//Gravity
 
+	HorizontalSpeed = playerPos.x;
+	VerticalSpeed = playerPos.y;
 	//Hold Movements
 	switch (state)
 	{
@@ -283,66 +287,90 @@ bool j1Player::PreUpdate()
 	case ST_MIDAIR:
 		HorizontalInput();
 		break;
+	case ST_FALL:
+		HorizontalInput();
+		break;
 	}
-
-
+	if (state != ST_JUMP) {
+		Gravity();
+	}
 
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
-	int HorizontalSpeed = playerPos.x;
-	int VerticalSpeed = playerPos.y;
+
 	
-	switch (state)
-	{
-	case ST_IDLE:
-		Gravity();
-		Jump();
-		Move();
-		break;
-	case ST_RUNNING:
-		Gravity();
-		Jump();
-		Move();
-		break;
-	case ST_JUMP:
-		Gravity();
-		Move();
-		StartMidAir();
-		break;
-	case ST_MIDAIR:
-		Move();
-		Gravity();
-		break;
-	case ST_FALL:
-		Gravity();
-		Jump();
-		Move();
-		break;
-	case ST_JUMP_FINISHED:
-		break;
-	default:
-		break;
-	}
+	Move();
+	Jump();
+	//switch (state)
+	//{
+	//case ST_IDLE:
+	//	Gravity();
+	//	Jump();
+	//	Move();
+	//	break;
+	//case ST_RUNNING:
+	//	Gravity();
+	//	Jump();
+	//	Move();
+	//	break;
+	//case ST_JUMP:
+	//	Gravity();
+	//	Move();
+	//	break;
+	//case ST_MIDAIR:
+	//	Move();
+	//	Gravity();
+	//	break;
+	//case ST_FALL:
+	//	Gravity();
+	//	Jump();
+	//	Move();
+	//	break;
+	//case ST_JUMP_FINISHED:
+	//	break;
+	//default:
+	//	break;
+	//}
 
 	HorizontalSpeed -= playerPos.x;
 	VerticalSpeed -= playerPos.y;
-	if (HorizontalSpeed != 0 && VerticalSpeed == 0) {
-		ChangeAnimation(run);
-		//LOG("Horizontal speed: %d", HorizontalSpeed);
-	}
-	else {
+	
+	if (HorizontalSpeed == 0 && VerticalSpeed == 0 && !jumping && state != ST_JUMP && state != ST_FALL) {
 		ChangeAnimation(idle);
+		state = ST_IDLE;
 	}
 
-	if (VerticalSpeed != 0) {
-		ChangeAnimation(jump);
+	if (HorizontalSpeed != 0  && VerticalSpeed == 0 && state != ST_MIDAIR) {
+		ChangeAnimation(run);
+		state = ST_RUNNING;
+	}
+
+	if (VerticalSpeed > 0) {
+		ChangeAnimation(jump);		
+		state = ST_JUMP;
+	}
+
+	if (VerticalSpeed < 0 && state != ST_IDLE) {
+		if(currentAnimation != fall)
+		gravityForce = 1;
+		ChangeAnimation(fall);
+		
+		state = ST_FALL;
+	}
+
+	//Fix position to ground
+	if (onGround) {
+		gravityForce = 1;
+		FixedPos = MoveTo(DIR_DOWN);
+		LOG("Fixing...");
 	}
 	Draw(); //Draw all the player
 
-	LOG("%i", state);
+	LOG("Vertical Speed %i", VerticalSpeed);
+	LOG("Horizontal Speed %i", HorizontalSpeed);
 	return true;
 }
 
@@ -360,8 +388,10 @@ void j1Player::JumpInput()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && onGround) {
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
-		jumpSpeed = 4;
+		FixedPos = false;
+		jumpSpeed = max_jumpSpeed;
 		state = ST_JUMP;
+		gravityForce = 0;
 	}
 }
 
@@ -372,8 +402,6 @@ void j1Player::HorizontalInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		move_To_Right = false;
-		if(state != ST_MIDAIR)
-		state = ST_IDLE;
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
@@ -381,8 +409,6 @@ void j1Player::HorizontalInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		move_To_Left = false;
-		if (state != ST_MIDAIR)
-		state = ST_IDLE;
 	}
 
 }
@@ -394,31 +420,17 @@ void j1Player::Move() {
 	if (move_To_Left) {
 		MoveTo(DIR_LEFT);
 		flip = SDL_FLIP_HORIZONTAL;
-		if (state != ST_MIDAIR)
-			state = ST_RUNNING;
 	}
 	else if (move_To_Right) {
 		MoveTo(DIR_RIGHT);
 		flip = SDL_FLIP_NONE;
-		if (state != ST_MIDAIR)
-			state = ST_RUNNING;
 	}
-}
-
-void j1Player::StartMidAir() {
-
-	//if (currentTimeAir < timeOnAir) {
-	//	currentTimeAir++;
-	//}
-
-	
 }
 
 void j1Player::Jump()
 {
 	if (jumping) {
 		if (player_Collider->rect.y > maxJump) {
-			gravityForce = 0;
 			MoveTo(DIR_UP);
 			if (player_Collider->rect.y < maxJump + 20) {
 				jumpSpeed = 3;
@@ -430,15 +442,10 @@ void j1Player::Jump()
 		}
 		else {
 			jumping = false;
-			state = ST_MIDAIR;
-			onGround = false;
-			currentTimeAir = 0;
-			gravityForce = max_gravityForce;
-		
+			state = ST_FALL;
+			gravityForce = 2;
+			currentTimeAir = 0;		
 		}
-	}
-	else {
-		gravityForce = max_gravityForce;
 	}
 }
 
@@ -447,8 +454,9 @@ void j1Player::Gravity()
 	MoveTo(DIR_DOWN);
 }
 
-void j1Player::MoveTo(Directions dir)
+bool j1Player::MoveTo(Directions dir)
 {
+	bool ret = false;
 	p2Point<int> previousPos{ 0,0 };
 	previousPos.x = player_Collider->rect.x;
 	previousPos.y = player_Collider->rect.y;
@@ -485,25 +493,35 @@ void j1Player::MoveTo(Directions dir)
 			gravityForce = max_gravityForce;
 		}
 		break;
-	case DIR_DOWN:
-		for (int i = 0; i < 5; i++)
-		{
-			player_Collider->rect.y += gravityForce;
-			playerPos.y += gravityForce;
-			if (App->collider->CheckCollision(player_Collider)) {
-				player_Collider->rect.y = previousPos.y;
-				playerPos.y = previousPlayerPos.y;
-				onGround = true;
-				state = ST_IDLE;
-			}
-			else {
-				onGround = false;
-			}
+	case DIR_DOWN:		
 
+		if (currentTimeAir < timeOnAir) {
+			currentTimeAir++;
+		}
+		else if( gravityForce < max_gravityForce){
+
+			gravityForce += 3;
+			currentTimeAir = 0;
+		if (gravityForce > max_gravityForce) {
+			gravityForce = max_gravityForce;
+		}
+		}
+		player_Collider->rect.y += gravityForce;
+		playerPos.y += gravityForce;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.y = previousPos.y;
+			playerPos.y = previousPlayerPos.y;
+			onGround = true;
+			state = ST_IDLE;
+			ret = true;
+		}
+		else {
+			onGround = false;
 		}
 		break;
 	}
 
+	return ret;
 }
 #pragma endregion
 
@@ -511,6 +529,7 @@ void j1Player::MoveTo(Directions dir)
 
 void j1Player::Draw()
 {
+
 	//First check how many frames should repeat before change its sprite frame
 	if (currentAnimation->repeatFrames > 2) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
 		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
