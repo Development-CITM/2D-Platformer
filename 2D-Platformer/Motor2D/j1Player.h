@@ -97,7 +97,7 @@ public:
 	bool CleanUp();
 
 	//Called when collided
-	void OnCollision(Collider*);
+	void OnCollision(Collider*, Collider*);
 
 
 private:
@@ -108,6 +108,8 @@ private:
 	//Logic Movements
 	void Move();
 	void Jump();
+	void Gravity();
+
 	void MoveTo(Directions dir);
 
 	//Load Functions
@@ -143,7 +145,13 @@ private:
 
 	//Jump Variables
 	int					maxJump = 0;
-	int					jumpDistance = 40;
+	int					jumpDistance = 80;
+
+	//Speeds
+	int					jumpSpeed = 4;
+	int					gravityForce = 3;
+	int					max_gravityForce = 3;
+	int					runSpeed = 2;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;
@@ -152,6 +160,7 @@ private:
 	Animation*			idle = nullptr;
 	Animation*			run = nullptr;
 	Animation*			jump = nullptr;
+	Animation*			fall = nullptr;
 
 	//Colliders
 	Collider*			player_Collider = nullptr;

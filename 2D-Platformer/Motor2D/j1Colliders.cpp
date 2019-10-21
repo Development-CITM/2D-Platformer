@@ -177,7 +177,7 @@ bool j1Colliders::CheckCollision(Collider* c1)
 			ret = c1->CheckCollision(c2->rect);
 			if (ret) {
 				if (c1->callback) {
-					c1->callback->OnCollision(c2);					
+					c1->callback->OnCollision(c1,c2);					
 				}
 				return ret;
 			}

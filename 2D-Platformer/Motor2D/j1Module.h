@@ -92,7 +92,7 @@ public:
 		}
 	}
 
-	virtual void OnCollision(Collider*) {}
+	virtual void OnCollision(Collider*, Collider*) {}
 
 public:
 

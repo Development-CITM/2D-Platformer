@@ -103,7 +103,7 @@ bool j1Player::Load(const char* file_name)
 			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER, offset, this);	
 
 			//Create ground checker with the collider data from player.tmx
-			ground_Collider = App->collider->AddCollider(rect, COLLIDER_GROUND_CHECKER, { offset.x,offset.y + 20 }, this);
+			//ground_Collider = App->collider->AddCollider(rect, COLLIDER_GROUND_CHECKER, { offset.x,offset.y + 20 }, this);
 		}
 	}
 
@@ -172,6 +172,9 @@ void j1Player::SetAnimations(Animation** animations) {
 		}
 		else if (strcmp(name.GetString(), "Jump") == 0) {
 			jump = animations[i];
+		}
+		else if (strcmp(name.GetString(), "Falling") == 0) {
+			fall = animations[i];
 		}
 
 
@@ -262,19 +265,36 @@ bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
 
 bool j1Player::PreUpdate()
 {
-	onGround = false;
 
 	//Hold Movements
+
 	JumpInput();
 	HorizontalInput();
+
 
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
+	int HorizontalSpeed = playerPos.x;
+	int VerticalSpeed = playerPos.y;
+	Gravity();
 	Jump();
 	Move();
+	HorizontalSpeed -= playerPos.x;
+	VerticalSpeed -= playerPos.y;
+	if (HorizontalSpeed != 0 && VerticalSpeed == 0) {
+		ChangeAnimation(run);
+		//LOG("Horizontal speed: %d", HorizontalSpeed);
+	}
+	else {
+		ChangeAnimation(idle);
+	}
+
+	if (VerticalSpeed != 0) {
+		ChangeAnimation(jump);
+	}
 	Draw(); //Draw all the player
 	return true;
 }
@@ -290,7 +310,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::JumpInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && onGround) {
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
 	}
@@ -320,9 +340,11 @@ void j1Player::HorizontalInput()
 void j1Player::Move() {
 	if (move_To_Left) {
 		MoveTo(DIR_LEFT);
+		flip = SDL_FLIP_HORIZONTAL;
 	}
 	else if (move_To_Right) {
 		MoveTo(DIR_RIGHT);
+		flip = SDL_FLIP_NONE;
 	}
 }
 
@@ -330,12 +352,19 @@ void j1Player::Jump()
 {
 	if (jumping) {
 		if (player_Collider->rect.y > maxJump) {
+			gravityForce = 0;
 			MoveTo(DIR_UP);
 		}
 		else {
+			gravityForce = max_gravityForce;
 			jumping = false;
 		}
 	}
+}
+
+void j1Player::Gravity()
+{
+	MoveTo(DIR_DOWN);
 }
 
 void j1Player::MoveTo(Directions dir)
@@ -351,24 +380,24 @@ void j1Player::MoveTo(Directions dir)
 	switch (dir)
 	{
 	case DIR_RIGHT:
-		player_Collider->rect.x += 2;
-		playerPos.x += 2;
+		player_Collider->rect.x += runSpeed;
+		playerPos.x += runSpeed;
 		if (App->collider->CheckCollision(player_Collider)) {
 			player_Collider->rect.x = previousPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
 		break;
 	case DIR_LEFT:
-		player_Collider->rect.x -= 2;
-		playerPos.x -= 2;
+		player_Collider->rect.x -= runSpeed;
+		playerPos.x -= runSpeed;
 		if (App->collider->CheckCollision(player_Collider)) {
 			player_Collider->rect.x = previousPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
 		break;
 	case DIR_UP:
-		player_Collider->rect.y -= 2;
-		playerPos.y -= 2;
+		player_Collider->rect.y -= jumpSpeed;
+		playerPos.y -= jumpSpeed;
 		if (App->collider->CheckCollision(player_Collider)) {
 			player_Collider->rect.y = previousPos.y;
 			playerPos.y = previousPlayerPos.y;
@@ -376,6 +405,16 @@ void j1Player::MoveTo(Directions dir)
 		}
 		break;
 	case DIR_DOWN:
+		player_Collider->rect.y += gravityForce;
+		playerPos.y += gravityForce;
+		if (App->collider->CheckCollision(player_Collider)) {
+			player_Collider->rect.y = previousPos.y;
+			playerPos.y = previousPlayerPos.y;
+			onGround = true;
+		}
+		else {
+			onGround = false;
+		}
 		break;
 	}
 
@@ -429,9 +468,13 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 #pragma region CollisionLogic
 
-void j1Player::OnCollision(Collider* c2)
+void j1Player::OnCollision(Collider* c1,Collider* c2)
 {
-	//TODO JORDI: Think how to difference between Player_Collider and Ground_Collider and its logic when collides but ignore themselves
+	switch (c1->type)
+	{
+	case COLLIDER_PLAYER: break;
+	case COLLIDER_GROUND_CHECKER:   break;
+	}
 }
 
 bool j1Player::GroundCheck()
