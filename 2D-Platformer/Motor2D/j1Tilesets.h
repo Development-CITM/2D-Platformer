@@ -10,11 +10,11 @@
 struct MapLayer
 {
 	p2SString	name;
-	int			num_tile_width;
-	int			num_tile_height;
-	int*		data;
+	uint		num_tile_width = 0u;
+	uint		num_tile_height = 0u;
+	int*		data = NULL;
 
-	MapLayer() : data(NULL)
+	MapLayer()  : data(NULL)
 	{}
 
 	~MapLayer()
@@ -34,20 +34,18 @@ struct TileSet
 	SDL_Rect GetTileRect(int id) const;
 
 	p2SString			name;
-	int					firstgid;
-	int					margin;
-	int					spacing;
-	int					tile_width;
-	int					tile_height;
+	uint				firstgid = 0u;
+	uint				margin = 0u;
+	uint				spacing = 0u;
+	uint				tile_width = 0u;
+	uint				tile_height = 0u;
 	SDL_Texture*		texture;
-	int					tex_width;
-	int					tex_height;
-	int					num_tiles_width;
-	int					num_tiles_height;
-	int					offset_x;
-	int					offset_y;
-	bool				isPlayer;
-
+	uint				tex_width = 0u;
+	uint				tex_height = 0u;
+	uint				num_tiles_width = 0u;
+	uint				num_tiles_height = 0u;
+	int					offset_x = 0;
+	int					offset_y = 0;
 };
 
 enum MapTypes
@@ -61,14 +59,15 @@ enum MapTypes
 // ----------------------------------------------------
 struct MapData
 {
-	int					width;
-	int					height;
-	int					tile_width;
-	int					tile_height;
+	uint				width = 0u;
+	uint				height = 0u;
+	uint				tile_width = 0u;
+	uint				tile_height = 0u;
 	SDL_Color			background_color;
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+
 
 };
 
@@ -102,30 +101,29 @@ public:
 
 private:
 
-	bool LoadMap();
-	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	SDL_Rect GetRect(TileSet* ,int id);
-	bool LoadObject(pugi::xml_node& node);
+	bool		LoadMap();
+	bool		LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
+	bool		LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
+	bool		LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	SDL_Rect	GetRect(TileSet* ,int id);
+	bool		LoadObject(pugi::xml_node& node);
 
 public:
 
-	MapData map_Data;
-	bool	onscreen;
+	MapData		map_Data;
 
 	Collider*			culling_Collider = nullptr;
 private:
 
 	pugi::xml_document	map_file;
 
-	p2SString			folder;
-	bool				map_loaded;
+	p2SString				folder;
+	bool					map_loaded;
 	p2List_item<MapLayer*>* lay = nullptr;
-	p2List_item<TileSet*>* tile = nullptr;
+	p2List_item<TileSet*>*	tile = nullptr;
 
-	int					currentFrame;
-	int					maxFrames;
+	int						currentFrame;
+	int						maxFrames;
 
 };
 

@@ -314,12 +314,7 @@ bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->margin = tileset_node.attribute("margin").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
 	pugi::xml_node properties = tileset_node.child("properties").child("property");
-	if (strcmp(properties.attribute("name").as_string(), "player")== 0 && properties.attribute("value").as_bool() == true){
-		set->isPlayer = true;
-	}
-	else {
-		set->isPlayer = false;
-	}
+
 	pugi::xml_node offset = tileset_node.child("tileoffset");
 
 	if(offset != NULL)
@@ -503,15 +498,10 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 	int y = (num - tileset->firstgid) / tileset->num_tiles_width;
 	int width = 0;
 	int height = 0;
-	if (tileset->isPlayer) {
 
-		width = x * map_Data.tile_width + tileset->margin;
-		height = y * map_Data.tile_width + tileset->spacing;
-	}
-	else {
-		width = x * map_Data.tile_width + (x + tileset->margin) * tileset->margin;
-		height = y * map_Data.tile_width + (y + tileset->spacing) * tileset->spacing;
-	}
+	width = x * map_Data.tile_width + (x + tileset->margin) * tileset->margin;
+	height = y * map_Data.tile_width + (y + tileset->spacing) * tileset->spacing;
+	
 
 	SDL_Rect rect = { width,height,tileset->tile_width,tileset->tile_height };
 	return	rect;
