@@ -72,15 +72,17 @@ bool j1Scene::Update(float dt)
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-		App->render->camera.x += 4;
-		App->tiles->culling_Collider->rect.x -= 2;
+		if (App->render->camera.x + 3 < -limitleft.rect.w) {
+			App->render->camera.x += 4;
+			App->tiles->culling_Collider->rect.x -= 2;
+		}
 	}
-		//if (App->render->camera.x + 3 < -limitleft.rect.w)
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-		//if (App->render->camera.x - App->win->GetWidth() - 3 > -limitright.rect.x * (int)App->render->drawsize)
-		App->render->camera.x -= 4;
-		App->tiles->culling_Collider->rect.x += 2;
+		if (App->render->camera.x - App->win->GetWidth() - 3 > -limitright.rect.x * (int)App->render->drawsize) {
+			App->render->camera.x -= 4;
+			App->tiles->culling_Collider->rect.x += 2;
+		}
 
 	}
 

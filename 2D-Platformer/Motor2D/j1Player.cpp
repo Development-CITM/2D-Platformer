@@ -6,6 +6,7 @@
 #include "j1Player.h"
 #include "j1Input.h"
 #include "j1Colliders.h"
+#include "j1Tilesets.h"
 #include <math.h>
 
 #pragma region Constructor/Awake/Start/CleanUp
@@ -294,6 +295,8 @@ bool j1Player::PreUpdate()
 		Gravity();
 	}
 
+
+
 	return true;
 }
 
@@ -305,6 +308,7 @@ bool j1Player::Update(float dt)
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
 	
+
 	if (velocity_X == 0 && velocity_Y == 0 && !jumping && state != ST_JUMP && state != ST_FALL) {
 		ChangeAnimation(idle);
 		state = ST_IDLE;
@@ -406,7 +410,9 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.y = previousColliderPos.y;
 			playerPos.y = previousPlayerPos.y;
 			jumping = false;
-			gravityForce = max_gravityForce;
+			state = ST_FALL;
+			gravityForce = 1;
+			currentTimeAir = 0;
 		}
 		break;
 	case DIR_DOWN:
@@ -435,21 +441,30 @@ bool j1Player::MoveTo(Directions dir)
 		}
 		else {
 			onGround = false;
+
 		}
+		
 		break;
 	}
 
+	LOG("Player: %i,%i", playerPos.x, playerPos.y);
 	return ret;
 }
 
 void j1Player::Move() {
 	if (move_To_Left) {
 		MoveTo(DIR_LEFT);
-		flip = SDL_FLIP_HORIZONTAL;
+		flip = SDL_FLIP_HORIZONTAL;		
+		App->render->camera.x += runSpeed *2;
+		App->tiles->culling_Collider->rect.x -= runSpeed;
+
 	}
 	else if (move_To_Right) {
 		MoveTo(DIR_RIGHT);
 		flip = SDL_FLIP_NONE;
+		App->render->camera.x -= runSpeed*2;
+		App->tiles->culling_Collider->rect.x += runSpeed;
+
 	}
 }
 

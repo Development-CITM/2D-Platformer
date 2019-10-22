@@ -113,6 +113,7 @@ public:
 	MapData		map_Data;
 
 	Collider*			culling_Collider = nullptr;
+	Collider*			camera_Collider = nullptr;
 private:
 
 	pugi::xml_document	map_file;

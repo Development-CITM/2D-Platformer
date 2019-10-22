@@ -48,7 +48,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = 0;
 	}
 
-	camera = { -150,-400 };
+	camera = { -130,-400 };
 	return ret;
 }
 
@@ -76,6 +76,7 @@ bool j1Render::Update(float dt)
 
 bool j1Render::PostUpdate()
 {
+	LOG("CameraY: %i",camera.y);
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;

@@ -33,8 +33,9 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	folder.create(config.child("folder").child_value());
 
-	p2Point<int> culling_Pos{ 74,200 };
+	p2Point<int> culling_Pos{ 65,200 };
 	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth()/2,App->win->GetHeight()/2 }, COLLIDER_WINDOW);
+	camera_Collider = App->collider->AddCollider({ App->win->GetWidth() / 6,400,150,80 }, COLLIDER_CAMERA);
 	return ret;
 }
 
@@ -64,6 +65,7 @@ bool j1Tilesets::CleanUp()
 		item2 = item2->next;
 	}
 	map_Data.layers.clear();
+
 	// Clean up the pugi tree
 	map_file.reset();
 

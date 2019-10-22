@@ -162,7 +162,11 @@ void j1Colliders::Draw()
 			case COLLIDER_WINDOW:
 				App->render->DrawQuad(rect, 0, 255, 255, 100);
 				break;
+			case COLLIDER_CAMERA:
+				App->render->DrawQuad(rect, 0, 0, 0, 200, false);
+			break;
 			}
+				
 			
 
 			if (collider->next != nullptr)
@@ -196,7 +200,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 	c2 = c->data;
 	for (uint i = 0; i < colliders.count(); i++)
 	{
-		if (c1 != c2 && c2->type != COLLIDER_WINDOW) {
+		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
 			ret = c1->CheckCollision(c2->rect);
 			if (ret) {
 				if (c1->callback) {
@@ -233,4 +237,5 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 	return detectedX && detectedY;
 
 }
+
 #pragma endregion
