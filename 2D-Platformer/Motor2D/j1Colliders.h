@@ -18,16 +18,13 @@ enum ColliderType
 
 struct Collider
 {
-	SDL_Rect rect;
-	bool to_delete = false;
-	j1Module* callback = nullptr;
-	bool Enabled = true;
-	p2Point<int> GetPosition() { return { rect.x,rect.y }; }
-
-	int ColliderDamage = 0;
-
-	ColliderType type = COLLIDER_NONE;
-	p2Point<int> offset = { 0, 0};
+	SDL_Rect		rect{ 0,0,0,0 };
+	p2Point<int>	offset = { 0, 0};
+	j1Module*		callback = nullptr;
+	bool			to_delete = false;
+	bool			Enabled = true;
+	int				ColliderDamage = 0;
+	ColliderType	type = COLLIDER_NONE;
 
 	Collider() {
 		ColliderDamage = 0;
@@ -47,8 +44,9 @@ struct Collider
 	void MoveCollider(p2Point<int> pos) {
 		rect.x = pos.x;
 		rect.y = pos.y;
-
 	}
+
+	p2Point<int> GetPosition() { return { rect.x,rect.y }; }
 
 	bool Collider::CheckCollision(const SDL_Rect& r) const;
 };
@@ -84,25 +82,21 @@ public:
 	//Loads all collider objects
 	bool LoadObject(pugi::xml_node& node, Collider* collider);
 
-	//Collider* CreateCollider(SDL_Rect* rect,p2Point<int> pos ,int type);
+	//Add collider
 	Collider* AddCollider(SDL_Rect rect, ColliderType type, p2Point<int> offset = { 0, 0 },j1Module * callback = nullptr, int Damage = 0);
 
 public:
 
-	bool CheckCollision(Collider*);
-
+	bool CheckColliderCollision(Collider*);
 	bool collider_debug = false;
 	
 private:
 	
 	p2List<Collider*>	colliders;
 
-	bool collider_loaded = false;
-	int scale;
-	int size;
+	bool				collider_loaded = false;
 
-	
-	bool** collider_matrix;
-
+	int					scale = 0;
+	int					size = 0;
 };
 #endif

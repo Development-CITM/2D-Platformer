@@ -11,6 +11,8 @@
 #include "j1Input.h"
 #include <math.h>
 
+#pragma region Constructor / Destructor
+
 j1Tilesets::j1Tilesets() : j1Module(), map_loaded(false)
 {
 	name.create("map");
@@ -19,18 +21,59 @@ j1Tilesets::j1Tilesets() : j1Module(), map_loaded(false)
 // Destructor
 j1Tilesets::~j1Tilesets()
 {}
+#pragma endregion
+
+#pragma region Awake/CleanUp
 
 // Called before render is available
 bool j1Tilesets::Awake(pugi::xml_node& config)
 {
-
-	LOG("Loading Map Parser");
 	bool ret = true;
 
+	LOG("Loading Map Parser");
 	folder.create(config.child("folder").child_value());
-	culling_Collider = App->collider->AddCollider({ 74,200,App->win->GetWidth()/2,App->win->GetHeight()/2 }, COLLIDER_WINDOW);
+
+	p2Point<int> culling_Pos{ 74,200 };
+	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth()/2,App->win->GetHeight()/2 }, COLLIDER_WINDOW);
 	return ret;
 }
+
+// Called before quitting
+bool j1Tilesets::CleanUp()
+{
+	LOG("Unloading map");
+
+	// Remove all tilesets
+	p2List_item<TileSet*>* item;
+	item = map_Data.tilesets.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	map_Data.tilesets.clear();
+
+	// Remove all layers
+	p2List_item<MapLayer*>* item2;
+	item2 = map_Data.layers.start;
+
+	while (item2 != NULL)
+	{
+		RELEASE(item2->data);
+		item2 = item2->next;
+	}
+	map_Data.layers.clear();
+	// Clean up the pugi tree
+	map_file.reset();
+
+	return true;
+}
+
+#pragma endregion
+
+#pragma region Render
+
 void j1Tilesets::Draw()
 {
 	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) {
@@ -47,12 +90,11 @@ void j1Tilesets::Draw()
 		culling_Collider->rect.y -= 2;
 	}
 
-	LOG("%d, %d", culling_Collider->rect.x, culling_Collider->rect.y);
 	if (map_loaded == false)
 		return;
 
-	//----------------------------------------------------------------------------------
-	float size = 2.0f;
+	//----------------------------------------------------------------------------------//
+
 	p2List_item<MapLayer*>* lay = this->map_Data.layers.start;
 	MapLayer* layer = lay->data;
 	for (int i = 0; i < map_Data.layers.count(); i++)
@@ -99,107 +141,9 @@ void j1Tilesets::Draw()
 
 
 }
+#pragma endregion
 
-TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
-{
-	// TODO 3: Complete this method so we pick the right
-	bool ret = false;
-	p2List_item<TileSet*>* tile = nullptr;
-	tile = map_Data.tilesets.start;
-	while (ret == false) {
-		if (tile->next != NULL && tile->next->data->firstgid <= id) {
-			tile = tile->next;
-		}
-		else if (tile->prev != NULL && tile->data->firstgid > id) {
-			tile = tile->prev;
-		}
-		else ret = true;
-	}
-	// Tileset based on a tile id
-
-	return tile->data;
-}
-iPoint j1Tilesets::MapToWorld(int x, int y) const
-{
-	iPoint ret(0,0);
-
-	switch (map_Data.type)
-	{
-	case MapTypes::MAPTYPE_ORTHOGONAL:
-		ret.x = x * map_Data.tile_width;
-		ret.y = y * map_Data.tile_height;
-		break;
-	case MapTypes::MAPTYPE_ISOMETRIC:
-		ret.x = (x - y) * map_Data.tile_width / 2;
-		ret.y = (x + y) * map_Data.tile_height / 2;
-	
-		break;
-	}
-	return ret;
-}
-
-
-iPoint j1Tilesets::WorldToMap(int x, int y) const
-{
-	iPoint ret(0,0);
-
-	switch (map_Data.type)
-	{
-	case MapTypes::MAPTYPE_ORTHOGONAL:
-		ret.x = x / map_Data.tile_width;
-		ret.y = y / map_Data.tile_height;
-		break;
-	case MapTypes::MAPTYPE_ISOMETRIC:
-		ret.x = (x / map_Data.tile_width / 2 + y / map_Data.tile_height / 2) / 2;
-		ret.y = (y / map_Data.tile_height / 2 - (x / map_Data.tile_width / 2)) / 2;
-	default:
-		break;
-	}
-	return ret;
-}
-
-SDL_Rect TileSet::GetTileRect(int id) const
-{
-	int relative_id = id - firstgid;
-	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
-	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
-	return rect;
-}
-
-// Called before quitting
-bool j1Tilesets::CleanUp()
-{
-	LOG("Unloading map");
-
-	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = map_Data.tilesets.start;
-
-	while(item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
-	map_Data.tilesets.clear();
-
-	// Remove all layers
-	p2List_item<MapLayer*>* item2;
-	item2 = map_Data.layers.start;
-
-	while(item2 != NULL)
-	{
-		RELEASE(item2->data);
-		item2 = item2->next;
-	}
-	map_Data.layers.clear();
-	// Clean up the pugi tree
-	map_file.reset();
-
-	return true;
-}
+#pragma region Load Info
 
 // Load new map
 bool j1Tilesets::Load(const char* file_name)
@@ -457,6 +401,98 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	return ret;
 }
+bool j1Tilesets::LoadObject(pugi::xml_node& node)
+{
+	bool ret = true;
+	pugi::xml_node object = node;
+	if (strcmp(node.attribute("name").as_string(), "Colliders") == 0)
+	{
+		object = node.child("object");
+		App->collider->Load(object);
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Music") == 0)
+	{
+		object = node.child("object").child("properties").child("property");
+		App->audio->PlayMusic(object.attribute("value").as_string());
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0)
+	{
+		object = node.child("object");
+		App->scene->LoadSceneLimits(object);
+	}
+	return ret;
+}
+
+
+#pragma endregion
+
+#pragma region Logic Operations
+TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
+{
+	bool ret = false;
+	p2List_item<TileSet*>* tile = nullptr;
+	tile = map_Data.tilesets.start;
+	while (ret == false) {
+		if (tile->next != NULL && tile->next->data->firstgid <= id) {
+			tile = tile->next;
+		}
+		else if (tile->prev != NULL && tile->data->firstgid > id) {
+			tile = tile->prev;
+		}
+		else ret = true;
+	}
+
+	return tile->data;
+}
+iPoint j1Tilesets::MapToWorld(int x, int y) const
+{
+	iPoint ret(0, 0);
+
+	switch (map_Data.type)
+	{
+	case MapTypes::MAPTYPE_ORTHOGONAL:
+		ret.x = x * map_Data.tile_width;
+		ret.y = y * map_Data.tile_height;
+		break;
+	case MapTypes::MAPTYPE_ISOMETRIC:
+		ret.x = (x - y) * map_Data.tile_width / 2;
+		ret.y = (x + y) * map_Data.tile_height / 2;
+
+		break;
+	}
+	return ret;
+}
+
+
+iPoint j1Tilesets::WorldToMap(int x, int y) const
+{
+	iPoint ret(0, 0);
+
+	switch (map_Data.type)
+	{
+	case MapTypes::MAPTYPE_ORTHOGONAL:
+		ret.x = x / map_Data.tile_width;
+		ret.y = y / map_Data.tile_height;
+		break;
+	case MapTypes::MAPTYPE_ISOMETRIC:
+		ret.x = (x / map_Data.tile_width / 2 + y / map_Data.tile_height / 2) / 2;
+		ret.y = (y / map_Data.tile_height / 2 - (x / map_Data.tile_width / 2)) / 2;
+	default:
+		break;
+	}
+	return ret;
+}
+
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+	int relative_id = id - firstgid;
+	SDL_Rect rect;
+	rect.w = tile_width;
+	rect.h = tile_height;
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+	return rect;
+}
 
 
 SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
@@ -480,25 +516,6 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 	SDL_Rect rect = { width,height,tileset->tile_width,tileset->tile_height };
 	return	rect;
 }
+#pragma endregion
 
-bool j1Tilesets::LoadObject(pugi::xml_node& node)
-{
-	bool ret = true;
-	pugi::xml_node object = node;
-	if (strcmp(node.attribute("name").as_string(), "Colliders") == 0)
-	{
-		object = node.child("object");
-		App->collider->Load(object);
-	}
-	else if (strcmp(node.attribute("name").as_string(), "Music") == 0)
-	{
-		object = node.child("object").child("properties").child("property");
-		App->audio->PlayMusic(object.attribute("value").as_string());
-	}
-	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0)
-	{
-		object = node.child("object");
-		App->scene->LoadSceneLimits(object);
-	}
-	return ret;
-}
+

@@ -266,10 +266,9 @@ bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
 
 bool j1Player::PreUpdate()
 {
-	//Gravity
+	velocity_X = playerPos.x;
+	velocity_Y = playerPos.y;
 
-	HorizontalSpeed = playerPos.x;
-	VerticalSpeed = playerPos.y;
 	//Hold Movements
 	switch (state)
 	{
@@ -299,80 +298,47 @@ bool j1Player::PreUpdate()
 }
 
 bool j1Player::Update(float dt)
-{
-
-	
+{	
 	Move();
 	Jump();
-	//switch (state)
-	//{
-	//case ST_IDLE:
-	//	Gravity();
-	//	Jump();
-	//	Move();
-	//	break;
-	//case ST_RUNNING:
-	//	Gravity();
-	//	Jump();
-	//	Move();
-	//	break;
-	//case ST_JUMP:
-	//	Gravity();
-	//	Move();
-	//	break;
-	//case ST_MIDAIR:
-	//	Move();
-	//	Gravity();
-	//	break;
-	//case ST_FALL:
-	//	Gravity();
-	//	Jump();
-	//	Move();
-	//	break;
-	//case ST_JUMP_FINISHED:
-	//	break;
-	//default:
-	//	break;
-	//}
 
-	HorizontalSpeed -= playerPos.x;
-	VerticalSpeed -= playerPos.y;
+	velocity_X -= playerPos.x;
+	velocity_Y -= playerPos.y;
 	
-	if (HorizontalSpeed == 0 && VerticalSpeed == 0 && !jumping && state != ST_JUMP && state != ST_FALL) {
+	if (velocity_X == 0 && velocity_Y == 0 && !jumping && state != ST_JUMP && state != ST_FALL) {
 		ChangeAnimation(idle);
 		state = ST_IDLE;
 	}
 
-	if (HorizontalSpeed != 0  && VerticalSpeed == 0 && state != ST_MIDAIR) {
+	if (velocity_X != 0  && velocity_Y == 0 && state != ST_MIDAIR) {
 		ChangeAnimation(run);
 		state = ST_RUNNING;
 	}
 
-	if (VerticalSpeed > 0) {
+	if (velocity_Y > 0) {
 		ChangeAnimation(jump);		
 		state = ST_JUMP;
 	}
 
-	if (VerticalSpeed < 0 && state != ST_IDLE) {
+	if (velocity_Y < 0 && state != ST_IDLE) {
 		if(currentAnimation != fall)
 		gravityForce = 1;
-		ChangeAnimation(fall);
-		
+		ChangeAnimation(fall);	
 		state = ST_FALL;
 	}
 
+
 	//Fix position to ground
-	if (onGround) {
-		gravityForce = 1;
-		FixedPos = MoveTo(DIR_DOWN);
-		LOG("Fixing...");
-	}
+	FixPosition();
+
 	Draw(); //Draw all the player
 
-	LOG("Vertical Speed %i", VerticalSpeed);
-	LOG("Horizontal Speed %i", HorizontalSpeed);
+	//LOG("Vertical Speed %i", velocity_Y);
+	//LOG("Horizontal Speed %i", velocity_X);
 	return true;
 }
+
+
 
 bool j1Player::PostUpdate()
 {
@@ -388,7 +354,6 @@ void j1Player::JumpInput()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && onGround) {
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
-		FixedPos = false;
 		jumpSpeed = max_jumpSpeed;
 		state = ST_JUMP;
 		gravityForce = 0;
@@ -415,6 +380,72 @@ void j1Player::HorizontalInput()
 #pragma endregion
 
 #pragma region MoveLogic
+bool j1Player::MoveTo(Directions dir)
+{
+	bool ret = false;
+
+	previousColliderPos = player_Collider->GetPosition();
+	previousPlayerPos = playerPos;
+
+	switch (dir)
+	{
+	case DIR_RIGHT:
+		player_Collider->rect.x += runSpeed;
+		playerPos.x += runSpeed;
+		if (App->collider->CheckColliderCollision(player_Collider)) {
+			player_Collider->rect.x = previousColliderPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		break;
+	case DIR_LEFT:
+		player_Collider->rect.x -= runSpeed;
+		playerPos.x -= runSpeed;
+		if (App->collider->CheckColliderCollision(player_Collider)) {
+			player_Collider->rect.x = previousColliderPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		break;
+	case DIR_UP:
+		player_Collider->rect.y -= jumpSpeed;
+		playerPos.y -= jumpSpeed;
+		if (App->collider->CheckColliderCollision(player_Collider)) {
+			player_Collider->rect.y = previousColliderPos.y;
+			playerPos.y = previousPlayerPos.y;
+			jumping = false;
+			gravityForce = max_gravityForce;
+		}
+		break;
+	case DIR_DOWN:
+
+		if (currentTimeAir < timeOnAir) {
+			currentTimeAir++;
+		}
+		else if (gravityForce < max_gravityForce) {
+
+			gravityForce += 3;
+			currentTimeAir = 0;
+			if (gravityForce > max_gravityForce) {
+				gravityForce = max_gravityForce;
+			}
+		}
+		player_Collider->rect.y += gravityForce;
+		playerPos.y += gravityForce;
+		if (App->collider->CheckColliderCollision(player_Collider)) {
+			player_Collider->rect.y = previousColliderPos.y;
+			playerPos.y = previousPlayerPos.y;
+			onGround = true;
+			state = ST_IDLE;
+			ret = true;
+		}
+		else {
+			fixedPos = false;
+			onGround = false;
+		}
+		break;
+	}
+
+	return ret;
+}
 
 void j1Player::Move() {
 	if (move_To_Left) {
@@ -454,74 +485,15 @@ void j1Player::Gravity()
 	MoveTo(DIR_DOWN);
 }
 
-bool j1Player::MoveTo(Directions dir)
+
+
+void j1Player::FixPosition()
 {
-	bool ret = false;
-	p2Point<int> previousPos{ 0,0 };
-	previousPos.x = player_Collider->rect.x;
-	previousPos.y = player_Collider->rect.y;
-	p2Point<int> previousPlayerPos{ 0,0 };
-	previousPlayerPos.x = playerPos.x;
-	previousPlayerPos.y = playerPos.y;
-	
-
-	switch (dir)
-	{
-	case DIR_RIGHT:
-		player_Collider->rect.x += runSpeed;
-		playerPos.x += runSpeed;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.x = previousPos.x;
-			playerPos.x = previousPlayerPos.x;
-		}
-		break;
-	case DIR_LEFT:
-		player_Collider->rect.x -= runSpeed;
-		playerPos.x -= runSpeed;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.x = previousPos.x;
-			playerPos.x = previousPlayerPos.x;
-		}
-		break;
-	case DIR_UP:
-		player_Collider->rect.y -= jumpSpeed;
-		playerPos.y -= jumpSpeed;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.y = previousPos.y;
-			playerPos.y = previousPlayerPos.y;
-			jumping = false;
-			gravityForce = max_gravityForce;
-		}
-		break;
-	case DIR_DOWN:		
-
-		if (currentTimeAir < timeOnAir) {
-			currentTimeAir++;
-		}
-		else if( gravityForce < max_gravityForce){
-
-			gravityForce += 3;
-			currentTimeAir = 0;
-		if (gravityForce > max_gravityForce) {
-			gravityForce = max_gravityForce;
-		}
-		}
-		player_Collider->rect.y += gravityForce;
-		playerPos.y += gravityForce;
-		if (App->collider->CheckCollision(player_Collider)) {
-			player_Collider->rect.y = previousPos.y;
-			playerPos.y = previousPlayerPos.y;
-			onGround = true;
-			state = ST_IDLE;
-			ret = true;
-		}
-		else {
-			onGround = false;
-		}
-		break;
+	if (onGround && !fixedPos) {
+		gravityForce = 1;
+		fixedPos = MoveTo(DIR_DOWN);
+		LOG("Fixing...");
 	}
-
-	return ret;
 }
 #pragma endregion
 
@@ -575,16 +547,7 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 void j1Player::OnCollision(Collider* c1,Collider* c2)
 {
-	switch (c1->type)
-	{
-	case COLLIDER_PLAYER: break;
-	case COLLIDER_WINDOW:   break;
-	}
-}
 
-bool j1Player::GroundCheck()
-{
-	return App->collider->CheckCollision(ground_Collider);
 }
 
 #pragma endregion

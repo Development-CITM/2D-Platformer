@@ -109,7 +109,6 @@ private:
 	void Move();
 	void Jump();
 	void Gravity();
-	void StartMidAir();
 
 	bool MoveTo(Directions dir);
 
@@ -122,8 +121,8 @@ private:
 	//Animation Functions
 	void ChangeAnimation(Animation*);
 
-	//Checking Functions
-	bool GroundCheck();
+	//Fixing Functions
+	void FixPosition();
 
 
 //---------------VARIABLES --------------------//
@@ -141,21 +140,26 @@ private:
 
 	//Positions
 	p2Point<int>		playerPos = { 0,0 };
-	p2Point<int>		previousPos = { 0,0 };
+	p2Point<int>		previousColliderPos = { 0,0 };
+	p2Point<int>		previousPlayerPos{ 0,0 };
 	p2Point<int>		currentVelocity{ 0,0 };
 
+	//Actual movement speed  direction
+	int					velocity_X = 0;
+	int					velocity_Y = 0;
+
 	//Jump Variables
-	int					maxJump = 0;
-	int					jumpDistance = 80;
-	int					timeOnAir = 3;
-	int					currentTimeAir = 0;
+	uint				maxJump = 0u;
+	uint				jumpDistance = 80u;
+	uint				timeOnAir = 3u;
+	uint				currentTimeAir = 0u;
 
 	//Speeds
-	int					jumpSpeed = 0;
-	int					max_jumpSpeed = 5;
-	int					gravityForce = 0;
-	int					max_gravityForce = 8;
-	int					runSpeed = 2;
+	uint				jumpSpeed = 0u;
+	uint				max_jumpSpeed = 5u;
+	uint				gravityForce = 0u;
+	uint				max_gravityForce = 8u;
+	uint				runSpeed = 2u;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;
@@ -179,10 +183,8 @@ private:
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
 
-	bool				FixedPos = false;
+	bool				fixedPos = false;
 
-	int HorizontalSpeed = 0;
-	int VerticalSpeed = 0;
 	//XML Stuff
 	pugi::xml_document	player_file;
 	p2SString			folder;
