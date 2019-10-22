@@ -327,14 +327,8 @@ bool j1Player::Update(float dt)
 		state = ST_FALL;
 	}
 
-
-	//Fix position to ground
-	FixPosition();
-
 	Draw(); //Draw all the player
 
-	//LOG("Vertical Speed %i", velocity_Y);
-	//LOG("Horizontal Speed %i", velocity_X);
 	return true;
 }
 
@@ -438,7 +432,6 @@ bool j1Player::MoveTo(Directions dir)
 			ret = true;
 		}
 		else {
-			fixedPos = false;
 			onGround = false;
 		}
 		break;
@@ -485,16 +478,15 @@ void j1Player::Gravity()
 	MoveTo(DIR_DOWN);
 }
 
-
-
-void j1Player::FixPosition()
-{
-	if (onGround && !fixedPos) {
-		gravityForce = 1;
-		fixedPos = MoveTo(DIR_DOWN);
-		LOG("Fixing...");
-	}
-}
+//
+//void j1Player::FixPosition()
+//{
+//	if (onGround) {
+//		gravityForce = 1;
+//		fixedPos = MoveTo(DIR_DOWN);
+//		LOG("Fixing...");
+//	}
+//}
 #pragma endregion
 
 #pragma region Render
