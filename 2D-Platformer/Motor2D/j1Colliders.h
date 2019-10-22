@@ -87,7 +87,7 @@ public:
 
 public:
 
-	bool CheckColliderCollision(Collider*);
+	bool CheckColliderCollision(Collider*,int* posY = nullptr);
 	bool collider_debug = false;
 	
 private:

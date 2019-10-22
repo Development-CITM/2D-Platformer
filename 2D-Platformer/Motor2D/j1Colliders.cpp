@@ -188,7 +188,7 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 
 #pragma region CheckFunctions
 
-bool j1Colliders::CheckColliderCollision(Collider* c1)
+bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 {
 	bool ret = false;
 	Collider* c2 = nullptr;
@@ -200,7 +200,9 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 			ret = c1->CheckCollision(c2->rect);
 			if (ret) {
 				if (c1->callback) {
-					c1->callback->OnCollision(c1,c2);					
+					c1->callback->OnCollision(c1,c2);	
+					if(posY != nullptr)
+					*posY = c2->rect.y;
 				}
 				return ret;
 			}

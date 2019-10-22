@@ -410,7 +410,7 @@ bool j1Player::MoveTo(Directions dir)
 		}
 		break;
 	case DIR_DOWN:
-
+		int offsetY = 0;
 		if (currentTimeAir < timeOnAir) {
 			currentTimeAir++;
 		}
@@ -424,9 +424,11 @@ bool j1Player::MoveTo(Directions dir)
 		}
 		player_Collider->rect.y += gravityForce;
 		playerPos.y += gravityForce;
-		if (App->collider->CheckColliderCollision(player_Collider)) {
+		if (App->collider->CheckColliderCollision(player_Collider,&offsetY)) {
 			player_Collider->rect.y = previousColliderPos.y;
+			player_Collider->rect.y = offsetY - 32;
 			playerPos.y = previousPlayerPos.y;
+			playerPos.y = offsetY - 40;
 			onGround = true;
 			state = ST_IDLE;
 			ret = true;
