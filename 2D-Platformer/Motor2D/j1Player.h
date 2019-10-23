@@ -97,7 +97,7 @@ public:
 	bool CleanUp();
 
 	//Called when collided
-	void OnCollision(Collider*, Collider*);
+	//void OnCollision(Collider*, Collider*);
 
 
 private:
@@ -120,9 +120,6 @@ private:
 
 	//Animation Functions
 	void ChangeAnimation(Animation*);
-
-	//Fixing Functions
-	void FixPosition();
 
 
 //---------------VARIABLES --------------------//
@@ -156,8 +153,10 @@ private:
 
 	//Speeds
 	uint				jumpSpeed = 0u;
-	uint				max_jumpSpeed = 5u;
-	uint				gravityForce = 0u;
+	uint				max_jumpSpeed = 10u;
+	uint				fallSpeed = 0u;
+	uint				max_FallSpeed = 10u;
+	uint				gravityForce = 2u;
 	uint				max_gravityForce = 8u;
 	uint				runSpeed = 2u;
 

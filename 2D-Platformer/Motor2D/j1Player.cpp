@@ -35,7 +35,7 @@ bool j1Player::Start()
 	Load("animations/Player.tmx");
 
 	state = ST_IDLE;	//Set initial state
-	gravityForce = max_gravityForce;
+	//fallSpeed = max_FallSpeed;
 	return true;
 }
 
@@ -270,6 +270,7 @@ bool j1Player::PreUpdate()
 	velocity_X = playerPos.x;
 	velocity_Y = playerPos.y;
 
+	Gravity();
 	//Hold Movements
 	switch (state)
 	{
@@ -291,12 +292,6 @@ bool j1Player::PreUpdate()
 		HorizontalInput();
 		break;
 	}
-	if (state != ST_JUMP) {
-		Gravity();
-	}
-
-
-
 	return true;
 }
 
@@ -326,7 +321,7 @@ bool j1Player::Update(float dt)
 
 	if (velocity_Y < 0 && state != ST_IDLE) {
 		if(currentAnimation != fall)
-		gravityForce = 1;
+		//gravityForce = 1;
 		ChangeAnimation(fall);	
 		state = ST_FALL;
 	}
@@ -353,8 +348,8 @@ void j1Player::JumpInput()
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
 		jumpSpeed = max_jumpSpeed;
+		gravityForce = 2;
 		state = ST_JUMP;
-		gravityForce = 0;
 	}
 }
 
@@ -411,25 +406,28 @@ bool j1Player::MoveTo(Directions dir)
 			playerPos.y = previousPlayerPos.y;
 			jumping = false;
 			state = ST_FALL;
-			gravityForce = 1;
+			gravityForce = max_gravityForce;
 			currentTimeAir = 0;
 		}
+		LOG("Gravity: %i", gravityForce);
 		break;
 	case DIR_DOWN:
 		int offsetY = 0;
-		if (currentTimeAir < timeOnAir) {
-			currentTimeAir++;
-		}
-		else if (gravityForce < max_gravityForce) {
+		//if (currentTimeAir < timeOnAir) {
+		//	currentTimeAir++;
+		//}
+		//else if (gravityForce < max_gravityForce) {
 
-			gravityForce += 3;
-			currentTimeAir = 0;
-			if (gravityForce > max_gravityForce) {
-				gravityForce = max_gravityForce;
-			}
-		}
+		//	gravityForce += 3;
+		//	currentTimeAir = 0;
+		//	if (gravityForce > max_gravityForce) {
+		//		gravityForce = max_gravityForce;
+		//	}
+		//}
+		
 		player_Collider->rect.y += gravityForce;
 		playerPos.y += gravityForce;
+
 		if (App->collider->CheckColliderCollision(player_Collider,&offsetY)) {
 			player_Collider->rect.y = previousColliderPos.y;
 			player_Collider->rect.y = offsetY - 32;
@@ -447,7 +445,7 @@ bool j1Player::MoveTo(Directions dir)
 		break;
 	}
 
-	LOG("Player: %i,%i", playerPos.x, playerPos.y);
+	//("Player: %i,%i", playerPos.x, playerPos.y);
 	return ret;
 }
 
@@ -474,17 +472,17 @@ void j1Player::Jump()
 		if (player_Collider->rect.y > maxJump) {
 			MoveTo(DIR_UP);
 			if (player_Collider->rect.y < maxJump + 20) {
-				jumpSpeed = 3;
+				gravityForce = 6;
 			}	
 			if (player_Collider->rect.y < maxJump + 10) {
-				jumpSpeed = 1;
+				gravityForce = 8;
 			}
 			onGround = false;
 		}
 		else {
 			jumping = false;
 			state = ST_FALL;
-			gravityForce = 2;
+			gravityForce = 4;
 			currentTimeAir = 0;		
 		}
 	}
@@ -552,11 +550,3 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 #pragma endregion
 
-#pragma region CollisionLogic
-
-void j1Player::OnCollision(Collider* c1,Collider* c2)
-{
-
-}
-
-#pragma endregion
