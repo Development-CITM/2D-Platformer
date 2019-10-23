@@ -349,7 +349,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::JumpInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && onGround) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround) {
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
 		jumpSpeed = max_jumpSpeed;
