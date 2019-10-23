@@ -117,13 +117,13 @@ void j1Tilesets::Draw()
 						iPoint pos = MapToWorld(x, y);
 						if (strcmp(layer->name.GetString(), "Clouds") == 0)
 						{
-							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE/*, 1.1f*/);
+							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h}))
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE);
 						}
 						else if (strcmp(layer->name.GetString(), "Sea") == 0)
 						{
-							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE/*, 0.9f*/);
+							if (culling_Collider->CheckCollision({  pos.x,pos.y ,r.w,r.h }))
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE);
 						}
 						else
 						{

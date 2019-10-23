@@ -146,7 +146,7 @@ private:
 	int					velocity_Y = 0;
 
 	//Jump Variables
-	uint				maxJump = 0u;
+	int				maxJump = 0u;
 	uint				jumpDistance = 80u;
 	uint				timeOnAir = 3u;
 	uint				currentTimeAir = 0u;
@@ -181,8 +181,6 @@ private:
 	bool				move_To_Right = false;
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
-
-	bool				fixedPos = false;
 
 	//XML Stuff
 	pugi::xml_document	player_file;

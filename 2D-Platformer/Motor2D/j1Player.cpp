@@ -321,7 +321,6 @@ bool j1Player::Update(float dt)
 
 	if (velocity_Y < 0 && state != ST_IDLE) {
 		if(currentAnimation != fall)
-		//gravityForce = 1;
 		ChangeAnimation(fall);	
 		state = ST_FALL;
 	}
@@ -413,18 +412,6 @@ bool j1Player::MoveTo(Directions dir)
 		break;
 	case DIR_DOWN:
 		int offsetY = 0;
-		//if (currentTimeAir < timeOnAir) {
-		//	currentTimeAir++;
-		//}
-		//else if (gravityForce < max_gravityForce) {
-
-		//	gravityForce += 3;
-		//	currentTimeAir = 0;
-		//	if (gravityForce > max_gravityForce) {
-		//		gravityForce = max_gravityForce;
-		//	}
-		//}
-		
 		player_Collider->rect.y += gravityForce;
 		playerPos.y += gravityForce;
 
@@ -465,24 +452,30 @@ void j1Player::Move() {
 
 	}
 }
-
+ 
 void j1Player::Jump()
 {
 	if (jumping) {
-		if (player_Collider->rect.y > maxJump) {
+		if (player_Collider->rect.y >= maxJump) {
 			MoveTo(DIR_UP);
-			if (player_Collider->rect.y < maxJump + 20) {
+
+			if (player_Collider->rect.y < maxJump + 40) {
+				gravityForce = 4;
+			}	 
+			if (player_Collider->rect.y < maxJump + 15) {
 				gravityForce = 6;
-			}	
-			if (player_Collider->rect.y < maxJump + 10) {
-				gravityForce = 8;
 			}
+			if (player_Collider->rect.y < maxJump + 5) {
+				gravityForce = 9;
+			}
+
 			onGround = false;
 		}
 		else {
 			jumping = false;
+			jumpSpeed = 0;
 			state = ST_FALL;
-			gravityForce = 4;
+			gravityForce = 0;
 			currentTimeAir = 0;		
 		}
 	}
@@ -493,15 +486,6 @@ void j1Player::Gravity()
 	MoveTo(DIR_DOWN);
 }
 
-//
-//void j1Player::FixPosition()
-//{
-//	if (onGround) {
-//		gravityForce = 1;
-//		fixedPos = MoveTo(DIR_DOWN);
-//		LOG("Fixing...");
-//	}
-//}
 #pragma endregion
 
 #pragma region Render
