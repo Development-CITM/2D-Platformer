@@ -309,7 +309,7 @@ bool j1Player::Update(float dt)
 		state = ST_IDLE;
 	}
 
-	if (velocity_X != 0  && velocity_Y == 0 && state != ST_MIDAIR) {
+	if (velocity_X != 0  && velocity_Y == 0 && state != ST_JUMP && state != ST_FALL) {
 		ChangeAnimation(run);
 		state = ST_RUNNING;
 	}
@@ -400,14 +400,16 @@ bool j1Player::MoveTo(Directions dir)
 	case DIR_UP:
 		player_Collider->rect.y -= jumpSpeed;
 		playerPos.y -= jumpSpeed;
-		if (App->collider->CheckColliderCollision(player_Collider)) {
-			player_Collider->rect.y = previousColliderPos.y;
-			playerPos.y = previousPlayerPos.y;
-			jumping = false;
-			state = ST_FALL;
-			gravityForce = max_gravityForce;
-			currentTimeAir = 0;
-		}
+
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.y = previousColliderPos.y;
+				playerPos.y = previousPlayerPos.y;
+				jumping = false;
+				state = ST_FALL;
+				gravityForce = 3;
+				currentTimeAir = 0;
+			}
+		
 		LOG("Gravity: %i", gravityForce);
 		break;
 	case DIR_DOWN:
@@ -475,7 +477,7 @@ void j1Player::Jump()
 			jumping = false;
 			jumpSpeed = 0;
 			state = ST_FALL;
-			gravityForce = 0;
+			gravityForce = 3;
 			currentTimeAir = 0;		
 		}
 	}
@@ -484,6 +486,17 @@ void j1Player::Jump()
 void j1Player::Gravity()
 {
 	MoveTo(DIR_DOWN);
+	if (currentTimeAir < timeOnAir) {
+		currentTimeAir++;
+	}
+	else if(gravityForce < max_gravityForce){
+		currentTimeAir = 0;
+		gravityForce += 2;
+	}
+	else {
+		gravityForce = max_gravityForce;
+	}
+
 }
 
 #pragma endregion

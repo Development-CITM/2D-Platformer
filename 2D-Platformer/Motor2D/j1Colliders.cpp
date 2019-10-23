@@ -201,8 +201,17 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 	for (uint i = 0; i < colliders.count(); i++)
 	{
 		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
-			ret = c1->CheckCollision(c2->rect);
+			
+			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
+				ret = c1->CheckCollision(c2->rect);
+				ret = false;
+			}
+			else {
+
+				ret = c1->CheckCollision(c2->rect);
+			}
 			if (ret) {
+
 				if (c1->callback) {
 					c1->callback->OnCollision(c1,c2);	
 					if(posY != nullptr)
