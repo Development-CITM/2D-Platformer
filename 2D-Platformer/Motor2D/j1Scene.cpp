@@ -33,7 +33,6 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-
 	if (map % 2 == 0)
 	{
 		App->tiles->Load("maps/Level1.tmx");

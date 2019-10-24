@@ -21,10 +21,17 @@ j1Player::j1Player()
 bool j1Player::Awake(pugi::xml_node& conf)
 {
 	LOG("Loading Player");
-	bool ret = true;
+	bool ret = true; 
 
 	pugi::xml_node player_values = conf;
-	maxJump = player_values.child("maxJump").attribute("value").as_int();
+	jumpDistance = player_values.child("jumpDistance").attribute("value").as_uint();
+	timeOnAir = player_values.child("timeOnAir").attribute("value").as_uint();
+	
+	max_jumpSpeed = player_values.child("max_jumpSpeed").attribute("value").as_uint();
+	max_FallSpeed = player_values.child("max_FallSpeed").attribute("value").as_uint();
+	gravityForce = player_values.child("gravityForce").attribute("value").as_uint();
+	max_gravityForce = player_values.child("max_gravityForce").attribute("value").as_uint();
+	runSpeed = player_values.child("runSpeed").attribute("value").as_uint();
 	
 	//Init player pos
 	playerPos = { 200,472 };

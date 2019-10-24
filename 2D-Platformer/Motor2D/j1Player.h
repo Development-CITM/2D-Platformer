@@ -146,19 +146,19 @@ private:
 	int					velocity_Y = 0;
 
 	//Jump Variables
-	int					maxJump;
-	uint				jumpDistance = 80u;
-	uint				timeOnAir = 3u;
+	uint				maxJump = 0u;
+	uint				jumpDistance;
+	uint				timeOnAir;
 	uint				currentTimeAir = 0u;
 
 	//Speeds
 	uint				jumpSpeed = 0u;
-	uint				max_jumpSpeed = 10u;
+	uint				max_jumpSpeed;
 	uint				fallSpeed = 0u;
-	uint				max_FallSpeed = 10u;
-	uint				gravityForce = 2u;
-	uint				max_gravityForce = 8u;
-	uint				runSpeed = 2u;
+	uint				max_FallSpeed;
+	uint				gravityForce;
+	uint				max_gravityForce;
+	uint				runSpeed;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;
