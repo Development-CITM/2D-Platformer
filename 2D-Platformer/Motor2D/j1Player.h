@@ -98,9 +98,11 @@ public:
 
 	//Called when collided
 	//void OnCollision(Collider*, Collider*);
+	void SetPlayerPos(pugi::xml_node& node);
 
 
 private:
+
 	//Holding Movement Functions
 	void HorizontalInput();
 	void JumpInput();
@@ -125,6 +127,10 @@ private:
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
+	int pivot_x_flip;
+	int player_pos_x;
+	int player_pos_y;
+
 
 private:
 
@@ -159,6 +165,10 @@ private:
 	uint				gravityForce;
 	uint				max_gravityForce;
 	uint				runSpeed;
+
+	//Heights for adjustment while DIR_DOWN
+	int playerheight_dir_down;
+	int colliderheight_dir_down;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;

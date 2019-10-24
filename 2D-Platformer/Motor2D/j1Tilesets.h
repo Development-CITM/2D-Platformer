@@ -84,6 +84,8 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
 
+	bool Start();
+
 	// Called each loop iteration
 	void Draw();
 
@@ -107,6 +109,8 @@ private:
 	bool		LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	SDL_Rect	GetRect(TileSet* ,int id);
 	bool		LoadObject(pugi::xml_node& node);
+	void		SetCullingPos(pugi::xml_node& object);
+	
 
 public:
 
@@ -125,6 +129,8 @@ private:
 
 	int						currentFrame;
 	int						maxFrames;
+	int						culling_pos_x = 0;
+	int						culling_pos_y = 0;
 
 };
 

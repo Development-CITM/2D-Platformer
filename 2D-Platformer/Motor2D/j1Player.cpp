@@ -32,10 +32,11 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	gravityForce = player_values.child("gravityForce").attribute("value").as_uint();
 	max_gravityForce = player_values.child("max_gravityForce").attribute("value").as_uint();
 	runSpeed = player_values.child("runSpeed").attribute("value").as_uint();
-	
-	//Init player pos
-	playerPos = { 200,472 };
 
+	playerheight_dir_down= player_values.child("playerheight_dir_down").attribute("value").as_int();
+	colliderheight_dir_down = player_values.child("colliderheight_dir_down").attribute("value").as_int();
+
+	pivot_x_flip = player_values.child("pivot_x_flip").attribute("value").as_int();
 	return ret;
 }
 
@@ -44,7 +45,8 @@ bool j1Player::Start()
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 
-
+	//Init player pos
+	
 	state = ST_IDLE;	//Set initial state
 	//fallSpeed = max_FallSpeed;
 	return true;
@@ -77,6 +79,7 @@ bool j1Player::CleanUp()
 #pragma region Load Info
 bool j1Player::Load(const char* file_name)
 {
+	playerPos = { player_pos_x, player_pos_y };
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
 
@@ -363,6 +366,21 @@ void j1Player::JumpInput()
 	}
 }
 
+void j1Player::SetPlayerPos(pugi::xml_node& node)
+{
+	for (pugi::xml_node it = node.child("properties").child("property"); it; it = it.next_sibling("property"))
+	{
+		if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
+		{
+			player_pos_x = it.attribute("value").as_int();
+		}
+		if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
+		{
+			player_pos_y = it.attribute("value").as_int();
+		}
+	}
+}
+
 void j1Player::HorizontalInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
@@ -430,9 +448,9 @@ bool j1Player::MoveTo(Directions dir)
 
 		if (App->collider->CheckColliderCollision(player_Collider,&offsetY)) {
 			player_Collider->rect.y = previousColliderPos.y;
-			player_Collider->rect.y = offsetY - 32;
+			player_Collider->rect.y = offsetY - colliderheight_dir_down;
 			playerPos.y = previousPlayerPos.y;
-			playerPos.y = offsetY - 40;
+			playerPos.y = offsetY - playerheight_dir_down;
 			onGround = true;
 			state = ST_IDLE;
 			ret = true;

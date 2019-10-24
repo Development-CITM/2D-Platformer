@@ -30,8 +30,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	tiles = new j1Tilesets();
-	player = new j1Player();
 	collider = new j1Colliders();
+	player = new j1Player();
 	fade2black = new j1Fade2Black();
 	debug = new j1Debug();
 	
@@ -42,8 +42,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(tiles);
 	AddModule(scene);
+	AddModule(tiles);
 	AddModule(player);
 	AddModule(collider);
 	AddModule(fade2black);

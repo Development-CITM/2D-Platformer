@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Player.h"
 
 #define VSYNC true
 
@@ -22,6 +23,7 @@ j1Render::~j1Render()
 // Called before render is available
 bool j1Render::Awake(pugi::xml_node& config)
 {
+	pugi::xml_node camera_attr = config;
 	LOG("Create SDL rendering context");
 	bool ret = true;
 	// load flags
@@ -55,7 +57,6 @@ bool j1Render::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Render::Start()
 {
-
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
@@ -130,7 +131,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
-	int posX = x -4;
+	int posX = x - App->player->pivot_x_flip;
 	if (flip == SDL_FLIP_HORIZONTAL) {
 		x = posX;
 	}

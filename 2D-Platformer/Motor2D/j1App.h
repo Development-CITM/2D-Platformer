@@ -13,8 +13,8 @@ class j1Textures;
 class j1Audio;
 class j1Scene;
 class j1Tilesets;
-class j1Player;
 class j1Colliders;
+class j1Player;
 class j1Fade2Black;
 class j1Debug;
 

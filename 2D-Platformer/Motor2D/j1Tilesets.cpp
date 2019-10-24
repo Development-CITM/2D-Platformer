@@ -9,6 +9,7 @@
 #include "j1Window.h"
 #include "j1Audio.h"
 #include "j1Input.h"
+#include "j1Player.h"
 #include <math.h>
 
 #pragma region Constructor / Destructor
@@ -32,18 +33,21 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 
 	LOG("Loading Map Parser");
 	folder.create(config.child("folder").child_value());
-
-	p2Point<int> culling_Pos{ 65,200 };
-	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth()/2,App->win->GetHeight()/2 }, COLLIDER_WINDOW);
-	camera_Collider = App->collider->AddCollider({ App->win->GetWidth() / 6,400,150,80 }, COLLIDER_CAMERA);
+	
+	
 	return ret;
+}
+
+bool j1Tilesets::Start()
+{
+	
+	return true;
 }
 
 // Called before quitting
 bool j1Tilesets::CleanUp()
 {
 	LOG("Unloading map");
-
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = map_Data.tilesets.start;
@@ -417,10 +421,36 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 		object = node.child("object");
 		App->scene->LoadSceneLimits(object);
 	}
+	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0)
+	{
+		object = node.child("object");
+		App->player->SetPlayerPos(object);
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Culling_pos") == 0)
+	{
+		object = node.child("object");
+		SetCullingPos(object);
+	}
 	return ret;
 }
+void j1Tilesets::SetCullingPos(pugi::xml_node& object)
+{
+	for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
+	{
+		if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
+		{
+			culling_pos_x = it.attribute("value").as_int();
+		}
+		if (strcmp(it.attribute("name").as_string(), "culling_pos_y") == 0)
+		{
+			culling_pos_y = it.attribute("value").as_int();
+		}
+	}
+	p2Point<int> culling_Pos{ culling_pos_x,culling_pos_y };
+	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
+	camera_Collider = App->collider->AddCollider({ App->win->GetWidth() / 6,400,150,80 }, COLLIDER_CAMERA);
 
-
+}
 #pragma endregion
 
 #pragma region Logic Operations

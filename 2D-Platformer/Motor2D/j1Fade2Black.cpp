@@ -57,8 +57,8 @@ bool j1Fade2Black::Update(float dt)
 
 
 			//resets player & camera position
-			App->render->camera.x = 0;
-			App->render->camera.y = 0;
+			App->render->camera.x = -130;
+			App->render->camera.y = -400;
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();

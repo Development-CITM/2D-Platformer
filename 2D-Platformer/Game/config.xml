@@ -22,12 +22,16 @@
     <jumpDistance value="80"/>
     <timeOnAir value="3"/>
     
-    
     <max_jumpSpeed value="10"/>
     <max_FallSpeed value="10"/>
     <gravityForce value="2"/>
     <max_gravityForce value="8"/>
     <runSpeed value="2"/>
+
+    <playerheight_dir_down value="40"/>
+    <colliderheight_dir_down value ="32"/>
+
+    <pivot_x_flip value="4"/>
 
   </player>
   
