@@ -119,7 +119,7 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 	App->tiles->CleanUp();
 	App->collider->CleanUp();
-	//App->player->CleanUp();
+	App->player->CleanUp();
 	map++;
 	return true;
 }

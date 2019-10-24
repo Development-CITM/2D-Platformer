@@ -146,7 +146,7 @@ private:
 	int					velocity_Y = 0;
 
 	//Jump Variables
-	int				maxJump = 0u;
+	int					maxJump;
 	uint				jumpDistance = 80u;
 	uint				timeOnAir = 3u;
 	uint				currentTimeAir = 0u;

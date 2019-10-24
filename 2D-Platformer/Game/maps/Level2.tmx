@@ -65225,26 +65225,15 @@
   <object id="95" type="Dead" x="0" y="631" width="3358" height="9"/>
   <object id="96" type="Barrier" x="1408" y="404" width="128" height="28"/>
   <object id="98" type="Barrier" x="1669.67" y="514.5" width="133" height="13.625"/>
-  <object id="99" type="Barrier" x="1677.67" y="510" width="113.375" height="4.5"/>
   <object id="100" type="Barrier" x="1861.17" y="514.104" width="133.875" height="13.625"/>
-  <object id="101" type="Barrier" x="1873.29" y="510.104" width="109.875" height="4"/>
   <object id="104" type="Barrier" x="2053" y="514.5" width="134" height="13.625"/>
-  <object id="105" type="Barrier" x="2065" y="510" width="110.375" height="4.5"/>
   <object id="106" type="Barrier" x="2885" y="274.5" width="134" height="13.625"/>
-  <object id="107" type="Barrier" x="2897" y="270" width="110" height="4.5"/>
   <object id="108" type="Barrier" x="3045" y="275.5" width="102" height="14.5"/>
-  <object id="109" type="Barrier" x="3053" y="271" width="86" height="4.5"/>
   <object id="110" type="Barrier" x="3237" y="274.5" width="134" height="13.5"/>
-  <object id="111" type="Barrier" x="3249" y="270" width="110" height="4.5"/>
   <object id="112" type="Barrier" x="3457.28" y="273.75" width="94.7222" height="14.25"/>
-  <object id="113" type="Barrier" x="3477" y="269" width="75" height="4.75"/>
   <object id="114" type="Barrier" x="3349" y="577.75" width="331" height="13.25"/>
-  <object id="115" type="Barrier" x="3365" y="573" width="315" height="4.75"/>
   <object id="116" type="Barrier" x="2021" y="225.5" width="90" height="13.625"/>
-  <object id="117" type="Barrier" x="2037" y="221" width="74" height="4.5"/>
   <object id="118" type="Barrier" x="1904" y="226.5" width="91" height="13.625"/>
-  <object id="119" type="Barrier" x="1904" y="222" width="79.375" height="4.5"/>
   <object id="120" type="Barrier" x="1141" y="322.5" width="118" height="13.625"/>
-  <object id="121" type="Barrier" x="1153" y="318" width="94" height="4.5"/>
  </objectgroup>
 </map>

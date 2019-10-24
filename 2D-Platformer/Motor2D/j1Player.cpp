@@ -22,6 +22,9 @@ bool j1Player::Awake(pugi::xml_node& conf)
 {
 	LOG("Loading Player");
 	bool ret = true;
+
+	pugi::xml_node player_values = conf;
+	maxJump = player_values.child("maxJump").attribute("value").as_int();
 	
 	//Init player pos
 	playerPos = { 200,472 };
@@ -33,6 +36,7 @@ bool j1Player::Start()
 {
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
+
 
 	state = ST_IDLE;	//Set initial state
 	//fallSpeed = max_FallSpeed;

@@ -18,6 +18,25 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <player>
+    <maxJump value="9"/>
+    <jumpDistance value="80u"/>
+    <timeOnAir value="3u"/>
+    <currentTimeAir value="0u"/>
+    
+    
+    <jumpSpeed value="0u"/>
+    <max_jumpSpeed value="10u"/>
+    <fallSpeed value="0u"/>
+    <max_FallSpeed value="10u"/>
+    <gravityForce value="2u"/>
+    <max_gravityForce value="8u"/>
+    <runSpeed value="2"/>
+
+  </player>
+  
+  
+  
   <audio>
     <volume value="50"/>
   </audio>
