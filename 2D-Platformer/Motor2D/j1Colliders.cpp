@@ -99,6 +99,18 @@ bool j1Colliders::PreUpdate()
 
 		collider = collider->next;
 	}
+
+	p2List_item<Collider*>* detected_collider = detected_Colliders.start;
+	// Disable all colliders in the list
+	for (uint i = 0; i < detected_Colliders.count(); ++i)
+	{
+		if (App->player->GetPlayerCollider()->rect.y + 30 < detected_collider->data->rect.y) {
+			detected_collider->data->Enabled = true;
+			detected_Colliders.del(detected_collider);
+		}
+		detected_collider = detected_collider->next;
+
+	}
 	return true;
 }
 
@@ -148,7 +160,7 @@ void j1Colliders::Draw()
 			switch (collider->data->type)
 			{
 			case COLLIDER_WALL_SOLID:
-				App->render->DrawQuad(rect, 255, 0, 0, 40);
+				App->render->DrawQuad(rect, 255, 0, 0, 100);
 				break;
 			case COLLIDER_WALL_TRASPASSABLE:			
 				App->render->DrawQuad(rect, 0, 0, 255, 100);
@@ -160,11 +172,11 @@ void j1Colliders::Draw()
 				App->render->DrawQuad(rect, 0, 255, 0, 100);
 				break;
 			case COLLIDER_WINDOW:
-				App->render->DrawQuad(rect, 0, 255, 255, 100);
+				App->render->DrawQuad(rect, 0, 255, 255, 50);
 				break;
 			case COLLIDER_CAMERA:
-				App->render->DrawQuad(rect, 0, 0, 0, 200, false);
-			break;
+				App->render->DrawQuad(rect, 0, 0, 0, 50, false);
+				break;
 			}
 				
 			
@@ -192,7 +204,7 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 
 #pragma region CheckFunctions
 
-bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
+bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollider,int* posY)
 {
 	bool ret = false;
 	Collider* c2 = nullptr;
@@ -201,27 +213,36 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 	for (uint i = 0; i < colliders.count(); i++)
 	{
 		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
-			
-			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
-				ret = c1->CheckCollision(c2->rect);
-				ret = false;
-			}
-			else {
 
+			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
+				if (c1->CheckCollision(c2->rect) ) {
+					if (c1->rect.y + c1->rect.h/2 < c2->rect.y && c2->Enabled == true) {
+ 						ret = true;
+					}
+					else {
+						ret = false;
+						c2->Enabled = false;
+						if(detected_Colliders.find(c2) == -1)
+						detected_Colliders.add(c2);
+					}
+				}
+			}
+
+			else {
 				ret = c1->CheckCollision(c2->rect);
 			}
 			if (ret) {
 
 				if (c1->callback) {
-					c1->callback->OnCollision(c1,c2);	
-					if(posY != nullptr)
-					*posY = c2->rect.y;
+					c1->callback->OnCollision(c1, c2);
+					if (posY != nullptr)
+						*posY = c2->rect.y;
 				}
 				return ret;
 			}
 		}
-		if(c->next != NULL)
-		c = c->next;
+		if (c->next != NULL)
+			c = c->next;
 		c2 = c->data;
 	}
 

@@ -304,6 +304,7 @@ bool j1Player::PreUpdate()
 		break;
 	case ST_FALL:
 		HorizontalInput();
+		
 		break;
 	}
 	return true;
@@ -336,7 +337,10 @@ bool j1Player::Update(float dt)
 	if (velocity_Y < 0 && state != ST_IDLE) {
 		if(currentAnimation != fall)
 		ChangeAnimation(fall);	
-		state = ST_FALL;
+		if (state != ST_FALL) {
+			state = ST_FALL;
+			gravityForce = 3;
+		}
 	}
 
 	Draw(); //Draw all the player
@@ -435,18 +439,18 @@ bool j1Player::MoveTo(Directions dir)
 				playerPos.y = previousPlayerPos.y;
 				jumping = false;
 				state = ST_FALL;
-				gravityForce = 3;
+				gravityForce = 1;
 				currentTimeAir = 0;
 			}
 		
-		LOG("Gravity: %i", gravityForce);
+
 		break;
 	case DIR_DOWN:
 		int offsetY = 0;
 		player_Collider->rect.y += gravityForce;
 		playerPos.y += gravityForce;
 
-		if (App->collider->CheckColliderCollision(player_Collider,&offsetY)) {
+		if (App->collider->CheckColliderCollision(player_Collider,COLLIDER_NONE,&offsetY)) {
 			player_Collider->rect.y = previousColliderPos.y;
 			player_Collider->rect.y = offsetY - colliderheight_dir_down;
 			playerPos.y = previousPlayerPos.y;
@@ -457,7 +461,7 @@ bool j1Player::MoveTo(Directions dir)
 		}
 		else {
 			onGround = false;
-
+			LOG("Gravity: %i", gravityForce);
 		}
 		
 		break;
@@ -522,7 +526,7 @@ void j1Player::Gravity()
 		currentTimeAir = 0;
 		gravityForce += 2;
 	}
-	else {
+	else if (gravityForce > max_gravityForce){
 		gravityForce = max_gravityForce;
 	}
 

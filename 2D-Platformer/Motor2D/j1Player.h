@@ -100,6 +100,8 @@ public:
 	//void OnCollision(Collider*, Collider*);
 	void SetPlayerPos(pugi::xml_node& node);
 
+	Collider* GetPlayerCollider() const { return player_Collider; }
+	int GetVelocityX() { return velocity_X; }
 
 private:
 
@@ -180,8 +182,7 @@ private:
 	Animation*			fall = nullptr;
 
 	//Colliders
-	Collider*			player_Collider = nullptr;
-	Collider*			ground_Collider = nullptr;
+	Collider* player_Collider = nullptr;
 
 	//Checkers
 	bool				detected_Collision = false;

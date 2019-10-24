@@ -88,12 +88,13 @@ public:
 
 public:
 
-	bool CheckColliderCollision(Collider*,int* posY = nullptr);
+	bool CheckColliderCollision(Collider*,ColliderType ignoredCollider = COLLIDER_NONE, int* posY = nullptr);
 	bool collider_debug = false;
 	
 private:
 	
 	p2List<Collider*>	colliders;
+	p2List<Collider*>	detected_Colliders;
 
 	bool				collider_loaded = false;
 
