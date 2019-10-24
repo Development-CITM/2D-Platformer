@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="230" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="98">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="230" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="122">
  <tileset firstgid="1" name="tileset_autumn" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
   <image source="Assets/tileset_autumn.png" width="928" height="320"/>
   <tile id="119">
@@ -65173,7 +65173,6 @@
   <object id="11" type="Barrier" x="815" y="384" width="82" height="247"/>
   <object id="12" type="Jumpable" x="953" y="347" width="32" height="17"/>
   <object id="13" type="Jumpable" x="1049" y="315" width="32" height="17"/>
-  <object id="14" x="1141" y="320" width="112" height="16"/>
   <object id="15" type="Barrier" x="1151" y="336" width="97" height="295"/>
   <object id="16" type="Barrier" x="1248" y="336" width="64" height="11"/>
   <object id="17" type="Barrier" x="1360" y="336" width="30" height="12"/>
@@ -65181,19 +65180,14 @@
   <object id="23" type="Jumpable" x="1321" y="571" width="32" height="17"/>
   <object id="24" type="Barrier" x="1454" y="576" width="35" height="55"/>
   <object id="25" type="Jumpable" x="1568" y="544" width="48" height="20"/>
-  <object id="26" type="Barrier" x="1669" y="512" width="134" height="16"/>
   <object id="27" type="Barrier" x="1680" y="528" width="112" height="43"/>
-  <object id="28" type="Barrier" x="1861" y="512" width="134" height="16"/>
   <object id="29" type="Barrier" x="1872" y="528" width="115" height="44"/>
-  <object id="30" type="Barrier" x="2053" y="512" width="134" height="16"/>
   <object id="31" type="Barrier " x="2064" y="528" width="111" height="43"/>
   <object id="32" type="Barrier" x="2254" y="496" width="35" height="135"/>
   <object id="33" type="Barrier" x="2382" y="480" width="116" height="88"/>
   <object id="34" type="Barrier" x="2111" y="1" width="99" height="375"/>
   <object id="36" type="Barrier" x="2128" y="376" width="82" height="25"/>
   <object id="37" type="Barrier" x="1904" y="240" width="77" height="32"/>
-  <object id="38" type="Barrier" x="1840" y="224" width="155" height="16"/>
-  <object id="39" type="Barrier" x="2021" y="223" width="90" height="16"/>
   <object id="40" type="Barrier" x="2030" y="239" width="81" height="18"/>
   <object id="41" type="Barrier" x="2048" y="257" width="63" height="16"/>
   <object id="42" type="Barrier" x="2096" y="273" width="15" height="103"/>
@@ -65212,18 +65206,13 @@
   <object id="62" type="Jumpable" x="2729" y="379" width="48" height="17"/>
   <object id="63" type="Jumpable" x="2633" y="315" width="48" height="17"/>
   <object id="64" type="Jumpable" x="2745" y="267" width="48" height="17"/>
-  <object id="65" type="Barrier" x="2885" y="272" width="134" height="16"/>
   <object id="66" type="Barrier" x="2896" y="288" width="112" height="44"/>
   <object id="67" type="Barrier" x="3056" y="290" width="82" height="341"/>
-  <object id="68" type="Barrier " x="3045" y="272" width="102" height="18"/>
-  <object id="71" type="Barrier" x="3461" y="272" width="91" height="16"/>
   <object id="76" type="Barrier" x="3469" y="288" width="83" height="193"/>
   <object id="77" type="Barrier" x="3487" y="481" width="50" height="15"/>
   <object id="79" type="Barrier" x="3552" y="97" width="17" height="384"/>
-  <object id="80" type="Barrier" x="3349" y="576" width="331" height="15"/>
   <object id="81" type="Barrier" x="3358" y="591" width="13" height="49"/>
   <object id="82" type="Barrier" x="3278" y="368" width="52" height="263"/>
-  <object id="83" type="Barrier" x="3237" y="272" width="134" height="16"/>
   <object id="85" type="Barrier" x="3248" y="288" width="113" height="45"/>
   <object id="86" type="Barrier" x="3041" y="1" width="80" height="159"/>
   <object id="87" type="Barrier" x="3056" y="160" width="48" height="17"/>
@@ -65235,5 +65224,27 @@
   <object id="94" type="Barrier" x="3423" y="80" width="34" height="32"/>
   <object id="95" type="Dead" x="0" y="631" width="3358" height="9"/>
   <object id="96" type="Barrier" x="1408" y="404" width="128" height="28"/>
+  <object id="98" type="Barrier" x="1669.67" y="514.5" width="133" height="13.625"/>
+  <object id="99" type="Barrier" x="1677.67" y="510" width="113.375" height="4.5"/>
+  <object id="100" type="Barrier" x="1861.17" y="514.104" width="133.875" height="13.625"/>
+  <object id="101" type="Barrier" x="1873.29" y="510.104" width="109.875" height="4"/>
+  <object id="104" type="Barrier" x="2053" y="514.5" width="134" height="13.625"/>
+  <object id="105" type="Barrier" x="2065" y="510" width="110.375" height="4.5"/>
+  <object id="106" type="Barrier" x="2885" y="274.5" width="134" height="13.625"/>
+  <object id="107" type="Barrier" x="2897" y="270" width="110" height="4.5"/>
+  <object id="108" type="Barrier" x="3045" y="275.5" width="102" height="14.5"/>
+  <object id="109" type="Barrier" x="3053" y="271" width="86" height="4.5"/>
+  <object id="110" type="Barrier" x="3237" y="274.5" width="134" height="13.5"/>
+  <object id="111" type="Barrier" x="3249" y="270" width="110" height="4.5"/>
+  <object id="112" type="Barrier" x="3457.28" y="273.75" width="94.7222" height="14.25"/>
+  <object id="113" type="Barrier" x="3477" y="269" width="75" height="4.75"/>
+  <object id="114" type="Barrier" x="3349" y="577.75" width="331" height="13.25"/>
+  <object id="115" type="Barrier" x="3365" y="573" width="315" height="4.75"/>
+  <object id="116" type="Barrier" x="2021" y="225.5" width="90" height="13.625"/>
+  <object id="117" type="Barrier" x="2037" y="221" width="74" height="4.5"/>
+  <object id="118" type="Barrier" x="1904" y="226.5" width="91" height="13.625"/>
+  <object id="119" type="Barrier" x="1904" y="222" width="79.375" height="4.5"/>
+  <object id="120" type="Barrier" x="1141" y="322.5" width="118" height="13.625"/>
+  <object id="121" type="Barrier" x="1153" y="318" width="94" height="4.5"/>
  </objectgroup>
 </map>
