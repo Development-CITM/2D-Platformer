@@ -7,6 +7,7 @@
 #include "j1Input.h"
 #include "j1Colliders.h"
 #include "j1Tilesets.h"
+#include "j1Audio.h"
 #include "j1Window.h"
 #include <math.h>
 
@@ -104,12 +105,17 @@ bool j1Player::Load(const char* file_name)
 	{
 
 		ObjectLayer* lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
-
+		
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
 
-		if (ret == true && strcmp(lay->name.GetString(), "Collider") != 0) {//if LoadLayer wents well, it return a true
+		if (ret==true && strcmp(layer.attribute("name").as_string(), "Jump_sfx")==0) {
+			pugi::xml_node aha = layer.child("object").child("properties").child("property");
+			App->audio->LoadFx(aha.attribute("value").as_string());
+		}
+		if (ret == true && strcmp(lay->name.GetString(), "Collider") != 0) {//if LoadLayer went well, it return a true
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
 		}
+		
 		else {
 			SDL_Rect rect = *lay->rects.start->data;
 			p2Point<int> offset{ 0, 0 };
@@ -376,6 +382,7 @@ void j1Player::JumpInput()
 		jumping = true;
 		jumpSpeed = max_jumpSpeed;
 		gravityForce = 2;
+		App->audio->PlayFx(1);
 		state = ST_JUMP;
 	}
 }
