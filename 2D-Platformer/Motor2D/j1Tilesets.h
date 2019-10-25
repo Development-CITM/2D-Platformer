@@ -132,21 +132,6 @@ private:
 	MapLayer* lays;
 	int layercnt = 0;
 
-
-	//pugis
-	
-
-	
-
-	
-
-
-
-	
-
-
-	
-
 	int						currentFrame;
 	int						maxFrames;
 	int						culling_pos_x = 0;
