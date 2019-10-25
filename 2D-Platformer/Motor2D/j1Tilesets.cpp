@@ -419,7 +419,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 	else if (strcmp(node.attribute("name").as_string(), "Music") == 0)
 	{
 		objects = node.child("object").child("properties").child("property");
-		App->audio->PlayMusic(object.attribute("value").as_string());
+		App->audio->PlayMusic(objects.attribute("value").as_string());
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0)
 	{
