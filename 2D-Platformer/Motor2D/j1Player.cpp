@@ -110,8 +110,13 @@ bool j1Player::Load(const char* file_name)
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
 
 		if (ret==true && strcmp(layer.attribute("name").as_string(), "Jump_sfx")==0) {
-			pugi::xml_node aha = layer.child("object").child("properties").child("property");
-			App->audio->LoadFx(aha.attribute("value").as_string());
+			pugi::xml_node source = layer.child("object").child("properties").child("property");
+			App->audio->LoadFx(source.attribute("value").as_string());
+		}
+
+		if (ret == true && strcmp(layer.attribute("name").as_string(), "Dead_sfx") == 0) {
+			pugi::xml_node source = layer.child("object").child("properties").child("property");
+			App->audio->LoadFx(source.attribute("value").as_string());
 		}
 		if (ret == true && strcmp(lay->name.GetString(), "Collider") != 0) {//if LoadLayer went well, it return a true
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
@@ -391,7 +396,7 @@ bool j1Player::PostUpdate()
 void j1Player::VerticalInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround) {
-		App->audio->PlayFx(1);
+		App->audio->PlayFx(2);
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
 		jumpSpeed = max_jumpSpeed;

@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Tilesets.h"
 #include "j1Colliders.h"
+#include "j1Audio.h"
 #include "j1Fade2Black.h"
 #include "j1Scene.h"
 #include "j1Window.h"
@@ -223,6 +224,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 			{
 				if (c1->CheckCollision(c2->rect))
 				{
+						App->audio->PlayFx(1);
 						App->fade2black->FadeToBlack(App->scene, App->scene);
 						return false;
 				}

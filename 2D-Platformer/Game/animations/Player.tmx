@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="23" tileheight="41" infinite="0" nextlayerid="13" nextobjectid="46">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="23" tileheight="41" infinite="0" nextlayerid="14" nextobjectid="47">
  <properties>
   <property name="collider_height" type="int" value="31"/>
   <property name="collider_width" type="int" value="13"/>
@@ -9,8 +9,15 @@
  <imagelayer id="2" name="Capa de Imagen 1">
   <image source="Player Sheet.png" width="256" height="256"/>
  </imagelayer>
+ <objectgroup id="13" name="Dead_sfx">
+  <object id="46" x="92" y="164" width="23" height="20">
+   <properties>
+    <property name="value" value="audio/fx/dead_sfx.wav"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="12" name="Jump_sfx">
-  <object id="45" x="0" y="164" width="23" height="20">
+  <object id="45" x="92" y="184" width="23" height="21">
    <properties>
     <property name="value" value="audio/fx/jump_sfx.wav"/>
    </properties>
