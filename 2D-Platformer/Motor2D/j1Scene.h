@@ -40,13 +40,20 @@ public:
 
 	bool LoadSceneLimits(pugi::xml_node object);
 	
+private:
+	bool SaveGame(pugi::xml_node save_game);
+
+private:
+	
+	pugi::xml_document save_game_file;
+
+	//pugis
+	pugi::xml_parse_result result;
+	pugi::xml_node renderer;
 
 
 	int map = 0;
 	bool notfirst;
-private:
-	
-
 public:
 	Cameralimit limitright;
 	Cameralimit limitleft;

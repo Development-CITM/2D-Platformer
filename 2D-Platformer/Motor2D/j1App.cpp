@@ -290,6 +290,7 @@ void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
+	load_game.create(file);
 	want_to_load = true;
 }
 

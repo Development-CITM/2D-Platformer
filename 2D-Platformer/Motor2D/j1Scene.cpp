@@ -53,6 +53,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+
 	return true;
 }
 
@@ -151,6 +152,12 @@ bool j1Scene::LoadSceneLimits(pugi::xml_node object)
 	}
 
 		return true;
+}
+
+bool j1Scene::SaveGame(pugi::xml_node save_game)
+{
+
+	return true;
 }
 
 

@@ -90,19 +90,19 @@ bool j1Tilesets::CleanUp()
 
 void j1Tilesets::Draw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) {
-		culling_Collider->rect.x += 2;
+	//if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) {
+	//	culling_Collider->rect.x += 2;
 
-	}
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
-		culling_Collider->rect.x -= 2;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
-		culling_Collider->rect.y += 2;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) {
-		culling_Collider->rect.y -= 2;
-	}
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
+	//	culling_Collider->rect.x -= 2;
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+	//	culling_Collider->rect.y += 2;
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) {
+	//	culling_Collider->rect.y -= 2;
+	//}
 
 	if (map_loaded == false)
 		return;
