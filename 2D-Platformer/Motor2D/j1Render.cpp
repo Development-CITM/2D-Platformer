@@ -135,11 +135,15 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	if (flip == SDL_FLIP_HORIZONTAL) {
 		x = posX;
 	}
-
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale * size;
-	rect.y = (int)(camera.y) + y * scale * size;
-
+	if (!parallax) {
+		rect.x = (int)(camera.x * speed) + x * scale * size;
+		rect.y = (int)(camera.y) + y * scale * size;
+	}
+	else {
+		rect.x = x * scale * size;
+		rect.y = (int)(camera.y) + y * scale * size;
+	}
 	if(section != NULL)
 	{
 		rect.w = section->w;
