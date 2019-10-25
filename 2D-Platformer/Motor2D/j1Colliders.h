@@ -89,6 +89,7 @@ public:
 public:
 
 	bool CheckColliderCollision(Collider*,ColliderType ignoredCollider = COLLIDER_NONE, int* posY = nullptr);
+	bool ThroughPlatform (Collider*);
 	bool collider_debug = false;
 	
 private:

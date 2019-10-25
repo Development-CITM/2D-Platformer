@@ -226,11 +226,14 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 						if(detected_Colliders.find(c2) == -1)
 						detected_Colliders.add(c2);
 					}
+					App->player->onPlatform = true;
 				}
-			}
+			}			
 
 			else {
 				ret = c1->CheckCollision(c2->rect);
+				App->player->onPlatform = false;
+
 			}
 			if (ret) {
 
@@ -241,6 +244,38 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 				}
 				return ret;
 			}
+		}
+		if (c->next != NULL)
+			c = c->next;
+		c2 = c->data;
+	}
+
+	return ret;
+}
+
+bool j1Colliders::ThroughPlatform(Collider* c1)
+{
+	bool ret = false;
+	Collider* c2 = nullptr;
+	p2List_item<Collider*>* c = colliders.start;
+	c2 = c->data;
+	for (uint i = 0; i < colliders.count(); i++)
+	{
+		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
+
+			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
+				if (c1->CheckCollision(c2->rect)) {
+						ret = false;
+						c2->Enabled = false;
+						if (detected_Colliders.find(c2) == -1)
+							detected_Colliders.add(c2);				
+				}
+			}
+			else {
+				ret = c1->CheckCollision(c2->rect);
+			}
+				return ret;
+			
 		}
 		if (c->next != NULL)
 			c = c->next;

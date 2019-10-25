@@ -34,6 +34,7 @@ enum Directions
 	DIR_LEFT,
 	DIR_UP,
 	DIR_DOWN,
+	DIR_PLATFORM,
 	DIR_NONE,
 };
 #pragma endregion
@@ -108,7 +109,7 @@ private:
 
 	//Holding Movement Functions
 	void HorizontalInput();
-	void JumpInput();
+	void VerticalInput();
 
 	//Logic Movements
 	void Move();
@@ -137,6 +138,7 @@ public:
 	int player_pos_y;
 
 	bool				god_mode_enabled = false;
+	bool				onPlatform = false;
 
 private:
 
