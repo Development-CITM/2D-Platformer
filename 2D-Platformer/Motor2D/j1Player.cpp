@@ -378,11 +378,11 @@ bool j1Player::PostUpdate()
 void j1Player::JumpInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround) {
+		App->audio->PlayFx(1);
 		maxJump = player_Collider->rect.y - jumpDistance;
 		jumping = true;
 		jumpSpeed = max_jumpSpeed;
 		gravityForce = 2;
-		App->audio->PlayFx(1);
 		state = ST_JUMP;
 	}
 }
