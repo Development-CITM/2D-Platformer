@@ -20,16 +20,16 @@ LINK
 We do not own any of the sprites, tilesets, music or sfx used for the game. We're not gonna get any profit from it. All the artistic credit to authors of the art :
 
 * Tileset: Ansimuz: https://ansimuz.itch.io/
-           Link to download: https://ansimuz.itch.io/magic-cliffs-environment
+Link to download: https://ansimuz.itch.io/magic-cliffs-environment
    
 * Sprites: Jesse Munguia: https://jesse-m.itch.io/
-            Link to download: https://jesse-m.itch.io/jungle-pack
+Link to download: https://jesse-m.itch.io/jungle-pack
             
 * Music:
-          - Track 1: レオン・カルナク: https://www.youtube.com/watch?v=B0YIBMmoRsk
-                     Artist: 森田朋子 (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
-          - Track 2: Delirium Lava Ruins: https://www.youtube.com/watch?v=k_2fFLS-Dd0&t=4s
-                     Artist: Unknown (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
+Track 1: レオン・カルナク: https://www.youtube.com/watch?v=B0YIBMmoRsk
+Artist: 森田朋子 (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
+Track 2: Delirium Lava Ruins: https://www.youtube.com/watch?v=k_2fFLS-Dd0&t=4s
+Artist: Unknown (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
                 
 * SFX:
           ** Jump SFX: Swoosh 1 sound: http://soundbible.com/682-Swoosh-1.html
