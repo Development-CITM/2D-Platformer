@@ -444,7 +444,7 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if(relativePos.x < 180 && App->tiles->camera_Collider->rect.x > 4){
+		else if(relativePos.x < 180 && App->tiles->camera_Collider->rect.x > 25){
 			App->render->camera.x += runSpeed * 2;
 			App->tiles->camera_Collider->rect.x -= runSpeed;
 			App->tiles->culling_Collider->rect.x -= runSpeed;
