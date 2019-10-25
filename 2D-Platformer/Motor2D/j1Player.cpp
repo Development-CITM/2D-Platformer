@@ -598,7 +598,8 @@ void j1Player::Draw()
 		playerPos.x,											//Player position.x
 		playerPos.y, 											//Player position.y
 		&currentAnimation->rects[currentAnimation->numFrame],	//Current rect from animation rects
-		App->render->drawsize,									//DrawSize is a multiplier to scale sprites
+		App->render->drawsize,
+		false,							//DrawSize is a multiplier to scale sprites
 		flip);													//Orientation to flip sprites
 	
 	
