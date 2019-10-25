@@ -134,18 +134,18 @@ private:
 
 
 	//pugis
-	pugi::xml_parse_result result;
-	pugi::xml_node tileset;
-	pugi::xml_node layer;
-	pugi::xml_node object;
-	pugi::xml_node map;
-	pugi::xml_node properties;
-	pugi::xml_node offset;
-	pugi::xml_node image;
-	pugi::xml_node layer_data;
-	pugi::xml_node tiles;
-	pugi::xml_node objects;
-	pugi::xml_node it;
+	
+
+	
+
+	
+
+
+
+	
+
+
+	
 
 	int						currentFrame;
 	int						maxFrames;
