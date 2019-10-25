@@ -129,8 +129,8 @@ void j1Tilesets::Draw()
 						iPoint pos = MapToWorld(x, y);
 						if (strcmp(layer->name.GetString(), "Clouds") == 0)
 						{
-							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x * 1.1F)),pos.y,r.w,r.h })) {
-								pos.x = pos.x + (App->render->camera.x * 1.1F);
+							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * 0.1F)),pos.y,r.w,r.h })) {
+								pos.x = pos.x + (App->render->camera.x * 0.1F);
 								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize,true);
 							}
 						}
