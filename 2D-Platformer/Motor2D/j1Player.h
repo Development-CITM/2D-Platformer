@@ -193,6 +193,7 @@ private:
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
 
+
 	//XML Stuff
 	pugi::xml_document	player_file;
 	p2SString			folder;
