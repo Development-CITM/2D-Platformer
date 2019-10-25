@@ -7,6 +7,7 @@
 #include "j1Input.h"
 #include "j1Colliders.h"
 #include "j1Tilesets.h"
+#include "j1Window.h"
 #include <math.h>
 
 #pragma region Constructor/Awake/Start/CleanUp
@@ -343,6 +344,14 @@ bool j1Player::Update(float dt)
 		}
 	}
 
+	if (App->tiles->culling_Collider->CheckCollision(player_Collider->rect)) {
+		LOG("Player_Collider.y: %i", player_Collider->rect.y);
+		LOG("Culling collider.y: %i", App->tiles->culling_Collider->rect.y);
+		
+		relativePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
+		relativePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
+		LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
+	}
 	Draw(); //Draw all the player
 
 	return true;
@@ -421,6 +430,10 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
+		else if(relativePos.x > 220) {
+			App->render->camera.x -= runSpeed * 2;
+			App->tiles->culling_Collider->rect.x += runSpeed;
+		}
 		break;
 	case DIR_LEFT:
 		player_Collider->rect.x -= runSpeed;
@@ -428,6 +441,10 @@ bool j1Player::MoveTo(Directions dir)
 		if (App->collider->CheckColliderCollision(player_Collider)) {
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
+		}
+		else if(relativePos.x < 180){
+			App->render->camera.x += runSpeed * 2;
+			App->tiles->culling_Collider->rect.x -= runSpeed;
 		}
 		break;
 	case DIR_UP:
@@ -441,6 +458,10 @@ bool j1Player::MoveTo(Directions dir)
 				state = ST_FALL;
 				gravityForce = 1;
 				currentTimeAir = 0;
+			}
+			else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10 ) {
+				App->render->camera.y += 6;
+				App->tiles->culling_Collider->rect.y -= 3 ;
 			}
 		
 
@@ -457,8 +478,24 @@ bool j1Player::MoveTo(Directions dir)
 			playerPos.y = offsetY - playerheight_dir_down;
 			onGround = true;
 			state = ST_IDLE;
-			ret = true;
+			ret = true;		
+			if (relativePos.y > 330) {
+				App->render->camera.y -= 8;
+				App->tiles->culling_Collider->rect.y += 8/ 2;
+			}
 		}
+		else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 255 && state != ST_JUMP) {
+			int cameraSpeedY = 8;
+			if (gravityForce == max_gravityForce) {
+				cameraSpeedY = max_gravityForce;
+			}
+			else {
+				cameraSpeedY = 8;
+			}
+			App->render->camera.y -= cameraSpeedY;
+			App->tiles->culling_Collider->rect.y += cameraSpeedY/2;
+		}
+
 		else {
 			onGround = false;
 			LOG("Gravity: %i", gravityForce);
@@ -475,16 +512,12 @@ void j1Player::Move() {
 	if (move_To_Left) {
 		MoveTo(DIR_LEFT);
 		flip = SDL_FLIP_HORIZONTAL;		
-		App->render->camera.x += runSpeed *2;
-		App->tiles->culling_Collider->rect.x -= runSpeed;
+
 
 	}
 	else if (move_To_Right) {
 		MoveTo(DIR_RIGHT);
 		flip = SDL_FLIP_NONE;
-		App->render->camera.x -= runSpeed*2;
-		App->tiles->culling_Collider->rect.x += runSpeed;
-
 	}
 }
  

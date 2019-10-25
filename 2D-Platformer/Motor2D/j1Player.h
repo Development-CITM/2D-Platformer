@@ -197,6 +197,9 @@ private:
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded = false;
+
+
+	p2Point<int> relativePos = { 0,0 };
 };
 
 

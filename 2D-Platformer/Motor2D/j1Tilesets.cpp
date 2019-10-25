@@ -51,7 +51,7 @@ bool j1Tilesets::CleanUp()
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = map_Data.tilesets.start;
-	
+
 	while (item != NULL)
 	{
 		RELEASE(item->data);
@@ -70,8 +70,6 @@ bool j1Tilesets::CleanUp()
 	}
 	map_Data.layers.clear();
 
-	SDL_DestroyTexture(set->texture);
-	delete lays->data;
 	// Clean up the pugi tree
 	map_file.reset();
 
@@ -159,7 +157,7 @@ bool j1Tilesets::Load(const char* file_name)
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name); 
 
-	result = map_file.load_file(file_name);
+	pugi::xml_parse_result result = map_file.load_file(file_name);
 	
 
 	if(result == NULL)
@@ -175,10 +173,10 @@ bool j1Tilesets::Load(const char* file_name)
 	}
 
 	// Load all tilesets info ----------------------------------------------
-	
+	pugi::xml_node tileset;
 	for(tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
-		set = new TileSet();
+		TileSet* set = new TileSet();
 
 		if(ret == true)
 		{
@@ -194,19 +192,19 @@ bool j1Tilesets::Load(const char* file_name)
 	
 
 	// Load layer info ----------------------------------------------
-	
+	pugi::xml_node layer;
 	for(layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 	{
-		lays = new MapLayer();
+		MapLayer* lay = new MapLayer();
 
-		ret = LoadLayer(layer, lays);
+		ret = LoadLayer(layer, lay);
 
 		if(ret == true)
-			map_Data.layers.add(lays);
+			map_Data.layers.add(lay);
 	}
 
 	//Load objects info -----------------------------------------------
-	
+	pugi::xml_node object;
 	for (object = map_file.child("map").child("objectgroup"); object; object=object.next_sibling("objectgroup"))
 	{
 		LoadObject(object);
@@ -250,7 +248,7 @@ bool j1Tilesets::Load(const char* file_name)
 bool j1Tilesets::LoadMap()
 {
 	bool ret = true;
-	map = map_file.child("map");
+	pugi::xml_node map = map_file.child("map");
 
 	if(map == NULL)
 	{
@@ -321,9 +319,9 @@ bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->tile_height = tileset_node.attribute("tileheight").as_int();
 	set->margin = tileset_node.attribute("margin").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
-	properties = tileset_node.child("properties").child("property");
+	pugi::xml_node properties = tileset_node.child("properties").child("property");
 
-	offset = tileset_node.child("tileoffset");
+	pugi::xml_node offset = tileset_node.child("tileoffset");
 
 	if(offset != NULL)
 	{
@@ -342,7 +340,7 @@ bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 bool j1Tilesets::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	image = tileset_node.child("image");
+	pugi::xml_node image = tileset_node.child("image");
 
 if (image == NULL)
 {
@@ -382,7 +380,7 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->num_tile_width = node.attribute("width").as_int();
 	layer->num_tile_height = node.attribute("height").as_int();
-	layer_data = node.child("data");
+	pugi::xml_node layer_data = node.child("data");
 
 	if (layer_data == NULL)
 	{
@@ -396,9 +394,9 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		memset(layer->data, 0, layer->num_tile_width * layer->num_tile_height);
 
 		int i = 0;
-		for (tiles = layer_data.child("tile"); tiles; tiles = tiles.next_sibling("tile"))
+		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
-			layer->data[i++] = (int)tiles.attribute("gid").as_int(0);
+			layer->data[i++] = (int)tile.attribute("gid").as_int(0);
 		}
 	}
 
@@ -407,37 +405,37 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 bool j1Tilesets::LoadObject(pugi::xml_node& node)
 {
 	bool ret = true;
-	objects = node;
+	pugi::xml_node object = node;
 	if (strcmp(node.attribute("name").as_string(), "Colliders") == 0)
 	{
-		objects = node.child("object");
-		App->collider->Load(objects);
+		object = node.child("object");
+		App->collider->Load(object);
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Music") == 0)
 	{
-		objects = node.child("object").child("properties").child("property");
-		App->audio->PlayMusic(objects.attribute("value").as_string());
+		object = node.child("object").child("properties").child("property");
+		App->audio->PlayMusic(object.attribute("value").as_string());
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0)
 	{
-		objects = node.child("object");
-		App->scene->LoadSceneLimits(objects);
+		object = node.child("object");
+		App->scene->LoadSceneLimits(object);
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0)
 	{
-		objects = node.child("object");
-		App->player->SetPlayerPos(objects);
+		object = node.child("object");
+		App->player->SetPlayerPos(object);
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Culling_pos") == 0)
 	{
-		objects = node.child("object");
-		SetCullingPos(objects);
+		object = node.child("object");
+		SetCullingPos(object);
 	}
 	return ret;
 }
 void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 {
-	for (it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
+	for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
 	{
 		if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
 		{
@@ -450,7 +448,7 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 	}
 	p2Point<int> culling_Pos{ culling_pos_x,culling_pos_y };
 	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
-	camera_Collider = App->collider->AddCollider({ App->win->GetWidth() / 6,400,150,80 }, COLLIDER_CAMERA);
+	//camera_Collider = App->collider->AddCollider({ App->win->GetWidth() / 6,400,150,80 }, COLLIDER_CAMERA);
 
 }
 #pragma endregion
