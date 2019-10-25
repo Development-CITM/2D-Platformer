@@ -47,6 +47,16 @@ bool j1Tilesets::Start()
 bool j1Tilesets::Update(float dt)
 {
 	if (App->player->GetPlayerCollider()->GetPosition().x > 2790 + culling_Collider->rect.w) {
+		if (App->scene->lvl1 == true)
+		{
+			App->scene->lvl2 = true;
+			App->scene->lvl1 = false;
+		}
+		else if(App->scene->lvl2 == true)
+		{
+			App->scene->lvl1 = true;
+			App->scene->lvl2 = false;
+		}
 		App->fade2black->FadeToBlack(App->scene, App->scene);
 	}
 	return true;

@@ -34,11 +34,11 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	if (map % 2 == 0)
+	if (lvl1)
 	{
 		App->tiles->Load("maps/Level1.tmx");
 	}
-	if (map % 2 != 0)
+	if (lvl2)
 	{
 		App->tiles->Load("maps/Level2.tmx");
 	}
@@ -125,7 +125,6 @@ bool j1Scene::CleanUp()
 	App->tiles->CleanUp();
 	App->collider->CleanUp();
 	App->player->CleanUp();	
-	map++;
 	notfirst = true;
 	return true;
 }

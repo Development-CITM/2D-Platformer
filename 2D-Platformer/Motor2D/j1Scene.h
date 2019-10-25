@@ -51,10 +51,12 @@ private:
 	pugi::xml_parse_result result;
 	pugi::xml_node renderer;
 
-
-	int map = 0;
 	bool notfirst;
 public:
+
+	bool lvl1 = true;
+	bool lvl2 = false;
+
 	Cameralimit limitright;
 	Cameralimit limitleft;
 

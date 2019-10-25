@@ -25,10 +25,37 @@ j1Debug::~j1Debug()
 
 bool j1Debug::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_REPEAT)
+	//Basic debug functions
+	//Swap to lvl1
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && App->scene->lvl1 == false)
 	{
-		App->fade2black->FadeToBlack(App->scene, App->scene); //TODO EUDALD: make sure what's not cleaning and clean it!
+		App->fade2black->FadeToBlack(App->scene, App->scene); 
+		App->scene->lvl2 = false;
+		App->scene->lvl1 = true;
 	}
+
+	//Swap to lvl2
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && App->scene->lvl2 == false)
+	{
+		App->fade2black->FadeToBlack(App->scene, App->scene); 
+		App->scene->lvl1 = false;
+		App->scene->lvl2 = true;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		App->fade2black->FadeToBlack(App->scene, App->scene);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		if(App->player->god_mode_enabled == false)
+			App->player->god_mode_enabled = true;
+		else if (App->player->god_mode_enabled == true)
+			App->player->god_mode_enabled = false;
+	}
+
+	//Show colliders
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		if (App->collider->collider_debug == false)

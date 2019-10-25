@@ -206,6 +206,7 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 
 bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollider,int* posY)
 {
+	
 	bool ret = false;
 	Collider* c2 = nullptr;
 	p2List_item<Collider*>* c = colliders.start;
@@ -252,6 +253,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
+
 	bool detectedX = true;
 	bool detectedY = true;
 

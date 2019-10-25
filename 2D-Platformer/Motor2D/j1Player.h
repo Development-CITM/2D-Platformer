@@ -34,6 +34,7 @@ enum Directions
 	DIR_LEFT,
 	DIR_UP,
 	DIR_DOWN,
+	DIR_NONE,
 };
 #pragma endregion
 
@@ -113,8 +114,10 @@ private:
 	void Move();
 	void Jump();
 	void Gravity();
+	void MoveOnGodMode();
 
 	bool MoveTo(Directions dir);
+
 
 	//Load Functions
 	bool LoadMap();
@@ -133,6 +136,7 @@ public:
 	int player_pos_x;
 	int player_pos_y;
 
+	bool				god_mode_enabled = false;
 
 private:
 
@@ -192,6 +196,8 @@ private:
 	bool				move_To_Right = false;
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
+
+	
 
 
 	//XML Stuff

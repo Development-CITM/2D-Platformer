@@ -40,6 +40,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 	pivot_x_flip = player_values.child("pivot_x_flip").attribute("value").as_int();
 	return ret;
+	
 }
 
 bool j1Player::Start()
@@ -291,7 +292,12 @@ bool j1Player::PreUpdate()
 	velocity_X = playerPos.x;
 	velocity_Y = playerPos.y;
 
-	Gravity();
+	if (!god_mode_enabled)
+	{
+		Gravity();
+	}
+
+
 	//Hold Movements
 	switch (state)
 	{
@@ -320,8 +326,15 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {	
-	Move();
-	Jump();
+	if (!god_mode_enabled)
+	{
+		Move();
+		Jump();
+	}
+	else if (god_mode_enabled)
+	{
+		MoveOnGodMode();
+	}
 
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
@@ -576,6 +589,56 @@ void j1Player::Gravity()
 		gravityForce = max_gravityForce;
 	}
 
+}
+
+void j1Player::MoveOnGodMode()
+{
+	Directions dir = DIR_NONE;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		dir = DIR_RIGHT;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		dir = DIR_UP;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		dir = DIR_DOWN;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		dir = DIR_LEFT;
+
+	switch (dir)
+	{
+	case DIR_RIGHT:
+		player_Collider->rect.x += runSpeed;
+		playerPos.x += runSpeed;
+
+		App->render->camera.x -= runSpeed * 2;
+		App->tiles->camera_Collider->rect.x += runSpeed;
+		App->tiles->culling_Collider->rect.x += runSpeed;
+		break;
+	case DIR_LEFT:
+		player_Collider->rect.x -= runSpeed;
+		playerPos.x -= runSpeed;
+
+		App->render->camera.x += runSpeed * 2;
+		App->tiles->camera_Collider->rect.x -= runSpeed;
+		App->tiles->culling_Collider->rect.x -= runSpeed;
+		break;
+	case DIR_UP:
+		player_Collider->rect.y -= runSpeed;
+		playerPos.y -= runSpeed;
+
+		App->render->camera.y += 6;
+		App->tiles->camera_Collider->rect.y -= 3;
+		App->tiles->culling_Collider->rect.y -= 3;
+		break;
+	case DIR_DOWN:
+		player_Collider->rect.y += runSpeed;
+		playerPos.y += runSpeed;
+
+		App->render->camera.y -= 8;
+		App->tiles->camera_Collider->rect.y += 8 / 2;
+		App->tiles->culling_Collider->rect.y += 8 / 2;
+
+		break;
+	}
 }
 
 #pragma endregion
