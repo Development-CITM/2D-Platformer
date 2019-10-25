@@ -195,7 +195,7 @@ bool j1Tilesets::Load(const char* file_name)
 	// Load all tilesets info ----------------------------------------------
 	for(tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
-		TileSet* set = new TileSet();
+		set = new TileSet();
 
 		if(ret == true)
 		{

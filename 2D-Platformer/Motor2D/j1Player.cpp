@@ -65,6 +65,10 @@ bool j1Player::CleanUp()
 
 	while (item2 != NULL)
 	{
+		for (int i = 0; i < item2->data->rects.count(); i++)
+		{
+			delete item2->data->rects[i];
+		}
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
@@ -106,7 +110,7 @@ bool j1Player::Load(const char* file_name)
 	for (layer = player_file.child("map").child("objectgroup"); layer && ret; layer = layer.next_sibling("objectgroup"))
 	{
 
-		ObjectLayer* lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
+		lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
 		
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
 		if (!App->scene->notfirst)
@@ -258,7 +262,7 @@ bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
 	{
 		for (pugi::xml_node object = layer_data; object; object = object.next_sibling("object"))
 		{
-			SDL_Rect* rect = new SDL_Rect;
+			rect = new SDL_Rect;
 			rect->x = object.attribute("x").as_int();
 			rect->y = object.attribute("y").as_int();
 			rect->w = object.attribute("width").as_int();

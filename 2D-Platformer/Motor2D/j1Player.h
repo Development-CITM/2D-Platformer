@@ -199,6 +199,11 @@ private:
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
 
+	//Rects
+	SDL_Rect* rect;
+
+	//Object Layer
+	ObjectLayer* lay;
 	
 
 

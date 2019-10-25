@@ -37,7 +37,7 @@ bool j1Colliders::Load(pugi::xml_node object)
 	
 		for (object.child("object"); object && ret; object = object.next_sibling("object"))
 		{
-			Collider* collider = new Collider();
+			collider = new Collider();
 
 			ret = LoadObject(object, collider);
 
@@ -198,7 +198,7 @@ void j1Colliders::Draw()
 
 Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>offset, j1Module* callback, int Damage)
 {	
-	Collider* c = new Collider(rect, type,offset, callback, Damage);
+	c = new Collider(rect, type,offset, callback, Damage);
 	colliders.add(c);
 
 	return c;
@@ -224,7 +224,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 			{
 				if (c1->CheckCollision(c2->rect))
 				{
-						App->audio->PlayFx(3);
+						App->audio->PlayFx(1);
 						App->fade2black->FadeToBlack(App->scene, App->scene);
 						return false;
 				}

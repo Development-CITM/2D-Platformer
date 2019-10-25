@@ -93,7 +93,8 @@ public:
 	bool collider_debug = false;
 	
 private:
-	
+	Collider* collider;
+	Collider* c;
 	p2List<Collider*>	colliders;
 	p2List<Collider*>	detected_Colliders;
 
