@@ -19,22 +19,24 @@ LINK
 
 We do not own any of the sprites, tilesets, music or sfx used for the game. We're not gonna get any profit from it. All the artistic credit to authors of the art :
 
-* Tileset: Ansimuz: https://ansimuz.itch.io/
+* Tileset: <br>
+Ansimuz: https://ansimuz.itch.io/ <br>
 Link to download: https://ansimuz.itch.io/magic-cliffs-environment
    
-* Sprites: Jesse Munguia: https://jesse-m.itch.io/
+* Sprites: <br>
+Jesse Munguia: https://jesse-m.itch.io/<br>
 Link to download: https://jesse-m.itch.io/jungle-pack
             
-* Music:
-Track 1: レオン・カルナク: https://www.youtube.com/watch?v=B0YIBMmoRsk
-Artist: 森田朋子 (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
-Track 2: Delirium Lava Ruins: https://www.youtube.com/watch?v=k_2fFLS-Dd0&t=4s
+* Music:<br>
+Track 1: レオン・カルナク: https://www.youtube.com/watch?v=B0YIBMmoRsk<br>
+         Artist: 森田朋子 (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))<br><br>
+Track 2: Delirium Lava Ruins: https://www.youtube.com/watch?v=k_2fFLS-Dd0&t=4s<br>
 Artist: Unknown (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
                 
-* SFX:
-          ** Jump SFX: Swoosh 1 sound: http://soundbible.com/682-Swoosh-1.html
-          ** License: Sampling Plus 1.0
-          - Dead SFX: Medium water splash: Downloaded from: https://www.zapsplat.com/
+* SFX:<br>
+Jump SFX: Swoosh 1 sound: http://soundbible.com/682-Swoosh-1.html<br>
+License: Sampling Plus 1.0<br><br>
+Dead SFX: Medium water splash: Downloaded from: https://www.zapsplat.com/
           
 ### License:
 
