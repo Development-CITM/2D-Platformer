@@ -10,6 +10,7 @@
 #include "j1Audio.h"
 #include "j1Input.h"
 #include "j1Player.h"
+#include "j1Fade2Black.h"
 #include <math.h>
 
 #pragma region Constructor / Destructor
@@ -40,6 +41,14 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 
 bool j1Tilesets::Start()
 {
+	return true;
+}
+
+bool j1Tilesets::Update(float dt)
+{
+	if (App->player->GetPlayerCollider()->GetPosition().x > 2790 + culling_Collider->rect.w) {
+		App->fade2black->FadeToBlack(App->scene, App->scene);
+	}
 	return true;
 }
 
@@ -120,13 +129,13 @@ void j1Tilesets::Draw()
 						iPoint pos = MapToWorld(x, y);
 						if (strcmp(layer->name.GetString(), "Clouds") == 0)
 						{
-							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h}))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE);
+							if (culling_Collider->CheckCollision({ (int)(pos.x *1.1f),pos.y,r.w,r.h}))
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
 						}
 						else if (strcmp(layer->name.GetString(), "Sea") == 0)
 						{
 							if (culling_Collider->CheckCollision({  pos.x,pos.y ,r.w,r.h }))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize, SDL_FLIP_NONE);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
 						}
 						else
 						{
@@ -143,8 +152,6 @@ void j1Tilesets::Draw()
 			layer = lay->data;
 		}
 	}
-
-
 }
 #pragma endregion
 
@@ -445,7 +452,7 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 	}
 	p2Point<int> culling_Pos{ culling_pos_x,culling_pos_y };
 	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
-	//camera_Collider = App->collider->AddCollider({ App->win->GetWidth() / 6,400,150,80 }, COLLIDER_CAMERA);
+	camera_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_CAMERA);
 
 }
 #pragma endregion

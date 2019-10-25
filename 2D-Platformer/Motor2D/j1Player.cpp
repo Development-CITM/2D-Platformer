@@ -291,6 +291,7 @@ bool j1Player::PreUpdate()
 	{
 	case ST_IDLE:
 		JumpInput();
+		
 		HorizontalInput();
 		break;
 	case ST_RUNNING:
@@ -344,12 +345,12 @@ bool j1Player::Update(float dt)
 		}
 	}
 
-	if (App->tiles->culling_Collider->CheckCollision(player_Collider->rect)) {
-		LOG("Player_Collider.y: %i", player_Collider->rect.y);
-		LOG("Culling collider.y: %i", App->tiles->culling_Collider->rect.y);
+	if (App->tiles->camera_Collider->CheckCollision(player_Collider->rect)) {
+		LOG("Player_Collider.x: %i", player_Collider->rect.x);
+		LOG("Camera collider.x: %i", App->tiles->camera_Collider->rect.x);
 		
-		relativePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
-		relativePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
+		relativePos.x = player_Collider->rect.x - App->tiles->camera_Collider->rect.x;
+		relativePos.y = player_Collider->rect.y - App->tiles->camera_Collider->rect.y;
 		LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
 	}
 	Draw(); //Draw all the player
@@ -430,20 +431,22 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if(relativePos.x > 220) {
+		else if(relativePos.x > 220 && App->tiles->camera_Collider->rect.x < 2798) {
 			App->render->camera.x -= runSpeed * 2;
+			App->tiles->camera_Collider->rect.x += runSpeed;
 			App->tiles->culling_Collider->rect.x += runSpeed;
 		}
 		break;
 	case DIR_LEFT:
 		player_Collider->rect.x -= runSpeed;
 		playerPos.x -= runSpeed;
-		if (App->collider->CheckColliderCollision(player_Collider)) {
+		if (App->collider->CheckColliderCollision(player_Collider) || relativePos.x < 6) {
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if(relativePos.x < 180){
+		else if(relativePos.x < 180 && App->tiles->camera_Collider->rect.x > 4){
 			App->render->camera.x += runSpeed * 2;
+			App->tiles->camera_Collider->rect.x -= runSpeed;
 			App->tiles->culling_Collider->rect.x -= runSpeed;
 		}
 		break;
@@ -459,8 +462,9 @@ bool j1Player::MoveTo(Directions dir)
 				gravityForce = 1;
 				currentTimeAir = 0;
 			}
-			else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10 ) {
+			else if (relativePos.y < 100 && App->tiles->camera_Collider->rect.y > 10 ) {
 				App->render->camera.y += 6;
+				App->tiles->camera_Collider->rect.y -= 3 ;
 				App->tiles->culling_Collider->rect.y -= 3 ;
 			}
 		
@@ -481,10 +485,11 @@ bool j1Player::MoveTo(Directions dir)
 			ret = true;		
 			if (relativePos.y > 330) {
 				App->render->camera.y -= 8;
+				App->tiles->camera_Collider->rect.y += 8/ 2;
 				App->tiles->culling_Collider->rect.y += 8/ 2;
 			}
 		}
-		else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 255 && state != ST_JUMP) {
+		else if (relativePos.y > 230 && App->tiles->camera_Collider->rect.y < 250 && state != ST_JUMP) {
 			int cameraSpeedY = 8;
 			if (gravityForce == max_gravityForce) {
 				cameraSpeedY = max_gravityForce;
@@ -493,6 +498,7 @@ bool j1Player::MoveTo(Directions dir)
 				cameraSpeedY = 8;
 			}
 			App->render->camera.y -= cameraSpeedY;
+			App->tiles->camera_Collider->rect.y += cameraSpeedY/2;
 			App->tiles->culling_Collider->rect.y += cameraSpeedY/2;
 		}
 

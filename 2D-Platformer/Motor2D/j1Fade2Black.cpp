@@ -73,6 +73,7 @@ bool j1Fade2Black::Update(float dt)
 		if (now >= total_time)
 		{
 			IsFading = false;
+			
 			current_step = fade_step::none;
 		}
 	} break;

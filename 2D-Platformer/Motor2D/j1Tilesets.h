@@ -86,6 +86,7 @@ public:
 
 	bool Start();
 
+	bool Update(float dt) override;
 	// Called each loop iteration
 	void Draw();
 
