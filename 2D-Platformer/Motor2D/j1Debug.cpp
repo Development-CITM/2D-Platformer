@@ -27,7 +27,7 @@ bool j1Debug::Update(float dt)
 {
 	//Basic debug functions
 	//Swap to lvl1
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && App->scene->lvl1 == false)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		App->fade2black->FadeToBlack(App->scene, App->scene); 
 		App->scene->lvl2 = false;
@@ -35,7 +35,7 @@ bool j1Debug::Update(float dt)
 	}
 
 	//Swap to lvl2
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && App->scene->lvl2 == false)
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		App->fade2black->FadeToBlack(App->scene, App->scene); 
 		App->scene->lvl1 = false;

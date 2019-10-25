@@ -223,20 +223,8 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 			{
 				if (c1->CheckCollision(c2->rect))
 				{
-					if (App->scene->lvl1 == false)
-					{
 						App->fade2black->FadeToBlack(App->scene, App->scene);
-						App->scene->lvl1 = true;
-						App->scene->lvl2 = false;
 						return false;
-					}
-					if (App->scene->lvl2 == false)
-					{
-						App->fade2black->FadeToBlack(App->scene, App->scene);
-						App->scene->lvl2 = true;
-						App->scene->lvl1 = false;
-						return false;
-					}
 				}
 						
 			}
