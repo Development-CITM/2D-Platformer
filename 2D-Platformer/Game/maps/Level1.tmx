@@ -69599,7 +69599,7 @@
    <tile gid="202"/>
    <tile gid="203"/>
    <tile gid="203"/>
-   <tile gid="205"/>
+   <tile/>
    <tile gid="270"/>
    <tile gid="271"/>
    <tile gid="272"/>
@@ -70063,16 +70063,14 @@
   <object id="64" type="Barrier" x="3151" y="448" width="161" height="192"/>
   <object id="65" type="Barrier" x="2863" y="272" width="31" height="21"/>
   <object id="66" type="Barrier" x="768" y="479" width="304" height="16"/>
-  <object id="67" type="Barrier" x="880" y="495" width="96" height="19"/>
-  <object id="68" type="Barrier" x="801" y="495" width="79" height="34"/>
   <object id="103" type="Barrier" x="2128" y="224" width="88" height="16"/>
   <object id="104" type="Barrier" x="2137" y="240" width="73" height="17"/>
   <object id="105" type="Barrier" x="2147" y="257" width="50" height="13"/>
-  <object id="106" type="Jumpable" x="601" y="347" width="32" height="17"/>
-  <object id="111" type="Jumpable" x="505" y="379" width="32" height="17"/>
+  <object id="106" type="Jumpable" x="604" y="347" width="26" height="17"/>
+  <object id="111" type="Jumpable" x="508" y="379" width="25" height="17"/>
   <object id="112" type="Jumpable" x="1098" y="448" width="47" height="17"/>
-  <object id="113" type="Jumpable" x="1097" y="528" width="48" height="17"/>
-  <object id="114" type="Jumpable" x="1097" y="608" width="48" height="17"/>
+  <object id="113" type="Jumpable" x="1100" y="528" width="42" height="17"/>
+  <object id="114" type="Jumpable" x="1097" y="610" width="48" height="15"/>
   <object id="115" type="Jumpable" x="1753" y="539" width="48" height="17"/>
   <object id="117" type="Jumpable" x="1977" y="459" width="32" height="17"/>
   <object id="118" type="Jumpable" x="1913" y="395" width="32" height="17"/>

@@ -44482,12 +44482,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="641"/>
    <tile gid="642"/>
+   <tile gid="642"/>
+   <tile gid="671"/>
    <tile gid="672"/>
    <tile gid="673"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -44712,12 +44712,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="699"/>
    <tile gid="700"/>
+   <tile gid="700"/>
+   <tile gid="729"/>
    <tile gid="730"/>
    <tile gid="731"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -44942,12 +44942,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="757"/>
    <tile gid="758"/>
+   <tile gid="256"/>
+   <tile gid="787"/>
    <tile gid="788"/>
    <tile gid="789"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -45172,12 +45172,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="815"/>
    <tile gid="816"/>
+   <tile gid="817"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -45402,12 +45402,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="873"/>
    <tile gid="874"/>
+   <tile gid="875"/>
+   <tile gid="903"/>
    <tile gid="904"/>
    <tile gid="905"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -45632,12 +45632,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="931"/>
    <tile gid="932"/>
+   <tile gid="820"/>
+   <tile gid="961"/>
    <tile gid="962"/>
    <tile gid="963"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -45862,12 +45862,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="989"/>
    <tile gid="990"/>
+   <tile gid="820"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -46092,12 +46092,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="873"/>
    <tile gid="874"/>
+   <tile gid="820"/>
+   <tile gid="903"/>
    <tile gid="904"/>
    <tile gid="905"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -46322,12 +46322,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="931"/>
    <tile gid="932"/>
+   <tile gid="820"/>
+   <tile gid="961"/>
    <tile gid="962"/>
    <tile gid="963"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -46552,12 +46552,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="989"/>
    <tile gid="990"/>
+   <tile gid="820"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -53675,9 +53675,9 @@
    <tile gid="641"/>
    <tile gid="642"/>
    <tile gid="672"/>
+   <tile gid="671"/>
+   <tile gid="672"/>
    <tile gid="673"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -53905,9 +53905,9 @@
    <tile gid="699"/>
    <tile gid="700"/>
    <tile gid="730"/>
+   <tile gid="729"/>
+   <tile gid="730"/>
    <tile gid="731"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -54134,10 +54134,10 @@
    <tile/>
    <tile gid="757"/>
    <tile gid="758"/>
+   <tile gid="256"/>
+   <tile gid="787"/>
    <tile gid="788"/>
    <tile gid="789"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -54364,10 +54364,10 @@
    <tile/>
    <tile gid="815"/>
    <tile gid="816"/>
+   <tile gid="313"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -54594,10 +54594,10 @@
    <tile/>
    <tile gid="873"/>
    <tile gid="874"/>
+   <tile gid="371"/>
+   <tile gid="903"/>
    <tile gid="904"/>
    <tile gid="905"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -54824,10 +54824,10 @@
    <tile/>
    <tile gid="931"/>
    <tile gid="932"/>
+   <tile gid="314"/>
+   <tile gid="961"/>
    <tile gid="962"/>
    <tile gid="963"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -54896,12 +54896,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="641"/>
    <tile gid="642"/>
+   <tile gid="642"/>
+   <tile gid="671"/>
    <tile gid="672"/>
    <tile gid="673"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55054,10 +55054,10 @@
    <tile/>
    <tile gid="989"/>
    <tile gid="990"/>
+   <tile gid="314"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55126,12 +55126,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="699"/>
    <tile gid="700"/>
+   <tile gid="700"/>
+   <tile gid="729"/>
    <tile gid="730"/>
    <tile gid="731"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55284,10 +55284,10 @@
    <tile/>
    <tile gid="873"/>
    <tile gid="874"/>
+   <tile gid="372"/>
+   <tile gid="903"/>
    <tile gid="904"/>
    <tile gid="905"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55356,12 +55356,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="757"/>
    <tile gid="758"/>
+   <tile gid="256"/>
+   <tile gid="787"/>
    <tile gid="788"/>
    <tile gid="789"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55514,10 +55514,10 @@
    <tile/>
    <tile gid="931"/>
    <tile gid="932"/>
+   <tile gid="314"/>
+   <tile gid="961"/>
    <tile gid="962"/>
    <tile gid="963"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55586,12 +55586,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="815"/>
    <tile gid="816"/>
+   <tile gid="817"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55744,10 +55744,10 @@
    <tile/>
    <tile gid="989"/>
    <tile gid="990"/>
+   <tile gid="372"/>
+   <tile gid="845"/>
    <tile gid="846"/>
    <tile gid="847"/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55816,12 +55816,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="873"/>
    <tile gid="874"/>
+   <tile gid="875"/>
+   <tile gid="903"/>
    <tile gid="904"/>
    <tile gid="905"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -65166,7 +65166,7 @@
  <objectgroup id="27" name="Player_pos">
   <object id="123" x="0" y="0" width="32" height="31">
    <properties>
-    <property name="player_pos_x" type="int" value="60"/>
+    <property name="player_pos_x" type="int" value="80"/>
     <property name="player_pos_y" type="int" value="400"/>
    </properties>
   </object>
@@ -65181,9 +65181,9 @@
  </objectgroup>
  <objectgroup id="26" name="Colliders">
   <object id="1" type="Barrier" x="0" y="528" width="175" height="103"/>
-  <object id="6" type="Barrier" x="254" y="496" width="36" height="135"/>
+  <object id="6" type="Barrier" x="254" y="496" width="67" height="135"/>
   <object id="7" type="Jumpable" x="377" y="492" width="32" height="16"/>
-  <object id="8" type="Barrier" x="494" y="496" width="36" height="135"/>
+  <object id="8" type="Barrier" x="479" y="496" width="65.5" height="135"/>
   <object id="9" type="Jumpable" x="601" y="459" width="32" height="17"/>
   <object id="10" type="Jumpable" x="697" y="427" width="48" height="17"/>
   <object id="11" type="Barrier" x="815" y="384" width="82" height="247"/>
@@ -65194,7 +65194,7 @@
   <object id="17" type="Barrier" x="1360" y="336" width="30" height="12"/>
   <object id="19" type="Barrier" x="1390" y="144" width="177" height="260"/>
   <object id="23" type="Jumpable" x="1321" y="571" width="32" height="17"/>
-  <object id="24" type="Barrier" x="1454" y="576" width="35" height="55"/>
+  <object id="24" type="Barrier" x="1439" y="576" width="67" height="55"/>
   <object id="25" type="Jumpable" x="1568" y="544" width="48" height="20"/>
   <object id="27" type="Barrier" x="1680" y="528" width="112" height="43"/>
   <object id="29" type="Barrier" x="1872" y="528" width="115" height="44"/>
@@ -65202,8 +65202,7 @@
   <object id="32" type="Barrier" x="2254" y="496" width="35" height="135"/>
   <object id="33" type="Barrier" x="2382" y="480" width="116" height="88"/>
   <object id="34" type="Barrier" x="2111" y="1" width="99" height="375"/>
-  <object id="36" type="Barrier" x="2128" y="376" width="82" height="25"/>
-  <object id="37" type="Barrier" x="1904" y="240" width="77" height="32"/>
+  <object id="37" type="Barrier" x="1904" y="240" width="80.75" height="16"/>
   <object id="40" type="Barrier" x="2030" y="239" width="81" height="18"/>
   <object id="41" type="Barrier" x="2048" y="257" width="63" height="16"/>
   <object id="42" type="Barrier" x="2096" y="273" width="15" height="103"/>
