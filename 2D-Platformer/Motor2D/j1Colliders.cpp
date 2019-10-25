@@ -5,6 +5,8 @@
 #include "j1Textures.h"
 #include "j1Tilesets.h"
 #include "j1Colliders.h"
+#include "j1Fade2Black.h"
+#include "j1Scene.h"
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Player.h"
@@ -215,6 +217,29 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 	{
 		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
 
+
+
+			if (c2->type == COLLIDER_DEAD)
+			{
+				if (c1->CheckCollision(c2->rect))
+				{
+					if (App->scene->lvl1 == false)
+					{
+						App->fade2black->FadeToBlack(App->scene, App->scene);
+						App->scene->lvl1 = true;
+						App->scene->lvl2 = false;
+						return false;
+					}
+					if (App->scene->lvl2 == false)
+					{
+						App->fade2black->FadeToBlack(App->scene, App->scene);
+						App->scene->lvl2 = true;
+						App->scene->lvl1 = false;
+						return false;
+					}
+				}
+						
+			}
 			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
 				if (c1->CheckCollision(c2->rect) ) {
 					if (c1->rect.y + c1->rect.h/2 < c2->rect.y && c2->Enabled == true) {
