@@ -32,15 +32,15 @@ We do not own any of the sprites, tilesets, music or sfx used for the game. We'r
                      Artist: Unknown (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
                 
 * SFX:
-          - Jump SFX: Swoosh 1 sound: http://soundbible.com/682-Swoosh-1.html
-                      License: Sampling Plus 1.0
+          ** Jump SFX: Swoosh 1 sound: http://soundbible.com/682-Swoosh-1.html
+          ** License: Sampling Plus 1.0
           - Dead SFX: Medium water splash: Downloaded from: https://www.zapsplat.com/
           
 ### License:
 
 MIT License
 
-Copyright (c) [2017] [Jaume Surís Valhondo, Lorién Portella López]
+Copyright (c) [2019] [Eudald Garrofé Flix, Jordi Pardo]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
