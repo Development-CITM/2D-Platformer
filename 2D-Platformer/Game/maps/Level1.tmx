@@ -20015,6 +20015,9 @@
   </data>
  </layer>
  <layer id="144" name="Clouds" width="250" height="40">
+  <properties>
+   <property name="speed" type="float" value="0.1"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

@@ -13,6 +13,7 @@ struct MapLayer
 	uint		num_tile_width = 0u;
 	uint		num_tile_height = 0u;
 	int*		data = NULL;
+	float		speed=0.0f;
 
 	MapLayer()  : data(NULL)
 	{}

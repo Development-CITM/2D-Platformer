@@ -60,6 +60,8 @@ bool j1Tilesets::CleanUp()
 	p2List_item<TileSet*>* item;
 	item = map_Data.tilesets.start;
 
+	
+
 	while (item != NULL)
 	{
 		RELEASE(item->data);
@@ -129,8 +131,8 @@ void j1Tilesets::Draw()
 						iPoint pos = MapToWorld(x, y);
 						if (strcmp(layer->name.GetString(), "Clouds") == 0)
 						{
-							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * 0.1F)),pos.y,r.w,r.h })) {
-								pos.x = pos.x + (App->render->camera.x * 0.1F);
+							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * layer->speed)),pos.y,r.w,r.h })) {
+								pos.x = pos.x + (App->render->camera.x * layer->speed);
 								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize,true);
 							}
 						}
@@ -385,6 +387,10 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->num_tile_width = node.attribute("width").as_int();
 	layer->num_tile_height = node.attribute("height").as_int();
+	if (node.child("properties").child("property").attribute("name"))
+	{
+		layer->speed = node.child("properties").child("property").attribute("value").as_float();
+	}
 	layer_data = node.child("data");
 
 	if (layer_data == NULL)
