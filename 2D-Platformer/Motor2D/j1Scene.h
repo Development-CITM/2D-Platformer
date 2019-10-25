@@ -43,6 +43,7 @@ public:
 
 
 	int map = 0;
+	bool notfirst;
 private:
 	
 

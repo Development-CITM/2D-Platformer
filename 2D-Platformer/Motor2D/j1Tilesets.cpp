@@ -40,7 +40,6 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 
 bool j1Tilesets::Start()
 {
-	
 	return true;
 }
 
@@ -428,6 +427,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 		objects = node.child("object");
 		SetCullingPos(objects);
 	}
+
 	return ret;
 }
 void j1Tilesets::SetCullingPos(pugi::xml_node& object)

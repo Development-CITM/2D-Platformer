@@ -26,6 +26,7 @@ bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
+	notfirst = false;
 	
 	return ret;
 }
@@ -41,6 +42,11 @@ bool j1Scene::Start()
 	{
 		App->tiles->Load("maps/Level2.tmx");
 	}
+	if (notfirst)
+	{
+		App->player->Load("animations/Player.tmx");
+	}
+	
 	return true;
 }
 
@@ -118,8 +124,9 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 	App->tiles->CleanUp();
 	App->collider->CleanUp();
-	//App->player->CleanUp();
+	App->player->CleanUp();	
 	map++;
+	notfirst = true;
 	return true;
 }
 
