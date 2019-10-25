@@ -9,6 +9,7 @@
 #include "j1Tilesets.h"
 #include "j1Audio.h"
 #include "j1Window.h"
+#include "j1Scene.h"
 #include <math.h>
 
 #pragma region Constructor/Awake/Start/CleanUp
@@ -108,15 +109,17 @@ bool j1Player::Load(const char* file_name)
 		ObjectLayer* lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
 		
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
+		if (!App->scene->notfirst)
+		{
+			if (ret == true && strcmp(layer.attribute("name").as_string(), "Jump_sfx") == 0) {
+				pugi::xml_node source = layer.child("object").child("properties").child("property");
+				App->audio->LoadFx(source.attribute("value").as_string());
+			}
 
-		if (ret==true && strcmp(layer.attribute("name").as_string(), "Jump_sfx")==0) {
-			pugi::xml_node source = layer.child("object").child("properties").child("property");
-			App->audio->LoadFx(source.attribute("value").as_string());
-		}
-
-		if (ret == true && strcmp(layer.attribute("name").as_string(), "Dead_sfx") == 0) {
-			pugi::xml_node source = layer.child("object").child("properties").child("property");
-			App->audio->LoadFx(source.attribute("value").as_string());
+			if (ret == true && strcmp(layer.attribute("name").as_string(), "Dead_sfx") == 0) {
+				pugi::xml_node source = layer.child("object").child("properties").child("property");
+				App->audio->LoadFx(source.attribute("value").as_string());
+			}
 		}
 		if (ret == true && strcmp(lay->name.GetString(), "Collider") != 0) {//if LoadLayer went well, it return a true
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers

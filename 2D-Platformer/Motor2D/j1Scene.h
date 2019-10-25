@@ -51,9 +51,10 @@ private:
 	pugi::xml_parse_result result;
 	pugi::xml_node renderer;
 
-	bool notfirst;
+	
 public:
 
+	bool notfirst;
 	bool lvl1 = true;
 	bool lvl2 = false;
 

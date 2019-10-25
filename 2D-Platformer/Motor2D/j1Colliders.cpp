@@ -224,7 +224,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 			{
 				if (c1->CheckCollision(c2->rect))
 				{
-						App->audio->PlayFx(1);
+						App->audio->PlayFx(3);
 						App->fade2black->FadeToBlack(App->scene, App->scene);
 						return false;
 				}
