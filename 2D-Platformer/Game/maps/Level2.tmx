@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="250" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="150">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="250" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="151">
  <tileset firstgid="1" name="tileset_autumn" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
   <image source="Assets/tileset_autumn.png" width="928" height="320"/>
   <tile id="119">
@@ -63204,8 +63204,8 @@
    <tile gid="434"/>
    <tile gid="434"/>
    <tile gid="435"/>
-   <tile gid="370"/>
-   <tile gid="371"/>
+   <tile gid="376"/>
+   <tile gid="376"/>
    <tile gid="372"/>
    <tile gid="372"/>
    <tile gid="435"/>
@@ -63688,8 +63688,8 @@
    <tile gid="263"/>
    <tile/>
    <tile/>
-   <tile gid="253"/>
-   <tile gid="254"/>
+   <tile gid="369"/>
+   <tile gid="371"/>
    <tile gid="258"/>
    <tile gid="258"/>
    <tile gid="258"/>
@@ -80869,6 +80869,7 @@
   <object id="146" type="Jumpable" x="2441" y="155" width="32" height="17"/>
   <object id="148" type="Jumpable" x="2441" y="283" width="32" height="17"/>
   <object id="149" type="Jumpable" x="2377" y="235" width="32" height="17"/>
+  <object id="150" type="Jumpable" x="2745" y="171" width="48" height="17"/>
  </objectgroup>
  <objectgroup id="29" name="Music">
   <object id="128" name="Music" x="64" y="0" width="32" height="31">
