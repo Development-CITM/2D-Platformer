@@ -1,9 +1,19 @@
-<!-- Save game for the game -->
-
+<?xml version="1.0"?>
 <game_state>
-
-  <renderer>
-    <camera x="100" y="0"/>
-  </renderer>
-
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<scene>
+		<playerPos x="332" y="408" />
+		<player_collider x="335" y="416" />
+		<camera x="-226" y="-400" />
+		<culling x="113" y="200" />
+	</scene>
+	<map />
+	<player />
+	<colliders />
+	<Fade2Black />
+	<:anonymous />
+	<renderer />
 </game_state>

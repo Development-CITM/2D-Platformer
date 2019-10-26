@@ -17,6 +17,7 @@
 
 j1Fade2Black::j1Fade2Black():j1Module()
 {
+	name.create("Fade2Black");
 }
 
 j1Fade2Black::~j1Fade2Black()
@@ -73,7 +74,8 @@ bool j1Fade2Black::Update(float dt)
 		if (now >= total_time)
 		{
 			IsFading = false;
-			
+			App->player->canMove = true;
+			App->player->state = ST_IDLE;
 			current_step = fade_step::none;
 		}
 	} break;
@@ -92,7 +94,8 @@ bool j1Fade2Black::FadeToBlack(j1Module* module_off, j1Module* module_on, float 
 	moduleOn = module_on;
 
 	IsFading = true;
-
+	App->player->canMove = false;
+	App->player->ResetInputs();
 	bool ret = false;
 
 	if (current_step == fade_step::none)

@@ -71,33 +71,33 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 		App->render->camera.y += 4;
 		App->tiles->culling_Collider->rect.y -= 2;
-		App->tiles->camera_Collider->rect.y -= 2;
+
 	}
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 		App->render->camera.y -= 4;
 		App->tiles->culling_Collider->rect.y += 2;
-		App->tiles->camera_Collider->rect.y += 2;
+
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 
 			App->render->camera.x += 4;
 			App->tiles->culling_Collider->rect.x -= 2;
-			App->tiles->camera_Collider->rect.x -= 2;
+
 		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 			App->render->camera.x -= 4;
 			App->tiles->culling_Collider->rect.x += 2;
-			App->tiles->camera_Collider->rect.x += 2;
+
 		
 
 	}
 
-	if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->camera_Collider->rect.w) {
+	if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->culling_Collider->rect.w) {
 		if (App->scene->lvl1 == true)
 		{
 			App->scene->lvl2 = true;
@@ -143,6 +143,66 @@ bool j1Scene::PostUpdate()
 	return ret;
 }
 
+#pragma region Load/Save
+// Load Game State
+bool j1Scene::Load(pugi::xml_node& data)
+{
+	App->player->playerPos.x = data.child("playerPos").attribute("x").as_int();
+	App->player->playerPos.y = data.child("playerPos").attribute("y").as_int();
+
+	App->player->player_Collider->rect.x = data.child("player_collider").attribute("x").as_int();
+	App->player->player_Collider->rect.y = data.child("player_collider").attribute("y").as_int();
+
+	App->player->jumping = false;
+	App->player->state = ST_IDLE;
+
+	App->render->camera.x = data.child("camera").attribute("x").as_int();
+	App->render->camera.y = data.child("camera").attribute("y").as_int();
+
+
+	App->tiles->culling_Collider->rect.x = data.child("culling").attribute("x").as_int();
+	App->tiles->culling_Collider->rect.y = data.child("culling").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+	//------------PLAYER-------------------//
+	pugi::xml_node player = data.append_child("playerPos");
+
+	player.append_attribute("x") = App->player->playerPos.x;
+	player.append_attribute("y") = App->player->playerPos.y;
+
+	pugi::xml_node player_collider = data.append_child("player_collider");
+
+	player_collider.append_attribute("x") = App->player->player_Collider->rect.x;
+	player_collider.append_attribute("y") = App->player->player_Collider->rect.y;
+
+
+	//------------CAMERA --------------------//
+	pugi::xml_node cam = data.append_child("camera");
+
+	cam.append_attribute("x") = App->render->camera.x;
+	cam.append_attribute("y") = App->render->camera.y;
+
+	pugi::xml_node cull = data.append_child("culling");
+
+	cull.append_attribute("x") = App->tiles->culling_Collider->rect.x;
+	cull.append_attribute("y") = App->tiles->culling_Collider->rect.y;
+
+	//-------------SCENE-------------------//
+	pugi::xml_node scene = data.append_child("scene");
+
+
+
+
+
+	return true;
+}
+#pragma endregion
+
 // Called before quitting
 bool j1Scene::CleanUp()
 {
@@ -171,10 +231,5 @@ bool j1Scene::LoadSceneLimits(pugi::xml_node object)
 		return true;
 }
 
-bool j1Scene::SaveGame(pugi::xml_node save_game)
-{
-
-	return true;
-}
 
 

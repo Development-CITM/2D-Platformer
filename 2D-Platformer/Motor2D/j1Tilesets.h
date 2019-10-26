@@ -116,21 +116,20 @@ private:
 
 public:
 
-	MapData		map_Data;
+	MapData					map_Data;
 
-	Collider*			culling_Collider = nullptr;
-	Collider*			camera_Collider = nullptr;
+	Collider*				culling_Collider = nullptr;
 private:
 
-	pugi::xml_document	map_file;
+	pugi::xml_document		map_file;
 
 	p2SString				folder;
 	bool					map_loaded;
 	p2List_item<MapLayer*>* lay = nullptr;
 	p2List_item<TileSet*>*	tile = nullptr;
-	TileSet* set;
-	MapLayer* lays;
-	int layercnt = 0;
+	TileSet*				set = nullptr;
+	MapLayer*				lays = nullptr;
+	int						layercnt = 0;
 
 	int						currentFrame;
 	int						maxFrames;

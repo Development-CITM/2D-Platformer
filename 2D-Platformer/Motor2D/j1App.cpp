@@ -353,33 +353,27 @@ bool j1App::SavegameNow() const
 
 	LOG("Saving Game State to %s...", save_game.GetString());
 
-	// xml object were we will store all data
-	pugi::xml_document data;
-	pugi::xml_node root;
-	
-	root = data.append_child("game_state");
+	p2List_item<j1Module*>* item;
+	item = modules.start;
 
-	p2List_item<j1Module*>* item = modules.start;
-
-	while(item != NULL && ret == true)
+	pugi::xml_document savedata;
+	pugi::xml_node save = savedata.append_child("game_state");
+	while (item != NULL && ret == true)
 	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		ret = item->data->Save(save.append_child(item->data->name.GetString()));
 		item = item->next;
 	}
 
-	if(ret == true)
-	{
-		std::stringstream stream;
-		data.save(stream);
-
-		// we are done, so write data to disk
-//		fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
+	if (ret == true) {
 		LOG("... finished saving", save_game.GetString());
+
 	}
 	else
 		LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 
-	data.reset();
+	savedata.save_file("save_game.xml");
+
+	savedata.reset();
 	want_to_save = false;
 	return ret;
 }

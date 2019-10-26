@@ -92,6 +92,7 @@ public:
 	// Called each loop iteration if has one
 	bool Load(const char* path);
 
+
 	// Called each loop iteration if has one
 	void Draw();
 
@@ -142,24 +143,35 @@ private:
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
-	int pivot_x_flip;
-	int player_pos_x;
-	int player_pos_y;
+	int					pivot_x_flip;
+	int					player_pos_x;
+	int					player_pos_y;
+
+	p2Point<int>		playerPos = { 0,0 };
+
+	//Colliders
+	Collider* player_Collider = nullptr;
 
 	bool				god_mode_enabled = false;
 	bool				onPlatform = false;
+	bool				jumping = false;
+
+	PlayerState			state = ST_IDLE;
+	bool				canMove = true;
+
+	void				ResetInputs();
 
 private:
 
 	//Enums
-	PlayerState			state = ST_IDLE;
+
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
 	Directions			direction = DIR_RIGHT;
 	Directions			last_Direction = DIR_RIGHT;
 
 	//Positions
-	p2Point<int>		playerPos = { 0,0 };
+
 	p2Point<int>		previousColliderPos = { 0,0 };
 	p2Point<int>		previousPlayerPos{ 0,0 };
 	p2Point<int>		currentVelocity{ 0,0 };
@@ -196,17 +208,16 @@ private:
 	Animation*			jump = nullptr;
 	Animation*			fall = nullptr;
 
-	//Colliders
-	Collider* player_Collider = nullptr;
 
 	//Checkers
 	bool				detected_Collision = false;
 	bool				onGround = false;
-	bool				jumping = false;
+
 
 	bool				move_To_Right = false;
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
+
 
 	bool				dash = false;
 

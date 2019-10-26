@@ -84,6 +84,8 @@ bool j1Player::CleanUp()
 
 #pragma endregion
 
+
+
 #pragma region Load Info
 bool j1Player::Load(const char* file_name)
 {
@@ -309,29 +311,31 @@ bool j1Player::PreUpdate()
 
 
 	//Hold Movements
-	switch (state)
-	{
-	case ST_IDLE:
-		ExitInput();
-		VerticalInput();
-		
-		HorizontalInput();
-		break;
-	case ST_RUNNING:
-		ExitInput();
-		VerticalInput();
-		HorizontalInput();
-		break;
-	case ST_JUMP:
-		HorizontalInput();
-		break;
-	case ST_MIDAIR:
-		HorizontalInput();
-		break;
-	case ST_FALL:
-		HorizontalInput();
-		
-		break;
+	if (canMove) {
+		switch (state)
+		{
+		case ST_IDLE:
+			ExitInput();
+			VerticalInput();
+
+			HorizontalInput();
+			break;
+		case ST_RUNNING:
+			ExitInput();
+			VerticalInput();
+			HorizontalInput();
+			break;
+		case ST_JUMP:
+			HorizontalInput();
+			break;
+		case ST_MIDAIR:
+			HorizontalInput();
+			break;
+		case ST_FALL:
+			HorizontalInput();
+
+			break;
+		}
 	}
 	return true;
 }
@@ -376,12 +380,12 @@ bool j1Player::Update(float dt)
 		}
 	}
 
-	if (App->tiles->camera_Collider->CheckCollision(player_Collider->rect)) {
+	if (App->tiles->culling_Collider->CheckCollision(player_Collider->rect)) {
 		//LOG("Player_Collider.x: %i", player_Collider->rect.x);
 		//LOG("Camera collider.x: %i", App->tiles->camera_Collider->rect.x);
 		
-		relativePos.x = player_Collider->rect.x - App->tiles->camera_Collider->rect.x;
-		relativePos.y = player_Collider->rect.y - App->tiles->camera_Collider->rect.y;
+		relativePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
+		relativePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
 		//LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
 	}
 	Draw(); //Draw all the player
@@ -416,9 +420,6 @@ void j1Player::VerticalInput()
 	}
 }
 
-void j1Player::DashInput()
-{
-}
 
 void j1Player::SetPlayerPos(pugi::xml_node& node)
 {
@@ -445,7 +446,7 @@ void j1Player::DashInput()
 
 void j1Player::ExitInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && App->scene->exitCollider != nullptr) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && App->scene->exitCollider != nullptr) {
 		if (player_Collider->CheckCollision(App->scene->exitCollider->rect)) {
 			LOG("COLLIDER EXIT DONE");
 			App->scene->hasExit = true;
@@ -471,6 +472,18 @@ void j1Player::HorizontalInput()
 	}
 
 }
+
+
+void j1Player::ResetInputs()
+{
+	move_To_Right = false;
+	move_To_Left = false;
+	move_To_Up = false;
+
+	jumping = false;
+	flip = SDL_FLIP_NONE;
+}
+
 
 #pragma endregion
 
@@ -498,10 +511,10 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if (relativePos.x > 220 && App->tiles->camera_Collider->rect.x < App->scene->camera_limit_right) {
+		else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
 			App->render->camera.x -= runSpeed * 2;
-			App->tiles->camera_Collider->rect.x += runSpeed;
 			App->tiles->culling_Collider->rect.x += runSpeed;
+
 		}
 		break;
 	case DIR_LEFT:
@@ -511,9 +524,9 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if (relativePos.x < 180 && App->tiles->camera_Collider->rect.x > App->scene->camera_limit_left) {
+		else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
 			App->render->camera.x += runSpeed * 2;
-			App->tiles->camera_Collider->rect.x -= runSpeed;
+
 			App->tiles->culling_Collider->rect.x -= runSpeed;
 		}
 		break;
@@ -529,9 +542,9 @@ bool j1Player::MoveTo(Directions dir)
 			gravityForce = 1;
 			currentTimeAir = 0;
 		}
-		else if (relativePos.y < 100 && App->tiles->camera_Collider->rect.y > 10) {
+		else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10) {
 			App->render->camera.y += 6;
-			App->tiles->camera_Collider->rect.y -= 3;
+
 			App->tiles->culling_Collider->rect.y -= 3;
 		}
 
@@ -562,11 +575,11 @@ bool j1Player::MoveTo(Directions dir)
 			ret = true;
 			if (relativePos.y > 330) {
 				App->render->camera.y -= 8;
-				App->tiles->camera_Collider->rect.y += 8 / 2;
+
 				App->tiles->culling_Collider->rect.y += 8 / 2;
 			}
 		}
-		else if (relativePos.y > 230 && App->tiles->camera_Collider->rect.y < 250 && state != ST_JUMP) {
+		else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 250 && state != ST_JUMP) {
 			int cameraSpeedY = 8;
 			if (gravityForce == max_gravityForce) {
 				cameraSpeedY = max_gravityForce;
@@ -575,7 +588,6 @@ bool j1Player::MoveTo(Directions dir)
 				cameraSpeedY = 8;
 			}
 			App->render->camera.y -= cameraSpeedY;
-			App->tiles->camera_Collider->rect.y += cameraSpeedY / 2;
 			App->tiles->culling_Collider->rect.y += cameraSpeedY / 2;
 		}
 
@@ -666,17 +678,13 @@ void j1Player::MoveOnGodMode()
 	case DIR_RIGHT:
 		player_Collider->rect.x += runSpeed;
 		playerPos.x += runSpeed;
-
 		App->render->camera.x -= runSpeed * 2;
-		App->tiles->camera_Collider->rect.x += runSpeed;
 		App->tiles->culling_Collider->rect.x += runSpeed;
 		break;
 	case DIR_LEFT:
 		player_Collider->rect.x -= runSpeed;
 		playerPos.x -= runSpeed;
-
 		App->render->camera.x += runSpeed * 2;
-		App->tiles->camera_Collider->rect.x -= runSpeed;
 		App->tiles->culling_Collider->rect.x -= runSpeed;
 		break;
 	case DIR_UP:
@@ -684,7 +692,7 @@ void j1Player::MoveOnGodMode()
 		playerPos.y -= runSpeed;
 
 		App->render->camera.y += 6;
-		App->tiles->camera_Collider->rect.y -= 3;
+
 		App->tiles->culling_Collider->rect.y -= 3;
 		break;
 	case DIR_DOWN:
@@ -692,7 +700,6 @@ void j1Player::MoveOnGodMode()
 		playerPos.y += runSpeed;
 
 		App->render->camera.y -= 8;
-		App->tiles->camera_Collider->rect.y += 8 / 2;
 		App->tiles->culling_Collider->rect.y += 8 / 2;
 
 		break;
