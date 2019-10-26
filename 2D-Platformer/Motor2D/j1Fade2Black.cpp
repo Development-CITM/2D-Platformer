@@ -8,6 +8,7 @@
 #include "j1Fade2Black.h"
 #include "j1Scene.h"
 #include "j1Window.h"
+#include "j1Debug.h"
 #include "j1Input.h"
 #include "SDL/include/SDL.h"
 #include "SDL/include/SDL_render.h"
@@ -58,8 +59,12 @@ bool j1Fade2Black::Update(float dt)
 
 
 			//resets player & camera position
-			App->render->camera.x = -130;
-			App->render->camera.y = -400;
+			if (App->scene->loading == false)
+			{
+				App->render->camera.x = -130;
+				App->render->camera.y = -400;
+			}
+			App->scene->loading = false;
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();
@@ -69,12 +74,12 @@ bool j1Fade2Black::Update(float dt)
 
 	case fade_step::fade_from_black:
 	{
-
 		normalized = 1.0f - normalized;
 		if (now >= total_time)
 		{
 			IsFading = false;
 			App->player->canMove = true;
+			App->debug->input = true;
 			App->player->state = ST_IDLE;
 			current_step = fade_step::none;
 		}
@@ -95,6 +100,7 @@ bool j1Fade2Black::FadeToBlack(j1Module* module_off, j1Module* module_on, float 
 
 	IsFading = true;
 	App->player->canMove = false;
+	App->debug->input = false;
 	App->player->ResetInputs();
 	bool ret = false;
 

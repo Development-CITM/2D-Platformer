@@ -225,16 +225,17 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 	{
 		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA && c2->type != COLLIDER_EXIT) {
 
-
-			if (c2->type == COLLIDER_DEAD)
+			if (App->scene->loading == false)
 			{
-				if (c1->CheckCollision(c2->rect))
+				if (c2->type == COLLIDER_DEAD)
 				{
+					if (c1->CheckCollision(c2->rect))
+					{
 						App->audio->PlayFx(1);
 						App->fade2black->FadeToBlack(App->scene, App->scene);
 						return false;
+					}
 				}
-						
 			}
 			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
 				if (c1->CheckCollision(c2->rect) ) {

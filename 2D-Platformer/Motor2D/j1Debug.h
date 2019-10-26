@@ -14,7 +14,8 @@ public:
 	~j1Debug();
 	bool Update(float dt);
 
-
+public:
+	bool input = true;
 };
 #endif
 

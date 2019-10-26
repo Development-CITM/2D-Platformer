@@ -119,6 +119,9 @@ public:
 	MapData					map_Data;
 
 	Collider*				culling_Collider = nullptr;
+	int						culling_pos_x = 0;
+	int						culling_pos_y = 0;
+
 private:
 
 	pugi::xml_document		map_file;
@@ -131,11 +134,10 @@ private:
 	MapLayer*				lays = nullptr;
 	int						layercnt = 0;
 
+
+
 	int						currentFrame;
 	int						maxFrames;
-	int						culling_pos_x = 0;
-	int						culling_pos_y = 0;
-
 };
 
 #endif // __j1MAP_H__

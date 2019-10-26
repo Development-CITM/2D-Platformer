@@ -202,7 +202,7 @@ bool j1Tilesets::Load(const char* file_name)
 	{
 		LoadObject(object);
 	}
-	App->scene->loading = false;
+
 
 
 
@@ -434,19 +434,29 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 }
 void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 {
-	for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
+	if( App->scene->loading == false)
 	{
-		if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
+		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
 		{
-			culling_pos_x = it.attribute("value").as_int();
-		}
-		if (strcmp(it.attribute("name").as_string(), "culling_pos_y") == 0)
-		{
-			culling_pos_y = it.attribute("value").as_int();
+			if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
+			{
+				culling_pos_x = it.attribute("value").as_int();
+			}
+			if (strcmp(it.attribute("name").as_string(), "culling_pos_y") == 0)
+			{
+				culling_pos_y = it.attribute("value").as_int();
+			}
 		}
 	}
 	p2Point<int> culling_Pos{ culling_pos_x,culling_pos_y };
-	culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
+	if (App->scene->loading == false)
+	{
+		culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
+	}
+	else
+	{
+		culling_Collider = App->collider->AddCollider({ culling_Collider->rect.x,culling_Collider->rect.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
+	}
 }
 #pragma endregion
 

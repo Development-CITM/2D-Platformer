@@ -10,6 +10,7 @@
 #include "j1Player.h"
 #include "j1Colliders.h"
 #include "j1Fade2Black.h"
+#include "j1Debug.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -62,39 +63,36 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		App->LoadGame("save_game.xml");
+	if (App->debug->input == true)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+			App->LoadGame("save_game.xml");
 
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		App->SaveGame("save_game.xml");
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+			App->SaveGame("save_game.xml");
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-		App->render->camera.y += 4;
-		App->tiles->culling_Collider->rect.y -= 2;
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+			App->render->camera.y += 4;
+			App->tiles->culling_Collider->rect.y -= 2;
 
+		}
 	}
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 		App->render->camera.y -= 4;
 		App->tiles->culling_Collider->rect.y += 2;
-
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 
 			App->render->camera.x += 4;
 			App->tiles->culling_Collider->rect.x -= 2;
-
-		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 			App->render->camera.x -= 4;
 			App->tiles->culling_Collider->rect.x += 2;
-
-		
-
 	}
 
 	if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->culling_Collider->rect.w) {
@@ -152,12 +150,16 @@ bool j1Scene::Load(pugi::xml_node& data)
 		lvl1 = data.child("current_lvl").attribute("lvl1").as_bool();
 		lvl2 = data.child("current_lvl").attribute("lvl2").as_bool();
 		loading = true;
+		App->player->player_pos_x = data.child("playerPos").attribute("x").as_int();
+		App->player->player_pos_y = data.child("playerPos").attribute("y").as_int();
 		App->fade2black->FadeToBlack(App->scene, App->scene);
-		
+	
 	}
-
-	App->player->playerPos.x = data.child("playerPos").attribute("x").as_int();
-	App->player->playerPos.y = data.child("playerPos").attribute("y").as_int();
+	else
+	{
+		App->player->playerPos.x = data.child("playerPos").attribute("x").as_int();
+		App->player->playerPos.y = data.child("playerPos").attribute("y").as_int();
+	}
 
 	App->player->player_Collider->rect.x = data.child("player_collider").attribute("x").as_int();
 	App->player->player_Collider->rect.y = data.child("player_collider").attribute("y").as_int();
@@ -168,9 +170,14 @@ bool j1Scene::Load(pugi::xml_node& data)
 	App->render->camera.x = data.child("camera").attribute("x").as_int();
 	App->render->camera.y = data.child("camera").attribute("y").as_int();
 
-
+	
 	App->tiles->culling_Collider->rect.x = data.child("culling").attribute("x").as_int();
 	App->tiles->culling_Collider->rect.y = data.child("culling").attribute("y").as_int();
+
+	App->tiles->culling_pos_x = data.child("culling_pos").attribute("x").as_int();
+	App->tiles->culling_pos_y = data.child("culling_pos").attribute("y").as_int();
+
+
 
 	return true;
 }
@@ -200,6 +207,11 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	cull.append_attribute("x") = App->tiles->culling_Collider->rect.x;
 	cull.append_attribute("y") = App->tiles->culling_Collider->rect.y;
+
+	pugi::xml_node cull_pos = data.append_child("culling_pos");
+
+	cull_pos.append_attribute("x") = App->tiles->culling_pos_x;
+	cull_pos.append_attribute("y") = App->tiles->culling_pos_y;
 
 	pugi::xml_node current_lvl = data.append_child("current_lvl");
 

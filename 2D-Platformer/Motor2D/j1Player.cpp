@@ -77,8 +77,6 @@ bool j1Player::CleanUp()
 	// Clean up the pugui tree
 	player_file.reset();
 
-
-
 	return true;
 }
 
@@ -89,7 +87,9 @@ bool j1Player::CleanUp()
 #pragma region Load Info
 bool j1Player::Load(const char* file_name)
 {
+
 	playerPos = { player_pos_x, player_pos_y };
+
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
 
@@ -320,6 +320,7 @@ bool j1Player::PreUpdate()
 			HorizontalInput();
 			break;
 		case ST_RUNNING:
+//			DashInput();
 			ExitInput();
 			VerticalInput();
 			HorizontalInput();
@@ -361,7 +362,7 @@ bool j1Player::Update(float dt)
 	}
 
 	if (velocity_X != 0  && velocity_Y == 0 && state != ST_JUMP && state != ST_FALL) {
-		if (state != ST_DASH) {
+		if (!dash) {
 			ChangeAnimation(run);
 			state = ST_RUNNING;
 		}
@@ -375,7 +376,7 @@ bool j1Player::Update(float dt)
 		state = ST_JUMP;
 	}
 
-	if (velocity_Y < 0 && state != ST_IDLE && state != ST_DASH) {
+	if (velocity_Y < 0 && state != ST_IDLE) {
 		if(currentAnimation != fall)
 		ChangeAnimation(fall);	
 		if (state != ST_FALL) {
@@ -446,7 +447,7 @@ void j1Player::DashInput()
 		dash = true;
 		canDash = false;
 		state = ST_DASH;
-		dashSpeed = 8;
+		dashSpeed = 10;
 		switch (last_Direction)
 		{
 		case DIR_RIGHT:
@@ -516,140 +517,140 @@ bool j1Player::MoveTo(Directions dir)
 	previousColliderPos = player_Collider->GetPosition();
 	previousPlayerPos = playerPos;
 
-	switch (dir)
-	{
-	case DIR_DASH_LEFT:
-		player_Collider->rect.x -= dashSpeed;
-		playerPos.x -= dashSpeed;
-		if (App->collider->CheckColliderCollision(player_Collider)) {
-			player_Collider->rect.x = previousColliderPos.x;
-			playerPos.x = previousPlayerPos.x;
-			state = ST_FALL;
-			dash = false;
-		}
-		else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
-			App->render->camera.x += dashSpeed * 2;
-
-			App->tiles->culling_Collider->rect.x -= dashSpeed;
-		}
-		break;
-		
-	case DIR_DASH_RIGHT:
-		player_Collider->rect.x += dashSpeed;
-		playerPos.x += dashSpeed;
-		if (App->collider->CheckColliderCollision(player_Collider)) {
-			player_Collider->rect.x = previousColliderPos.x;
-			playerPos.x = previousPlayerPos.x;
-			state = ST_FALL;
-			dash = false;
-		}
-		else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
-			App->render->camera.x -= dashSpeed * 2;
-			App->tiles->culling_Collider->rect.x += dashSpeed;
-
-		}
-		break;
-
-	case DIR_RIGHT:
-		player_Collider->rect.x += runSpeed;
-		playerPos.x += runSpeed;
-		if (App->collider->CheckColliderCollision(player_Collider)) {
-			player_Collider->rect.x = previousColliderPos.x;
-			playerPos.x = previousPlayerPos.x;
-
-		}
-		else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
-			App->render->camera.x -= runSpeed * 2;
-			App->tiles->culling_Collider->rect.x += runSpeed;
-
-		}
-		break;
-	case DIR_LEFT:
-		player_Collider->rect.x -= runSpeed;
-		playerPos.x -= runSpeed;
-		if (App->collider->CheckColliderCollision(player_Collider) || relativePos.x < 6) {
-			player_Collider->rect.x = previousColliderPos.x;
-			playerPos.x = previousPlayerPos.x;
-		}
-		else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
-			App->render->camera.x += runSpeed * 2;
-
-			App->tiles->culling_Collider->rect.x -= runSpeed;
-		}
-		break;
-	case DIR_UP:
-		player_Collider->rect.y -= jumpSpeed;
-		playerPos.y -= jumpSpeed;
-
-		if (App->collider->CheckColliderCollision(player_Collider)) {
-			player_Collider->rect.y = previousColliderPos.y;
-			playerPos.y = previousPlayerPos.y;
-			jumping = false;
-			state = ST_FALL;
-			gravityForce = 1;
-			currentTimeAir = 0;
-		}
-		else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10) {
-			App->render->camera.y += 6;
-
-			App->tiles->culling_Collider->rect.y -= 3;
-		}
-
-
-		break;
-	case DIR_PLATFORM:
-		player_Collider->rect.y += 10;
-		playerPos.y += 10;
-
-		if (App->collider->ThroughPlatform(player_Collider) == false) {
-			state = ST_FALL;
-		}
-
-		break;
-
-	case DIR_DOWN:
-		int offsetY = 0;
-		player_Collider->rect.y += gravityForce;
-		playerPos.y += gravityForce;
-
-		if (App->collider->CheckColliderCollision(player_Collider, &offsetY)) {
-			player_Collider->rect.y = previousColliderPos.y;
-			player_Collider->rect.y = offsetY - colliderheight_dir_down;
-			playerPos.y = previousPlayerPos.y;
-			playerPos.y = offsetY - playerheight_dir_down;
-			onGround = true;
-			canDash = true;
-			state = ST_IDLE;
-			ret = true;
-			if (relativePos.y > 330) {
-				App->render->camera.y -= 8;
-
-				App->tiles->culling_Collider->rect.y += 8 / 2;
+		switch (dir)
+		{
+		case DIR_DASH_LEFT:
+			player_Collider->rect.x -= dashSpeed;
+			playerPos.x -= dashSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+				state = ST_FALL;
+				dash = false;
 			}
-		}
-		else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 250 && state != ST_JUMP) {
-			int cameraSpeedY = 8;
-			if (gravityForce == max_gravityForce) {
-				cameraSpeedY = max_gravityForce;
+			else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
+				App->render->camera.x += dashSpeed * 2;
+
+				App->tiles->culling_Collider->rect.x -= dashSpeed;
 			}
+			break;
+
+		case DIR_DASH_RIGHT:
+			player_Collider->rect.x += dashSpeed;
+			playerPos.x += dashSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+				state = ST_FALL;
+				dash = false;
+			}
+			else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
+				App->render->camera.x -= dashSpeed * 2;
+				App->tiles->culling_Collider->rect.x += dashSpeed;
+
+			}
+			break;
+
+		case DIR_RIGHT:
+			player_Collider->rect.x += runSpeed;
+			playerPos.x += runSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+			}
+			else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
+				App->render->camera.x -= runSpeed * 2;
+				App->tiles->culling_Collider->rect.x += runSpeed;
+
+			}
+			break;
+		case DIR_LEFT:
+			player_Collider->rect.x -= runSpeed;
+			playerPos.x -= runSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider) || relativePos.x < 6) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+			}
+			else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
+				App->render->camera.x += runSpeed * 2;
+
+				App->tiles->culling_Collider->rect.x -= runSpeed;
+			}
+			break;
+		case DIR_UP:
+			player_Collider->rect.y -= jumpSpeed;
+			playerPos.y -= jumpSpeed;
+
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.y = previousColliderPos.y;
+				playerPos.y = previousPlayerPos.y;
+				jumping = false;
+				state = ST_FALL;
+				gravityForce = 1;
+				currentTimeAir = 0;
+			}
+			else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10) {
+				App->render->camera.y += 6;
+
+				App->tiles->culling_Collider->rect.y -= 3;
+			}
+
+
+			break;
+		case DIR_PLATFORM:
+			player_Collider->rect.y += 10;
+			playerPos.y += 10;
+
+			if (App->collider->ThroughPlatform(player_Collider) == false) {
+				state = ST_FALL;
+			}
+
+			break;
+
+		case DIR_DOWN:
+			int offsetY = 0;
+			player_Collider->rect.y += gravityForce;
+			playerPos.y += gravityForce;
+
+			if (App->collider->CheckColliderCollision(player_Collider, &offsetY)) {
+				player_Collider->rect.y = previousColliderPos.y;
+				player_Collider->rect.y = offsetY - colliderheight_dir_down;
+				playerPos.y = previousPlayerPos.y;
+				playerPos.y = offsetY - playerheight_dir_down;
+				onGround = true;
+				canDash = true;
+				state = ST_IDLE;
+				ret = true;
+				if (relativePos.y > 330) {
+					App->render->camera.y -= 8;
+
+					App->tiles->culling_Collider->rect.y += 8 / 2;
+				}
+			}
+			else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 250 && state != ST_JUMP) {
+				int cameraSpeedY = 8;
+				if (gravityForce == max_gravityForce) {
+					cameraSpeedY = max_gravityForce;
+				}
+				else {
+					cameraSpeedY = 8;
+				}
+				App->render->camera.y -= cameraSpeedY;
+				App->tiles->culling_Collider->rect.y += cameraSpeedY / 2; 
+			}
+
 			else {
-				cameraSpeedY = 8;
+				onGround = false;
+				//LOG("Gravity: %i", gravityForce);
 			}
-			App->render->camera.y -= cameraSpeedY;
-			App->tiles->culling_Collider->rect.y += cameraSpeedY / 2;
-		}
 
-		else {
-			onGround = false;
-			//LOG("Gravity: %i", gravityForce);
-		}
-
-		break;
-
+			break;
+		
+	}
 
 		//("Player: %i,%i", playerPos.x, playerPos.y);
 		return ret;
-	}
+	
 }
 
 void j1Player::Move() {
@@ -667,7 +668,7 @@ void j1Player::Move() {
  
 void j1Player::Jump()
 {
-	if (jumping && state != ST_DASH) {
+	if (jumping) {
 		if (player_Collider->rect.y >= maxJump) {
 			MoveTo(DIR_UP);
 
@@ -690,12 +691,6 @@ void j1Player::Jump()
 			gravityForce = 3;
 			currentTimeAir = 0;		
 		}
-	}
-	else if (state == ST_DASH) {
-		jumping = false;
-		jumpSpeed = 0;
-		gravityForce = 3;
-		currentTimeAir = 0;
 	}
 }
 
@@ -773,15 +768,11 @@ void j1Player::Dash() {
 					dashSpeed = 3;	  
 				}						  
 				if (player_Collider->rect.x > max_Dash - 5) {
-					dashSpeed = 2;	  
-				}		
-				if (player_Collider->rect.x > max_Dash - 2) {
 					dashSpeed = 1;	  
 				}						  
 			}
 			else {
 				dash = false;
-				state = ST_FALL;
 			}
 			
 			break;
@@ -789,19 +780,15 @@ void j1Player::Dash() {
 			if (player_Collider->rect.x >= max_Dash) {
 				MoveTo(DIR_DASH_LEFT);
 
-				if (player_Collider->rect.x < max_Dash + 30) {
- 					dashSpeed = 3;
+				if (player_Collider->rect.x < max_Dash - 30) {
+					dashSpeed = 3;
 				}
-				if (player_Collider->rect.x < max_Dash + 5) {
-					dashSpeed = 2;
-				}			
-				if (player_Collider->rect.x < max_Dash + 2) {
+				if (player_Collider->rect.x < max_Dash - 5) {
 					dashSpeed = 1;
 				}
 			}
 			else {
 				dash = false;
-				state = ST_FALL;
 			}
 			break;
 		}
