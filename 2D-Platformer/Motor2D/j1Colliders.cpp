@@ -237,6 +237,13 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 					}
 				}
 			}
+			if (c2->type == COLLIDER_PLAYER)
+			{
+				if (c1->CheckCollision(c2->rect))
+				{
+					return false;
+				}
+			}
 			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
 				if (c1->CheckCollision(c2->rect) ) {
 					if (c1->rect.y + c1->rect.h/2 < c2->rect.y && c2->Enabled == true) {

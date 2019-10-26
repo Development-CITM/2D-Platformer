@@ -13,6 +13,7 @@ This right here is our little game for Development subject. We used C++ Language
 * D: Move Right
 * A: Move Left
 * S while on top of a small floating platform: Traspass platform down
+* W while jumping: Small dash on air
 * SPACE/SPACE+A/SPACE+D: Jump/Jump left/Jump right
 
 ### Github Repository

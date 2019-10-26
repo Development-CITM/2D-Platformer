@@ -106,7 +106,6 @@ bool j1Player::Load(const char* file_name)
 		ret = LoadMap();
 	}
 
-
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
 	for (layer = player_file.child("map").child("objectgroup"); layer && ret; layer = layer.next_sibling("objectgroup"))
@@ -115,14 +114,13 @@ bool j1Player::Load(const char* file_name)
 		lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
 		
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
-		if (!App->scene->notfirst)
+		if (App->scene->notfirst)
 		{
-			if (ret == true && strcmp(layer.attribute("name").as_string(), "Jump_sfx") == 0) {
+			if (strcmp(layer.attribute("name").as_string(), "Jump_sfx") == 0) {
 				pugi::xml_node source = layer.child("object").child("properties").child("property");
 				App->audio->LoadFx(source.attribute("value").as_string());
 			}
-
-			if (ret == true && strcmp(layer.attribute("name").as_string(), "Dead_sfx") == 0) {
+			if (strcmp(layer.attribute("name").as_string(), "Dead_sfx") == 0) {
 				pugi::xml_node source = layer.child("object").child("properties").child("property");
 				App->audio->LoadFx(source.attribute("value").as_string());
 			}
@@ -130,7 +128,6 @@ bool j1Player::Load(const char* file_name)
 		if (ret == true && strcmp(lay->name.GetString(), "Collider") != 0) {//if LoadLayer went well, it return a true
 			player_tmx_data.object_Layers.add(lay);	//Add filled ObjectLayer to the list of ObjectLayers
 		}
-		
 		else {
 			SDL_Rect rect = *lay->rects.start->data;
 			p2Point<int> offset{ 0, 0 };
