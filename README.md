@@ -19,7 +19,7 @@ This right here is our little game for Development subject. We used C++ Language
 ### Github Repository
 
 Our Github repository for the project:
-LINK
+https://github.com/Development-CITM/2D-Platformer
 
 ### Disclaimer
 
