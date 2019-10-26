@@ -17,8 +17,10 @@
 #include "j1Debug.h"
 
 
-j1Debug::j1Debug():j1Module()
-{}
+j1Debug::j1Debug() :j1Module()
+{
+	name.create("debug");
+}
 
 j1Debug::~j1Debug()
 {}

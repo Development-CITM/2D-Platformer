@@ -320,7 +320,6 @@ bool j1Player::PreUpdate()
 			HorizontalInput();
 			break;
 		case ST_RUNNING:
-//			DashInput();
 			ExitInput();
 			VerticalInput();
 			HorizontalInput();
@@ -362,7 +361,7 @@ bool j1Player::Update(float dt)
 	}
 
 	if (velocity_X != 0  && velocity_Y == 0 && state != ST_JUMP && state != ST_FALL) {
-		if (!dash) {
+		if (state != ST_DASH) {
 			ChangeAnimation(run);
 			state = ST_RUNNING;
 		}
@@ -376,7 +375,7 @@ bool j1Player::Update(float dt)
 		state = ST_JUMP;
 	}
 
-	if (velocity_Y < 0 && state != ST_IDLE) {
+	if (velocity_Y < 0 && state != ST_IDLE && state != ST_DASH) {
 		if(currentAnimation != fall)
 		ChangeAnimation(fall);	
 		if (state != ST_FALL) {
@@ -447,7 +446,7 @@ void j1Player::DashInput()
 		dash = true;
 		canDash = false;
 		state = ST_DASH;
-		dashSpeed = 10;
+		dashSpeed = 8;
 		switch (last_Direction)
 		{
 		case DIR_RIGHT:
@@ -557,6 +556,7 @@ bool j1Player::MoveTo(Directions dir)
 		if (App->collider->CheckColliderCollision(player_Collider)) {
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
+
 		}
 		else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
 			App->render->camera.x -= runSpeed * 2;
@@ -667,7 +667,7 @@ void j1Player::Move() {
  
 void j1Player::Jump()
 {
-	if (jumping) {
+	if (jumping && state != ST_DASH) {
 		if (player_Collider->rect.y >= maxJump) {
 			MoveTo(DIR_UP);
 
@@ -690,6 +690,12 @@ void j1Player::Jump()
 			gravityForce = 3;
 			currentTimeAir = 0;		
 		}
+	}
+	else if (state == ST_DASH) {
+		jumping = false;
+		jumpSpeed = 0;
+		gravityForce = 3;
+		currentTimeAir = 0;
 	}
 }
 
@@ -767,11 +773,15 @@ void j1Player::Dash() {
 					dashSpeed = 3;	  
 				}						  
 				if (player_Collider->rect.x > max_Dash - 5) {
+					dashSpeed = 2;	  
+				}		
+				if (player_Collider->rect.x > max_Dash - 2) {
 					dashSpeed = 1;	  
 				}						  
 			}
 			else {
 				dash = false;
+				state = ST_FALL;
 			}
 			
 			break;
@@ -779,15 +789,19 @@ void j1Player::Dash() {
 			if (player_Collider->rect.x >= max_Dash) {
 				MoveTo(DIR_DASH_LEFT);
 
-				if (player_Collider->rect.x < max_Dash - 30) {
-					dashSpeed = 3;
+				if (player_Collider->rect.x < max_Dash + 30) {
+ 					dashSpeed = 3;
 				}
-				if (player_Collider->rect.x < max_Dash - 5) {
+				if (player_Collider->rect.x < max_Dash + 5) {
+					dashSpeed = 2;
+				}			
+				if (player_Collider->rect.x < max_Dash + 2) {
 					dashSpeed = 1;
 				}
 			}
 			else {
 				dash = false;
+				state = ST_FALL;
 			}
 			break;
 		}
