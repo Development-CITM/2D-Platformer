@@ -5,16 +5,16 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos x="112" y="472" />
-		<player_collider x="115" y="480" />
-		<camera x="-50" y="-456" />
-		<culling x="25" y="228" />
+		<playerPos x="100" y="472" />
+		<player_collider x="103" y="480" />
+		<camera x="-130" y="-400" />
+		<culling x="65" y="200" />
 		<scene />
 	</scene>
 	<map />
 	<player />
 	<colliders />
 	<Fade2Black />
-	<:anonymous />
+	<debug />
 	<renderer />
 </game_state>

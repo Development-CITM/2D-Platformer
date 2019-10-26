@@ -189,7 +189,7 @@ private:
 	bool				dash = false;
 	uint				dash_distance = 40u;
 	int					max_Dash = 0;
-	uint				dashSpeed = 10u;
+	uint				dashSpeed = 0u;
 	bool				canDash = false;
 
 	//Speeds
