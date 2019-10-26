@@ -304,7 +304,7 @@ bool j1Player::PreUpdate()
 	velocity_X = playerPos.x;
 	velocity_Y = playerPos.y;
 
-	if (!god_mode_enabled || !dash)
+	if (!god_mode_enabled && state != ST_DASH)
 	{
 		Gravity();
 	}
@@ -525,6 +525,8 @@ bool j1Player::MoveTo(Directions dir)
 		if (App->collider->CheckColliderCollision(player_Collider)) {
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
+			state = ST_FALL;
+			dash = false;
 		}
 		else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
 			App->render->camera.x += dashSpeed * 2;
@@ -539,6 +541,8 @@ bool j1Player::MoveTo(Directions dir)
 		if (App->collider->CheckColliderCollision(player_Collider)) {
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
+			state = ST_FALL;
+			dash = false;
 		}
 		else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
 			App->render->camera.x -= dashSpeed * 2;
