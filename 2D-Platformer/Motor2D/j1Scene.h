@@ -60,6 +60,7 @@ public:
 	bool notfirst;
 	bool lvl1 = true;
 	bool lvl2 = false;
+	bool loading = false;
 
 	int camera_limit_left = 0;
 	int camera_limit_right = 0;

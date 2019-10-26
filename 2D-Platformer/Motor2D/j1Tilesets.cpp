@@ -202,6 +202,7 @@ bool j1Tilesets::Load(const char* file_name)
 	{
 		LoadObject(object);
 	}
+	App->scene->loading = false;
 
 
 
@@ -413,12 +414,12 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 		objects = node.child("object").child("properties").child("property");
 		App->audio->PlayMusic(objects.attribute("value").as_string());
 	}
-	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0)
+	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0 )
 	{
 		objects = node.child("object");
 		App->scene->LoadSceneLimits(objects);
 	}
-	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0)
+	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0 && App->scene->loading == false)
 	{
 		objects = node.child("object");
 		App->player->SetPlayerPos(objects);

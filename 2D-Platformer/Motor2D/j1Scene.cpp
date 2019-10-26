@@ -147,6 +147,15 @@ bool j1Scene::PostUpdate()
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	if (lvl1 != data.child("current_lvl").attribute("lvl1").as_bool() && lvl2 != data.child("current_lvl").attribute("lvl2").as_bool())
+	{
+		lvl1 = data.child("current_lvl").attribute("lvl1").as_bool();
+		lvl2 = data.child("current_lvl").attribute("lvl2").as_bool();
+		loading = true;
+		App->fade2black->FadeToBlack(App->scene, App->scene);
+		
+	}
+
 	App->player->playerPos.x = data.child("playerPos").attribute("x").as_int();
 	App->player->playerPos.y = data.child("playerPos").attribute("y").as_int();
 
@@ -191,6 +200,11 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	cull.append_attribute("x") = App->tiles->culling_Collider->rect.x;
 	cull.append_attribute("y") = App->tiles->culling_Collider->rect.y;
+
+	pugi::xml_node current_lvl = data.append_child("current_lvl");
+
+	current_lvl.append_attribute("lvl1") = lvl1;
+	current_lvl.append_attribute("lvl2") = lvl2;
 
 	//-------------SCENE-------------------//
 	pugi::xml_node scene = data.append_child("scene");
