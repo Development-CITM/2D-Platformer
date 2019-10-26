@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="250" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="151">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="250" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="41" nextobjectid="156">
  <tileset firstgid="1" name="tileset_autumn" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
   <image source="Assets/tileset_autumn.png" width="928" height="320"/>
   <tile id="119">
@@ -80774,7 +80774,7 @@
   <object id="123" name="Player_pos" x="0" y="0" width="32" height="31">
    <properties>
     <property name="player_pos_x" type="int" value="80"/>
-    <property name="player_pos_y" type="int" value="400"/>
+    <property name="player_pos_y" type="int" value="450"/>
    </properties>
   </object>
  </objectgroup>
@@ -80826,7 +80826,7 @@
   <object id="67" type="Barrier" x="3056" y="290" width="82" height="341"/>
   <object id="76" type="Barrier" x="3469" y="288" width="83" height="193"/>
   <object id="77" type="Barrier" x="3487" y="481" width="50" height="15"/>
-  <object id="79" type="Barrier" x="3552" y="97" width="17" height="384"/>
+  <object id="79" type="Barrier" x="3552" y="97" width="17" height="479"/>
   <object id="81" type="Barrier" x="3358" y="591" width="13" height="49"/>
   <object id="82" type="Barrier" x="3278" y="368" width="52" height="263"/>
   <object id="85" type="Barrier" x="3231" y="288" width="145" height="45"/>
@@ -80870,6 +80870,15 @@
   <object id="148" type="Jumpable" x="2441" y="283" width="32" height="17"/>
   <object id="149" type="Jumpable" x="2377" y="235" width="32" height="17"/>
   <object id="150" type="Jumpable" x="2745" y="171" width="48" height="17"/>
+  <object id="154" name="Exit" type="Exit" x="3463" y="544" width="16" height="32"/>
+ </objectgroup>
+ <objectgroup id="39" name="Camera Limit">
+  <object id="151" name="Camera Limit" x="96" y="0" width="32" height="32">
+   <properties>
+    <property name="Limit Left" type="int" value="25"/>
+    <property name="Limit Right" type="int" value="3115"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="29" name="Music">
   <object id="128" name="Music" x="64" y="0" width="32" height="31">

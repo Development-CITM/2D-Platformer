@@ -107,9 +107,18 @@ public:
 
 private:
 
-	//Holding Movement Functions
+	
+
+	//Inputs
 	void HorizontalInput();
 	void VerticalInput();
+
+	void DashInput();
+
+	void ExitInput();
+
+	//Habilities
+	void Dash();
 
 	//Logic Movements
 	void Move();
@@ -198,6 +207,8 @@ private:
 	bool				move_To_Right = false;
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
+
+	bool				dash = false;
 
 	//Rects
 	SDL_Rect* rect;

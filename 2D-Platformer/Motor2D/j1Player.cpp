@@ -138,8 +138,6 @@ bool j1Player::Load(const char* file_name)
 			rect.y += playerPos.y;
 			player_Collider = App->collider->AddCollider(rect, COLLIDER_PLAYER, offset, this);	
 
-			//Create ground checker with the collider data from player.tmx
-			//ground_Collider = App->collider->AddCollider(rect, COLLIDER_GROUND_CHECKER, { offset.x,offset.y + 20 }, this);
 		}
 	}
 
@@ -314,11 +312,13 @@ bool j1Player::PreUpdate()
 	switch (state)
 	{
 	case ST_IDLE:
+		ExitInput();
 		VerticalInput();
 		
 		HorizontalInput();
 		break;
 	case ST_RUNNING:
+		ExitInput();
 		VerticalInput();
 		HorizontalInput();
 		break;
@@ -377,12 +377,12 @@ bool j1Player::Update(float dt)
 	}
 
 	if (App->tiles->camera_Collider->CheckCollision(player_Collider->rect)) {
-		LOG("Player_Collider.x: %i", player_Collider->rect.x);
-		LOG("Camera collider.x: %i", App->tiles->camera_Collider->rect.x);
+		//LOG("Player_Collider.x: %i", player_Collider->rect.x);
+		//LOG("Camera collider.x: %i", App->tiles->camera_Collider->rect.x);
 		
 		relativePos.x = player_Collider->rect.x - App->tiles->camera_Collider->rect.x;
 		relativePos.y = player_Collider->rect.y - App->tiles->camera_Collider->rect.y;
-		LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
+		//LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
 	}
 	Draw(); //Draw all the player
 
@@ -416,6 +416,10 @@ void j1Player::VerticalInput()
 	}
 }
 
+void j1Player::DashInput()
+{
+}
+
 void j1Player::SetPlayerPos(pugi::xml_node& node)
 {
 	for (pugi::xml_node it = node.child("properties").child("property"); it; it = it.next_sibling("property"))
@@ -430,6 +434,25 @@ void j1Player::SetPlayerPos(pugi::xml_node& node)
 		}
 	}
 }
+
+void j1Player::DashInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_W)== KEY_DOWN) {
+		dash = true;
+	}
+
+}
+
+void j1Player::ExitInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && App->scene->exitCollider != nullptr) {
+		if (player_Collider->CheckCollision(App->scene->exitCollider->rect)) {
+			LOG("COLLIDER EXIT DONE");
+			App->scene->hasExit = true;
+		}
+	}
+}
+
 
 void j1Player::HorizontalInput()
 {
@@ -452,6 +475,13 @@ void j1Player::HorizontalInput()
 #pragma endregion
 
 #pragma region MoveLogic
+
+void j1Player::Dash() {
+	if (move_To_Left) {
+
+	}
+}
+
 bool j1Player::MoveTo(Directions dir)
 {
 	bool ret = false;
@@ -468,7 +498,7 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if (relativePos.x > 220 && App->tiles->camera_Collider->rect.x < 2798) {
+		else if (relativePos.x > 220 && App->tiles->camera_Collider->rect.x < App->scene->camera_limit_right) {
 			App->render->camera.x -= runSpeed * 2;
 			App->tiles->camera_Collider->rect.x += runSpeed;
 			App->tiles->culling_Collider->rect.x += runSpeed;
@@ -481,7 +511,7 @@ bool j1Player::MoveTo(Directions dir)
 			player_Collider->rect.x = previousColliderPos.x;
 			playerPos.x = previousPlayerPos.x;
 		}
-		else if (relativePos.x < 180 && App->tiles->camera_Collider->rect.x > 25) {
+		else if (relativePos.x < 180 && App->tiles->camera_Collider->rect.x > App->scene->camera_limit_left) {
 			App->render->camera.x += runSpeed * 2;
 			App->tiles->camera_Collider->rect.x -= runSpeed;
 			App->tiles->culling_Collider->rect.x -= runSpeed;
@@ -551,7 +581,7 @@ bool j1Player::MoveTo(Directions dir)
 
 		else {
 			onGround = false;
-			LOG("Gravity: %i", gravityForce);
+			//LOG("Gravity: %i", gravityForce);
 		}
 
 		break;

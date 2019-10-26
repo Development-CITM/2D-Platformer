@@ -58,8 +58,12 @@ public:
 	bool lvl1 = true;
 	bool lvl2 = false;
 
-	Cameralimit limitright;
-	Cameralimit limitleft;
+	int camera_limit_left = 0;
+	int camera_limit_right = 0;
+
+	bool hasExit = false;
+
+	Collider* exitCollider = nullptr;
 
 };
 

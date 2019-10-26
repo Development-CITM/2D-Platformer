@@ -46,19 +46,7 @@ bool j1Tilesets::Start()
 
 bool j1Tilesets::Update(float dt)
 {
-	if (App->player->GetPlayerCollider()->GetPosition().x > 2790 + culling_Collider->rect.w) {
-		if (App->scene->lvl1 == true)
-		{
-			App->scene->lvl2 = true;
-			App->scene->lvl1 = false;
-		}
-		else if(App->scene->lvl2 == true)
-		{
-			App->scene->lvl1 = true;
-			App->scene->lvl2 = false;
-		}
-		App->fade2black->FadeToBlack(App->scene, App->scene);
-	}
+
 	return true;
 }
 
@@ -102,19 +90,6 @@ bool j1Tilesets::CleanUp()
 
 void j1Tilesets::Draw()
 {
-	//if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) {
-	//	culling_Collider->rect.x += 2;
-
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
-	//	culling_Collider->rect.x -= 2;
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
-	//	culling_Collider->rect.y += 2;
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) {
-	//	culling_Collider->rect.y -= 2;
-	//}
 
 	if (map_loaded == false)
 		return;

@@ -72,6 +72,11 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	if (strcmp(node.attribute("type").as_string(), "Barrier") == 0)
 	{
 		collider->type = COLLIDER_WALL_SOLID;
+	}	
+	if (strcmp(node.attribute("type").as_string(), "Exit") == 0)
+	{
+		collider->type = COLLIDER_EXIT;
+		App->scene->exitCollider = collider;
 	}
 
 
@@ -180,6 +185,9 @@ void j1Colliders::Draw()
 			case COLLIDER_CAMERA:
 				App->render->DrawQuad(rect, 0, 0, 0, 50, false);
 				break;
+			case COLLIDER_EXIT:
+				App->render->DrawQuad(rect, 100, 200, 100, 100);
+				break;
 			}
 				
 			
@@ -216,8 +224,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,ColliderType ignoredCollid
 	c2 = c->data;
 	for (uint i = 0; i < colliders.count(); i++)
 	{
-		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
-
+		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA && c2->type != COLLIDER_EXIT) {
 
 
 			if (c2->type == COLLIDER_DEAD)

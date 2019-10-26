@@ -34,6 +34,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	hasExit = false;
 	if (lvl1)
 	{
 		App->tiles->Load("maps/Level1.tmx");
@@ -49,6 +50,7 @@ bool j1Scene::Start()
 	
 	return true;
 }
+
 
 // Called each loop iteration
 bool j1Scene::PreUpdate()
@@ -69,28 +71,51 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 		App->render->camera.y += 4;
 		App->tiles->culling_Collider->rect.y -= 2;
+		App->tiles->camera_Collider->rect.y -= 2;
 	}
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 		App->render->camera.y -= 4;
 		App->tiles->culling_Collider->rect.y += 2;
+		App->tiles->camera_Collider->rect.y += 2;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 
 			App->render->camera.x += 4;
 			App->tiles->culling_Collider->rect.x -= 2;
+			App->tiles->camera_Collider->rect.x -= 2;
 		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 			App->render->camera.x -= 4;
 			App->tiles->culling_Collider->rect.x += 2;
+			App->tiles->camera_Collider->rect.x += 2;
 		
 
 	}
 
+	if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->camera_Collider->rect.w) {
+		if (App->scene->lvl1 == true)
+		{
+			App->scene->lvl2 = true;
+			App->scene->lvl1 = false;
+		}
+		else if (App->scene->lvl2 == true)
+		{
+			App->scene->lvl1 = true;
+			App->scene->lvl2 = false;
+		}
+		App->fade2black->FadeToBlack(App->scene, App->scene);
+	}
+
+	if (hasExit) {
+		App->fade2black->FadeToBlack(App->scene, App->scene);
+		App->scene->lvl2 = false;
+		App->scene->lvl1 = true;
+	}
 		App->tiles->Draw();
 	
 	
@@ -131,22 +156,15 @@ bool j1Scene::CleanUp()
 
 bool j1Scene::LoadSceneLimits(pugi::xml_node object)
 {
-	Cameralimit* limit = new Cameralimit();
-	for (object.child("object"); object; object = object.next_sibling("object"))
+	for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
 	{
-		if (strcmp(object.attribute("type").as_string(), "Right") == 0)
+		if (strcmp(it.attribute("name").as_string(), "Limit Left") == 0)
 		{
-			limitright.rect.x = object.attribute("x").as_int();
-			limitright.rect.y = object.attribute("y").as_int();
-			limitright.rect.w = object.attribute("width").as_int();
-			limitright.rect.h = object.attribute("height").as_int();
+			camera_limit_left = it.attribute("value").as_int();
 		}
-		else if (strcmp(object.attribute("type").as_string(), "Left") == 0)
+		if (strcmp(it.attribute("name").as_string(), "Limit Right") == 0)
 		{
-			limitleft.rect.x = object.attribute("x").as_int();
-			limitleft.rect.y = object.attribute("y").as_int();
-			limitleft.rect.w = object.attribute("width").as_int();
-			limitleft.rect.h = object.attribute("height").as_int();
+			camera_limit_right = it.attribute("value").as_int();
 		}
 	}
 

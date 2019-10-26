@@ -15,6 +15,7 @@ enum ColliderType
 	COLLIDER_DEAD,
 	COLLIDER_WINDOW,
 	COLLIDER_CAMERA,
+	COLLIDER_EXIT,
 };
 
 struct Collider
