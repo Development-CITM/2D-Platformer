@@ -20,14 +20,9 @@ enum PlayerState {
 	ST_MIDAIR,
 	ST_FALL,
 	ST_JUMP_FINISHED,
+	ST_DASH,
 };
 
-enum Input {
-	IN_IDLE,
-	IN_RUNNING,
-	IN_JUMP,
-	IN_JUMP_FINISHED,
-};
 enum Directions
 {
 	DIR_RIGHT,
@@ -35,6 +30,8 @@ enum Directions
 	DIR_UP,
 	DIR_DOWN,
 	DIR_PLATFORM,
+	DIR_DASH_LEFT,
+	DIR_DASH_RIGHT,
 	DIR_NONE,
 };
 #pragma endregion
@@ -168,6 +165,7 @@ private:
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
 	Directions			direction = DIR_RIGHT;
+
 	Directions			last_Direction = DIR_RIGHT;
 
 	//Positions
@@ -186,14 +184,23 @@ private:
 	uint				timeOnAir;
 	uint				currentTimeAir = 0u;
 
+	//Dash Variables
+
+	bool				dash = false;
+	uint				dash_distance = 40u;
+	int					max_Dash = 0;
+	uint				dashSpeed = 10u;
+	bool				canDash = false;
+
 	//Speeds
 	uint				jumpSpeed = 0u;
-	uint				max_jumpSpeed;
+	uint				max_jumpSpeed = 0u;
 	uint				fallSpeed = 0u;
-	uint				max_FallSpeed;
-	uint				gravityForce;
-	uint				max_gravityForce;
-	uint				runSpeed;
+	uint				max_FallSpeed = 0u;
+	uint				gravityForce = 0u;
+	uint				max_gravityForce = 0u;
+	uint				runSpeed = 0u;
+
 
 	//Heights for adjustment while DIR_DOWN
 	int playerheight_dir_down;
@@ -219,7 +226,6 @@ private:
 	bool				move_To_Up = false;
 
 
-	bool				dash = false;
 
 	//Rects
 	SDL_Rect* rect;

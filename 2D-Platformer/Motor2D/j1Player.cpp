@@ -304,7 +304,7 @@ bool j1Player::PreUpdate()
 	velocity_X = playerPos.x;
 	velocity_Y = playerPos.y;
 
-	if (!god_mode_enabled)
+	if (!god_mode_enabled || !dash)
 	{
 		Gravity();
 	}
@@ -317,21 +317,20 @@ bool j1Player::PreUpdate()
 		case ST_IDLE:
 			ExitInput();
 			VerticalInput();
-
 			HorizontalInput();
 			break;
 		case ST_RUNNING:
+//			DashInput();
 			ExitInput();
 			VerticalInput();
 			HorizontalInput();
 			break;
 		case ST_JUMP:
-			HorizontalInput();
-			break;
-		case ST_MIDAIR:
+			DashInput();
 			HorizontalInput();
 			break;
 		case ST_FALL:
+			DashInput();
 			HorizontalInput();
 
 			break;
@@ -346,6 +345,7 @@ bool j1Player::Update(float dt)
 	{
 		Move();
 		Jump();
+		Dash();
 	}
 	else if (god_mode_enabled)
 	{
@@ -362,8 +362,13 @@ bool j1Player::Update(float dt)
 	}
 
 	if (velocity_X != 0  && velocity_Y == 0 && state != ST_JUMP && state != ST_FALL) {
-		ChangeAnimation(run);
-		state = ST_RUNNING;
+		if (!dash) {
+			ChangeAnimation(run);
+			state = ST_RUNNING;
+		}
+		else {
+			ChangeAnimation(jump);
+		}
 	}
 
 	if (velocity_Y > 0) {
@@ -438,8 +443,21 @@ void j1Player::SetPlayerPos(pugi::xml_node& node)
 
 void j1Player::DashInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_W)== KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_W)== KEY_DOWN && canDash) {
 		dash = true;
+		canDash = false;
+		state = ST_DASH;
+		dashSpeed = 10;
+		switch (last_Direction)
+		{
+		case DIR_RIGHT:
+			max_Dash = player_Collider->rect.x + dash_distance;
+			break;
+		case DIR_LEFT:
+			max_Dash = player_Collider->rect.x - dash_distance;
+			break;
+		}
+		
 	}
 
 }
@@ -459,6 +477,7 @@ void j1Player::HorizontalInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		move_To_Right = true;
+		last_Direction = DIR_RIGHT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		move_To_Right = false;
@@ -466,6 +485,7 @@ void j1Player::HorizontalInput()
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
 		move_To_Left = true;
+		last_Direction = DIR_LEFT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		move_To_Left = false;
@@ -489,11 +509,6 @@ void j1Player::ResetInputs()
 
 #pragma region MoveLogic
 
-void j1Player::Dash() {
-	if (move_To_Left) {
-
-	}
-}
 
 bool j1Player::MoveTo(Directions dir)
 {
@@ -504,6 +519,34 @@ bool j1Player::MoveTo(Directions dir)
 
 	switch (dir)
 	{
+	case DIR_DASH_LEFT:
+		player_Collider->rect.x -= dashSpeed;
+		playerPos.x -= dashSpeed;
+		if (App->collider->CheckColliderCollision(player_Collider)) {
+			player_Collider->rect.x = previousColliderPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
+			App->render->camera.x += dashSpeed * 2;
+
+			App->tiles->culling_Collider->rect.x -= dashSpeed;
+		}
+		break;
+		
+	case DIR_DASH_RIGHT:
+		player_Collider->rect.x += dashSpeed;
+		playerPos.x += dashSpeed;
+		if (App->collider->CheckColliderCollision(player_Collider)) {
+			player_Collider->rect.x = previousColliderPos.x;
+			playerPos.x = previousPlayerPos.x;
+		}
+		else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
+			App->render->camera.x -= dashSpeed * 2;
+			App->tiles->culling_Collider->rect.x += dashSpeed;
+
+		}
+		break;
+
 	case DIR_RIGHT:
 		player_Collider->rect.x += runSpeed;
 		playerPos.x += runSpeed;
@@ -565,12 +608,13 @@ bool j1Player::MoveTo(Directions dir)
 		player_Collider->rect.y += gravityForce;
 		playerPos.y += gravityForce;
 
-		if (App->collider->CheckColliderCollision(player_Collider, COLLIDER_NONE, &offsetY)) {
+		if (App->collider->CheckColliderCollision(player_Collider, &offsetY)) {
 			player_Collider->rect.y = previousColliderPos.y;
 			player_Collider->rect.y = offsetY - colliderheight_dir_down;
 			playerPos.y = previousPlayerPos.y;
 			playerPos.y = offsetY - playerheight_dir_down;
 			onGround = true;
+			canDash = true;
 			state = ST_IDLE;
 			ret = true;
 			if (relativePos.y > 330) {
@@ -703,6 +747,46 @@ void j1Player::MoveOnGodMode()
 		App->tiles->culling_Collider->rect.y += 8 / 2;
 
 		break;
+	}
+}
+
+void j1Player::Dash() {
+
+	if (dash) {
+		switch (last_Direction)
+		{
+		case DIR_RIGHT:
+			if (player_Collider->rect.x <= max_Dash) {
+				MoveTo(DIR_DASH_RIGHT);
+
+				if (player_Collider->rect.x > max_Dash - 30) {
+					dashSpeed = 3;	  
+				}						  
+				if (player_Collider->rect.x > max_Dash - 5) {
+					dashSpeed = 1;	  
+				}						  
+			}
+			else {
+				dash = false;
+			}
+			
+			break;
+		case DIR_LEFT:
+			if (player_Collider->rect.x >= max_Dash) {
+				MoveTo(DIR_DASH_LEFT);
+
+				if (player_Collider->rect.x < max_Dash - 30) {
+					dashSpeed = 3;
+				}
+				if (player_Collider->rect.x < max_Dash - 5) {
+					dashSpeed = 1;
+				}
+			}
+			else {
+				dash = false;
+			}
+			break;
+		}
 	}
 }
 
