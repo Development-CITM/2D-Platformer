@@ -57,7 +57,7 @@ private:
 	
 public:
 
-	bool notfirst;
+	bool notfirst=false;
 	bool lvl1 = true;
 	bool lvl2 = false;
 	bool loading = false;

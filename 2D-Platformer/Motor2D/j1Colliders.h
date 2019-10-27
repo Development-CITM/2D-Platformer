@@ -94,8 +94,8 @@ public:
 	bool collider_debug = false;
 	
 private:
-	Collider* collider;
-	Collider* c;
+	Collider* collider=nullptr;
+	Collider* c=nullptr;
 	p2List<Collider*>	colliders;
 	p2List<Collider*>	detected_Colliders;
 

@@ -118,7 +118,7 @@ bool j1Player::Load(const char* file_name)
 		lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
 		
 		ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
-		if (App->scene->notfirst)
+		if (!App->scene->notfirst)
 		{
 			if (strcmp(layer.attribute("name").as_string(), "Jump_sfx") == 0) {
 				pugi::xml_node source = layer.child("object").child("properties").child("property");
@@ -673,13 +673,13 @@ void j1Player::Jump()
 		if (player_Collider->rect.y >= maxJump) {
 			MoveTo(DIR_UP);
 
-			if (player_Collider->rect.y < maxJump + 40) {
+			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY4) {
 				gravityForce = 4;
 			}	 
-			if (player_Collider->rect.y < maxJump + 15) {
+			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY6) {
 				gravityForce = 6;
 			}
-			if (player_Collider->rect.y < maxJump + 5) {
+			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY9) {
 				gravityForce = 9;
 			}
 

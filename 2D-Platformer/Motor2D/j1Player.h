@@ -11,6 +11,11 @@
 struct Collider;
 enum MapTypes;
 
+#define PLAYERMAXJUMP_GRAVITY4 40
+#define PLAYERMAXJUMP_GRAVITY6 15
+#define PLAYERMAXJUMP_GRAVITY9 5
+
+
 #pragma region Enums
 
 enum PlayerState {
@@ -140,9 +145,9 @@ private:
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
-	int					pivot_x_flip;
-	int					player_pos_x;
-	int					player_pos_y;
+	int					pivot_x_flip=0;
+	int					player_pos_x=0;
+	int					player_pos_y=0;
 
 	p2Point<int>		playerPos = { 0,0 };
 
@@ -180,8 +185,8 @@ private:
 
 	//Jump Variables
 	uint				maxJump = 0u;
-	uint				jumpDistance;
-	uint				timeOnAir;
+	uint				jumpDistance = 0u;
+	uint				timeOnAir = 0u;
 	uint				currentTimeAir = 0u;
 
 	//Dash Variables
@@ -229,10 +234,10 @@ private:
 
 
 	//Rects
-	SDL_Rect* rect;
+	SDL_Rect* rect = nullptr;
 
 	//Object Layer
-	ObjectLayer* lay;
+	ObjectLayer* lay = nullptr;
 	
 
 

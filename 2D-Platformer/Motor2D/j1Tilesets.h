@@ -40,7 +40,7 @@ struct TileSet
 	uint				spacing = 0u;
 	uint				tile_width = 0u;
 	uint				tile_height = 0u;
-	SDL_Texture*		texture;
+	SDL_Texture*		texture = nullptr;
 	uint				tex_width = 0u;
 	uint				tex_height = 0u;
 	uint				num_tiles_width = 0u;
@@ -136,8 +136,8 @@ private:
 
 
 
-	int						currentFrame;
-	int						maxFrames;
+	int						currentFrame=0;
+	int						maxFrames=0;
 };
 
 #endif // __j1MAP_H__

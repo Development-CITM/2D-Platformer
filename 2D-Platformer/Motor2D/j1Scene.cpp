@@ -27,7 +27,6 @@ bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-	notfirst = false;
 	
 	return ret;
 }
@@ -174,11 +173,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 	App->tiles->culling_Collider->rect.x = data.child("culling").attribute("x").as_int();
 	App->tiles->culling_Collider->rect.y = data.child("culling").attribute("y").as_int();
 
-	App->tiles->culling_pos_x = data.child("culling_pos").attribute("x").as_int();
-	App->tiles->culling_pos_y = data.child("culling_pos").attribute("y").as_int();
-
-
-
 	return true;
 }
 
@@ -207,11 +201,6 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	cull.append_attribute("x") = App->tiles->culling_Collider->rect.x;
 	cull.append_attribute("y") = App->tiles->culling_Collider->rect.y;
-
-	pugi::xml_node cull_pos = data.append_child("culling_pos");
-
-	cull_pos.append_attribute("x") = App->tiles->culling_pos_x;
-	cull_pos.append_attribute("y") = App->tiles->culling_pos_y;
 
 	pugi::xml_node current_lvl = data.append_child("current_lvl");
 
