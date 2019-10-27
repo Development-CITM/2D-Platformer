@@ -187,9 +187,10 @@ private:
 	//Dash Variables
 
 	bool				dash = false;
-	uint				dash_distance = 40u;
 	int					max_Dash = 0;
+	uint				dash_distance = 0u;
 	uint				dashSpeed = 0u;
+	uint				max_dashSpeed = 0u;
 	bool				canDash = false;
 
 	//Speeds

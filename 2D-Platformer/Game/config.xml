@@ -27,6 +27,8 @@
     <gravityForce value="2"/>
     <max_gravityForce value="8"/>
     <runSpeed value="2"/>
+    <max_dash_Speed value="10"/>
+    <dash_distance value="40"/>
 
     <playerheight_dir_down value="40"/>
     <colliderheight_dir_down value ="32"/>

@@ -35,9 +35,13 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	gravityForce = player_values.child("gravityForce").attribute("value").as_uint();
 	max_gravityForce = player_values.child("max_gravityForce").attribute("value").as_uint();
 	runSpeed = player_values.child("runSpeed").attribute("value").as_uint();
+	max_dashSpeed = player_values.child("max_dash_Speed").attribute("value").as_uint();
+	dash_distance = player_values.child("dash_distance").attribute("value").as_uint();
 
 	playerheight_dir_down= player_values.child("playerheight_dir_down").attribute("value").as_int();
 	colliderheight_dir_down = player_values.child("colliderheight_dir_down").attribute("value").as_int();
+
+
 
 	pivot_x_flip = player_values.child("pivot_x_flip").attribute("value").as_int();
 	return ret;
@@ -444,7 +448,7 @@ void j1Player::DashInput()
 		dash = true;
 		canDash = false;
 		state = ST_DASH;
-		dashSpeed = 10;
+		dashSpeed = max_dashSpeed;
 		switch (last_Direction)
 		{
 		case DIR_RIGHT:
