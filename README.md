@@ -5,8 +5,14 @@ This right here is our little game for Development subject. We used C++ Language
 
 #### Team members
 
-* Eudald Garrofé: https://github.com/Hevne
-* Jordi Pardo: https://github.com/Jordi-Pardo
+* Eudald Garrofé: https://github.com/Hevne <br>
+Eudald has been in charge of the game and level design, plus searching and implementing the art of the game, in addition he has been coding side by side with Jordi too.<br>
+
+* Jordi Pardo: https://github.com/Jordi-Pardo <br>
+Jordi has been the lead programmer, building the major part of the project skeleton, although he helped with art research and some of the game design desicions.<br><br>
+
+Concluding, even if we have different kind of profiles and interests, each one tried to generally work at everything.<br>
+Since this is a professional-kind readme we're not gonna put in here which features did each one. This info is in the commits history.<br>
 
 ### Controls
 
