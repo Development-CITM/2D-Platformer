@@ -78,6 +78,20 @@ bool j1Player::CleanUp()
 	}
 	player_tmx_data.object_Layers.clear();
 
+
+	player_Collider = nullptr;
+
+
+	RELEASE(idle);
+	RELEASE(run);
+	RELEASE(jump);
+	RELEASE(fall);
+	
+	currentAnimation = nullptr;
+	previousAnimation = nullptr;
+
+	RELEASE(rect);
+	RELEASE(lay);
 	// Clean up the pugui tree
 	player_file.reset();
 
@@ -215,8 +229,8 @@ void j1Player::SetAnimations(Animation** animations) {
 		}
 
 
-
 	}
+
 	RELEASE_ARRAY(animations);
 	currentAnimation = idle;
 }

@@ -152,7 +152,7 @@ public:
 	p2Point<int>		playerPos = { 0,0 };
 
 	//Colliders
-	Collider* player_Collider = nullptr;
+	Collider*			player_Collider = nullptr;
 
 	bool				god_mode_enabled = false;
 	bool				onPlatform = false;
@@ -209,8 +209,8 @@ private:
 
 
 	//Heights for adjustment while DIR_DOWN
-	int playerheight_dir_down;
-	int colliderheight_dir_down;
+	int					playerheight_dir_down = 0;
+	int					colliderheight_dir_down = 0;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;
@@ -234,12 +234,11 @@ private:
 
 
 	//Rects
-	SDL_Rect* rect = nullptr;
+	SDL_Rect*			rect = nullptr;
 
 	//Object Layer
-	ObjectLayer* lay = nullptr;
+	ObjectLayer*		lay = nullptr;
 	
-
 
 	//XML Stuff
 	pugi::xml_document	player_file;
