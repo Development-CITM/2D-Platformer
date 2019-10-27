@@ -101,7 +101,6 @@ bool j1Player::CleanUp()
 #pragma endregion
 
 
-
 #pragma region Load Info
 bool j1Player::Load(const char* file_name)
 {
@@ -370,6 +369,7 @@ bool j1Player::Update(float dt)
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
 	
+	//Change Animations
 
 	if (velocity_X == 0 && velocity_Y == 0 && !jumping && state != ST_JUMP && state != ST_FALL) {
 		ChangeAnimation(idle);
@@ -740,31 +740,31 @@ void j1Player::MoveOnGodMode()
 	switch (dir)
 	{
 	case DIR_RIGHT:
-		player_Collider->rect.x += runSpeed;
-		playerPos.x += runSpeed;
-		App->render->camera.x -= runSpeed * 2;
-		App->tiles->culling_Collider->rect.x += runSpeed;
+		player_Collider->rect.x += runSpeed*2;
+		playerPos.x += runSpeed*2;
+		App->render->camera.x -= runSpeed * 4;
+		App->tiles->culling_Collider->rect.x += runSpeed*2;
 		break;
 	case DIR_LEFT:
-		player_Collider->rect.x -= runSpeed;
-		playerPos.x -= runSpeed;
-		App->render->camera.x += runSpeed * 2;
-		App->tiles->culling_Collider->rect.x -= runSpeed;
+		player_Collider->rect.x -= runSpeed*2;
+		playerPos.x -= runSpeed*2;
+		App->render->camera.x += runSpeed * 4;
+		App->tiles->culling_Collider->rect.x -= runSpeed*2;
 		break;
 	case DIR_UP:
-		player_Collider->rect.y -= runSpeed;
-		playerPos.y -= runSpeed;
+		player_Collider->rect.y -= runSpeed*2;
+		playerPos.y -= runSpeed*2;
 
-		App->render->camera.y += 6;
+		App->render->camera.y += runSpeed*4;
 
-		App->tiles->culling_Collider->rect.y -= 3;
+		App->tiles->culling_Collider->rect.y -= runSpeed*2;
 		break;
 	case DIR_DOWN:
-		player_Collider->rect.y += runSpeed;
-		playerPos.y += runSpeed;
+		player_Collider->rect.y += runSpeed*2;
+		playerPos.y += runSpeed*2;
 
-		App->render->camera.y -= 8;
-		App->tiles->culling_Collider->rect.y += 8 / 2;
+		App->render->camera.y -= runSpeed*4;
+		App->tiles->culling_Collider->rect.y += runSpeed*2;
 
 		break;
 	}
