@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="250" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="41" nextobjectid="156">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="250" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="41" nextobjectid="156">
  <tileset firstgid="1" name="tileset_autumn" tilewidth="16" tileheight="16" tilecount="1160" columns="58">
   <image source="Assets/tileset_autumn.png" width="928" height="320"/>
   <tile id="119">
@@ -80838,7 +80838,7 @@
   <object id="92" type="Barrier" x="3328" y="96" width="64" height="16"/>
   <object id="93" type="Barrier" x="3457" y="80" width="112" height="17"/>
   <object id="94" type="Barrier" x="3423" y="80" width="34" height="32"/>
-  <object id="95" type="Dead" x="0" y="631" width="3358" height="9"/>
+  <object id="95" type="Dead" x="0" y="631" width="3998" height="9"/>
   <object id="96" type="Barrier" x="1408" y="404" width="128" height="28"/>
   <object id="98" type="Barrier" x="1669.67" y="514.5" width="133" height="13.625"/>
   <object id="100" type="Barrier" x="1861.17" y="514.104" width="133.875" height="13.625"/>

@@ -70084,7 +70084,7 @@
   <object id="123" type="Jumpable" x="2809" y="587" width="48" height="15"/>
   <object id="124" type="Jumpable" x="2921" y="539" width="48" height="15"/>
   <object id="126" type="Jumpable" x="3041" y="496" width="47" height="19"/>
-  <object id="127" type="Dead" x="385" y="632" width="2766" height="8"/>
+  <object id="127" type="Dead" x="1" y="632" width="3998" height="8"/>
   <object id="133" type="Barrier" x="1541" y="547" width="150" height="13"/>
   <object id="135" type="Barrier" x="805" y="610" width="292" height="13"/>
   <object id="137" type="Barrier" x="565" y="578" width="214" height="14"/>
