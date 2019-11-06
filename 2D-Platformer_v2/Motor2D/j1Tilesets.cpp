@@ -187,7 +187,7 @@ bool j1Tilesets::Load(const char* file_name)
 	
 
 	// Load layer info ----------------------------------------------
-	for(pugi::xml_node layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+	for(pugi::xml_node layer = map_file.child("map").child("group").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 	{
 		MapLayer* lay = new MapLayer();
 
