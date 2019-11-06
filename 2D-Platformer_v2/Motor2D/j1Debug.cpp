@@ -53,10 +53,7 @@ bool j1Debug::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
-			if (App->player->god_mode_enabled == false)
-				App->player->god_mode_enabled = true;
-			else if (App->player->god_mode_enabled == true)
-				App->player->god_mode_enabled = false;
+
 		}
 
 		//Show colliders

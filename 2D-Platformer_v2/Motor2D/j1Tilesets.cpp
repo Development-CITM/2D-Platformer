@@ -419,11 +419,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 		objects = node.child("object");
 		App->scene->LoadSceneLimits(objects);
 	}
-	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0 && App->scene->loading == false)
-	{
-		objects = node.child("object");
-		App->player->SetPlayerPos(objects);
-	}
+
 	else if (strcmp(node.attribute("name").as_string(), "Culling_pos") == 0)
 	{
 		objects = node.child("object");

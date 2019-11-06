@@ -94,19 +94,19 @@ bool j1Scene::Update(float dt)
 			App->tiles->culling_Collider->rect.x += 2;
 	}
 
-	if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->culling_Collider->rect.w) {
-		if (App->scene->lvl1 == true)
-		{
-			App->scene->lvl2 = true;
-			App->scene->lvl1 = false;
-		}
-		else if (App->scene->lvl2 == true)
-		{
-			App->scene->lvl1 = true;
-			App->scene->lvl2 = false;
-		}
-		App->fade2black->FadeToBlack(App->scene, App->scene);
-	}
+	//if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->culling_Collider->rect.w) {
+	//	if (App->scene->lvl1 == true)
+	//	{
+	//		App->scene->lvl2 = true;
+	//		App->scene->lvl1 = false;
+	//	}
+	//	else if (App->scene->lvl2 == true)
+	//	{
+	//		App->scene->lvl1 = true;
+	//		App->scene->lvl2 = false;
+	//	}
+	//	App->fade2black->FadeToBlack(App->scene, App->scene);
+	//}
 
 	if (hasExit) {
 		App->fade2black->FadeToBlack(App->scene, App->scene);
@@ -149,22 +149,10 @@ bool j1Scene::Load(pugi::xml_node& data)
 		lvl1 = data.child("current_lvl").attribute("lvl1").as_bool();
 		lvl2 = data.child("current_lvl").attribute("lvl2").as_bool();
 		loading = true;
-		App->player->player_pos_x = data.child("playerPos").attribute("x").as_int();
-		App->player->player_pos_y = data.child("playerPos").attribute("y").as_int();
+
 		App->fade2black->FadeToBlack(App->scene, App->scene);
 	
 	}
-	else
-	{
-		App->player->playerPos.x = data.child("playerPos").attribute("x").as_int();
-		App->player->playerPos.y = data.child("playerPos").attribute("y").as_int();
-	}
-
-	App->player->player_Collider->rect.x = data.child("player_collider").attribute("x").as_int();
-	App->player->player_Collider->rect.y = data.child("player_collider").attribute("y").as_int();
-
-	App->player->jumping = false;
-	App->player->state = ST_IDLE;
 
 	App->render->camera.x = data.child("camera").attribute("x").as_int();
 	App->render->camera.y = data.child("camera").attribute("y").as_int();
@@ -182,13 +170,11 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	//------------PLAYER-------------------//
 	pugi::xml_node player = data.append_child("playerPos");
 
-	player.append_attribute("x") = App->player->playerPos.x;
-	player.append_attribute("y") = App->player->playerPos.y;
+
 
 	pugi::xml_node player_collider = data.append_child("player_collider");
 
-	player_collider.append_attribute("x") = App->player->player_Collider->rect.x;
-	player_collider.append_attribute("y") = App->player->player_Collider->rect.y;
+
 
 
 	//------------CAMERA --------------------//

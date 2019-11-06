@@ -78,9 +78,7 @@ bool j1Fade2Black::Update(float dt)
 		if (now >= total_time)
 		{
 			IsFading = false;
-			App->player->canMove = true;
 			App->debug->input = true;
-			App->player->state = ST_IDLE;
 			current_step = fade_step::none;
 		}
 	} break;
@@ -95,14 +93,13 @@ bool j1Fade2Black::Update(float dt)
 
 bool j1Fade2Black::FadeToBlack(j1Module* module_off, j1Module* module_on, float time)
 {
+	bool ret = false;
 	moduleOff = module_off;
 	moduleOn = module_on;
 
 	IsFading = true;
-	App->player->canMove = false;
+
 	App->debug->input = false;
-	App->player->ResetInputs();
-	bool ret = false;
 
 	if (current_step == fade_step::none)
 	{

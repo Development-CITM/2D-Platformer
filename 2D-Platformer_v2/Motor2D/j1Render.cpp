@@ -112,10 +112,10 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
-	int posX = x - App->player->pivot_x_flip;
-	if (flip == SDL_FLIP_HORIZONTAL) {
-		x = posX;
-	}
+	//int posX = x - App->player->pivot_x_flip;
+	//if (flip == SDL_FLIP_HORIZONTAL) {
+	//	x = posX;
+	//}
 	SDL_Rect rect;
 		rect.x = (int)(camera.x * speed) + x * scale * size;
 		rect.y = (int)(camera.y) + y * scale * size;

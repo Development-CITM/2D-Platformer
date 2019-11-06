@@ -1,71 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="23" tileheight="41" infinite="0" nextlayerid="14" nextobjectid="47">
- <properties>
-  <property name="collider_height" type="int" value="31"/>
-  <property name="collider_width" type="int" value="13"/>
-  <property name="offset_collider_h" type="int" value="8"/>
-  <property name="offset_collider_w" type="int" value="3"/>
- </properties>
- <imagelayer id="2" name="Capa de Imagen 1">
-  <image source="Player Sheet.png" width="256" height="256"/>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="12" nextobjectid="29">
+ <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
+  <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
- <objectgroup id="13" name="Dead_sfx">
-  <object id="46" x="92" y="164" width="23" height="20">
+ <objectgroup id="9" name="armed_idle">
+  <object id="18" name="ARMED_IDLE" type="ARMED_IDLE" x="0" y="0" width="50" height="37">
    <properties>
-    <property name="value" value="audio/fx/dead_sfx.wav"/>
+    <property name="Frames" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="19" name="ARMED_IDLE" type="ARMED_IDLE" x="50" y="0" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="20" name="ARMED_IDLE" type="ARMED_IDLE" x="100" y="0" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="21" name="ARMED_IDLE" type="ARMED_IDLE" x="150" y="0" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="22" name="ARMED_RUN" type="ARMED_RUN" x="0" y="37" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="23" name="ARMED_RUN" type="ARMED_RUN" x="50" y="37" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="24" name="ARMED_RUN" type="ARMED_RUN" x="100" y="37" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="25" name="ARMED_RUN" type="ARMED_RUN" x="150" y="37" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="26" name="ARMED_RUN" type="ARMED_RUN" x="200" y="37" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="27" name="ARMED_RUN" type="ARMED_RUN" x="250" y="37" width="50" height="37">
+   <properties>
+    <property name="Frames" type="int" value="2"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="12" name="Jump_sfx">
-  <object id="45" x="92" y="184" width="23" height="21">
-   <properties>
-    <property name="value" value="audio/fx/jump_sfx.wav"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="4" name="Idle">
-  <object id="1" name="idle_01" x="0" y="0" width="23" height="41"/>
-  <object id="4" name="idle_02" x="23" y="0" width="23" height="41"/>
-  <object id="5" name="idle_03" x="46" y="0" width="23" height="41"/>
-  <object id="7" name="idle_04" x="69" y="0" width="23" height="41"/>
-  <object id="8" name="idle_05" x="92" y="0" width="23" height="41"/>
-  <object id="9" name="idle_06" x="115" y="0" width="23" height="41"/>
-  <object id="10" name="idle_07" x="0" y="41" width="23" height="41"/>
-  <object id="11" name="idle_08" x="23" y="41" width="23" height="41"/>
-  <object id="12" name="idle_09" x="46" y="41" width="23" height="41"/>
-  <object id="13" name="idle_10" x="69" y="41" width="23" height="41"/>
-  <object id="15" name="idle_11" x="92" y="41" width="23" height="41"/>
-  <object id="16" name="idle_12" x="115" y="41" width="23" height="41"/>
- </objectgroup>
- <objectgroup id="5" name="Running">
-  <object id="17" name="run_01" x="0" y="82" width="23" height="41"/>
-  <object id="18" name="run_02" x="23" y="82" width="23" height="41"/>
-  <object id="19" name="run_03" x="46" y="82" width="23" height="41"/>
-  <object id="20" name="run_04" x="69" y="82" width="23" height="41"/>
-  <object id="21" name="run_05" x="92" y="82" width="23" height="41"/>
-  <object id="22" name="run_06" x="115" y="82" width="23" height="41"/>
-  <object id="23" name="run_07" x="138" y="82" width="23" height="41"/>
-  <object id="24" name="run_08" x="161" y="82" width="23" height="41"/>
- </objectgroup>
- <objectgroup id="6" name="Grab">
-  <object id="25" name="grab_01" x="0" y="123" width="23" height="41"/>
-  <object id="26" name="grab_02" x="23" y="123" width="23" height="41"/>
-  <object id="27" name="grab_03" x="46" y="123" width="23" height="41"/>
-  <object id="28" name="grab_04" x="69" y="123" width="23" height="41"/>
-  <object id="29" name="grab_05" x="92" y="123" width="23" height="41"/>
-  <object id="30" name="grab_06" x="115" y="123" width="23" height="41"/>
- </objectgroup>
- <objectgroup id="8" name="Jump">
-  <object id="32" name="jmp_01" x="0" y="164" width="23" height="41"/>
- </objectgroup>
- <objectgroup id="10" name="MidAir">
-  <object id="40" name="midair_01" x="23" y="164" width="23" height="41"/>
-  <object id="41" name="midair_02" x="46" y="164" width="23" height="41"/>
- </objectgroup>
- <objectgroup id="11" name="Falling">
-  <object id="42" name="fall_01" x="69" y="164" width="23" height="41"/>
- </objectgroup>
- <objectgroup id="9" name="Collider">
-  <object id="38" x="3" y="8" width="13" height="31"/>
+ <objectgroup color="#ff0000" id="6" name="AABB">
+  <object id="3" name="AABB_IDLE" type="AABB_IDLE" x="19" y="10" width="12" height="26"/>
+  <object id="8" name="AABB_RUN" type="AABB_RUN" x="23" y="47" width="12" height="26"/>
+  <object id="12" name="AABB_JUMP_READY" type="AABB_JUMP_READY" x="320" y="52" width="12" height="21"/>
+  <object id="14" name="AABB_JUMP_START" type="AABB_JUMP_START" x="22" y="82" width="11" height="24"/>
+  <object id="15" name="AABB_JUMP_MIDAIR" type="AABB_JUMP_MIDAIR" x="73" y="81" width="10" height="20"/>
+  <object id="16" name="AABB_JUMP_FINISH" type="AABB_JUMP_FINISH" x="123" y="83" width="10" height="16"/>
+  <object id="17" name="AABB_CROUCH_IDLE" type="AABB_CROUCH_IDLE" x="220" y="16" width="12" height="20"/>
  </objectgroup>
 </map>
