@@ -37,7 +37,7 @@ bool j1Scene::Start()
 	hasExit = false;
 	if (lvl1)
 	{
-		App->tiles->Load("maps/Level1.tmx");
+		App->tiles->Load("maps/New_Level1.tmx");
 	}
 	if (lvl2)
 	{
