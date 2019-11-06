@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="10" nextobjectid="28">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="12" nextobjectid="29">
  <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
