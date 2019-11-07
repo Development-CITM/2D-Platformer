@@ -25718,7 +25718,7 @@
     <tile/>
    </data>
   </layer>
-  <layer id="117" name="3Mountains" width="107" height="60">
+  <layer id="117" name="3Mountains" width="107" height="60" visible="0">
    <data>
     <tile/>
     <tile/>
@@ -49189,7 +49189,7 @@
     <tile gid="4896"/>
     <tile gid="4897"/>
     <tile/>
-    <tile gid="4883"/>
+    <tile/>
     <tile gid="4884"/>
     <tile gid="4885"/>
     <tile gid="4886"/>
@@ -49296,7 +49296,7 @@
     <tile gid="4946"/>
     <tile gid="4947"/>
     <tile/>
-    <tile gid="4933"/>
+    <tile/>
     <tile gid="4934"/>
     <tile gid="4935"/>
     <tile gid="4936"/>
@@ -128198,9 +128198,6 @@
     <tile/>
     <tile/>
     <tile/>
-    <tile gid="1968"/>
-    <tile gid="1969"/>
-    <tile gid="1970"/>
     <tile/>
     <tile/>
     <tile/>
@@ -128305,9 +128302,12 @@
     <tile/>
     <tile/>
     <tile/>
-    <tile gid="2018"/>
-    <tile gid="2019"/>
-    <tile gid="2020"/>
+    <tile/>
+    <tile/>
+    <tile/>
+    <tile/>
+    <tile/>
+    <tile/>
     <tile/>
     <tile/>
     <tile/>
@@ -134515,6 +134515,9 @@
     <tile/>
     <tile/>
     <tile/>
+    <tile gid="1968"/>
+    <tile gid="1969"/>
+    <tile gid="1970"/>
     <tile/>
     <tile/>
     <tile/>
@@ -134619,12 +134622,9 @@
     <tile/>
     <tile/>
     <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
+    <tile gid="2018"/>
+    <tile gid="2019"/>
+    <tile gid="2020"/>
     <tile/>
     <tile/>
     <tile/>
