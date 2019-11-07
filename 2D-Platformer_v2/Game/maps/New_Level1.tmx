@@ -154199,7 +154199,7 @@
    </data>
   </layer>
  </group>
- <objectgroup id="139" name="Culling_pos">
+ <objectgroup id="139" name="Culling_pos" visible="0">
   <object id="1" name="Culling Pos" x="0" y="0" width="16" height="16">
    <properties>
     <property name="culling_pos_x" type="int" value="65"/>
@@ -154207,7 +154207,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="140" name="Camera Limit">
+ <objectgroup id="140" name="Camera Limit" visible="0">
   <properties>
    <property name="Limit Left" type="int" value="25"/>
    <property name="Limit Right" type="int" value="2798"/>
@@ -154219,7 +154219,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="143" name="Colliders">
+ <objectgroup id="143" name="Colliders" visible="0">
   <object id="4" type="Barrier" x="1" y="688" width="318" height="271"/>
   <object id="5" type="Barrier" x="416" y="688" width="1296" height="272"/>
   <object id="6" type="Barrier" x="912" y="625" width="800" height="63"/>
@@ -154231,7 +154231,7 @@
   <object id="12" type="Barrier" x="833" y="681" width="15" height="7"/>
   <object id="13" type=" Barrier" x="816" y="685" width="17" height="3"/>
  </objectgroup>
- <objectgroup id="141" name="Player_pos">
+ <objectgroup id="141" name="Player_pos" visible="0">
   <object id="3" name="Player_pos" x="32" y="0" width="16" height="16">
    <properties>
     <property name="player_pos_x" type="int" value="100"/>
