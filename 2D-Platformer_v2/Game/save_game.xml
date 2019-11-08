@@ -5,10 +5,10 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos x="268" y="456" />
-		<player_collider x="271" y="464" />
-		<camera x="-130" y="-448" />
-		<culling x="65" y="224" />
+		<playerPos />
+		<player_collider />
+		<camera x="-26" y="-824" />
+		<culling x="13" y="412" />
 		<current_lvl lvl1="false" lvl2="true" />
 		<scene />
 	</scene>

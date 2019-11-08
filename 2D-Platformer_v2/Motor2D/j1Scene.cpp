@@ -41,7 +41,7 @@ bool j1Scene::Start()
 	}
 	if (lvl2)
 	{
-		App->tiles->Load("maps/Level2.tmx");
+		App->tiles->Load("maps/A2.tmx");
 	}
 	if (notfirst)
 	{
@@ -151,15 +151,15 @@ bool j1Scene::Load(pugi::xml_node& data)
 		loading = true;
 
 		App->fade2black->FadeToBlack(App->scene, App->scene);
-	
+
+		App->tiles->culling_pos_x = data.child("culling").attribute("x").as_int();
+		App->tiles->culling_pos_y = data.child("culling").attribute("y").as_int();
 	}
 
 	App->render->camera.x = data.child("camera").attribute("x").as_int();
 	App->render->camera.y = data.child("camera").attribute("y").as_int();
 
-	
-	App->tiles->culling_Collider->rect.x = data.child("culling").attribute("x").as_int();
-	App->tiles->culling_Collider->rect.y = data.child("culling").attribute("y").as_int();
+
 
 	return true;
 }
@@ -174,6 +174,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	pugi::xml_node player_collider = data.append_child("player_collider");
 
+	//player_collider=data.append_child("") EUDALD: SAVE/LOAD PLAYER POS(SAVEGAME) FLOAT, CAMERA POS(EACH TMX), LIST OF STRINGS WITH SOURCE OF EACH MAP AND SWITCH CASE SDL SCANCODE. 
 
 
 

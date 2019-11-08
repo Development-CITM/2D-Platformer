@@ -61,7 +61,7 @@ bool j1Fade2Black::Update(float dt)
 			//resets player & camera position
 			if (App->scene->loading == false)
 			{
-				App->render->camera.x = -130;
+				App->render->camera.x = -130; //EUDALD: CHANGE THIS
 				App->render->camera.y = -400;
 			}
 			App->scene->loading = false;
@@ -105,7 +105,7 @@ bool j1Fade2Black::FadeToBlack(j1Module* module_off, j1Module* module_on, float 
 	{
 		current_step = fade_step::fade_to_black;
 		start_time = SDL_GetTicks();
-		total_time = (Uint32)(time * 0.5f * 1000);
+		total_time = (Uint32)(time * 0.5f * 500);
 		ret = true;
 	}
 

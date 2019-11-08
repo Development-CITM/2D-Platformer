@@ -172637,7 +172637,7 @@
   <object id="1" name="Culling Pos" x="160" y="0" width="16" height="16">
    <properties>
     <property name="culling_pos_x" type="int" value="65"/>
-    <property name="culling_pos_y" type="int" value="200"/>
+    <property name="culling_pos_y" type="int" value="400"/>
    </properties>
   </object>
  </objectgroup>
