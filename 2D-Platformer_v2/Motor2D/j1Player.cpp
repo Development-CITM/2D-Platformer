@@ -35,6 +35,9 @@ bool j1Player::Start()
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 
+
+	currentAnimation = sheathed_idle;
+
 	return true;
 }
 
@@ -162,6 +165,22 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
+
+	
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		if (currentAnimation != sheathed_run) {
+			currentAnimation->ResetAnim();
+			currentAnimation = sheathed_run;
+		}
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		if (currentAnimation != sheathed_idle) {
+			currentAnimation->ResetAnim();
+			currentAnimation = sheathed_idle;
+		}
+	}
+
+	
 	Draw(); //Draw all the player
 	return true;
 }
@@ -178,6 +197,6 @@ bool j1Player::PostUpdate()
 void j1Player::Draw()
 {
 
-	App->render->Blit(player_tmx_data.texture, 100, 230, &sheathed_run->sprites[sheathed_run->GetSprite()].rect,3.f);
+	App->render->Blit(player_tmx_data.texture, 100, 230, &currentAnimation->sprites[currentAnimation->GetSprite()].rect,3.f);
 
 }

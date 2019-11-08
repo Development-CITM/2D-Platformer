@@ -22,6 +22,14 @@ struct Animation {
 
 	int current_sprite = 0;
 
+	void ResetAnim() {
+		current_sprite = 0;
+		for (int i = 0; i < num_sprites; i++)
+		{
+			sprites[i].current_frame = 0;
+		}
+	}
+
 	int GetSprite()
 	{
 		if (sprites[current_sprite].current_frame != sprites[current_sprite].frames) 
