@@ -33,9 +33,11 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	//Load Player tmx (it contains animations and colliders properties)
+
+	player_pos = { 100,422 };
 	Load("animations/Player.tmx");
 
-
+	AABB_current = AABB_sheathed_idle;
 	currentAnimation = sheathed_idle;
 
 	return true;
@@ -85,6 +87,7 @@ bool j1Player::Load(const char* file_name)
 		pugi::xml_node	player_node = player_file.child("map");
 
 		LoadPlayerTMX(player_node);
+		LoadAABB(player_node);
 
 		pugi::xml_node group = player_node.child("group");
 
@@ -157,6 +160,37 @@ void j1Player::LoadAnimation(pugi::xml_node& obj_group)
 	}
 }
 
+void j1Player::LoadAABB(pugi::xml_node& player_node)
+{
+	if (strcmp(player_node.child("objectgroup").attribute("name").as_string(), "AABB") == 0) {
+		pugi::xml_node obj_group = player_node.child("objectgroup");
+
+		for (pugi::xml_node object = obj_group.child("object"); object; object = object.next_sibling("object"))
+		{
+			SDL_Rect rect;
+			p2Point<int> offset{ 0,0 };
+			offset = { object.attribute("x").as_int() ,object.attribute("y").as_int() };
+			rect.x = player_pos.x + offset.x;
+			while (offset.y - player_tmx_data.tile_height > 0 || offset.y - player_tmx_data.tile_height > player_tmx_data.tile_height) {
+				offset.y -= player_tmx_data.tile_height;
+			}
+			rect.y = player_pos.y + offset.y;
+			rect.w = object.attribute("width").as_int();
+			rect.h = object.attribute("height").as_int();
+		
+
+			if (strcmp(object.attribute("name").as_string(), "AABB_IDLE") == 0) 
+			{
+				AABB_sheathed_idle = App->collider->AddCollider(rect, COLLIDER_PLAYER);
+			}		
+			if (strcmp(object.attribute("name").as_string(), "AABB_RUN") == 0) 
+			{
+				AABB_sheathed_run = App->collider->AddCollider(rect, COLLIDER_PLAYER);
+			}
+		}
+	}
+}
+
 
 bool j1Player::PreUpdate()
 {
@@ -171,12 +205,14 @@ bool j1Player::Update(float dt)
 		if (currentAnimation != sheathed_run) {
 			currentAnimation->ResetAnim();
 			currentAnimation = sheathed_run;
+			AABB_current = AABB_sheathed_run;
 		}
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		if (currentAnimation != sheathed_idle) {
 			currentAnimation->ResetAnim();
 			currentAnimation = sheathed_idle;
+			AABB_current = AABB_sheathed_idle;
 		}
 	}
 
@@ -197,6 +233,15 @@ bool j1Player::PostUpdate()
 void j1Player::Draw()
 {
 
-	App->render->Blit(player_tmx_data.texture, 100, 230, &currentAnimation->sprites[currentAnimation->GetSprite()].rect,3.f);
+	App->render->Blit(player_tmx_data.texture, player_pos.x, player_pos.y, &currentAnimation->sprites[currentAnimation->GetSprite()].rect,3.f);
+
+	//Draw Collider
+	SDL_Rect rect;
+	float scale = App->win->GetScale();
+	rect.x = AABB_current->rect.x * App->render->player_size * scale;
+	rect.y = AABB_current->rect.y * App->render->player_size * scale;
+	rect.w = AABB_current->rect.w * App->render->player_size * scale;
+	rect.h = AABB_current->rect.h * App->render->player_size * scale;
+	App->render->DrawQuad(rect, 0, 255, 0, 100);
 
 }

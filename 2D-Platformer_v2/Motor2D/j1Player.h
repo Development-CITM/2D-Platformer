@@ -27,8 +27,8 @@ struct PlayerTMXData {
 	SDL_Texture* texture = nullptr;
 	uint					width = 0u;
 	uint					height = 0u;
-	uint					tile_width = 0u;
-	uint					tile_height = 0u;
+	int						tile_width = 0u;
+	int						tile_height = 0u;
 	MapTypes				type;
 	p2List<ObjectLayer*>	object_Layers;
 };
@@ -74,12 +74,9 @@ private:
 
 	//Load Functions
 	bool LoadPlayerTMX(pugi::xml_node& player_node);
-
-	bool LoadSpriteSheet(pugi::xml_node& node);
-
 	void LoadAnimation(pugi::xml_node& obj_group);
-	//Animation Functions
-	void ChangeAnimation(Animation*);
+	void LoadAABB(pugi::xml_node& player_node);
+
 
 
 //---------------VARIABLES --------------------//
@@ -97,6 +94,8 @@ private:
 	p2Point<int>		previousColliderPos = { 0,0 };
 	p2Point<int>		previousPlayerPos{ 0,0 };
 	p2Point<int>		currentVelocity{ 0,0 };
+
+	p2Point<int>		player_pos{ 0,0 };
 
 
 	//Animations
@@ -117,9 +116,10 @@ private:
 	bool				move_To_Left = false;
 	bool				move_To_Up = false;
 
-
-	//Object Layer
-	ObjectLayer*		lay = nullptr;
+	//Colliders
+	Collider*			AABB_sheathed_idle = nullptr;
+	Collider*			AABB_sheathed_run = nullptr;
+	Collider*			AABB_current = nullptr;
 
 	//XML Stuff
 	pugi::xml_document	player_file;

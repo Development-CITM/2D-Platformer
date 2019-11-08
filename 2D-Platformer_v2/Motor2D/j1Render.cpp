@@ -50,7 +50,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = 0;
 	}
 
-	camera = { -130,-400 };
+	camera = { -130,-800 };
 	return ret;
 }
 

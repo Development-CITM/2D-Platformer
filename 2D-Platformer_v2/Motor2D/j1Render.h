@@ -43,6 +43,7 @@ public:
 public:
 
 	float			drawsize = 2.0f;
+	float			player_size = 3.0f;
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;

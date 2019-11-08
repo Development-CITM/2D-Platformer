@@ -176,9 +176,6 @@ void j1Colliders::Draw()
 			case COLLIDER_DEAD:
 				App->render->DrawQuad(rect, 0, 0, 0, 100);
 				break;
-			case COLLIDER_PLAYER:
-				App->render->DrawQuad(rect, 0, 255, 0, 100);
-				break;
 			case COLLIDER_WINDOW:
 				App->render->DrawQuad(rect, 0, 255, 255, 50);
 				break;
