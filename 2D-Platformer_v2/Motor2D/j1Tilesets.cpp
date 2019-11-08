@@ -187,54 +187,41 @@ bool j1Tilesets::Load(const char* file_name)
 	
 
 	// Load layer info ----------------------------------------------
-	for(pugi::xml_node layer = map_file.child("map").child("group").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
-	{
-		MapLayer* lay = new MapLayer();
-
-		ret = LoadLayer(layer, lay);
-
-		if(ret == true)
-			map_Data.layers.add(lay);
-	}
-
+	ret = SendNodePosition();
+		
 	//Load objects info -----------------------------------------------
+
 	for (pugi::xml_node object = map_file.child("map").child("objectgroup"); object; object=object.next_sibling("objectgroup"))
 	{
 		LoadObject(object);
 	}
 
 
-
-
 	if(ret == true)
 	{
-		LOG("Successfully parsed map XML file: %s", file_name);
-		LOG("width: %d height: %d", map_Data.width, map_Data.height);
-		LOG("tile_width: %d tile_height: %d", map_Data.tile_width, map_Data.tile_height);
-
-		p2List_item<TileSet*>* item = map_Data.tilesets.start;
-		while(item != NULL)
-		{
-			TileSet* s = item->data;
-			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
-			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
-			LOG("spacing: %d margin: %d", s->spacing, s->margin);
-			item = item->next;
-		}
-
-		p2List_item<MapLayer*>* item_layer = map_Data.layers.start;
-		while(item_layer != NULL)
-		{
-			MapLayer* l = item_layer->data;
-			LOG("Layer ----");
-			LOG("name: %s", l->name.GetString());
-			LOG("tile width: %d tile height: %d", l->num_tile_width, l->num_tile_height);
-			item_layer = item_layer->next;
-		}
+		LogLayerInfo(file_name);
 	}
 	map_loaded = ret;
 
+	return ret;
+}
+
+bool j1Tilesets::SendNodePosition()
+{
+	bool ret = true;
+	for (pugi::xml_node folder= map_file.child("map").child("group").child("group"); folder; folder=folder.next_sibling("group"))
+	{
+		
+		for (pugi::xml_node layer = folder.child("layer"); layer; layer=layer.next_sibling("layer"))
+		{
+			MapLayer* lay = new MapLayer();
+
+			ret = LoadLayer(layer, lay);
+
+			if (ret == true)
+				map_Data.layers.add(lay);
+		}
+	}
 	return ret;
 }
 
@@ -400,6 +387,35 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	return ret;
 }
+
+void j1Tilesets::LogLayerInfo(const char* file_name)
+{
+	LOG("Successfully parsed map XML file: %s", file_name);
+	LOG("width: %d height: %d", map_Data.width, map_Data.height);
+	LOG("tile_width: %d tile_height: %d", map_Data.tile_width, map_Data.tile_height);
+
+	p2List_item<TileSet*>* item = map_Data.tilesets.start;
+	while (item != NULL)
+	{
+		TileSet* s = item->data;
+		LOG("Tileset ----");
+		LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+		LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
+		LOG("spacing: %d margin: %d", s->spacing, s->margin);
+		item = item->next;
+	}
+
+	p2List_item<MapLayer*>* item_layer = map_Data.layers.start;
+	while (item_layer != NULL)
+	{
+		MapLayer* l = item_layer->data;
+		LOG("Layer ----");
+		LOG("name: %s", l->name.GetString());
+		LOG("tile width: %d tile height: %d", l->num_tile_width, l->num_tile_height);
+		item_layer = item_layer->next;
+	}
+}
+
 bool j1Tilesets::LoadObject(pugi::xml_node& node)
 {
 	bool ret = true;
@@ -428,6 +444,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 
 	return ret;
 }
+
 void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 {
 	if( App->scene->loading == false)
@@ -474,6 +491,7 @@ TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
 
 	return tile->data;
 }
+
 iPoint j1Tilesets::MapToWorld(int x, int y) const
 {
 	iPoint ret(0, 0);

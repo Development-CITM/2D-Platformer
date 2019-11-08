@@ -105,10 +105,12 @@ public:
 
 private:
 
+	bool		SendNodePosition();
 	bool		LoadMap();
 	bool		LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool		LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool		LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	void		LogLayerInfo(const char* file_name);
 	SDL_Rect	GetRect(TileSet* ,int id);
 	bool		LoadObject(pugi::xml_node& node);
 	void		SetCullingPos(pugi::xml_node& object);
