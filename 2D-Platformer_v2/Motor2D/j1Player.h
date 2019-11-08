@@ -23,17 +23,12 @@ struct ObjectLayer
 	p2List<SDL_Rect*>	rects;
 };
 
-struct SpriteSheet {
-	SDL_Texture*	texture = nullptr;
-	uint			width = 0u;
-	uint			height = 0u;
-};
 struct PlayerTMXData {
+	SDL_Texture* texture = nullptr;
 	uint					width = 0u;
 	uint					height = 0u;
 	uint					tile_width = 0u;
 	uint					tile_height = 0u;
-	SpriteSheet				spriteSheet;
 	MapTypes				type;
 	p2List<ObjectLayer*>	object_Layers;
 };
@@ -78,9 +73,8 @@ public:
 private:
 
 	//Load Functions
-	bool LoadMap();
-	//void SetAnimations(Animation**);
-	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
+	bool LoadPlayerTMX(pugi::xml_node& player_node);
+
 	bool LoadSpriteSheet(pugi::xml_node& node);
 
 	void LoadAnimation(pugi::xml_node& obj_group);
@@ -109,8 +103,8 @@ private:
 	Animation*			currentAnimation = nullptr;
 	Animation*			previousAnimation = nullptr;
 
-	Animation*			idle = nullptr;
-	Animation*			run = nullptr;
+	Animation*			sheathed_idle = nullptr;
+	Animation*			sheathed_run = nullptr;
 	Animation*			jump = nullptr;
 	Animation*			fall = nullptr;
 
@@ -126,7 +120,6 @@ private:
 
 	//Object Layer
 	ObjectLayer*		lay = nullptr;
-	
 
 	//XML Stuff
 	pugi::xml_document	player_file;

@@ -25,7 +25,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 {
 	bool ret = true; 
 
-	LOG("Loading Player");
+	LOG("Loading Player...");
 
 	return ret;	
 }
@@ -77,16 +77,16 @@ bool j1Player::Load(const char* file_name)
 	}
 
 	//Load info
-
 	if (ret == true) {
 
 		pugi::xml_node	player_node = player_file.child("map");
+
+		LoadPlayerTMX(player_node);
 
 		pugi::xml_node group = player_node.child("group");
 
 		for (group; group && ret; group = group.next_sibling("group"))
 		{
-
 			for (pugi::xml_node object_group = group.child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
 			{
 				LoadAnimation(object_group);
@@ -94,152 +94,63 @@ bool j1Player::Load(const char* file_name)
 		}
 	}
 
-
-	// Load general info ----------------------------------------------
-	//if (ret == true)
-	//{
-	//	ret = LoadMap();
-	//}
-
-	// Load layer info ----------------------------------------------
-	//pugi::xml_node layer;
-	//for (layer = player_file.child("map").child("objectgroup"); layer && ret; layer = layer.next_sibling("objectgroup"))
-	//{
-
-	//	lay = new ObjectLayer(); //Create new ObjectLayer to create new adress of ObjectLayer type
-
-	//	ret = LoadLayer(layer, lay); //Layer is a node to layer node, and Lay its the adress of the new ObjectLayer to fill it
-
-
-	//	if (ret == true)
-	//	{
-	//		LOG("Successfully parsed map XML file: %s", file_name);
-	//		LOG("width: %d height: %d", player_tmx_data.width, player_tmx_data.height);
-	//		LOG("tile_width: %d tile_height: %d", player_tmx_data.tile_width, player_tmx_data.tile_height);
-
-
-	//		p2List_item<ObjectLayer*>* item_layer = player_tmx_data.object_Layers.start; //Pointer to the first item of object_Layers
-	//		Animation** animations = new Animation * [player_tmx_data.object_Layers.count()]; //Create dynamic array, object_Layers sized
-
-	//		int i = 0; //count to iterate animations
-	//		while (item_layer != NULL)
-	//		{
-
-	//			ObjectLayer* l = item_layer->data;
-
-	//			animations[i] = new Animation;
-	//			LOG("Layer ----");
-	//			LOG("name: %s", l->name.GetString());
-
-	//			LOG("Rects count: %d", l->rects.count());
-	//			animations[i]->name = l->name.GetString();
-
-	//			p2List_item<SDL_Rect*>* rect = l->rects.start;
-	//			SDL_Rect* r = rect->data;
-	//			animations[i]->rects = new SDL_Rect[l->rects.count()];
-	//			animations[i]->numRects = l->rects.count();
-	//			for (int j = 0; j < l->rects.count(); j++)
-	//			{
-	//				animations[i]->rects[j] = *l->rects[j];
-
-	//				LOG("x= %d y= %d width= %d height= %d", r->x, r->y, r->w, r->h);
-	//				if (rect->next != nullptr) {
-	//					rect = rect->next;
-	//					r = rect->data;
-	//				}
-
-	//			}
-	//			i++;
-	//			item_layer = item_layer->next;
-	//		}
-
-
-	//	}
-	//	map_loaded = ret;
-
-		return ret;
-	
-}
-
-	//void j1Player::SetAnimations(Animation** animations) {
-	//
-	//	for (int i = 0; i < player_tmx_data.object_Layers.count(); i++)
-	//	{
-	//		SDL_Rect* r = animations[i]->rects;
-	//		p2SString name = animations[i]->name.GetString();
-	//
-	//		if (strcmp(name.GetString(), "Idle") == 0) {
-	//
-	//			idle = animations[i];
-	//		}
-	//		else if (strcmp(name.GetString(), "Running") == 0) {
-	//			run = animations[i];
-	//		}
-	//		else if (strcmp(name.GetString(), "Jump") == 0) {
-	//			jump = animations[i];
-	//		}
-	//		else if (strcmp(name.GetString(), "Falling") == 0) {
-	//			fall = animations[i];
-	//		}
-	//
-	//
-	//	}
-	//
-	//	RELEASE_ARRAY(animations);
-	//	currentAnimation = idle;
-	//}
-
-
-// Load map general properties ---------------------------------------------------
-bool j1Player::LoadMap()
-{
-	bool ret = true;
-	//pugi::xml_node map = player_file.child("map");
-
-	//if (map == NULL)
-	//{
-	//	LOG("Error parsing map xml file: Cannot find 'map' tag.");
-	//	ret = false;
-	//}
-	//else
-	//{
-	//	player_tmx_data.width = map.attribute("width").as_int();
-	//	player_tmx_data.height = map.attribute("height").as_int();
-	//	player_tmx_data.tile_width = map.attribute("tilewidth").as_int();
-	//	player_tmx_data.tile_height = map.attribute("tileheight").as_int();
-
-	//	LoadSpriteSheet(map);
-
-		return ret;
-	//}
-}
-
-bool j1Player::LoadLayer(pugi::xml_node& node, ObjectLayer* layer)
-{
-	bool ret = true;
 	return ret;
 }
 
-bool j1Player::LoadSpriteSheet(pugi::xml_node& node)
+
+
+bool j1Player::LoadPlayerTMX(pugi::xml_node& player_node)
 {
 	bool ret = true;
+
+	if (player_node == NULL)
+	{
+		LOG("Error parsing map xml file: Cannot find 'map' tag.");
+		ret = false;
+	}
+	else
+	{
+		player_tmx_data.width = player_node.attribute("width").as_int();
+		player_tmx_data.height = player_node.attribute("height").as_int();
+		player_tmx_data.tile_width = player_node.attribute("tilewidth").as_int();
+		player_tmx_data.tile_height = player_node.attribute("tileheight").as_int();
+
+		p2SString image_source("animations/");
+		image_source += player_node.child("imagelayer").child("image").attribute("source").as_string();
+		player_tmx_data.texture = App->tex->Load(image_source.GetString());
+		if (player_tmx_data.texture) {
+			LOG("Player Texture succesfull loaded");
+		}
+		else {
+			LOG("Error loading player texture");
+			ret = false;
+		}
+	}
 	return ret;
 }
+
 
 void j1Player::LoadAnimation(pugi::xml_node& obj_group)
 {
 	Animation* anim = new Animation();
 	anim->name = obj_group.attribute("name").as_string();
 
-	for (pugi::xml_node object = obj_group.child("object");object; object = object.next_sibling("object"))
-	{
-		Sprite* sprite = new Sprite();
-		sprite->rect.x = object.attribute("x").as_int();
-		sprite->rect.y = object.attribute("y").as_int();
-		sprite->rect.w = object.attribute("width").as_int();
-		sprite->rect.h = object.attribute("height").as_int();
+	if (strcmp(anim->name.GetString(), "SHEATHED_IDLE") == 0) { sheathed_idle = anim; }
+	if (strcmp(anim->name.GetString(), "SHEATHED_RUN") == 0) { sheathed_run = anim; }
 
-		sprite->frames = object.child("properties").child("property").attribute("value").as_int();
+	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
+
+	anim->sprites = new Sprite[anim->num_sprites];
+	int i = 0;
+
+	for (pugi::xml_node object = obj_group.child("object"); object; object = object.next_sibling("object"))
+	{
+		anim->sprites[i].rect.x = object.attribute("x").as_int();
+		anim->sprites[i].rect.y = object.attribute("y").as_int();
+		anim->sprites[i].rect.w = object.attribute("width").as_int();
+		anim->sprites[i].rect.h = object.attribute("height").as_int();
+
+		anim->sprites[i++].frames = object.child("properties").child("property").attribute("value").as_int();
 	}
 }
 
@@ -250,7 +161,7 @@ bool j1Player::PreUpdate()
 }
 
 bool j1Player::Update(float dt)
-{	
+{
 	Draw(); //Draw all the player
 	return true;
 }
@@ -266,5 +177,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
+
+	App->render->Blit(player_tmx_data.texture, 100, 230, &sheathed_run->sprites[sheathed_run->GetSprite()].rect,3.f);
 
 }
