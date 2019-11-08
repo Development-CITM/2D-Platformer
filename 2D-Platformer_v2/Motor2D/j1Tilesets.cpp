@@ -422,7 +422,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 
 	else if (strcmp(node.attribute("name").as_string(), "Culling_pos") == 0)
 	{
-		objects = node.child("object");
+			objects = node.child("object");
 		SetCullingPos(objects);
 	}
 
