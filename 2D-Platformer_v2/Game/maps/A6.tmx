@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="39">
  <tileset firstgid="1" name="mainlevbuild1" tilewidth="16" tileheight="16" tilecount="3200" columns="50">
   <image source="New_Assets/Snow/mainlevbuild1.png" width="800" height="1024"/>
  </tileset>
@@ -54340,29 +54340,29 @@
     <tile/>
     <tile/>
     <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
-    <tile/>
+    <tile gid="1770"/>
+    <tile gid="1771"/>
+    <tile gid="1661"/>
+    <tile gid="1662"/>
+    <tile gid="1663"/>
+    <tile gid="1664"/>
+    <tile gid="1660"/>
+    <tile gid="1661"/>
+    <tile gid="1662"/>
+    <tile gid="1663"/>
+    <tile gid="1664"/>
+    <tile gid="1660"/>
+    <tile gid="1661"/>
+    <tile gid="1662"/>
+    <tile gid="1663"/>
+    <tile gid="1664"/>
+    <tile gid="1660"/>
+    <tile gid="1661"/>
+    <tile gid="1662"/>
+    <tile gid="1663"/>
+    <tile gid="1664"/>
+    <tile gid="1756"/>
+    <tile gid="1757"/>
     <tile/>
     <tile/>
     <tile/>
@@ -83275,4 +83275,45 @@
    </data>
   </layer>
  </group>
+ <objectgroup id="19" name="Colliders">
+  <object id="1" type="Barrier" x="544" y="80" width="48" height="640"/>
+  <object id="2" type="Barrier" x="336" y="688" width="208" height="32"/>
+  <object id="3" type="Barrier" x="288" y="688" width="48" height="304"/>
+  <object id="4" type="Barrier" x="208" y="960" width="80" height="32"/>
+  <object id="5" type="Barrier" x="160" y="800" width="48" height="192"/>
+  <object id="6" type="Barrier" x="32" y="800" width="48" height="384"/>
+  <object id="7" type="Barrier" x="80" y="1152" width="352" height="32"/>
+  <object id="9" type="Barrier" x="432" y="928" width="48" height="256"/>
+  <object id="10" type="Barrier" x="432" y="896" width="256" height="32"/>
+  <object id="11" type="Barrier" x="640" y="928" width="48" height="352"/>
+  <object id="13" type="Barrier" x="960" y="896" width="320" height="32"/>
+  <object id="14" type="Barrier" x="960" y="928" width="48" height="352"/>
+  <object id="15" type="Barrier" x="1200" y="256" width="80" height="640"/>
+  <object id="16" type="Jumpable" x="752" y="896" width="144" height="16"/>
+  <object id="17" type="Dead" x="688" y="960" width="96" height="16"/>
+  <object id="18" type="Dead" x="864" y="960" width="96" height="16"/>
+  <object id="19" type="Dead" x="752" y="1136" width="144" height="16"/>
+  <object id="20" type="Barrier" x="896" y="1120" width="32" height="32"/>
+  <object id="21" type="Barrier" x="720" y="1120" width="32" height="32"/>
+  <object id="22" type="Jumpable" x="688" y="1168" width="32" height="16"/>
+  <object id="23" type="Jumpable" x="928" y="1168" width="32" height="16"/>
+  <object id="24" type="Jumpable" x="688" y="1248" width="32" height="16"/>
+  <object id="25" type="Jumpable" x="928" y="1248" width="32" height="16"/>
+  <object id="26" type="Barrier" x="688" y="592" width="400" height="16"/>
+  <object id="27" type="Barrier" x="912" y="352" width="192" height="16"/>
+  <object id="28" type="Barrier" x="944" y="368" width="128" height="16"/>
+  <object id="29" type="Barrier" x="672" y="352" width="192" height="16"/>
+  <object id="30" type="Barrier" x="704" y="368" width="128" height="16"/>
+  <object id="31" type="Barrier" x="592" y="80" width="688" height="32"/>
+  <object id="32" type="Barrier" x="720" y="608" width="336" height="16"/>
+  <object id="33" type="Jumpable" x="336" y="960" width="32" height="16"/>
+  <object id="34" type="Jumpables" x="384" y="1088" width="48" height="16"/>
+  <object id="36" type="Map_change" x="80" y="896" width="80" height="32">
+   <properties>
+    <property name="source" value="A5.tmx"/>
+   </properties>
+  </object>
+  <object id="37" type="Map_change" x="688" y="1264" width="272" height="16"/>
+  <object id="38" type="Map_change" x="1264" y="112" width="16" height="144"/>
+ </objectgroup>
 </map>

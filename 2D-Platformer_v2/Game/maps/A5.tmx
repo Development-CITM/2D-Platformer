@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="25" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="38">
  <tileset firstgid="1" name="mainlevbuild2" tilewidth="16" tileheight="16" tilecount="2500" columns="50">
   <image source="New_Assets/Snow/mainlevbuild2.png" width="800" height="800"/>
  </tileset>
@@ -68097,4 +68097,49 @@
    </data>
   </layer>
  </group>
+ <objectgroup id="26" name="Colliders">
+  <object id="1" type="Barrier" x="640" y="448" width="96" height="352"/>
+  <object id="2" type="Barrier" x="480" y="448" width="96" height="352"/>
+  <object id="3" type="Barrier" x="736" y="624" width="288" height="32"/>
+  <object id="4" type="Barrier" x="1024" y="432" width="48" height="224"/>
+  <object id="5" type="Barrier" x="976" y="400" width="304" height="16"/>
+  <object id="6" type="Barrier" x="1008" y="416" width="272" height="16"/>
+  <object id="7" type="Barrier" x="192" y="624" width="288" height="32"/>
+  <object id="8" type="Barrier" x="144" y="432" width="48" height="224"/>
+  <object id="9" type="Barrier" x="480" y="256" width="32" height="192"/>
+  <object id="10" type="Barrier" x="704" y="256" width="32" height="192"/>
+  <object id="11" type="Jumpable" x="512" y="256" width="192" height="16"/>
+  <object id="12" type="Jumpable" x="528" y="128" width="128" height="16"/>
+  <object id="13" type="Jumpable" x="304" y="336" width="96" height="16"/>
+  <object id="14" type="Jumpable " x="816" y="336" width="96" height="16"/>
+  <object id="15" type="Barrier" x="1104" y="0" width="48" height="288"/>
+  <object id="17" type="Barrier" x="976" y="96" width="48" height="144"/>
+  <object id="18" type="Barrier" x="1024" y="208" width="80" height="32"/>
+  <object id="19" type="Barrier" x="688" y="64" width="336" height="32"/>
+  <object id="20" type="Barrier" x="640" y="0" width="48" height="64"/>
+  <object id="21" type="Barrier" x="496" y="0" width="48" height="64"/>
+  <object id="22" type="Barrier" x="288" y="64" width="208" height="32"/>
+  <object id="23" type="Barrier" x="240" y="0" width="48" height="256"/>
+  <object id="24" type="Barrier" x="0" y="256" width="240" height="32"/>
+  <object id="25" type="Barrier" x="0" y="384" width="240" height="48"/>
+  <object id="26" type="Barrier" x="112" y="288" width="32" height="96"/>
+  <object id="27" type="Dead" x="512" y="368" width="64" height="16"/>
+  <object id="28" type="Dead" x="640" y="368" width="64" height="16"/>
+  <object id="29" type="Dead " x="192" y="608" width="288" height="16"/>
+  <object id="30" type="Dead" x="736" y="608" width="288" height="16"/>
+  <object id="31" type="Jumpable" x="1152" y="64" width="32" height="16"/>
+  <object id="32" type="Jumpable" x="1152" y="160" width="32" height="16"/>
+  <object id="33" type="Jumpable" x="1152" y="272" width="32" height="16"/>
+  <object id="34" type="Barrier" x="1232" y="0" width="48" height="400"/>
+  <object id="35" type="Map_change" x="576" y="768" width="64" height="32">
+   <properties>
+    <property name="source" value="A6.tmx"/>
+   </properties>
+  </object>
+  <object id="37" type="Map_change" x="1152" y="0" width="80" height="16">
+   <properties>
+    <property name="source" value="A1.tmx"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>
