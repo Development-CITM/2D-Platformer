@@ -83,6 +83,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, ObjectLayer* layer);
 	bool LoadSpriteSheet(pugi::xml_node& node);
 
+	void LoadAnimation(pugi::xml_node& obj_group);
 	//Animation Functions
 	void ChangeAnimation(Animation*);
 

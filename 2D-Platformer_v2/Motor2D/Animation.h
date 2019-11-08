@@ -3,20 +3,20 @@
 #include "p2SString.h"
 #include "SDL/include/SDL_rect.h"
 
-struct Animation {
-	int numRects = 0;
-	int numFrame = 0;
-	int repeatFrames = 0;
+struct Sprite {
 
+	SDL_Rect rect;
+	int frames = 0;
+
+};
+
+struct Animation {
+	bool loop = false;
 	p2SString name;
 
-	SDL_Rect* rects = nullptr;
+	Sprite* sprites = nullptr;
 
-	bool loop = false;
-
-	void ResetAnim() {
-		numFrame = 0;
-	}
+	p2Point<int> offset;
 };
 
 #endif // !__ANIMATION_H__
