@@ -27,7 +27,7 @@ j1Tilesets::~j1Tilesets()
 
 #pragma region Awake/CleanUp
 
-// Called before render is available
+// Awake -----------------------------------------------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
@@ -39,26 +39,25 @@ bool j1Tilesets::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+// Start -----------------------------------------------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::Start()
 {
 	return true;
 }
 
+// Update ----------------------------------------------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::Update(float dt)
 {
-
 	return true;
 }
 
-// Called before quitting
+// CleanUp ---------------------------------------------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::CleanUp()
 {
 	LOG("Unloading map");
-	// Remove all tilesets
+	// Remove all tilesets --------------------------------------------------------------------------------------------------
 	p2List_item<TileSet*>* item;
 	item = map_Data.tilesets.start;
-
-	
 
 	while (item != NULL)
 	{
@@ -67,7 +66,7 @@ bool j1Tilesets::CleanUp()
 	}
 	map_Data.tilesets.clear();
 
-	// Remove all layers
+	// Remove all layers ----------------------------------------------------------------------------------------------------
 	p2List_item<MapLayer*>* item2;
 	item2 = map_Data.layers.start;
 
@@ -78,24 +77,24 @@ bool j1Tilesets::CleanUp()
 	}
 	map_Data.layers.clear();
 
-	// Clean up the pugi tree
+	// Clean up the pugi tree -----------------------------------------------------------------------------------------------
 	map_file.reset();
 
 	return true;
 }
-
 #pragma endregion
 
-#pragma region Render
 
+
+
+#pragma region Render
+//Draw all layers from each tileset used using GIDs ----------------------------------------------------------------------------------------------------------------
 void j1Tilesets::Draw()
 {
-
 	if (map_loaded == false)
 		return;
 
-	//----------------------------------------------------------------------------------//
-
+	//Init to iterate the layers list ----------------------------------------------------------------------------------------
 	p2List_item<MapLayer*>* lay = this->map_Data.layers.start;
 	MapLayer* layer = lay->data;
 	for (int i = 0; i < map_Data.layers.count(); i++)
@@ -104,16 +103,19 @@ void j1Tilesets::Draw()
 		{
 			for (int x = 0; x < map_Data.width; ++x)
 			{
+				//Gets the ID of the respective tile from the coords in Tiled -----------------------------------------------
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
 				{
-
+					//Gets the respective tile from the tileset which is wanted to drawn ------------------------------------
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					if (tileset != nullptr)
 					{
-						
 						SDL_Rect r = tileset->GetTileRect(tile_id);
+						//Does the conversion from Tiled map to an Orthogonal world -----------------------------------------
 						iPoint pos = MapToWorld(x, y);
+
+						// Parallax -----------------------------------------------------------------------------------------
 						if (strcmp(layer->name.GetString(), "Clouds") == 0)
 						{
 							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * layer->speed)),pos.y,r.w,r.h })) {
@@ -124,8 +126,9 @@ void j1Tilesets::Draw()
 						else if (strcmp(layer->name.GetString(), "Sea") == 0)
 						{
 							if (culling_Collider->CheckCollision({  pos.x,pos.y ,r.w,r.h }))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
+								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
 						}
+						// Default draw -------------------------------------------------------------------------------------
 						else
 						{
 							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
@@ -145,34 +148,33 @@ void j1Tilesets::Draw()
 #pragma endregion
 
 
-#pragma region Load Info
 
-// Load new map
+
+#pragma region Load Info
+// Load new Map -----------------------------------------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::Load(const char* file_name)
 {
+	//Gets source of the map passed from Scene
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name); 
-
 	pugi::xml_parse_result result = map_file.load_file(file_name);
 	
-
 	if(result == NULL)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", file_name, result.description());
 		ret = false;
 	}
 
-	// Load general info ----------------------------------------------
+	// Load general info -------------------------------------------------------------------------------------------------------
 	if(ret == true)
 	{
 		ret = LoadMap();
 	}
 
-	// Load all tilesets info ----------------------------------------------
+	// Load all tilesets info --------------------------------------------------------------------------------------------------
 	for(pugi::xml_node tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
 		set = new TileSet();
-
 		if(ret == true)
 		{
 			ret = LoadTilesetDetails(tileset, set);
@@ -185,33 +187,33 @@ bool j1Tilesets::Load(const char* file_name)
 		map_Data.tilesets.add(set);
 	}
 	
-
-	// Load layer info ----------------------------------------------
+	// Load layer info from the map -------------------------------------------------------------------------------------------
+	if(ret==true)
 	ret = SendNodePosition();
 		
-	//Load objects info -----------------------------------------------
-
+	//Load objects info from the map ------------------------------------------------------------------------------------------
 	for (pugi::xml_node object = map_file.child("map").child("objectgroup"); object; object=object.next_sibling("objectgroup"))
 	{
 		LoadObject(object);
 	}
 
-
+	//Logs all the info loaded on top of this ---------------------------------------------------------------------------------
 	if(ret == true)
 	{
 		LogLayerInfo(file_name);
 	}
-	map_loaded = ret;
 
+	map_loaded = ret;
 	return ret;
 }
 
+// Loads all the layers from it's folders in Tiled ------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::SendNodePosition()
 {
 	bool ret = true;
+	//(group->group(iterate)->layer(iterate)) ----------------------------------------------------------------------------------
 	for (pugi::xml_node folder= map_file.child("map").child("group").child("group"); folder; folder=folder.next_sibling("group"))
 	{
-		
 		for (pugi::xml_node layer = folder.child("layer"); layer; layer=layer.next_sibling("layer"))
 		{
 			MapLayer* lay = new MapLayer();
@@ -225,7 +227,7 @@ bool j1Tilesets::SendNodePosition()
 	return ret;
 }
 
-// Load map general properties
+// Loads map propperties: Map orientation widths,hegihts ------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::LoadMap()
 {
 	bool ret = true;
@@ -238,12 +240,14 @@ bool j1Tilesets::LoadMap()
 	}
 	else
 	{
+		//Dimension attributes -------------------------------------------------------------------------------------------------
 		map_Data.width = map.attribute("width").as_int();
 		map_Data.height = map.attribute("height").as_int();
 		map_Data.tile_width = map.attribute("tilewidth").as_int();
 		map_Data.tile_height = map.attribute("tileheight").as_int();
 		p2SString bg_color(map.attribute("backgroundcolor").as_string());
 
+		//Color set ------------------------------------------------------------------------------------------------------------
 		map_Data.background_color.r = 0;
 		map_Data.background_color.g = 0;
 		map_Data.background_color.b = 0;
@@ -268,8 +272,8 @@ bool j1Tilesets::LoadMap()
 			if(v >= 0 && v <= 255) map_Data.background_color.b = v;
 		}
 
+		// Orientation of the map ---------------------------------------------------------------------------------------------
 		p2SString orientation(map.attribute("orientation").as_string());
-
 		if(orientation == "orthogonal")
 		{
 			map_Data.type = MAPTYPE_ORTHOGONAL;
@@ -291,8 +295,10 @@ bool j1Tilesets::LoadMap()
 	return ret;
 }
 
+//Loads tilesets's data used in lvl building ------------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
+	//Tileset attributes -----------------------------------------------------------------------------------------------------
 	bool ret = true;
 	set->name.create(tileset_node.attribute("name").as_string());
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
@@ -302,8 +308,8 @@ bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->spacing = tileset_node.attribute("spacing").as_int();
 	pugi::xml_node properties = tileset_node.child("properties").child("property");
 
+	//Any Offsets ------------------------------------------------------------------------------------------------------------
 	pugi::xml_node offset = tileset_node.child("tileoffset");
-
 	if(offset != NULL)
 	{
 		set->offset_x = offset.attribute("x").as_int();
@@ -318,6 +324,7 @@ bool j1Tilesets::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
+//Loads tilesets's pngs from a source provided on LoadTilesetDetails() ----------------------------------------------------------------------------------------------
 bool j1Tilesets::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
@@ -328,6 +335,7 @@ if (image == NULL)
 	LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
 	ret = false;
 }
+//Creation of texture from tilesets's details ---------------------------------------------------------------------------------
 else
 {
 	set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
@@ -354,10 +362,11 @@ else
 return ret;
 }
 
+//Loads layer attributes provided from SendNode() -------------------------------------------------------------------------------------------------------------------
 bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
-
+	//Loading all layer attributes  -----------------------------------------------------------------------------------------
 	layer->name = node.attribute("name").as_string();
 	layer->num_tile_width = node.attribute("width").as_int();
 	layer->num_tile_height = node.attribute("height").as_int();
@@ -373,6 +382,7 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		ret = false;
 		RELEASE(layer);
 	}
+	//Loading each tile from the layer into an array (The respective GID from the tileset) ----------------------------------
 	else
 	{
 		layer->data = new int[layer->num_tile_width * layer->num_tile_height];
@@ -388,12 +398,14 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
+//Logs all layers data loaded ---------------------------------------------------------------------------------------------------------------------------------------
 void j1Tilesets::LogLayerInfo(const char* file_name)
 {
 	LOG("Successfully parsed map XML file: %s", file_name);
 	LOG("width: %d height: %d", map_Data.width, map_Data.height);
 	LOG("tile_width: %d tile_height: %d", map_Data.tile_width, map_Data.tile_height);
 
+	//Logging tilesets used ------------------------------------------------------------------------------------------------
 	p2List_item<TileSet*>* item = map_Data.tilesets.start;
 	while (item != NULL)
 	{
@@ -404,7 +416,7 @@ void j1Tilesets::LogLayerInfo(const char* file_name)
 		LOG("spacing: %d margin: %d", s->spacing, s->margin);
 		item = item->next;
 	}
-
+	//Logging layers info --------------------------------------------------------------------------------------------------
 	p2List_item<MapLayer*>* item_layer = map_Data.layers.start;
 	while (item_layer != NULL)
 	{
@@ -416,26 +428,30 @@ void j1Tilesets::LogLayerInfo(const char* file_name)
 	}
 }
 
+//Loads each object layer of the map with it's respective function in another modules -------------------------------------------------------------------------------
 bool j1Tilesets::LoadObject(pugi::xml_node& node)
 {
 	bool ret = true;
 	pugi::xml_node objects = node;
+	//Colliders map loading ------------------------------------------------------------------------------------------------
 	if (strcmp(node.attribute("name").as_string(), "Colliders") == 0)
 	{
 		objects = node.child("object");
 		App->collider->Load(objects);
 	}
+	//Music map loading ----------------------------------------------------------------------------------------------------
 	else if (strcmp(node.attribute("name").as_string(), "Music") == 0)
 	{
 		objects = node.child("object").child("properties").child("property");
 		App->audio->PlayMusic(objects.attribute("value").as_string());
 	}
+	//Camera limit map loading ---------------------------------------------------------------------------------------------
 	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0 )
 	{
 		objects = node.child("object");
 		App->scene->LoadSceneLimits(objects);
 	}
-
+	//Culling pos map loading ----------------------------------------------------------------------------------------------
 	else if (strcmp(node.attribute("name").as_string(), "Culling_pos") == 0)
 	{
 			objects = node.child("object");
@@ -445,11 +461,13 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 	return ret;
 }
 
+//Sets the position of culling collider from Tiled map attributes ---------------------------------------------------------------------------------------------------
 void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 {
+	//Sets Culling Pos ----------------------------------------------------------------------------------------------------
 	if( App->scene->loading == false)
 	{
-		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
+		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
 		{
 			if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
 			{
@@ -461,19 +479,26 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 			}
 		}
 	}
+	//Sets Culling Collider ------------------------------------------------------------------------------------------------
 	p2Point<int> culling_Pos{ culling_pos_x,culling_pos_y };
 	if (App->scene->loading == false)
 	{
+		
 		culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
 	}
 	else
 	{
-		culling_Collider = App->collider->AddCollider({ culling_Collider->rect.x,culling_Collider->rect.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
+		culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
 	}
 }
 #pragma endregion
 
+
+
+
+
 #pragma region Logic Operations
+//Gets the respective tileset needed for printing the needed GID ----------------------------------------------------------------------------------------------------
 TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
 {
 	bool ret = false;
@@ -492,6 +517,7 @@ TileSet* j1Tilesets::GetTilesetFromTileId(int id) const
 	return tile->data;
 }
 
+//Does the Logical Operations to transform from Tiled to World -------------------------------------------------------------------------------------------------------
 iPoint j1Tilesets::MapToWorld(int x, int y) const
 {
 	iPoint ret(0, 0);
@@ -511,7 +537,7 @@ iPoint j1Tilesets::MapToWorld(int x, int y) const
 	return ret;
 }
 
-
+//Does the Logical Operations to transform from World to Tiled -------------------------------------------------------------------------------------------------------
 iPoint j1Tilesets::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
@@ -531,6 +557,7 @@ iPoint j1Tilesets::WorldToMap(int x, int y) const
 	return ret;
 }
 
+//Gets the size and position of the Tiled needed to be printed -------------------------------------------------------------------------------------------------------
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
@@ -542,7 +569,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	return rect;
 }
 
-
+//Gets the size and position of the Rect which is gonna be printed ---------------------------------------------------------------------------------------------------
 SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 {
 	int num = id;
