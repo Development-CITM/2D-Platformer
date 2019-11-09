@@ -37,7 +37,7 @@ bool j1Player::Start()
 	player_pos = { 100,422 };
 	Load("animations/Player.tmx");
 
-	AABB_current = AABB_sheathed_idle;
+	AABB_current = App->collider->AddCollider({ player_pos.x,player_pos.y,20,50 },COLLIDER_PLAYER);
 	currentAnimation = sheathed_idle;
 
 	return true;
@@ -87,16 +87,15 @@ bool j1Player::Load(const char* file_name)
 		pugi::xml_node	player_node = player_file.child("map");
 
 		LoadPlayerTMX(player_node);
-		LoadAABB(player_node);
+		//LoadAABB(player_node);
 
-		pugi::xml_node group = player_node.child("group");
+		pugi::xml_node pre_group = player_node.child("group");
+		pugi::xml_node group = pre_group.child("group");
 
 		for (group; group && ret; group = group.next_sibling("group"))
 		{
-			for (pugi::xml_node object_group = group.child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
-			{
-				LoadAnimation(object_group);
-			}
+			pugi::xml_node object_group = group.child("objectgroup");					
+			LoadAnimation(object_group);
 		}
 	}
 
@@ -136,59 +135,66 @@ bool j1Player::LoadPlayerTMX(pugi::xml_node& player_node)
 }
 
 
-void j1Player::LoadAnimation(pugi::xml_node& obj_group)
+Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 {
 	Animation* anim = new Animation();
 	anim->name = obj_group.attribute("name").as_string();
 
 	if (strcmp(anim->name.GetString(), "SHEATHED_IDLE") == 0) { sheathed_idle = anim; }
 	if (strcmp(anim->name.GetString(), "SHEATHED_RUN") == 0) { sheathed_run = anim; }
+	if (strcmp(anim->name.GetString(), "SHEATHED_JUMP") == 0) { sheathed_jump = anim; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 
 	anim->sprites = new Sprite[anim->num_sprites];
 	int i = 0;
 
+	pugi::xml_node AABB_object = obj_group.next_sibling("objectgroup").child("object");
+	
 	for (pugi::xml_node object = obj_group.child("object"); object; object = object.next_sibling("object"))
 	{
+
+		SDL_Rect rect;
+		p2Point<int> offset{ 0,0 };
+
+		offset.x = AABB_object.attribute("x").as_int();
+		offset.y = AABB_object.attribute("y").as_int();
+		rect.w = AABB_object.attribute("width").as_int();
+		rect.h = AABB_object.attribute("height").as_int();
+
 		anim->sprites[i].rect.x = object.attribute("x").as_int();
 		anim->sprites[i].rect.y = object.attribute("y").as_int();
 		anim->sprites[i].rect.w = object.attribute("width").as_int();
 		anim->sprites[i].rect.h = object.attribute("height").as_int();
 
-		anim->sprites[i++].frames = object.child("properties").child("property").attribute("value").as_int();
-	}
-}
+		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
 
-void j1Player::LoadAABB(pugi::xml_node& player_node)
-{
-	if (strcmp(player_node.child("objectgroup").attribute("name").as_string(), "AABB") == 0) {
-		pugi::xml_node obj_group = player_node.child("objectgroup");
-
-		for (pugi::xml_node object = obj_group.child("object"); object; object = object.next_sibling("object"))
-		{
-			SDL_Rect rect;
-			p2Point<int> offset{ 0,0 };
-			offset = { object.attribute("x").as_int() ,object.attribute("y").as_int() };
-			rect.x = player_pos.x + offset.x;
-			while (offset.y - player_tmx_data.tile_height > 0 || offset.y - player_tmx_data.tile_height > player_tmx_data.tile_height) {
-				offset.y -= player_tmx_data.tile_height;
-			}
-			rect.y = player_pos.y + offset.y;
-			rect.w = object.attribute("width").as_int();
-			rect.h = object.attribute("height").as_int();
+		while (offset.x - player_tmx_data.tile_width > 0 || offset.x - player_tmx_data.tile_width > player_tmx_data.tile_width) {
+			offset.x -= player_tmx_data.tile_width;
+		}	
 		
+		while (offset.y - player_tmx_data.tile_height > 0 || offset.y - player_tmx_data.tile_height > player_tmx_data.tile_height) {
+			offset.y -= player_tmx_data.tile_height;
+		}
 
-			if (strcmp(object.attribute("name").as_string(), "AABB_IDLE") == 0) 
-			{
-				AABB_sheathed_idle = App->collider->AddCollider(rect, COLLIDER_PLAYER);
-			}		
-			if (strcmp(object.attribute("name").as_string(), "AABB_RUN") == 0) 
-			{
-				AABB_sheathed_run = App->collider->AddCollider(rect, COLLIDER_PLAYER);
-			}
+		rect.x = player_pos.x + offset.x;
+		rect.y = player_pos.y + offset.y;
+
+		anim->sprites[i].AABB_rect = rect;
+
+		LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
+		i++;
+		if (AABB_object.next_sibling("object")) {
+			AABB_object = AABB_object.next_sibling("object");
 		}
 	}
+
+	return anim;
+}
+
+void j1Player::LoadAABB(pugi::xml_node& obj_group)
+{
+
 }
 
 
@@ -205,14 +211,25 @@ bool j1Player::Update(float dt)
 		if (currentAnimation != sheathed_run) {
 			currentAnimation->ResetAnim();
 			currentAnimation = sheathed_run;
-			AABB_current = AABB_sheathed_run;
 		}
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		if (currentAnimation != sheathed_idle) {
 			currentAnimation->ResetAnim();
 			currentAnimation = sheathed_idle;
-			AABB_current = AABB_sheathed_idle;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+		if (currentAnimation != sheathed_jump) {
+			currentAnimation->ResetAnim();
+			currentAnimation = sheathed_jump;
+		}
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
+		if (currentAnimation != sheathed_idle) {
+			currentAnimation->ResetAnim();
+			currentAnimation = sheathed_idle;
 		}
 	}
 
@@ -232,16 +249,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-
-	App->render->Blit(player_tmx_data.texture, player_pos.x, player_pos.y, &currentAnimation->sprites[currentAnimation->GetSprite()].rect,3.f);
-
-	//Draw Collider
-	SDL_Rect rect;
-	float scale = App->win->GetScale();
-	rect.x = AABB_current->rect.x * App->render->player_size * scale;
-	rect.y = AABB_current->rect.y * App->render->player_size * scale;
-	rect.w = AABB_current->rect.w * App->render->player_size * scale;
-	rect.h = AABB_current->rect.h * App->render->player_size * scale;
-	App->render->DrawQuad(rect, 0, 255, 0, 100);
-
+	int i = currentAnimation->GetSprite();
+	AABB_current->Resize(currentAnimation->sprites[i].AABB_rect);
+	App->render->Blit(player_tmx_data.texture, player_pos.x, player_pos.y, &currentAnimation->sprites[i].rect,3.f);
 }

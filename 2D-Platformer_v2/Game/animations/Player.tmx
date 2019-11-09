@@ -1,77 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="14" nextobjectid="43">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="22" nextobjectid="59">
  <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
- <objectgroup color="#ff0000" id="6" name="AABB">
-  <object id="3" name="AABB_IDLE" type="AABB_IDLE" x="19" y="10" width="12" height="26"/>
-  <object id="8" name="AABB_RUN" type="AABB_RUN" x="23" y="47" width="12" height="26"/>
-  <object id="12" name="AABB_JUMP_READY" type="AABB_JUMP_READY" x="320" y="52" width="12" height="21"/>
-  <object id="14" name="AABB_JUMP_START" type="AABB_JUMP_START" x="22" y="82" width="11" height="24"/>
-  <object id="15" name="AABB_JUMP_MIDAIR" type="AABB_JUMP_MIDAIR" x="73" y="81" width="10" height="20"/>
-  <object id="16" name="AABB_JUMP_FINISH" type="AABB_JUMP_FINISH" x="123" y="83" width="10" height="16"/>
-  <object id="17" name="AABB_CROUCH_IDLE" type="AABB_CROUCH_IDLE" x="220" y="16" width="12" height="20"/>
- </objectgroup>
  <group id="13" name="SHEATHED">
-  <objectgroup id="12" name="SHEATHED_RUN">
-   <properties>
-    <property name="num_sprites" type="int" value="6"/>
-   </properties>
-   <object id="35" name="SHEATHED_RUN" type="SHEATHED_RUN" x="500" y="37" width="50" height="37">
+  <group id="14" name="SHEATHED_IDLE">
+   <objectgroup id="9" name="SHEATHED_IDLE">
     <properties>
-     <property name="Frames" type="int" value="6"/>
+     <property name="num_sprites" type="int" value="4"/>
     </properties>
-   </object>
-   <object id="36" name="SHEATHED_RUN" type="SHEATHED_RUN" x="550" y="37" width="50" height="37">
+    <object id="18" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="450" y="0" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="7"/>
+     </properties>
+    </object>
+    <object id="19" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="500" y="0" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="10"/>
+     </properties>
+    </object>
+    <object id="20" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="550" y="0" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="10"/>
+     </properties>
+    </object>
+    <object id="21" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="600" y="0" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="7"/>
+     </properties>
+    </object>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="19" name="AABB">
+    <object id="50" x="468" y="7" width="13" height="29"/>
+   </objectgroup>
+  </group>
+  <group id="16" name="SHEATHED_JUMP" visible="0">
+   <objectgroup id="18" name="SHEATHED_JUMP">
     <properties>
-     <property name="Frames" type="int" value="5"/>
+     <property name="num_sprites" type="int" value="5"/>
     </properties>
-   </object>
-   <object id="37" name="SHEATHED_RUN" type="SHEATHED_RUN" x="600" y="37" width="50" height="37">
+    <object id="45" name="SHEATHED_JUMP" x="450" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="46" name="SHEATHED_JUMP" x="500" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="47" name="SHEATHED_JUMP" x="550" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="48" name="SHEATHED_JUMP" x="600" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="49" name="SHEATHED_JUMP" x="650" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="20" name="AABB">
+    <object id="53" x="467" y="85" width="15" height="25"/>
+    <object id="54" x="519" y="87" width="13" height="23"/>
+    <object id="55" x="572" y="81" width="11" height="25"/>
+    <object id="56" x="623" y="81" width="10" height="21"/>
+    <object id="57" x="673" y="82" width="10" height="18"/>
+   </objectgroup>
+  </group>
+  <group id="15" name="SHEATHED_RUN">
+   <objectgroup id="12" name="SHEATHED_RUN">
     <properties>
-     <property name="Frames" type="int" value="4"/>
+     <property name="num_sprites" type="int" value="6"/>
     </properties>
-   </object>
-   <object id="38" name="SHEATHED_RUN" type="SHEATHED_RUN" x="650" y="37" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="6"/>
-    </properties>
-   </object>
-   <object id="39" name="SHEATHED_RUN" type="SHEATHED_RUN" x="700" y="37" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="5"/>
-    </properties>
-   </object>
-   <object id="40" name="SHEATHED_RUN" type="SHEATHED_RUN" x="750" y="37" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="4"/>
-    </properties>
-   </object>
-  </objectgroup>
-  <objectgroup id="9" name="SHEATHED_IDLE">
-   <properties>
-    <property name="num_sprites" type="int" value="4"/>
-   </properties>
-   <object id="18" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="450" y="0" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="7"/>
-    </properties>
-   </object>
-   <object id="19" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="500" y="0" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="10"/>
-    </properties>
-   </object>
-   <object id="20" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="550" y="0" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="10"/>
-    </properties>
-   </object>
-   <object id="21" name="SHEATHED_IDLE" type="SHEATHED_IDLE" x="600" y="0" width="50" height="37">
-    <properties>
-     <property name="Frames" type="int" value="7"/>
-    </properties>
-   </object>
-  </objectgroup>
+    <object id="35" name="SHEATHED_RUN" type="SHEATHED_RUN" x="500" y="37" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="6"/>
+     </properties>
+    </object>
+    <object id="36" name="SHEATHED_RUN" type="SHEATHED_RUN" x="550" y="37" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="37" name="SHEATHED_RUN" type="SHEATHED_RUN" x="600" y="37" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="38" name="SHEATHED_RUN" type="SHEATHED_RUN" x="650" y="37" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="6"/>
+     </properties>
+    </object>
+    <object id="39" name="SHEATHED_RUN" type="SHEATHED_RUN" x="700" y="37" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="40" name="SHEATHED_RUN" type="SHEATHED_RUN" x="750" y="37" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="21" name="AABB">
+    <object id="58" x="522" y="44" width="13" height="29"/>
+   </objectgroup>
+  </group>
  </group>
 </map>

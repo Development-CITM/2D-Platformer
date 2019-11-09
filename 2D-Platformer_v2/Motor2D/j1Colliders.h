@@ -41,7 +41,9 @@ struct Collider
 		ColliderDamage(Damage) {
 
 	}
-
+	void Resize(SDL_Rect rect_target) {
+		rect = rect_target;
+	}
 
 	void MoveCollider(p2Point<int> pos) {
 		rect.x = pos.x;

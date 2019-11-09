@@ -74,7 +74,7 @@ private:
 
 	//Load Functions
 	bool LoadPlayerTMX(pugi::xml_node& player_node);
-	void LoadAnimation(pugi::xml_node& obj_group);
+	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	void LoadAABB(pugi::xml_node& player_node);
 
 
@@ -104,6 +104,7 @@ private:
 
 	Animation*			sheathed_idle = nullptr;
 	Animation*			sheathed_run = nullptr;
+	Animation*			sheathed_jump = nullptr;
 	Animation*			jump = nullptr;
 	Animation*			fall = nullptr;
 
@@ -117,8 +118,6 @@ private:
 	bool				move_To_Up = false;
 
 	//Colliders
-	Collider*			AABB_sheathed_idle = nullptr;
-	Collider*			AABB_sheathed_run = nullptr;
 	Collider*			AABB_current = nullptr;
 
 	//XML Stuff

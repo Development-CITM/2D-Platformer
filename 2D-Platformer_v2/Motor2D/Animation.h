@@ -6,6 +6,7 @@
 struct Sprite {
 
 	SDL_Rect rect;
+	SDL_Rect AABB_rect;
 	int frames = 0;
 	int current_frame = 0;
 
