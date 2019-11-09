@@ -9,6 +9,7 @@ struct Sprite {
 	SDL_Rect AABB_rect;
 	int frames = 0;
 	int current_frame = 0;
+	p2Point<int> AABB_offset;
 
 };
 
@@ -22,7 +23,7 @@ struct Animation {
 	p2Point<int> offset;
 
 	int current_sprite = 0;
-
+public:
 	void ResetAnim() {
 		current_sprite = 0;
 		for (int i = 0; i < num_sprites; i++)

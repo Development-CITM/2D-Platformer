@@ -24,7 +24,7 @@ j1Player::j1Player()
 bool j1Player::Awake(pugi::xml_node& conf)
 {
 	bool ret = true; 
-
+	
 	LOG("Loading Player...");
 
 	return ret;	
@@ -33,11 +33,12 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	//Load Player tmx (it contains animations and colliders properties)
-
-	player_pos = { 100,422 };
+	
+	mPlayerPos = { 100,422 };
+	groundPos = 422;
 	Load("animations/Player.tmx");
 
-	AABB_current = App->collider->AddCollider({ player_pos.x,player_pos.y,20,50 },COLLIDER_PLAYER);
+	AABB_current = App->collider->AddCollider({ (int)mPlayerPos.x,(int)mPlayerPos.y,20,50 },COLLIDER_PLAYER);
 	currentAnimation = sheathed_idle;
 
 	return true;
@@ -87,7 +88,6 @@ bool j1Player::Load(const char* file_name)
 		pugi::xml_node	player_node = player_file.child("map");
 
 		LoadPlayerTMX(player_node);
-		//LoadAABB(player_node);
 
 		pugi::xml_node pre_group = player_node.child("group");
 		pugi::xml_node group = pre_group.child("group");
@@ -142,7 +142,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 
 	if (strcmp(anim->name.GetString(), "SHEATHED_IDLE") == 0) { sheathed_idle = anim; }
 	if (strcmp(anim->name.GetString(), "SHEATHED_RUN") == 0) { sheathed_run = anim; }
-	if (strcmp(anim->name.GetString(), "SHEATHED_JUMP") == 0) { sheathed_jump = anim; }
+	if (strcmp(anim->name.GetString(), "SHEATHED_JUMP") == 0) { sheathed_jump = anim; sheathed_jump->loop = false; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 
@@ -163,7 +163,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
 		 
 		anim->sprites[i].AABB_rect = LoadAABB(AABB_object);
-
+		anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(mPlayerPos.x),anim->sprites[i].AABB_rect.y - (int)roundf( mPlayerPos.y) };
 		LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
 
 		if (AABB_object.next_sibling("object")) {
@@ -193,8 +193,8 @@ SDL_Rect j1Player::LoadAABB(pugi::xml_node& AABB_object)
 		offset.y -= player_tmx_data.tile_height;
 	}
 
-	rect.x = player_pos.x + offset.x;
-	rect.y = player_pos.y + offset.y;
+	rect.x = mPlayerPos.x + offset.x;
+	rect.y = mPlayerPos.y + offset.y;
 
 	return rect;
 
@@ -214,30 +214,57 @@ bool j1Player::Update(float dt)
 		if (currentAnimation != sheathed_run) {
 			currentAnimation->ResetAnim();
 			currentAnimation = sheathed_run;
+			mState = PlayerState::RUN;
 		}
+		if (timer < 1.f) {
+			timer++;
+		}
+		else if (mAcceleration < 1.0f) {
+			mAcceleration += 0.25f;
+			timer = 0.0f;
+		}
+		if (mAcceleration > 1.f) { mAcceleration = 1.f; }
+
+		mSpeed.x = mRunSpeed * mAcceleration;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		if (currentAnimation != sheathed_idle) {
 			currentAnimation->ResetAnim();
 			currentAnimation = sheathed_idle;
+			mSpeed.x = 0.0f;
+			mAcceleration = 0.0f;
+			timer = 0.0f;
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		if (currentAnimation != sheathed_jump) {
-			currentAnimation->ResetAnim();
+			sheathed_jump->ResetAnim();
 			currentAnimation = sheathed_jump;
+			mState = PlayerState::JUMP;
+			mSpeed.y = -mJumpSpeed;
 		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
-		if (currentAnimation != sheathed_idle) {
-			currentAnimation->ResetAnim();
+
+	if (mPlayerPos.y >= groundPos) {
+		onGround = true;
+		if (mState != RUN) {
 			currentAnimation = sheathed_idle;
 		}
+		mPlayerPos.y = groundPos;
+	}
+	else {
+		onGround = false;
+		currentAnimation = sheathed_jump;
+	}
+	if (!onGround) {
+		mSpeed.y -= -.3f;
+
 	}
 
-	
+	mPlayerPos += mSpeed;
 	Draw(); //Draw all the player
+	LOG("Player Pos: %f", mPlayerPos.x);
 	return true;
 }
 
@@ -252,7 +279,11 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
+	//Round Pos beforeblit
+	p2Point<int> roundedPos = { (int)roundf(mPlayerPos.x),(int)roundf(mPlayerPos.y) };
 	int i = currentAnimation->GetSprite();
+	currentAnimation->sprites[i].AABB_rect.x = roundedPos.x + currentAnimation->sprites[i].AABB_offset.x;
+	currentAnimation->sprites[i].AABB_rect.y = roundedPos.y + currentAnimation->sprites[i].AABB_offset.y;
 	AABB_current->Resize(currentAnimation->sprites[i].AABB_rect);
-	App->render->Blit(player_tmx_data.texture, player_pos.x, player_pos.y, &currentAnimation->sprites[i].rect,3.f);
+	App->render->Blit(player_tmx_data.texture, roundedPos.x, roundedPos.y, &currentAnimation->sprites[i].rect,3.f);
 }

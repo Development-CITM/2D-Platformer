@@ -12,7 +12,9 @@ struct Collider;
 enum MapTypes;
 
 enum PlayerState {
-
+	IDLE,
+	RUN,
+	JUMP,
 };
 
 
@@ -39,7 +41,8 @@ class j1Player : public j1Module
 {
 //------------FUNCTIONS-----------//
 public:
-
+	
+	
 	j1Player();
 
 	// Destructor
@@ -82,6 +85,7 @@ private:
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
+	PlayerState			mState = PlayerState::IDLE;
 
 private:
 
@@ -90,14 +94,16 @@ private:
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
 	//Positions
+	p2Point<float>		mPlayerPos{ 0,0 };
+	p2Point<float>		mSpeed{ 0,0 };
 
-	p2Point<int>		previousColliderPos = { 0,0 };
-	p2Point<int>		previousPlayerPos{ 0,0 };
-	p2Point<int>		currentVelocity{ 0,0 };
+	int					groundPos;
+	bool				mOnGround  = false;
 
-	p2Point<int>		player_pos{ 0,0 };
-
-
+	float				mRunSpeed = 2.f;
+	float				mJumpSpeed = 5.f;
+	float				mAcceleration = 0.0f;
+	float				timer = 0.0f;
 	//Animations
 	Animation*			currentAnimation = nullptr;
 	Animation*			previousAnimation = nullptr;
