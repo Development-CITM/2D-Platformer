@@ -75,7 +75,7 @@ private:
 	//Load Functions
 	bool LoadPlayerTMX(pugi::xml_node& player_node);
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
-	void LoadAABB(pugi::xml_node& player_node);
+	SDL_Rect LoadAABB(pugi::xml_node& player_node);
 
 
 
