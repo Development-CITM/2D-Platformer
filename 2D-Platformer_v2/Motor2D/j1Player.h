@@ -73,6 +73,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void SetPlayerPos(pugi::xml_node& object);
+
 private:
 
 	//Load Functions
@@ -80,12 +82,16 @@ private:
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	SDL_Rect LoadAABB(pugi::xml_node& player_node);
 
+	
+
 
 
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
 	PlayerState			mState = PlayerState::IDLE;
+	p2Point<float>		mPlayerPos{ 0,0 };
+	int					groundPos;
 
 private:
 
@@ -94,10 +100,9 @@ private:
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
 	//Positions
-	p2Point<float>		mPlayerPos{ 0,0 };
 	p2Point<float>		mSpeed{ 0,0 };
 
-	int					groundPos;
+
 	bool				mOnGround  = false;
 
 	float				mRunSpeed = 2.f;

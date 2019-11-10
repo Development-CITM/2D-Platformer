@@ -172684,16 +172684,18 @@
  <objectgroup id="141" name="Player_pos">
   <object id="3" name="Player_pos" x="176" y="0" width="16" height="16">
    <properties>
-    <property name="player_pos_x" type="int" value="100"/>
-    <property name="player_pos_y" type="int" value="472"/>
+    <property name="ground_pos" type="int" value="420"/>
+    <property name="player_pos_x" type="float" value="100"/>
+    <property name="player_pos_y" type="float" value="402"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="175" name="Camera_pos">
-  <object id="24" x="144" y="16" width="16" height="16">
+  <object id="24" name="Camera Pos" x="144" y="16" width="16" height="16">
    <properties>
-    <property name="camera_pos_x" value=""/>
-    <property name="camera_pos_y" value=""/>
+    <property name="camera_pos_x" value="-130"/>
+    <property name="camera_pos_y" value="-800"/>
+    <property name="ground_pos" type="int" value="420"/>
    </properties>
   </object>
  </objectgroup>

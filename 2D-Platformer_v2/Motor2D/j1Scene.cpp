@@ -27,7 +27,7 @@ bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-	
+
 	return ret;
 }
 
@@ -35,19 +35,12 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	hasExit = false;
-	if (lvl1)
-	{
-		App->tiles->Load("maps/A1.tmx");
-	}
-	if (lvl2)
-	{
-		App->tiles->Load("maps/A2.tmx");
-	}
 	if (notfirst)
 	{
 		App->player->Load("animations/Player.tmx");
 	}
-	
+
+	DecideMapToLoad();
 	return true;
 }
 
@@ -77,7 +70,6 @@ bool j1Scene::Update(float dt)
 		}
 	}
 	
-
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 		App->render->camera.y -= 4;
 		App->tiles->culling_Collider->rect.y += 2;
@@ -110,8 +102,8 @@ bool j1Scene::Update(float dt)
 
 	if (hasExit) {
 		App->fade2black->FadeToBlack(App->scene, App->scene);
-		App->scene->lvl2 = false;
-		App->scene->lvl1 = true;
+		/*App->scene->lvl2 = false;
+		App->scene->lvl1 = true;*/
 	}
 		App->tiles->Draw();
 	
@@ -144,22 +136,23 @@ bool j1Scene::PostUpdate()
 // Load Game State
 bool j1Scene::Load(pugi::xml_node& data)
 {
-	if (lvl1 != data.child("current_lvl").attribute("lvl1").as_bool() && lvl2 != data.child("current_lvl").attribute("lvl2").as_bool())
-	{
-		lvl1 = data.child("current_lvl").attribute("lvl1").as_bool();
-		lvl2 = data.child("current_lvl").attribute("lvl2").as_bool();
 		loading = true;
-
 		App->fade2black->FadeToBlack(App->scene, App->scene);
 
 		App->tiles->culling_pos_x = data.child("culling").attribute("x").as_int();
 		App->tiles->culling_pos_y = data.child("culling").attribute("y").as_int();
-	}
+	
+		App->render->camera.x = data.child("camera").attribute("x").as_int();
+		App->render->camera.y = data.child("camera").attribute("y").as_int();
 
-	App->render->camera.x = data.child("camera").attribute("x").as_int();
-	App->render->camera.y = data.child("camera").attribute("y").as_int();
+		App->player->mPlayerPos.x = data.child("playerPos").attribute("player_pos_x").as_float();
+		App->player->mPlayerPos.y = data.child("playerPos").attribute("player_pos_y").as_float();
+		App->player->groundPos = data.child("playerPos").attribute("ground_pos").as_int();
 
+		destination_level = data.child("scene").attribute("current_map").as_string();
+		current_level = data.child("scene").attribute("current_map").as_string();
 
+		
 
 	return true;
 }
@@ -170,11 +163,13 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	//------------PLAYER-------------------//
 	pugi::xml_node player = data.append_child("playerPos");
 
-
+	player.append_attribute("player_pos_x") = App->player->mPlayerPos.x;
+	player.append_attribute("player_pos_y") = App->player->mPlayerPos.y;
+	player.append_attribute("ground_pos") = App->player->groundPos; //EUDALD: DELETE WHEN COLLIDERS WORKING
 
 	pugi::xml_node player_collider = data.append_child("player_collider");
 
-	//player_collider=data.append_child("") EUDALD: SAVE/LOAD PLAYER POS(SAVEGAME) FLOAT, CAMERA POS(EACH TMX), LIST OF STRINGS WITH SOURCE OF EACH MAP AND SWITCH CASE SDL SCANCODE. 
+	//player_collider=data.append_child("") EUDALD: SAVE/LOAD PLAYER POS(SAVEGAME) FLOAT, 
 
 
 
@@ -191,15 +186,13 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	pugi::xml_node current_lvl = data.append_child("current_lvl");
 
-	current_lvl.append_attribute("lvl1") = lvl1;
-	current_lvl.append_attribute("lvl2") = lvl2;
+	//current_lvl.append_attribute("lvl1") = lvl1;
+	//current_lvl.append_attribute("lvl2") = lvl2;
 
 	//-------------SCENE-------------------//
 	pugi::xml_node scene = data.append_child("scene");
 
-
-
-
+	scene.append_attribute("current_map") = current_level.GetString();
 
 	return true;
 }
@@ -209,6 +202,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	p2List_item<p2SString*>* item = levels.start;
+
+	levels.clear();
 	App->tiles->CleanUp();
 	App->collider->CleanUp();
 	App->player->CleanUp();	
@@ -232,6 +228,38 @@ bool j1Scene::LoadSceneLimits(pugi::xml_node object)
 
 		return true;
 }
+
+
+void j1Scene::DecideMapToLoad()
+{
+	levels.add(&A1);
+	levels.add(&A2);
+	levels.add(&A3);
+	levels.add(&A5);
+	levels.add(&A6);
+
+	//p2Lis
+	p2List_item<p2SString*>* lvl= levels.start;
+	p2SString* level = lvl->data;
+	for (int i = 0; i < levels.count(); i++)
+	{
+		if (strcmp(level->GetString(), destination_level.GetString()) == 0)
+		{
+			App->tiles->Load(level->GetString());
+			current_level = level->GetString();
+			break;
+		}
+
+		if(lvl->next != nullptr)
+		{
+			lvl = lvl->next;
+			level = lvl->data;
+		}
+	}
+}
+
+
+
 
 
 

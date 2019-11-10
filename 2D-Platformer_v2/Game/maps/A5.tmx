@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="32" nextobjectid="39">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="34" nextobjectid="41">
+ <properties>
+  <property name="camera_pos_x" type="int" value="-2000"/>
+  <property name="camera_pos_y" type="int" value="-400"/>
+ </properties>
  <tileset firstgid="1" name="mainlevbuild2" tilewidth="16" tileheight="16" tilecount="2500" columns="50">
   <image source="New_Assets/Snow/mainlevbuild2.png" width="800" height="800"/>
  </tileset>
@@ -68148,11 +68152,28 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="32" name="Camera_pos">
+  <object id="39" name="Camera Pos" x="16" y="0" width="16" height="16">
+   <properties>
+    <property name="camera_pos_x" type="int" value="-1500"/>
+    <property name="camera_pos_y" type="int" value="-200"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="27" name="Culling_pos">
   <object id="38" name="Culling Pos" x="0" y="0" width="16" height="16">
    <properties>
-    <property name="culling_pos_x" type="int" value="65"/>
-    <property name="culling_pos_y" type="int" value="200"/>
+    <property name="culling_pos_x" type="int" value="750"/>
+    <property name="culling_pos_y" type="int" value="100"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="33" name="Player_pos">
+  <object id="40" name="Player pos" x="32" y="0" width="16" height="16">
+   <properties>
+    <property name="ground_pos" type="int" value="230"/>
+    <property name="player_pos_x" type="float" value="780"/>
+    <property name="player_pos_y" type="float" value="230"/>
    </properties>
   </object>
  </objectgroup>

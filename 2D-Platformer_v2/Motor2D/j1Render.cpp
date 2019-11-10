@@ -4,6 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Player.h"
+#include "j1Scene.h"
 
 #define VSYNC true
 
@@ -50,7 +51,6 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = 0;
 	}
 
-	camera = { -130,-800 };
 	return ret;
 }
 
@@ -95,6 +95,24 @@ bool j1Render::CleanUp()
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
+}
+
+void j1Render::SetCameraPos(pugi::xml_node& object)
+{
+	if (App->scene->loading == false)
+	{
+		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
+		{
+			if (strcmp(it.attribute("name").as_string(), "camera_pos_x") == 0)
+			{
+				camera.x = it.attribute("value").as_int();
+			}
+			if (strcmp(it.attribute("name").as_string(), "camera_pos_y") == 0)
+			{
+				camera.y = it.attribute("value").as_int();
+			}
+		}
+	}
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)

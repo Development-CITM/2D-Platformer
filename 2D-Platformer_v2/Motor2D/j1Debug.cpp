@@ -34,16 +34,39 @@ bool j1Debug::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
 			App->fade2black->FadeToBlack(App->scene, App->scene);
-			App->scene->lvl2 = false;
-			App->scene->lvl1 = true;
+
+		}
+		if (App->input->GetKey(SDL_SCANCODE_KP_1))
+		{
+			App->scene->destination_level = "maps/A1.tmx";
+			App->fade2black->FadeToBlack(App->scene, App->scene);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_KP_2))
+		{
+			App->scene->destination_level = "maps/A2.tmx";
+			App->fade2black->FadeToBlack(App->scene, App->scene);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_KP_3))
+		{
+			App->scene->destination_level = "maps/A3.tmx";
+			App->fade2black->FadeToBlack(App->scene, App->scene);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_KP_5))
+		{
+			App->scene->destination_level = "maps/A5.tmx";
+			App->fade2black->FadeToBlack(App->scene, App->scene);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_KP_6))
+		{
+			App->scene->destination_level = "maps/A6.tmx";
+			App->fade2black->FadeToBlack(App->scene, App->scene);
 		}
 
 		//Swap to lvl2
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		{
 			App->fade2black->FadeToBlack(App->scene, App->scene);
-			App->scene->lvl1 = false;
-			App->scene->lvl2 = true;
+
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)

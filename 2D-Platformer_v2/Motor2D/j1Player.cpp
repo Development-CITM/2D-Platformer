@@ -33,9 +33,6 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	//Load Player tmx (it contains animations and colliders properties)
-	
-	mPlayerPos = { 100,422 };
-	groundPos = 422;
 	Load("animations/Player.tmx");
 
 	AABB_current = App->collider->AddCollider({ (int)mPlayerPos.x,(int)mPlayerPos.y,20,50 },COLLIDER_PLAYER);
@@ -200,6 +197,29 @@ SDL_Rect j1Player::LoadAABB(pugi::xml_node& AABB_object)
 
 }
 
+void j1Player::SetPlayerPos(pugi::xml_node& object)
+{
+	if (App->scene->loading == false)
+	{
+		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) 
+		{
+			if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
+			{
+				mPlayerPos.x = it.attribute("value").as_int();
+			}
+			if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
+			{
+				mPlayerPos.y = it.attribute("value").as_int();
+			}
+			if (strcmp(it.attribute("name").as_string(), "ground_pos") == 0)
+			{
+				groundPos = it.attribute("value").as_int();
+			}
+		}
+	}
+	
+}
+
 
 bool j1Player::PreUpdate()
 {
@@ -264,7 +284,8 @@ bool j1Player::Update(float dt)
 
 	mPlayerPos += mSpeed;
 	Draw(); //Draw all the player
-	LOG("Player Pos: %f", mPlayerPos.x);
+	LOG("Player Pos X: %f", mPlayerPos.x);
+	LOG("Player Pos Y: %f", mPlayerPos.y);
 	return true;
 }
 

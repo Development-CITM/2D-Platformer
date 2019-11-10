@@ -43,6 +43,8 @@ public:
 	bool CleanUp();
 
 	bool LoadSceneLimits(pugi::xml_node object);
+
+	void DecideMapToLoad();
 	
 private:
 
@@ -58,9 +60,16 @@ private:
 public:
 
 	bool notfirst=false;
-	bool lvl1 = true;
-	bool lvl2 = false;
+
 	bool loading = false;
+	p2List<p2SString*> levels;
+	p2SString A1 = "maps/A1.tmx";
+	p2SString A2 = "maps/A2.tmx";
+	p2SString A3 = "maps/A3.tmx";
+	p2SString A5 = "maps/A5.tmx";
+	p2SString A6 = "maps/A6.tmx";
+	p2SString current_level;
+	p2SString destination_level = "maps/A6.tmx";
 
 	int camera_limit_left = 0;
 	int camera_limit_right = 0;

@@ -40,6 +40,8 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	void SetCameraPos(pugi::xml_node& object);
+
 public:
 
 	float			drawsize = 2.0f;

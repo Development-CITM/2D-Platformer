@@ -454,8 +454,18 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 	//Culling pos map loading ----------------------------------------------------------------------------------------------
 	else if (strcmp(node.attribute("name").as_string(), "Culling_pos") == 0)
 	{
-			objects = node.child("object");
+		objects = node.child("object");
 		SetCullingPos(objects);
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Camera_pos") == 0)
+	{
+		objects = node.child("object");
+		App->render->SetCameraPos(objects);
+	}
+	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0)
+	{
+		objects = node.child("object");
+		App->player->SetPlayerPos(objects);
 	}
 
 	return ret;

@@ -61,8 +61,8 @@ bool j1Fade2Black::Update(float dt)
 			//resets player & camera position
 			if (App->scene->loading == false)
 			{
-				App->render->camera.x = -130; //EUDALD: CHANGE THIS
-				App->render->camera.y = -400;
+				//App->render->camera.x = -130; //EUDALD: CHANGE THIS
+				//App->render->camera.y = -400;
 			}
 			App->scene->loading = false;
 
