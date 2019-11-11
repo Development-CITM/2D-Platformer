@@ -61,6 +61,7 @@ bool j1Tilesets::CleanUp()
 
 	while (item != NULL)
 	{
+		SDL_DestroyTexture(item->data->texture);
 		RELEASE(item->data);
 		item = item->next;
 	}
@@ -185,6 +186,7 @@ bool j1Tilesets::Load(const char* file_name)
 			ret = LoadTilesetImage(tileset, set);
 		}
 		map_Data.tilesets.add(set);
+	
 	}
 	
 	// Load layer info from the map -------------------------------------------------------------------------------------------

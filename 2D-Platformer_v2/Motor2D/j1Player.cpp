@@ -46,19 +46,19 @@ bool j1Player::Start()
 bool j1Player::CleanUp()
 {
 	//// Remove all layers
-	//p2List_item<ObjectLayer*>* item;
-	//item = player_tmx_data.object_Layers.start;
+	p2List_item<ObjectLayer*>* item;
+	item = player_tmx_data.object_Layers.start;
 
-	//while (item != NULL)
-	//{
-	//	for (int i = 0; i < item->data->rects.count(); i++)
-	//	{
-	//		delete item->data->rects[i];
-	//	}
-	//	RELEASE(item->data);
-	//	item = item->next;
-	//}
-	//player_tmx_data.object_Layers.clear();
+	while (item != NULL)
+	{
+		for (int i = 0; i < item->data->rects.count(); i++)
+		{
+			delete item->data->rects[i];
+		}
+		RELEASE(item->data);
+		item = item->next;
+	}
+	player_tmx_data.object_Layers.clear();
 
 
 	// Clean up the pugui tree
