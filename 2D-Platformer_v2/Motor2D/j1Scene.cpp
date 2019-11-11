@@ -145,8 +145,8 @@ bool j1Scene::Load(pugi::xml_node& data)
 		App->render->camera.x = data.child("camera").attribute("x").as_int();
 		App->render->camera.y = data.child("camera").attribute("y").as_int();
 
-		App->player->mPlayerPos.x = data.child("playerPos").attribute("player_pos_x").as_float();
-		App->player->mPlayerPos.y = data.child("playerPos").attribute("player_pos_y").as_float();
+		App->player->mPosition.x = data.child("playerPos").attribute("player_pos_x").as_float();
+		App->player->mPosition.y = data.child("playerPos").attribute("player_pos_y").as_float();
 		App->player->groundPos = data.child("playerPos").attribute("ground_pos").as_int();
 
 		destination_level = data.child("scene").attribute("current_map").as_string();
@@ -163,8 +163,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	//------------PLAYER-------------------//
 	pugi::xml_node player = data.append_child("playerPos");
 
-	player.append_attribute("player_pos_x") = App->player->mPlayerPos.x;
-	player.append_attribute("player_pos_y") = App->player->mPlayerPos.y;
+	player.append_attribute("player_pos_x") = App->player->mPosition.x;
+	player.append_attribute("player_pos_y") = App->player->mPosition.y;
 	player.append_attribute("ground_pos") = App->player->groundPos; //EUDALD: DELETE WHEN COLLIDERS WORKING
 
 	pugi::xml_node player_collider = data.append_child("player_collider");

@@ -35,8 +35,10 @@ bool j1Player::Start()
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 
-	AABB_current = App->collider->AddCollider({ (int)mPlayerPos.x,(int)mPlayerPos.y,20,50 },COLLIDER_PLAYER);
-	currentAnimation = sheathed_idle;
+	AABB_current = App->collider->AddCollider({ (int)mPosition.x,(int)mPosition.y,20,50 },COLLIDER_PLAYER);
+	mAnimation = sheathed_idle;
+
+	
 
 	return true;
 }
@@ -160,7 +162,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
 		 
 		anim->sprites[i].AABB_rect = LoadAABB(AABB_object);
-		anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(mPlayerPos.x),anim->sprites[i].AABB_rect.y - (int)roundf( mPlayerPos.y) };
+		anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(mPosition.x),anim->sprites[i].AABB_rect.y - (int)roundf( mPosition.y) };
 		LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
 
 		if (AABB_object.next_sibling("object")) {
@@ -190,11 +192,233 @@ SDL_Rect j1Player::LoadAABB(pugi::xml_node& AABB_object)
 		offset.y -= player_tmx_data.tile_height;
 	}
 
-	rect.x = mPlayerPos.x + offset.x;
-	rect.y = mPlayerPos.y + offset.y;
+	rect.x = mPosition.x + offset.x;
+	rect.y = mPosition.y + offset.y;
 
 	return rect;
 
+}
+
+void j1Player::UpdatePhysics()
+{
+	mOldPosition = mPosition;
+	mOldSpeed = mSpeed;
+
+	mWasOnGround = mOnGround;
+	mPushedRightWall = mPushesRightWall;
+	mPushedLeftWall = mPushesLeftWall;
+	mWasAtCeiling = mAtCeiling;
+
+	mPosition += mSpeed;
+
+	numCurrentAnimation = mAnimation->GetSprite();
+	p2Point<int> roundedPos = { (int)roundf(mPosition.x),(int)roundf(mPosition.y) };
+	mAnimation->sprites[numCurrentAnimation].AABB_rect.x = roundedPos.x + mAnimation->sprites[numCurrentAnimation].AABB_offset.x;
+	mAnimation->sprites[numCurrentAnimation].AABB_rect.y = roundedPos.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
+
+	AABB_current->Resize(mAnimation->sprites[numCurrentAnimation].AABB_rect);
+
+	if (mPosition.y >= (float)groundPos)
+	{
+		mPosition.y = (float)groundPos;
+		mOnGround = true;
+	}
+	else
+		mOnGround = false;
+}
+
+void j1Player::CharacterUpdate()
+{
+	switch (mCurrentState)
+	{
+	case CharacterState::Idle:
+		mSpeed = { 0.f,0.f };
+		if (mAnimation != sheathed_idle) {
+			mAnimation->ResetAnim();
+			mAnimation = sheathed_idle;
+		}
+
+		if (!mOnGround) 
+		{
+			mCurrentState = CharacterState::Fall;
+			break;
+		}
+		if (mGoLeft != mGoRight && !mJump) 
+		{
+			mCurrentState = CharacterState::Run;
+			break;
+		}
+		else if(mJump)
+		{
+			mCurrentState = CharacterState::Jump;
+			break;
+		}
+
+		break;
+	case CharacterState::Walk:
+		break;
+	case CharacterState::Run:
+		if (mAnimation != sheathed_run) {
+			mAnimation->ResetAnim();
+			mAnimation = sheathed_run;
+		}
+
+		if (mGoLeft == mGoRight) {
+			mCurrentState = CharacterState::Idle;
+			mSpeed = { 0.f,0.f };
+			mRunAcceleration = 0.0f;
+			timer = 0.0f;
+		}
+		else if (mGoRight) {
+			if (mPushesRightWall) {
+				mSpeed.x = 0.f;
+				mRunAcceleration = 0.0f;
+				timer = 0.0f;
+			}
+			else {
+				if (timer < 1.f) {
+					timer++;
+				}
+				else if (mRunAcceleration < 1.0f) {
+					mRunAcceleration += 0.25f;
+					timer = 0.0f;
+				}
+				if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
+
+				mSpeed.x = mRunSpeed * mRunAcceleration;
+			}
+		}
+		else if (mGoLeft) {
+			if (mPushesLeftWall) {
+				mSpeed.x = 0.f;
+				mRunAcceleration = 0.0f;
+				timer = 0.0f;
+			}
+			else {
+				if (timer < 1.f) {
+					timer++;
+				}
+				else if (mRunAcceleration < 1.0f) {
+					mRunAcceleration += 0.25f;
+					timer = 0.0f;
+				}
+				if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
+
+				mSpeed.x = -mRunSpeed * mRunAcceleration;
+			}
+			
+			//FLip to Left
+		}
+
+		if (mJump)
+		{
+			mCurrentState = CharacterState::Jump;
+			break;
+		}
+		else if (!mOnGround) {
+			mCurrentState = CharacterState::Fall;
+			break;
+		}
+
+		break;
+	case CharacterState::Jump:
+		if (mAnimation != sheathed_jump) {
+			mAnimation->ResetAnim();
+			mAnimation = sheathed_jump;
+			delayToJump = 0.f;
+			startJump = false;
+		}
+		if (delayToJump < 5.f)
+		{
+			delayToJump++;
+		}
+
+		if (delayToJump >= 5.f) {
+			if (!startJump) {
+				mSpeed.y = mJumpSpeed;
+				startJump = true;
+			}
+			if (mSpeed.y < 0.0f) {
+			mSpeed.y += cGravity;
+			
+			}
+			else {
+				mCurrentState = CharacterState::Fall;
+			}
+		}
+		
+
+		HorizontalMove();
+
+		break;
+	case CharacterState::Fall:
+		HorizontalMove();
+		if (mAnimation != sheathed_idle) {
+			mAnimation->ResetAnim();
+			mAnimation = sheathed_idle;
+		} //Just for now
+		if (mSpeed.y < 6.f)
+			mSpeed.y += cGravity;
+		
+		if (mOnGround) {
+			mCurrentState = CharacterState::Idle;
+			mJump = false;
+
+		}
+		break;
+	case CharacterState::GrabLedge:
+		break;
+	}
+
+	LOG("%i", mCurrentState);
+}
+
+void j1Player::HorizontalMove()
+{
+	if (mGoLeft == mGoRight) {
+
+		mSpeed.x = 0.f;
+	}
+	else if (mGoRight) {
+		if (mPushesRightWall) {
+			mSpeed.x = 0.f;
+			mRunAcceleration = 0.0f;
+			timer = 0.0f;
+		}
+		else {
+			if (timer < 1.f) {
+				timer++;
+			}
+			else if (mRunAcceleration < 1.0f) {
+				mRunAcceleration += 0.25f;
+				timer = 0.0f;
+			}
+			if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
+
+			mSpeed.x = mRunSpeed * mRunAcceleration;
+		
+		}
+	}
+	else if (mGoLeft) {
+		if (mPushesLeftWall) {
+			mSpeed.x = 0.f;
+			mRunAcceleration = 0.0f;
+			timer = 0.0f;
+		}
+		else {
+			if (timer < 1.f) {
+				timer++;
+			}
+			else if (mRunAcceleration < 1.0f) {
+				mRunAcceleration += 0.25f;
+				timer = 0.0f;
+			}
+			if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
+
+			mSpeed.x = -mRunSpeed * mRunAcceleration;
+		}
+		//FLip to Left
+	}
 }
 
 void j1Player::SetPlayerPos(pugi::xml_node& object)
@@ -205,11 +429,11 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 		{
 			if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
 			{
-				mPlayerPos.x = it.attribute("value").as_int();
+				mPosition.x = it.attribute("value").as_int();
 			}
 			if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
 			{
-				mPlayerPos.y = it.attribute("value").as_int();
+				mPosition.y = it.attribute("value").as_int();
 			}
 			if (strcmp(it.attribute("name").as_string(), "ground_pos") == 0)
 			{
@@ -223,69 +447,33 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 
 bool j1Player::PreUpdate()
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		mGoRight = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		mGoRight = false;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		mGoLeft = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		mGoLeft = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		mJump = true;
+	}
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
-
-	
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		if (currentAnimation != sheathed_run) {
-			currentAnimation->ResetAnim();
-			currentAnimation = sheathed_run;
-			mState = PlayerState::RUN;
-		}
-		if (timer < 1.f) {
-			timer++;
-		}
-		else if (mAcceleration < 1.0f) {
-			mAcceleration += 0.25f;
-			timer = 0.0f;
-		}
-		if (mAcceleration > 1.f) { mAcceleration = 1.f; }
-
-		mSpeed.x = mRunSpeed * mAcceleration;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		if (currentAnimation != sheathed_idle) {
-			currentAnimation->ResetAnim();
-			currentAnimation = sheathed_idle;
-			mSpeed.x = 0.0f;
-			mAcceleration = 0.0f;
-			timer = 0.0f;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		if (currentAnimation != sheathed_jump) {
-			sheathed_jump->ResetAnim();
-			currentAnimation = sheathed_jump;
-			mState = PlayerState::JUMP;
-			mSpeed.y = -mJumpSpeed;
-		}
-	}
-
-	if (mPlayerPos.y >= groundPos) {
-		onGround = true;
-		if (mState != RUN) {
-			currentAnimation = sheathed_idle;
-		}
-		mPlayerPos.y = groundPos;
-	}
-	else {
-		onGround = false;
-		currentAnimation = sheathed_jump;
-	}
-	if (!onGround) {
-		mSpeed.y -= -.3f;
-
-	}
-
-	mPlayerPos += mSpeed;
+	CharacterUpdate();
+	UpdatePhysics();
 	Draw(); //Draw all the player
-	LOG("Player Pos X: %f", mPlayerPos.x);
-	LOG("Player Pos Y: %f", mPlayerPos.y);
+	LOG("Player Pos X: %f", mPosition.x);
+	LOG("Player Pos Y: %f", mPosition.y);
 	return true;
 }
 
@@ -300,11 +488,5 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	//Round Pos beforeblit
-	p2Point<int> roundedPos = { (int)roundf(mPlayerPos.x),(int)roundf(mPlayerPos.y) };
-	int i = currentAnimation->GetSprite();
-	currentAnimation->sprites[i].AABB_rect.x = roundedPos.x + currentAnimation->sprites[i].AABB_offset.x;
-	currentAnimation->sprites[i].AABB_rect.y = roundedPos.y + currentAnimation->sprites[i].AABB_offset.y;
-	AABB_current->Resize(currentAnimation->sprites[i].AABB_rect);
-	App->render->Blit(player_tmx_data.texture, roundedPos.x, roundedPos.y, &currentAnimation->sprites[i].rect,3.f);
+	App->render->Blit(player_tmx_data.texture, (int)roundf(mPosition.x), (int)roundf(mPosition.y), &mAnimation->sprites[numCurrentAnimation].rect,3.f);
 }

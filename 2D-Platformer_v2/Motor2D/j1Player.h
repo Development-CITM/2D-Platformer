@@ -11,10 +11,13 @@
 struct Collider;
 enum MapTypes;
 
-enum PlayerState {
-	IDLE,
-	RUN,
-	JUMP,
+enum CharacterState {
+	Idle,
+	Walk,
+	Run,
+	Jump,
+	Fall,
+	GrabLedge,
 };
 
 
@@ -82,17 +85,19 @@ private:
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	SDL_Rect LoadAABB(pugi::xml_node& player_node);
 
-	
+	void UpdatePhysics();
+	void CharacterUpdate();
+
+	void HorizontalMove();
 
 
 
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
-	PlayerState			mState = PlayerState::IDLE;
-	p2Point<float>		mPlayerPos{ 0,0 };
 	int					groundPos;
 
+	p2Point<float> mPosition{ 0,0 };
 private:
 
 	//Enums
@@ -100,17 +105,21 @@ private:
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
 	//Positions
-	p2Point<float>		mSpeed{ 0,0 };
+	//p2Point<float>		mSpeed{ 0,0 };
 
 
-	bool				mOnGround  = false;
-
+	//bool				mOnGround  = false;
+	CharacterState		mCurrentState = CharacterState::Idle;
+	float				mWalkSpeed = 0.0f;
 	float				mRunSpeed = 2.f;
-	float				mJumpSpeed = 5.f;
-	float				mAcceleration = 0.0f;
+	float				mJumpSpeed = -6.f;
+	float				mRunAcceleration = 0.0f;
 	float				timer = 0.0f;
+	float				delayToJump = 0.f;
+	float				cGravity = 0.3f;
+	bool				startJump = false;
 	//Animations
-	Animation*			currentAnimation = nullptr;
+	Animation*			mAnimation = nullptr;
 	Animation*			previousAnimation = nullptr;
 
 	Animation*			sheathed_idle = nullptr;
@@ -121,12 +130,11 @@ private:
 
 	//Checkers
 	bool				detected_Collision = false;
-	bool				onGround = false;
 
 
-	bool				move_To_Right = false;
-	bool				move_To_Left = false;
-	bool				move_To_Up = false;
+	bool				mGoRight = false;
+	bool				mGoLeft = false;
+	bool				mJump = false;
 
 	//Colliders
 	Collider*			AABB_current = nullptr;
@@ -135,6 +143,28 @@ private:
 	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded = false;
+
+	 p2Point<float> mOldPosition;
+
+
+	 p2Point<float> mOldSpeed;
+	 p2Point<float> mSpeed;
+
+	 //p2Point<float> mScale; Change to FLIP
+
+	 bool mPushedRightWall;
+	 bool mPushesRightWall;
+
+	 bool mPushedLeftWall;
+	 bool mPushesLeftWall;
+
+	 bool mWasOnGround;
+	 bool mOnGround = false;
+
+	 bool mWasAtCeiling;
+	 bool mAtCeiling;
+
+	 int numCurrentAnimation = 0;
 
 };
 
