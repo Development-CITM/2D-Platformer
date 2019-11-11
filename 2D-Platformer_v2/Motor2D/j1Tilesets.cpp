@@ -77,10 +77,6 @@ bool j1Tilesets::CleanUp()
 		item2 = item2->next;
 	}
 	map_Data.layers.clear();
-
-	// Clean up the pugi tree -----------------------------------------------------------------------------------------------
-	map_file.reset();
-
 	return true;
 }
 #pragma endregion
@@ -157,66 +153,54 @@ bool j1Tilesets::Load(const char* file_name)
 {
 	//Gets source of the map passed from Scene
 	bool ret = true;
+	pugi::xml_document		map_file;
 	p2SString tmp("%s%s", folder.GetString(), file_name); 
 	pugi::xml_parse_result result = map_file.load_file(file_name);
-	
-	if(result == NULL)
+
+	if (result == NULL)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", file_name, result.description());
 		ret = false;
 	}
 
+	pugi::xml_node tileset = map_file.child("map").child("tileset");
+	pugi::xml_node object = map_file.child("map").child("objectgroup");
+	pugi::xml_node folder_group = map_file.child("map").child("group").child("group");
+	pugi::xml_node map = map_file.child("map");
+	
 	// Load general info -------------------------------------------------------------------------------------------------------
-	if(ret == true)
-	{
-		ret = LoadMap();
-	}
-
+	if(ret)
+		ret = LoadMap(map);
+	
 	// Load all tilesets info --------------------------------------------------------------------------------------------------
-	for(pugi::xml_node tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
-	{
-		set = new TileSet();
-		if(ret == true)
-		{
-			ret = LoadTilesetDetails(tileset, set);
-		}
-
-		if(ret == true)
-		{
-			ret = LoadTilesetImage(tileset, set);
-		}
-		map_Data.tilesets.add(set);
+	if(ret)
+		ret= LoadAllTileset(tileset);
 	
-	}
-	
-	// Load layer info from the map -------------------------------------------------------------------------------------------
-	if(ret==true)
-	ret = SendNodePosition();
+	// Load all layer info from the map -------------------------------------------------------------------------------------------
+	if(ret)
+		ret = LoadAllLayers(folder_group);
 		
 	//Load objects info from the map ------------------------------------------------------------------------------------------
-	for (pugi::xml_node object = map_file.child("map").child("objectgroup"); object; object=object.next_sibling("objectgroup"))
-	{
-		LoadObject(object);
-	}
+	if(ret)
+		ret = LoadAllObjects(object);
+	
 
 	//Logs all the info loaded on top of this ---------------------------------------------------------------------------------
-	if(ret == true)
-	{
+	if(ret)
 		LogLayerInfo(file_name);
-	}
-
+	
 	map_loaded = ret;
 	return ret;
 }
 
 // Loads all the layers from it's folders in Tiled ------------------------------------------------------------------------------------------------------------------
-bool j1Tilesets::SendNodePosition()
+bool j1Tilesets::LoadAllLayers(pugi::xml_node &folder_group)
 {
 	bool ret = true;
 	//(group->group(iterate)->layer(iterate)) ----------------------------------------------------------------------------------
-	for (pugi::xml_node folder= map_file.child("map").child("group").child("group"); folder; folder=folder.next_sibling("group"))
+	for (folder_group; folder_group; folder_group =folder_group.next_sibling("group"))
 	{
-		for (pugi::xml_node layer = folder.child("layer"); layer; layer=layer.next_sibling("layer"))
+		for (pugi::xml_node layer = folder_group.child("layer"); layer; layer=layer.next_sibling("layer"))
 		{
 			MapLayer* lay = new MapLayer();
 
@@ -230,11 +214,9 @@ bool j1Tilesets::SendNodePosition()
 }
 
 // Loads map propperties: Map orientation widths,hegihts ------------------------------------------------------------------------------------------------------------
-bool j1Tilesets::LoadMap()
+bool j1Tilesets::LoadMap(pugi::xml_node &map)
 {
 	bool ret = true;
-	pugi::xml_node map = map_file.child("map");
-
 	if(map == NULL)
 	{
 		LOG("Error parsing map xml file: Cannot find 'map' tag.");
@@ -294,6 +276,28 @@ bool j1Tilesets::LoadMap()
 		}
 	}
 
+	return ret;
+}
+
+//Loads all tilesets ------------------------------------------------------------------------------------------------------------------------------------------------
+bool j1Tilesets::LoadAllTileset(pugi::xml_node& tileset)
+{
+	bool ret = true;
+	for (tileset; tileset && ret; tileset = tileset.next_sibling("tileset"))
+	{
+		set = new TileSet();
+		if (ret == true)
+		{
+			ret = LoadTilesetDetails(tileset, set);
+		}
+
+		if (ret == true)
+		{
+			ret = LoadTilesetImage(tileset, set);
+		}
+		map_Data.tilesets.add(set);
+
+	}
 	return ret;
 }
 
@@ -428,6 +432,17 @@ void j1Tilesets::LogLayerInfo(const char* file_name)
 		LOG("tile width: %d tile height: %d", l->num_tile_width, l->num_tile_height);
 		item_layer = item_layer->next;
 	}
+}
+
+//Loads all objects -------------------------------------------------------------------------------------------------------------------------------------------------
+bool j1Tilesets::LoadAllObjects(pugi::xml_node& object)
+{
+	bool ret = true;
+	for (object; object; object = object.next_sibling("objectgroup"))
+	{
+		LoadObject(object);
+	}
+	return ret;
 }
 
 //Loads each object layer of the map with it's respective function in another modules -------------------------------------------------------------------------------
@@ -598,6 +613,7 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 	SDL_Rect rect = { width,height,tileset->tile_width,tileset->tile_height };
 	return	rect;
 }
+
 #pragma endregion
 
 

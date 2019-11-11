@@ -27,59 +27,54 @@ j1Debug::~j1Debug()
 
 bool j1Debug::Update(float dt)
 {
-	//Basic debug functions
-	//Swap to lvl1
 	if (input == true)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		{
-			App->fade2black->FadeToBlack(App->scene, App->scene);
-
-		}
+		//Single map selection ------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_KP_1))
 		{
 			App->scene->destination_level = "maps/A1.tmx";
-			App->fade2black->FadeToBlack(App->scene, App->scene);
+			CallFade();
 		}
 		if (App->input->GetKey(SDL_SCANCODE_KP_2))
 		{
 			App->scene->destination_level = "maps/A2.tmx";
-			App->fade2black->FadeToBlack(App->scene, App->scene);
+			CallFade();
 		}
 		if (App->input->GetKey(SDL_SCANCODE_KP_3))
 		{
 			App->scene->destination_level = "maps/A3.tmx";
-			App->fade2black->FadeToBlack(App->scene, App->scene);
+			CallFade();
 		}
 		if (App->input->GetKey(SDL_SCANCODE_KP_5))
 		{
 			App->scene->destination_level = "maps/A5.tmx";
-			App->fade2black->FadeToBlack(App->scene, App->scene);
+			CallFade();
 		}
 		if (App->input->GetKey(SDL_SCANCODE_KP_6))
 		{
 			App->scene->destination_level = "maps/A6.tmx";
-			App->fade2black->FadeToBlack(App->scene, App->scene);
+			CallFade();
 		}
 
-		//Swap to lvl2
+		//Swaps to lvl 1 --------------------------------------------------------------------------------------------------
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+			CallFade();
+		
+		//Swaps to lvl2 ---------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		{
-			App->fade2black->FadeToBlack(App->scene, App->scene);
+			CallFade();
 
-		}
-
+		//Resets current lvl ----------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-		{
-			App->fade2black->FadeToBlack(App->scene, App->scene);
-		}
-
+			CallFade();
+		
+		//Enables god mode ------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
-
+			//GOD MODE
 		}
 
-		//Show colliders
+		//Show colliders --------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		{
 			if (App->collider->collider_debug == false)
@@ -93,4 +88,9 @@ bool j1Debug::Update(float dt)
 		}
 	}
 	return true;
+}
+
+void j1Debug::CallFade()
+{
+	App->fade2black->FadeToBlack(App->scene, App->scene);
 }

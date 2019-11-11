@@ -66,7 +66,7 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
 
-	bool Load(pugi::xml_node object);
+	bool Load(pugi::xml_node &object);
 
 	// Called before all Updates
 	bool PreUpdate();

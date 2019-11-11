@@ -140,7 +140,6 @@ private:
 	Collider*			AABB_current = nullptr;
 
 	//XML Stuff
-	pugi::xml_document	player_file;
 	p2SString			folder;
 	bool				map_loaded = false;
 

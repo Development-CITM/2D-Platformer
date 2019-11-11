@@ -15,52 +15,118 @@
 
 #pragma region Constructor / Destructor
 
+//Constructor ----------------------------------------------------------------------------------------------------------------------------------
 j1Colliders::j1Colliders():j1Module()
 {
 	name.create("colliders");
 }
 
+//Destructor ------------------------------------------------------------------------------------------------------------------------------------
 j1Colliders::~j1Colliders()
 {}
-
 #pragma endregion
+
+
+#pragma region Awake/Pre/Update/Post/Clean
+
+//Sets the scale & size for the colliders in function of win scale and render drawsize ----------------------------------------------------------
+bool j1Colliders::Awake(pugi::xml_node& conf)
+{
+	scale = App->win->GetScale();
+	size = App->render->drawsize;
+
+	return true;
+}
+
+//Removes all colliders scheduled to be deleted -------------------------------------------------------------------------------------------------
+bool j1Colliders::PreUpdate()
+{
+	p2List_item<Collider*>* collider = colliders.start;
+	for (uint i = 0; i < colliders.count(); ++i)
+	{
+		if (collider != nullptr && collider->data->to_delete == true)
+		{
+			colliders.del(collider);
+		}
+
+		collider = collider->next;
+	}
+	p2List_item<Collider*>* detected_collider = detected_Colliders.start;
+
+	// Disable all colliders in the list ------------------------------------------------------------------
+	//for (uint i = 0; i < detected_Colliders.count(); ++i)
+	//{
+	//	if (App->player->GetPlayerCollider()->rect.y + 30 < detected_collider->data->rect.y) {
+	//		detected_collider->data->Enabled = true;
+	//		detected_Colliders.del(detected_collider);
+	//	}
+	//	detected_collider = detected_collider->next;
+
+	//}
+	return true;
+}
+
+//Draws all colliders ---------------------------------------------------------------------------------------------------------------------------
+bool j1Colliders::Update(float dt)
+{
+	Draw();
+	return true;
+}
+
+//PostUpdate ------------------------------------------------------------------------------------------------------------------------------------
+bool j1Colliders::PostUpdate()
+{
+	return true;
+}
+
+//CleanUp ---------------------------------------------------------------------------------------------------------------------------------------
+bool j1Colliders::CleanUp()
+{
+	//Deletes each collider and clears the list --------------------------------------------------------------
+	p2List_item<Collider*>* item2;
+	item2 = colliders.start;
+
+	while (item2 != NULL)
+	{
+		RELEASE(item2->data);
+		item2 = item2->next;
+	}
+	colliders.clear();
+	return true;
+}
+#pragma endregion
+
 
 #pragma region Load Info
 
-
-
-
-bool j1Colliders::Load(pugi::xml_node object)
+// Loads all colliders of the map --------------------------------------------------------------------------------------------------------------
+bool j1Colliders::Load(pugi::xml_node& object)
 {
-	
 	bool ret = true;
-	
 		for (object.child("object"); object && ret; object = object.next_sibling("object"))
 		{
+			//Creates new collider and sends it to be filled --------------------------------------------
 			collider = new Collider();
-
 			ret = LoadObject(object, collider);
 
-			if (ret == true)
-			{
-
+			//Adds the collider to the colliders list ---------------------------------------------------
+			if (ret)
 				colliders.add(collider);
-			}
-		}
-	
+		}	
 	return ret;
 }
 
-
-
+// Loads each collider properties -------------------------------------------------------------------------------------------------------------
 bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 {
 	bool ret = true;
+	//Loads into the collider the values from the tmx --------------------------------------------------
 	collider->rect.x = node.attribute("x").as_int();
 	collider->rect.y = node.attribute("y").as_int();
 	collider->rect.w = node.attribute("width").as_int();
 	collider->rect.h = node.attribute("height").as_int();
 
+	//Selects the type of collider ---------------------------------------------------------------------
 	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
 	{
 		collider->type = COLLIDER_WALL_TRASPASSABLE;
@@ -78,93 +144,29 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 		collider->type = COLLIDER_EXIT;
 		App->scene->exitCollider = collider;
 	}
-
-
 	return ret;
 }
 #pragma endregion
 
-#pragma region Awake/Pre/Update/Post/Clean
-
-bool j1Colliders::Awake(pugi::xml_node & conf)
-{
-	scale = App->win->GetScale();
-	size = App->render->drawsize;
-	
-	return true;
-}
-
-bool j1Colliders::PreUpdate()
-{
-	p2List_item<Collider*>* collider = colliders.start;
-	// Remove all colliders scheduled for deletion
-	for (uint i = 0; i < colliders.count(); ++i)
-	{
-		if (collider != nullptr && collider->data->to_delete == true)
-		{
-			colliders.del(collider);
-		}
-
-		collider = collider->next;
-	}
-
-	p2List_item<Collider*>* detected_collider = detected_Colliders.start;
-	// Disable all colliders in the list
-	//for (uint i = 0; i < detected_Colliders.count(); ++i)
-	//{
-	//	if (App->player->GetPlayerCollider()->rect.y + 30 < detected_collider->data->rect.y) {
-	//		detected_collider->data->Enabled = true;
-	//		detected_Colliders.del(detected_collider);
-	//	}
-	//	detected_collider = detected_collider->next;
-
-	//}
-	return true;
-}
-
-bool j1Colliders::Update(float dt)
-{
-	Draw();
-	return true;
-}
-
-bool j1Colliders::PostUpdate()
-{
-	return true;
-}
-
-bool j1Colliders::CleanUp()
-{
-	//Clean all colliders
-	p2List_item<Collider*>* item2;
-	item2 = colliders.start;
-
-	while (item2 != NULL)
-	{
-		RELEASE(item2->data);
-		item2 = item2->next;
-	}
-	colliders.clear();
-	return true;
-}
-
-#pragma endregion
 
 #pragma region Render
 
+//Draws each collider in the colliders list ---------------------------------------------------------------------------------------------------
 void j1Colliders::Draw()
 {
 	if (collider_debug)
 	{
+		//Iterates all list ------------------------------------------------------------------------------
 		p2List_item<Collider*>* collider = this->colliders.start;
-
 		for (int i = 0; i < colliders.count(); i++)
 		{
+			//Sets the rect to be printed and it's properties --------------------------------------------
 			SDL_Rect rect = { 0,0,0,0 };
 			rect.x =  collider->data->rect.x * size * scale;
 			rect.y = collider->data->rect.y * size * scale;
 			rect.w = collider->data->rect.w * size * scale;
 			rect.h = collider->data->rect.h * size * scale;
+			//Sets the collider type ----------------------------------------------------------------------
 			switch (collider->data->type)
 			{
 			case COLLIDER_WALL_SOLID:
@@ -193,9 +195,7 @@ void j1Colliders::Draw()
 				App->render->DrawQuad(rect, 100, 200, 100, 100);
 				break;
 			}
-				
-			
-
+			//Iterates for next collider in the list ----------------------------------------------------	
 			if (collider->next != nullptr)
 			{
 				collider = collider->next;
@@ -203,11 +203,11 @@ void j1Colliders::Draw()
 		}
 	}
 }
-
 #pragma endregion
 
 #pragma region AddFunctions
 
+//Adds each collider to the list via creating a new collider and setting it's properties ------------------------------------------------------
 Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>offset, j1Module* callback, int Damage)
 {	
 	c = new Collider(rect, type,offset, callback, Damage);
@@ -218,10 +218,11 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 #pragma endregion
 
 #pragma region CheckFunctions
-
+//What's the point of this function? Pos Y? --------------------------------------------------------------------------------------------------- EUDALD: ???
 bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 {	
 	bool ret = false;
+
 	Collider* c2 = nullptr;
 	p2List_item<Collider*>* c = colliders.start;
 	c2 = c->data;
@@ -229,7 +230,6 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 		if (c->next != NULL)
 			c = c->next;
 		c2 = c->data;
-	
 
 	return ret;
 }
@@ -252,9 +252,9 @@ bool j1Colliders::ThroughPlatform(Collider* c1)
 							detected_Colliders.add(c2);				
 				}
 			}
-			else {
+			else 
 				ret = c1->CheckCollision(c2->rect);
-			}
+			
 				return ret;
 			
 		}
@@ -266,7 +266,7 @@ bool j1Colliders::ThroughPlatform(Collider* c1)
 	return ret;
 }
 
-
+//Checks whenever the player collider is in collision with a map collider -----------------------------------------------------------------
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 
@@ -285,5 +285,4 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 	return detectedX && detectedY;
 
 }
-
 #pragma endregion

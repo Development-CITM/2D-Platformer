@@ -10,9 +10,17 @@ class j1Debug :public j1Module {
 
 public:
 
+	//Constructor
 	j1Debug();
+
+	//Destructor
 	~j1Debug();
+
+	//Update
 	bool Update(float dt);
+
+	//Function that fades through scenes
+	void CallFade();
 
 public:
 	bool input = true;

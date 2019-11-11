@@ -99,20 +99,38 @@ public:
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
+	SDL_Rect	GetRect(TileSet*, int id);
+
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 
 private:
 
-	bool		SendNodePosition();
-	bool		LoadMap();
+	//Map Loading Function
+	bool		LoadMap(pugi::xml_node& map);
+
+	//Tilesets loading functions
+	bool		LoadAllTileset(pugi::xml_node& tileset);
+
 	bool		LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
+
 	bool		LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
+
+	//Layers loading functions
+	bool		LoadAllLayers(pugi::xml_node& folder_group);
+
 	bool		LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	void		LogLayerInfo(const char* file_name);
-	SDL_Rect	GetRect(TileSet* ,int id);
+
+	//Objects loading functions
+	bool		LoadAllObjects(pugi::xml_node& object);
+
 	bool		LoadObject(pugi::xml_node& node);
+
+	//Log map info function
+	void		LogLayerInfo(const char* file_name);
+	
+	//
 	void		SetCullingPos(pugi::xml_node& object);
 	
 
@@ -125,8 +143,6 @@ public:
 	int						culling_pos_y = 0;
 
 private:
-
-	pugi::xml_document		map_file;
 
 	p2SString				folder;
 	bool					map_loaded;

@@ -16,6 +16,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 #include <math.h>
 
+#pragma region Constructor/Destructor
 j1Fade2Black::j1Fade2Black():j1Module()
 {
 	name.create("fade2Black");
@@ -23,7 +24,9 @@ j1Fade2Black::j1Fade2Black():j1Module()
 
 j1Fade2Black::~j1Fade2Black()
 {}
+#pragma endregion
 
+#pragma region Start
 bool j1Fade2Black::Start()
 {
 	screen = { 0,0,App->win->GetWidth() * App->win->GetScale(),App->win->GetHeight() * App->win->GetScale() };
@@ -33,7 +36,9 @@ bool j1Fade2Black::Start()
 	IsFading = false;
 	return true;
 }
+#pragma endregion
 
+#pragma region Update
 bool j1Fade2Black::Update(float dt)
 {
 	if (current_step == fade_step::none)
@@ -46,24 +51,14 @@ bool j1Fade2Black::Update(float dt)
 	{
 	case fade_step::fade_to_black:
 	{
-		//App->input->Paused = true;
 		if (now >= total_time)
 		{
 			//Fades music for 1 sec
 			Mix_FadeOutMusic(1000);
+
 			//Enables called module, disables current module
-
-
 			moduleOff->Disable();
 			moduleOn->Enable();
-
-
-			//resets player & camera position
-			if (App->scene->loading == false)
-			{
-				//App->render->camera.x = -130; //EUDALD: CHANGE THIS
-				//App->render->camera.y = -400;
-			}
 			App->scene->loading = false;
 
 			total_time += total_time;
@@ -83,14 +78,15 @@ bool j1Fade2Black::Update(float dt)
 		}
 	} break;
 	}
-
 	// Finally render the black square with alpha on the screen
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
 	return true;
 }
+#pragma endregion
 
+#pragma region Fade Function
 bool j1Fade2Black::FadeToBlack(j1Module* module_off, j1Module* module_on, float time)
 {
 	bool ret = false;
@@ -111,3 +107,4 @@ bool j1Fade2Black::FadeToBlack(j1Module* module_off, j1Module* module_on, float 
 
 	return ret;
 }
+#pragma endregion

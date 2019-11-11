@@ -60,10 +60,6 @@ bool j1Player::CleanUp()
 	}
 	player_tmx_data.object_Layers.clear();
 
-
-	// Clean up the pugui tree
-	player_file.reset();
-
 	return true;
 }
 
@@ -72,7 +68,7 @@ bool j1Player::CleanUp()
 bool j1Player::Load(const char* file_name)
 {
 	bool ret = true;
-
+	pugi::xml_document	player_file;
 	pugi::xml_parse_result result = player_file.load_file(file_name);
 
 	if (result == NULL)
