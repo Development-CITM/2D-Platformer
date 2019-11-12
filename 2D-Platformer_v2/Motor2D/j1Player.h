@@ -90,6 +90,11 @@ private:
 
 	void HorizontalMove();
 
+	//STATE MACHINE
+	bool StateIdle();
+	bool StateRun();
+	bool StateJump();
+	bool StateFall();
 
 
 //---------------VARIABLES --------------------//
@@ -112,7 +117,7 @@ private:
 	CharacterState		mCurrentState = CharacterState::Idle;
 	float				mWalkSpeed = 0.0f;
 	float				mRunSpeed = 2.f;
-	float				mJumpSpeed = -6.f;
+	float				mJumpSpeed = -5.5f;
 	float				mRunAcceleration = 0.0f;
 	float				timer = 0.0f;
 	float				delayToJump = 0.f;
@@ -122,11 +127,11 @@ private:
 	Animation*			mAnimation = nullptr;
 	Animation*			previousAnimation = nullptr;
 
-	Animation*			sheathed_idle = nullptr;
-	Animation*			sheathed_run = nullptr;
-	Animation*			sheathed_jump = nullptr;
-	Animation*			jump = nullptr;
-	Animation*			fall = nullptr;
+	Animation*			disarmed_idle = nullptr;
+	Animation*			disarmed_run = nullptr;
+	Animation*			disarmed_jump = nullptr;
+	Animation*			disarmed_fall = nullptr;
+
 
 	//Checkers
 	bool				detected_Collision = false;
@@ -164,6 +169,8 @@ private:
 	 bool mAtCeiling;
 
 	 int numCurrentAnimation = 0;
+
+
 
 };
 

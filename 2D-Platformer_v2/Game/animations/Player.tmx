@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="22" nextobjectid="59">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="25" nextobjectid="63">
  <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
- <group id="13" name="SHEATHED">
-  <group id="14" name="SHEATHED_IDLE" visible="0">
-   <objectgroup id="9" name="SHEATHED_IDLE">
+ <group id="13" name="DISARMED">
+  <group id="14" name="DISARMED_IDLE" visible="0">
+   <objectgroup id="9" name="DISARMED_IDLE">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
     </properties>
@@ -34,47 +34,8 @@
     <object id="50" x="468" y="7" width="13" height="29"/>
    </objectgroup>
   </group>
-  <group id="16" name="SHEATHED_JUMP">
-   <objectgroup id="18" name="SHEATHED_JUMP">
-    <properties>
-     <property name="num_sprites" type="int" value="5"/>
-    </properties>
-    <object id="45" name="SHEATHED_JUMP" x="450" y="74" width="50" height="37">
-     <properties>
-      <property name="Frames" type="int" value="2"/>
-     </properties>
-    </object>
-    <object id="46" name="SHEATHED_JUMP" x="500" y="74" width="50" height="37">
-     <properties>
-      <property name="Frames" type="int" value="2"/>
-     </properties>
-    </object>
-    <object id="47" name="SHEATHED_JUMP" x="550" y="74" width="50" height="37">
-     <properties>
-      <property name="Frames" type="int" value="5"/>
-     </properties>
-    </object>
-    <object id="48" name="SHEATHED_JUMP" x="600" y="74" width="50" height="37">
-     <properties>
-      <property name="Frames" type="int" value="5"/>
-     </properties>
-    </object>
-    <object id="49" name="SHEATHED_JUMP" x="650" y="74" width="50" height="37">
-     <properties>
-      <property name="Frames" type="int" value="2"/>
-     </properties>
-    </object>
-   </objectgroup>
-   <objectgroup color="#ff0000" id="20" name="AABB" visible="0">
-    <object id="53" x="467" y="85" width="15" height="25"/>
-    <object id="54" x="519" y="87" width="13" height="23"/>
-    <object id="55" x="572" y="81" width="11" height="25"/>
-    <object id="56" x="623" y="81" width="10" height="21"/>
-    <object id="57" x="673" y="82" width="10" height="18"/>
-   </objectgroup>
-  </group>
-  <group id="15" name="SHEATHED_RUN" visible="0">
-   <objectgroup id="12" name="SHEATHED_RUN">
+  <group id="15" name="DISARMED_RUN" visible="0">
+   <objectgroup id="12" name="DISARMED_RUN">
     <properties>
      <property name="num_sprites" type="int" value="6"/>
     </properties>
@@ -111,6 +72,66 @@
    </objectgroup>
    <objectgroup color="#ff0000" id="21" name="AABB">
     <object id="58" x="522" y="44" width="13" height="29"/>
+   </objectgroup>
+  </group>
+  <group id="16" name="DISARMED_JUMP">
+   <objectgroup id="18" name="DISARMED_JUMP">
+    <properties>
+     <property name="num_sprites" type="int" value="4"/>
+    </properties>
+    <object id="45" name="SHEATHED_JUMP" x="450" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="2"/>
+     </properties>
+    </object>
+    <object id="46" name="SHEATHED_JUMP" x="500" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="2"/>
+     </properties>
+    </object>
+    <object id="47" name="SHEATHED_JUMP" x="550" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="20"/>
+     </properties>
+    </object>
+    <object id="48" name="SHEATHED_JUMP" x="600" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="6"/>
+     </properties>
+    </object>
+    <object id="49" name="SHEATHED_JUMP" x="650" y="74" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="2"/>
+     </properties>
+    </object>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="20" name="AABB">
+    <object id="53" x="469" y="85" width="13" height="25"/>
+    <object id="54" x="519" y="87" width="13" height="23"/>
+    <object id="55" x="571" y="81" width="13" height="25"/>
+    <object id="56" x="621" y="81" width="13" height="21"/>
+    <object id="57" x="671" y="82" width="13" height="18"/>
+   </objectgroup>
+  </group>
+  <group id="22" name="DISARMED_FALL">
+   <objectgroup id="24" name="DISARMED_FALL">
+    <properties>
+     <property name="num_sprites" type="int" value="2"/>
+    </properties>
+    <object id="59" name="SHEATHED_FALL" x="500" y="111" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="2"/>
+     </properties>
+    </object>
+    <object id="60" name="SHEATHED_FALL" x="550" y="111" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="2"/>
+     </properties>
+    </object>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="23" name="AABB">
+    <object id="61" x="522" y="117" width="13" height="26"/>
+    <object id="62" x="572" y="117" width="13" height="26"/>
    </objectgroup>
   </group>
  </group>
