@@ -226,10 +226,21 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 	Collider* c2 = nullptr;
 	p2List_item<Collider*>* c = colliders.start;
 	c2 = c->data;
-	
+	for (int i = 0; i < colliders.count(); i++)
+	{
+
+		if (c1->type != c2->type)
+		{
+			if (c1->CheckCollision(c2->rect)) {
+			//	c1->callback->OnCollision(c1, c2);
+			}
+		}
+
 		if (c->next != NULL)
 			c = c->next;
 		c2 = c->data;
+	}
+
 
 	return ret;
 }

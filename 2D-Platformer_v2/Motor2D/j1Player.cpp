@@ -35,7 +35,7 @@ bool j1Player::Start()
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 
-	AABB_current = App->collider->AddCollider({ (int)mPosition.x,(int)mPosition.y,20,50 },COLLIDER_PLAYER);
+
 	mAnimation = disarmed_idle;
 
 	
@@ -70,6 +70,8 @@ bool j1Player::Load(const char* file_name)
 	bool ret = true;
 	pugi::xml_document	player_file;
 	pugi::xml_parse_result result = player_file.load_file(file_name);
+
+	AABB_current = App->collider->AddCollider({ (int)mPosition.x,(int)mPosition.y,20,50 }, COLLIDER_PLAYER, { 0,0 }, this);
 
 	if (result == NULL)
 	{
@@ -259,7 +261,7 @@ void j1Player::CharacterUpdate()
 
 bool j1Player::StateIdle()
 {
-	mSpeed = { 0.f,0.f };
+	mSpeed.SetToZero();
 	if (mAnimation != disarmed_idle) {
 		mAnimation->ResetAnim();
 		mAnimation = disarmed_idle;
@@ -292,7 +294,7 @@ bool j1Player::StateRun()
 
 	if (mGoLeft == mGoRight) {
 		mCurrentState = CharacterState::Idle;
-		mSpeed = { 0.f,0.f };
+		mSpeed.SetToZero();
 		mRunAcceleration = 0.0f;
 		timer = 0.0f;
 	}
@@ -457,6 +459,14 @@ void j1Player::HorizontalMove()
 	}
 }
 
+void j1Player::CheckCollision()
+{
+	if (AABB_current != nullptr) {
+		LOG("X:%i Y:%i", AABB_current->rect.x, AABB_current->rect.y);
+		App->collider->CheckColliderCollision(AABB_current);
+	}
+}
+
 
 void j1Player::SetPlayerPos(pugi::xml_node& object)
 {
@@ -506,6 +516,7 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
+	CheckCollision();
 	CharacterUpdate();
 	UpdatePhysics();
 	Draw(); //Draw all the player

@@ -78,6 +78,8 @@ public:
 
 	void SetPlayerPos(pugi::xml_node& object);
 
+	void OnCollision(Collider* c1,Collider* c2) override {}
+
 private:
 
 	//Load Functions
@@ -89,6 +91,8 @@ private:
 	void CharacterUpdate();
 
 	void HorizontalMove();
+
+	void CheckCollision();
 
 	//STATE MACHINE
 	bool StateIdle();
@@ -110,10 +114,7 @@ private:
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
 	//Positions
-	//p2Point<float>		mSpeed{ 0,0 };
 
-
-	//bool				mOnGround  = false;
 	CharacterState		mCurrentState = CharacterState::Idle;
 	float				mWalkSpeed = 0.0f;
 	float				mRunSpeed = 2.f;
@@ -125,7 +126,6 @@ private:
 	bool				startJump = false;
 	//Animations
 	Animation*			mAnimation = nullptr;
-	Animation*			previousAnimation = nullptr;
 
 	Animation*			disarmed_idle = nullptr;
 	Animation*			disarmed_run = nullptr;
