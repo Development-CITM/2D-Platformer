@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="5" height="7" tilewidth="68" tileheight="35" infinite="0" nextlayerid="18" nextobjectid="33">
+ <imagelayer id="3" name="Capa de Imagen 1">
+  <image source="kobold-Sheet.png" width="340" height="245"/>
+ </imagelayer>
+ <group id="7" name="DEAD">
+  <objectgroup id="15" name="DEAD">
+   <object id="16" name="DEAD" x="272" y="105" width="68" height="35"/>
+   <object id="17" name="DEAD" x="0" y="140" width="68" height="35"/>
+   <object id="18" name="DEAD" x="68" y="140" width="68" height="35"/>
+   <object id="19" name="DEAD" x="136" y="140" width="68" height="35"/>
+   <object id="20" name="DEAD" x="204" y="140" width="68" height="35"/>
+   <object id="21" name="DEAD" x="272" y="140" width="68" height="35"/>
+  </objectgroup>
+  <objectgroup id="16" name="AABB"/>
+ </group>
+ <group id="6" name="HURT">
+  <objectgroup id="14" name="HURT">
+   <object id="11" name="HURT" x="0" y="105" width="68" height="35"/>
+   <object id="12" name="HURT" x="68" y="105" width="68" height="35"/>
+   <object id="13" name="HURT" x="136" y="105" width="68" height="35"/>
+   <object id="14" name="HURT" x="204" y="105" width="68" height="35"/>
+  </objectgroup>
+  <objectgroup color="#ff0000" id="13" name="AABB">
+   <object id="31" x="42" y="112" width="16" height="27"/>
+   <object id="32" x="312" y="123" width="5" height="5"/>
+  </objectgroup>
+ </group>
+ <group id="5" name="RUN">
+  <objectgroup id="12" name="RUN">
+   <object id="5" name="RUN" x="0" y="35" width="68" height="35"/>
+   <object id="6" name="RUN" x="68" y="35" width="68" height="35"/>
+   <object id="7" name="RUN" x="136" y="35" width="68" height="35"/>
+   <object id="8" name="RUN" x="204" y="35" width="68" height="35"/>
+   <object id="9" name="RUN" x="272" y="35" width="68" height="35"/>
+   <object id="22" name="RUN" x="272" y="0" width="68" height="35"/>
+  </objectgroup>
+  <objectgroup color="#ff0000" id="10" name="AABB">
+   <object id="26" x="305" y="5" width="23" height="29"/>
+  </objectgroup>
+ </group>
+ <group id="4" name="IDLE">
+  <objectgroup id="9" name="IDLE">
+   <object id="1" name="IDLE" x="0" y="0" width="68" height="35"/>
+   <object id="2" name="IDLE" x="68" y="0" width="68" height="35"/>
+   <object id="3" name="IDLE" x="136" y="0" width="68" height="35"/>
+   <object id="4" name="IDLE" x="204" y="0" width="68" height="35"/>
+  </objectgroup>
+  <objectgroup color="#ff0000" id="8" name="AABB">
+   <object id="24" x="35" y="6" width="19" height="28"/>
+  </objectgroup>
+ </group>
+</map>
