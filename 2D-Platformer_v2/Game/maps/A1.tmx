@@ -172669,7 +172669,7 @@
   <object id="17" type="Jumpable" x="448" y="720" width="32" height="16"/>
   <object id="18" type="Jumpable" x="448" y="816" width="32" height="16"/>
   <object id="19" type="Jumpable" x="448" y="912" width="32" height="16"/>
-  <object id="20" x="112" y="0" width="32" height="720"/>
+  <object id="20" type="Barrier" x="112" y="0" width="32" height="720"/>
   <object id="22" type="Map_change" x="448" y="928" width="96" height="32">
    <properties>
     <property name="source" value=" A5.tmx"/>

@@ -179,10 +179,10 @@ void j1Colliders::Draw()
 				App->render->DrawQuad(rect, 0, 0, 0, 100);
 				break;
 			case COLLIDER_PLAYER:
-				rect.x = collider->data->rect.x * App->render->player_size * scale;
-				rect.y = collider->data->rect.y * App->render->player_size * scale;
-				rect.w = collider->data->rect.w * App->render->player_size * scale;
-				rect.h = collider->data->rect.h * App->render->player_size * scale;
+				rect.x = collider->data->rect.x * size * scale;
+				rect.y = collider->data->rect.y * size * scale;
+				rect.w = collider->data->rect.w * size * scale;
+				rect.h = collider->data->rect.h * size * scale;
 				App->render->DrawQuad(rect, 0, 255, 0, 100);
 				break;
 			case COLLIDER_WINDOW:
@@ -229,10 +229,10 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 	for (int i = 0; i < colliders.count(); i++)
 	{
 
-		if (c1->type != c2->type)
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW)
 		{
 			if (c1->CheckCollision(c2->rect)) {
-			//	c1->callback->OnCollision(c1, c2);
+				c1->callback->OnCollision(c1, c2);
 			}
 		}
 

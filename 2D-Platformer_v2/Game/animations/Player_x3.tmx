@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="150" tileheight="111" infinite="0" nextlayerid="7" nextobjectid="5">
+ <layer id="1" name="Capa de Patrones 1" width="20" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <imagelayer id="2" name="Player">
+  <image source="Pixel_Hero_x3.png" width="3072" height="1776"/>
+ </imagelayer>
+ <group id="3" name="DISARMED">
+  <group id="4" name="DISARMED_IDLE">
+   <objectgroup id="6" name="DISARMED_IDLE">
+    <properties>
+     <property name="num_sprites" type="int" value="4"/>
+    </properties>
+    <object id="1" x="1350" y="0" width="150" height="111"/>
+    <object id="2" x="1500" y="0" width="150" height="111"/>
+    <object id="3" x="1650" y="0" width="150" height="111"/>
+    <object id="4" x="1800" y="0" width="150" height="111"/>
+   </objectgroup>
+   <objectgroup id="5" name="AABB"/>
+  </group>
+ </group>
+</map>
