@@ -54,7 +54,7 @@ bool j1Fade2Black::Update(float dt)
 		if (now >= total_time)
 		{
 			//Fades music for 1 sec
-			Mix_FadeOutMusic(1000);
+			//Mix_FadeOutMusic(1000); EUDALD: Check this when another zone is added
 
 			//Enables called module, disables current module
 			moduleOff->Disable();

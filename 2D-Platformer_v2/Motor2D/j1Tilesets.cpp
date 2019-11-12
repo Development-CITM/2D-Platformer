@@ -128,8 +128,8 @@ void j1Tilesets::Draw()
 						// Default draw -------------------------------------------------------------------------------------
 						else
 						{
-							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
+							//if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, 2.0f);
 						}
 						
 					}

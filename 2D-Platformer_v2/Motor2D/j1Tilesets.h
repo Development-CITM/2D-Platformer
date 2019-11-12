@@ -154,6 +154,7 @@ private:
 
 
 
+
 	int						currentFrame=0;
 	int						maxFrames=0;
 };
