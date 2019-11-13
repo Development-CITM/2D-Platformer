@@ -45,8 +45,8 @@ bool j1Render::Awake(pugi::xml_node& config)
 	}
 	else
 	{
-		camera.w = 0;
-		camera.h = 0;
+		camera.w = App->win->screen_surface->w;
+		camera.h = App->win->screen_surface->h;
 		camera.x = 0;
 		camera.y = 0;
 	}
@@ -151,7 +151,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		size = 3.f;
 	}
 	rect.w *= scale * size;
-		rect.h *= scale * size;
+	rect.h *= scale * size;
 	
 	SDL_Point* p = NULL;
 	SDL_Point pivot;

@@ -124903,7 +124903,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="19" name="Colliders" visible="0">
+ <objectgroup id="19" name="Colliders">
   <object id="1" type="Barrier" x="864" y="80" width="48" height="640"/>
   <object id="2" type="Barrier" x="656" y="688" width="208" height="32"/>
   <object id="3" type="Barrier" x="608" y="688" width="48" height="304"/>
@@ -124955,9 +124955,9 @@
  <objectgroup id="25" name="Player_pos">
   <object id="43" name="Player pos" x="352" y="0" width="16" height="16">
    <properties>
-    <property name="ground_pos" type="int" value="725"/>
-    <property name="player_pos_x" type="float" value="60"/>
-    <property name="player_pos_y" type="float" value="650"/>
+    <property name="ground_pos" type="int" value="1095"/>
+    <property name="player_pos_x" type="float" value="500"/>
+    <property name="player_pos_y" type="float" value="1000"/>
    </properties>
   </object>
  </objectgroup>

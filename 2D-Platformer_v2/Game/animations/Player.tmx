@@ -4,7 +4,7 @@
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
  <group id="13" name="DISARMED">
-  <group id="14" name="DISARMED_IDLE" visible="0">
+  <group id="14" name="DISARMED_IDLE">
    <objectgroup id="9" name="DISARMED_IDLE">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
@@ -34,7 +34,7 @@
     <object id="50" x="468" y="7" width="13" height="29"/>
    </objectgroup>
   </group>
-  <group id="15" name="DISARMED_RUN" visible="0">
+  <group id="15" name="DISARMED_RUN">
    <objectgroup id="12" name="DISARMED_RUN">
     <properties>
      <property name="num_sprites" type="int" value="6"/>
@@ -71,10 +71,10 @@
     </object>
    </objectgroup>
    <objectgroup color="#ff0000" id="21" name="AABB">
-    <object id="58" x="522" y="44" width="13" height="29"/>
+    <object id="58" x="522" y="47" width="13" height="26"/>
    </objectgroup>
   </group>
-  <group id="16" name="DISARMED_JUMP">
+  <group id="16" name="DISARMED_JUMP" visible="0">
    <objectgroup id="18" name="DISARMED_JUMP">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
@@ -124,8 +124,8 @@
     </object>
    </objectgroup>
    <objectgroup color="#ff0000" id="23" name="AABB">
-    <object id="61" x="522" y="117" width="13" height="26"/>
-    <object id="62" x="572" y="117" width="13" height="26"/>
+    <object id="61" x="521" y="117" width="13" height="26"/>
+    <object id="62" x="571" y="117" width="13" height="26"/>
    </objectgroup>
   </group>
  </group>

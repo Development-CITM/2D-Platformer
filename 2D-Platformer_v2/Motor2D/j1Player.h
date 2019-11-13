@@ -78,8 +78,7 @@ public:
 
 	void SetPlayerPos(pugi::xml_node& object);
 
-	void OnCollision(Collider* c1,Collider* c2) override {}
-
+	void OnCollision(Collider* c1, Collider* c2) override;
 private:
 
 	//Load Functions

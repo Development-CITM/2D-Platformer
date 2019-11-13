@@ -196,6 +196,7 @@ SDL_Rect j1Player::LoadAABB(pugi::xml_node& AABB_object)
 
 void j1Player::UpdatePhysics()
 {
+
 	mOldPosition = mPosition;
 	mOldSpeed = mSpeed;
 
@@ -205,27 +206,24 @@ void j1Player::UpdatePhysics()
 	mWasAtCeiling = mAtCeiling;
 
 	mPosition += mSpeed;
-
 	numCurrentAnimation = mAnimation->GetSprite();
+
 	p2Point<int> roundedPos = { (int)roundf(mPosition.x),(int)roundf(mPosition.y) };
 	if (flip == SDL_FLIP_NONE) {
 		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = roundedPos.x + mAnimation->sprites[numCurrentAnimation].AABB_offset.x;
 		mAnimation->sprites[numCurrentAnimation].AABB_rect.y = roundedPos.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
 	}
 	else {
-		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = roundedPos.x - (int) roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 1.5f) +  player_tmx_data.width*2  +5;
+		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = roundedPos.x - (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 1.5f) + player_tmx_data.width * 2 + 5;
 		mAnimation->sprites[numCurrentAnimation].AABB_rect.y = roundedPos.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
 	}
 
-	AABB_current->Resize({ mAnimation->sprites[numCurrentAnimation].AABB_rect.x + (int)roundf( mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 0.5f),mAnimation->sprites[numCurrentAnimation].AABB_rect.y+ (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.y * 0.5f),(int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_rect.w *1.5f), (int)roundf( mAnimation->sprites[numCurrentAnimation].AABB_rect.h*1.5f) });
-
-	if (mPosition.y >= (float)groundPos)
-	{
-		mPosition.y = (float)groundPos;
-		mOnGround = true;
-	}
-	else
-		mOnGround = false;
+	AABB_current->Resize({ 
+		mAnimation->sprites[numCurrentAnimation].AABB_rect.x + (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 0.5f),
+		mAnimation->sprites[numCurrentAnimation].AABB_rect.y + (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.y * 0.5f),
+		(int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_rect.w * 1.5f), 
+		(int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_rect.h * 1.5f) 
+		});
 }
 
 void j1Player::CharacterUpdate()
@@ -287,6 +285,7 @@ bool j1Player::StateIdle()
 
 bool j1Player::StateRun()
 {
+	mSpeed.y = 0.f;
 	if (mAnimation != disarmed_run) {
 		mAnimation->ResetAnim();
 		mAnimation = disarmed_run;
@@ -297,6 +296,7 @@ bool j1Player::StateRun()
 		mSpeed.SetToZero();
 		mRunAcceleration = 0.0f;
 		timer = 0.0f;
+		
 	}
 	else if (mGoRight) {
 		if (mPushesRightWall) {
@@ -359,6 +359,7 @@ bool j1Player::StateJump()
 		mAnimation = disarmed_jump;
 		delayToJump = 0.f;
 		startJump = false;
+
 	}
 	if (delayToJump < 5.f)
 	{
@@ -381,6 +382,7 @@ bool j1Player::StateJump()
 			mCurrentState = CharacterState::Fall;
 		}
 	}
+	mOnGround = false;
 	HorizontalMove();
 	return true;
 }
@@ -489,6 +491,12 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 		}
 	}
 	
+}
+
+void j1Player::OnCollision(Collider* c1, Collider* c2)
+{
+	mOnGround = true;
+	mPosition.y = c2->rect.y - player_tmx_data.tile_height * 1.5f;
 }
 
 

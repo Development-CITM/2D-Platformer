@@ -117,7 +117,7 @@ void j1Tilesets::Draw()
 						{
 							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * layer->speed)),pos.y,r.w,r.h })) {
 								pos.x = pos.x + (App->render->camera.x * layer->speed);
-								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize,true);
+								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
 							}
 						}
 						else if (strcmp(layer->name.GetString(), "Sea") == 0)
