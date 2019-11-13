@@ -113,7 +113,7 @@ void j1Tilesets::Draw()
 						iPoint pos = MapToWorld(x, y);
 
 						// Parallax -----------------------------------------------------------------------------------------
-						if (strcmp(layer->name.GetString(), "Clouds") == 0)
+						if (strcmp(layer->name.GetString(), "Mountain") == 0 || strcmp(layer->name.GetString(), "Rocks 2")==0 || strcmp(layer->name.GetString(), "Mountain 2")==0 || strcmp(layer->name.GetString(), "Rocks") == 0)
 						{
 							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * layer->speed)),pos.y,r.w,r.h })) {
 								pos.x = pos.x + (App->render->camera.x * layer->speed);
