@@ -536,5 +536,5 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	App->render->Blit(player_tmx_data.texture, (int)roundf(mPosition.x), (int)roundf(mPosition.y), &mAnimation->sprites[numCurrentAnimation].rect,2.f,false,flip);
+	App->render->Blit(player_tmx_data.texture, (int)roundf(mPosition.x), (int)roundf(mPosition.y), &mAnimation->sprites[numCurrentAnimation].rect,3.f,false,flip);
 }
