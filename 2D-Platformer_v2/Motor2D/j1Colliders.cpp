@@ -162,7 +162,7 @@ void j1Colliders::Draw()
 		{
 			//Sets the rect to be printed and it's properties --------------------------------------------
 			SDL_Rect rect = { 0,0,0,0 };
-			rect.x =  collider->data->rect.x * size * scale;
+			rect.x = collider->data->rect.x * size * scale;
 			rect.y = collider->data->rect.y * size * scale;
 			rect.w = collider->data->rect.w * size * scale;
 			rect.h = collider->data->rect.h * size * scale;

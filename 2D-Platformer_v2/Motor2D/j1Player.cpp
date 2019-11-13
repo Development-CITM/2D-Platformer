@@ -135,9 +135,9 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 	anim->name = obj_group.attribute("name").as_string();
 
 	if (strcmp(anim->name.GetString(), "DISARMED_IDLE") == 0) { disarmed_idle = anim; }
-	if (strcmp(anim->name.GetString(), "DISARMED_RUN")	== 0) {	disarmed_run = anim; }
-	if (strcmp(anim->name.GetString(), "DISARMED_JUMP") == 0) { disarmed_jump = anim; disarmed_jump->loop = false; }
-	if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0) { disarmed_fall = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_RUN")	== 0) {	disarmed_run = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_JUMP") == 0) { disarmed_jump = anim; disarmed_jump->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0) { disarmed_fall = anim; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 
@@ -213,11 +213,11 @@ void j1Player::UpdatePhysics()
 		mAnimation->sprites[numCurrentAnimation].AABB_rect.y = roundedPos.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
 	}
 	else {
-		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = roundedPos.x - mAnimation->sprites[numCurrentAnimation].AABB_offset.x + player_tmx_data.width *2 -3;
+		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = roundedPos.x - (int) roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 1.5f) +  player_tmx_data.width*2  +5;
 		mAnimation->sprites[numCurrentAnimation].AABB_rect.y = roundedPos.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
 	}
 
-	AABB_current->Resize(mAnimation->sprites[numCurrentAnimation].AABB_rect);
+	AABB_current->Resize({ mAnimation->sprites[numCurrentAnimation].AABB_rect.x + (int)roundf( mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 0.5f),mAnimation->sprites[numCurrentAnimation].AABB_rect.y+ (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.y * 0.5f),(int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_rect.w *1.5f), (int)roundf( mAnimation->sprites[numCurrentAnimation].AABB_rect.h*1.5f) });
 
 	if (mPosition.y >= (float)groundPos)
 	{
@@ -536,5 +536,5 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	App->render->Blit(player_tmx_data.texture, (int)roundf(mPosition.x), (int)roundf(mPosition.y), &mAnimation->sprites[numCurrentAnimation].rect,2.f,false,flip);
+	App->render->Blit(player_tmx_data.texture, (int)roundf(mPosition.x), (int)roundf(mPosition.y), &mAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
 }
