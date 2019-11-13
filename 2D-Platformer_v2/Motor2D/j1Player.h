@@ -20,6 +20,14 @@ enum CharacterState {
 	GrabLedge,
 };
 
+enum MoveDirection {
+	None,
+	Right,
+	Left,
+	Up,
+	Down,
+};
+
 
 
 struct ObjectLayer
@@ -63,6 +71,8 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void UpdateAABB();
+
 	// Called before all Updates
 	bool PostUpdate();
 
@@ -86,18 +96,24 @@ private:
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	SDL_Rect LoadAABB(pugi::xml_node& player_node);
 
-	void UpdatePhysics();
-	void CharacterUpdate();
+	//void UpdatePhysics();
+	//void UpdateAABB();
+	//void CharacterUpdate();
 
 	void HorizontalMove();
+	void JumpMove();
+	void Gravity();
+	void GroundCheck();
+	void ChangeStates();
 
-	void CheckCollision();
+	//bool CheckCollision();
 
+	bool MoveToDirection(MoveDirection);
 	//STATE MACHINE
-	bool StateIdle();
-	bool StateRun();
-	bool StateJump();
-	bool StateFall();
+	//bool StateIdle();
+	//bool StateRun();
+	//bool StateJump();
+	//bool StateFall();
 
 
 //---------------VARIABLES --------------------//
@@ -106,18 +122,22 @@ public:
 	int					groundPos;
 
 	p2Point<float> mPosition{ 0,0 };
+	p2Point<int> mPositionRounded{ 0,0 };
 private:
 
 	//Enums
 
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
 
+	MoveDirection		moveDirection = MoveDirection::None;
+
 	//Positions
 
 	CharacterState		mCurrentState = CharacterState::Idle;
 	float				mWalkSpeed = 0.0f;
 	float				mRunSpeed = 2.f;
-	float				mJumpSpeed = -5.5f;
+	float				mJumpSpeed = 0.f;
+	float				mMaxJumpSpeed = -12.f;
 	float				mRunAcceleration = 0.0f;
 	float				timer = 0.0f;
 	float				delayToJump = 0.f;
@@ -139,9 +159,11 @@ private:
 	bool				mGoRight = false;
 	bool				mGoLeft = false;
 	bool				mJump = false;
+	bool				falling = true;
 
 	//Colliders
 	Collider*			AABB_current = nullptr;
+	Collider*			AABB_previous = nullptr;
 
 	//XML Stuff
 	p2SString			folder;
@@ -153,23 +175,13 @@ private:
 	 p2Point<float> mOldSpeed;
 	 p2Point<float> mSpeed;
 
-	 //p2Point<float> mScale; Change to FLIP
 
-	 bool mPushedRightWall;
-	 bool mPushesRightWall;
-
-	 bool mPushedLeftWall;
-	 bool mPushesLeftWall;
-
-	 bool mWasOnGround;
 	 bool mOnGround = false;
 
-	 bool mWasAtCeiling;
-	 bool mAtCeiling;
 
 	 int numCurrentAnimation = 0;
 
-
+	 
 
 };
 

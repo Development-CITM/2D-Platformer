@@ -91,7 +91,7 @@ public:
 
 public:
 
-	bool CheckColliderCollision(Collider*, int* posY = nullptr);
+	bool CheckColliderCollision(Collider*, int* posX = nullptr,int* posY = nullptr);
 	bool ThroughPlatform (Collider*);
 	bool collider_debug = false;
 	
@@ -102,6 +102,7 @@ private:
 	p2List<Collider*>	detected_Colliders;
 
 	bool				collider_loaded = false;
+
 
 	int					scale = 0;
 	int					size = 0;

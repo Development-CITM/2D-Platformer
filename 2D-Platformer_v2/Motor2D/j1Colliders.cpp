@@ -219,7 +219,7 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 
 #pragma region CheckFunctions
 //What's the point of this function? Pos Y? --------------------------------------------------------------------------------------------------- EUDALD: ???
-bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
+bool j1Colliders::CheckColliderCollision(Collider* c1,int* posX,int* posY)
 {	
 	bool ret = false;
 
@@ -233,6 +233,11 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posY)
 		{
 			if (c1->CheckCollision(c2->rect)) {
 				c1->callback->OnCollision(c1, c2);
+				if (posX != nullptr && posY != nullptr) {
+					*posX = c2->rect.x;
+					*posY = c2->rect.y;
+				}
+				ret = true;
 			}
 		}
 

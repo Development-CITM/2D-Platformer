@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="45">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="45">
  <tileset firstgid="1" name="mainlevbuild1" tilewidth="16" tileheight="16" tilecount="3200" columns="50">
   <image source="New_Assets/Snow/mainlevbuild1.png" width="800" height="1024"/>
  </tileset>
@@ -124935,7 +124935,7 @@
   <object id="31" type="Barrier" x="912" y="80" width="688" height="32"/>
   <object id="32" type="Barrier" x="1040" y="608" width="336" height="16"/>
   <object id="33" type="Jumpable" x="656" y="960" width="32" height="16"/>
-  <object id="34" type="Jumpables" x="704" y="1088" width="48" height="16"/>
+  <object id="34" type="Jumpable" x="704" y="1088" width="48" height="16"/>
   <object id="36" type="Map_change" x="400" y="896" width="80" height="32">
    <properties>
     <property name="source" value="A5.tmx"/>
@@ -124957,7 +124957,7 @@
    <properties>
     <property name="ground_pos" type="int" value="1095"/>
     <property name="player_pos_x" type="float" value="500"/>
-    <property name="player_pos_y" type="float" value="1000"/>
+    <property name="player_pos_y" type="float" value="1050"/>
    </properties>
   </object>
  </objectgroup>
