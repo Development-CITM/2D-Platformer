@@ -28058,7 +28058,7 @@
      <tile/>
     </data>
    </layer>
-   <layer id="38" name="Mountains" width="140" height="50">
+   <layer id="38" name="Mountain" width="140" height="50">
     <properties>
      <property name="speed" type="float" value="0.25"/>
     </properties>
@@ -35065,7 +35065,7 @@
      <tile/>
     </data>
    </layer>
-   <layer id="39" name="Mountains 2" width="140" height="50">
+   <layer id="39" name="Mountain 2" width="140" height="50">
     <properties>
      <property name="speed" type="float" value="0.3"/>
     </properties>
