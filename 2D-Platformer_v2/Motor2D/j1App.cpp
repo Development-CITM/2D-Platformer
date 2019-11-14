@@ -22,7 +22,6 @@
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
 	PERF_START(ptimer);
-	frames = 0;
 	want_to_save = want_to_load = false;
 
 	input = new j1Input();
@@ -96,7 +95,8 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
-		frames = config.child("framerate").child("cap").attribute("value").as_int();
+		framerateCap = config.child("framerate").child("cap").attribute("value").as_int();
+		capTime = 1000 / config.child("framerate").child("cap").attribute("value").as_int();
 	}
 
 	if(ret == true)
@@ -127,9 +127,10 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+	startup_time.Start();
 
 	PERF_PEEK(ptimer);
-
+	transition = true;
 	return ret;
 }
 
@@ -176,7 +177,13 @@ void j1App::PrepareUpdate()
 	frame_count++;
 	last_sec_frame_count++;
 
-	dt = frame_time.ReadSec();
+	if (transition) {
+		dt = 1.0f / framerateCap;
+		transition = false;
+	}
+	else {
+		dt = frame_time.ReadSec();
+	}
 	frame_time.Start();
 }
 
@@ -209,8 +216,13 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	//if((1000/frames)>last_frame_ms)
-	//	SDL_Delay((1 * 1000 / frames) - last_frame_ms);  //EUDALD ???
+	if (capFrames) {
+		uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
+		//LOG("Should wait: %i", delay);
+		//j1PerfTimer delayTimer;
+		SDL_Delay(delay);
+		//LOG("Has waited:  %f", delayTimer.ReadMs());
+	}
 	
 	
 	//Information about frames LOGs

@@ -37,7 +37,7 @@
   </player>
 
   <framerate>
-    <cap value="10"/>
+    <cap value="60"/>
   </framerate>
   
   <audio>

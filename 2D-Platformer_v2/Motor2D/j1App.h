@@ -97,7 +97,6 @@ public:
 private:
 
 	p2List<j1Module*>	modules;
-	uint				frames;
 	float				dt;
 	int					argc;
 	char**				args;
@@ -117,7 +116,13 @@ private:
 	j1Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
-	uint32				frame_cap;
+	uint32				capTime = 0;
+	float				framerateCap = 0.0f;
+	
+	float				seconds_since_sartup = 0.0f;
+
+	bool				capFrames = true;
+	bool				transition = false;
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S
