@@ -209,8 +209,8 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	if((1/frames)>last_frame_ms)
-		SDL_Delay((1/ frames) - last_frame_ms);  //EUDALD ???
+	//if((1000/frames)>last_frame_ms)
+	//	SDL_Delay((1 * 1000 / frames) - last_frame_ms);  //EUDALD ???
 	
 	
 	//Information about frames LOGs
