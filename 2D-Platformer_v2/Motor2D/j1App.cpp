@@ -3,6 +3,7 @@
 
 #include "p2Defs.h"
 #include "p2Log.h"
+#include "j1PerfTimer.h"
 
 #include "j1Window.h"
 #include "j1Input.h"
@@ -20,6 +21,7 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
+	PERF_START(ptimer);
 	frames = 0;
 	want_to_save = want_to_load = false;
 
@@ -51,6 +53,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// render last to swap buffer
 	AddModule(render);
+	PERF_PEEK(ptimer);
 }
 
 // Destructor
@@ -77,6 +80,7 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
+	PERF_START(ptimer);
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
@@ -105,7 +109,7 @@ bool j1App::Awake()
 			item = item->next;
 		}
 	}
-
+	PERF_PEEK(ptimer);
 	return ret;
 }
 
@@ -165,6 +169,11 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	frame_count++;
+	last_sec_frame_count++;
+
+	dt = frame_time.ReadSec();
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -175,6 +184,41 @@ void j1App::FinishUpdate()
 
 	if(want_to_load == true)
 		LoadGameNow();
+
+	if (want_to_save == true)
+		SavegameNow();
+
+	if (want_to_load == true)
+		LoadGameNow();
+
+	// Framerate calculations --
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+	j1PerfTimer cap_timer;
+
+
+
+	/*static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
+		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+	App->win->SetTitle(title);*/
+
+	j1PerfTimer measure;
+	measure.Start();
+	if(1000/frame_cap>last_frame_ms)
+	SDL_Delay(1000 / frame_cap - last_frame_ms);
+
+	//LOG("we waited for %d and got back in %f", ((1 * 1000 / frame_cap) - last_frame_ms), measure.ReadMs());
 }
 
 // Call modules before each loop iteration

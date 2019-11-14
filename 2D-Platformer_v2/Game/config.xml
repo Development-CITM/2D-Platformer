@@ -7,7 +7,7 @@
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
   </renderer>
 
   <window>
@@ -15,7 +15,7 @@
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
-    <fullscreen_window value="false"/>
+    <fullscreen_window value="false"/>9
   </window>
 
   <player>
@@ -34,10 +34,11 @@
     <colliderheight_dir_down value ="32"/>
 
     <pivot_x_flip value="4"/>
-
   </player>
-  
-  
+
+  <framerate>
+    <cap value="30"/>
+  </framerate>
   
   <audio>
     <volume value="50"/>

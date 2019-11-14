@@ -727,9 +727,9 @@ bool j1Player::Update(float dt)
 
 
 
-	LOG("Current state: %i", mCurrentState);
+	/*LOG("Current state: %i", mCurrentState);
 	LOG("Pos Y: %f", mPosition.y);
-	LOG("Speed: %f", mSpeed.y);
+	LOG("Speed: %f", mSpeed.y);*/
 	Draw(); //Draw all the player
 
 	return true;
