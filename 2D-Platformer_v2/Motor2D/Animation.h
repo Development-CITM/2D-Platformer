@@ -11,6 +11,7 @@ struct Sprite {
 	int current_frame = 0;
 	p2Point<int> AABB_offset;
 
+
 };
 
 struct Animation {
@@ -19,6 +20,7 @@ struct Animation {
 
 	int num_sprites = 0;
 	Sprite* sprites = nullptr;
+	bool finished = false;
 
 	p2Point<int> offset;
 
@@ -26,6 +28,7 @@ struct Animation {
 public:
 	void ResetAnim() {
 		current_sprite = 0;
+		finished = false;
 		for (int i = 0; i < num_sprites; i++)
 		{
 			sprites[i].current_frame = 0;
@@ -49,6 +52,8 @@ public:
 		}
 		else if(current_sprite == num_sprites){
 			current_sprite = num_sprites-1;
+			finished = true;
+			
 		}
 
 		return current_sprite;

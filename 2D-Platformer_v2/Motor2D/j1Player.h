@@ -71,7 +71,9 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
-	void UpdateAABB();
+	void ReSizeAABBFromAnimation();
+
+	void RoundPosition();
 
 	// Called before all Updates
 	bool PostUpdate();
@@ -96,6 +98,8 @@ private:
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	SDL_Rect LoadAABB(pugi::xml_node& player_node);
 
+	void MovePlayerX(float value);
+	void MovePlayerY(float value);
 	//void UpdatePhysics();
 	//void UpdateAABB();
 	//void CharacterUpdate();
@@ -141,7 +145,7 @@ private:
 	float				mRunAcceleration = 0.0f;
 	float				timer = 0.0f;
 	float				delayToJump = 0.f;
-	float				cGravity = 0.3f;
+	float				cGravity = 0.5f;
 	bool				startJump = false;
 	//Animations
 	Animation*			mAnimation = nullptr;

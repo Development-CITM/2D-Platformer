@@ -194,6 +194,10 @@ SDL_Rect j1Player::LoadAABB(pugi::xml_node& AABB_object)
 
 }
 
+void j1Player::MovePlayerX(float value)
+{
+}
+
 
 
 //void j1Player::UpdatePhysics()
@@ -545,8 +549,8 @@ bool j1Player::PreUpdate()
 		mGoLeft = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && mOnGround) {
-		mJump = true;
+ 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && mOnGround) {
+ 		mJump = true;
 		startJump = true;
 	}
 	return true;
@@ -579,6 +583,9 @@ void j1Player::GroundCheck()
 	tmp->rect.y = AABB_current->rect.y +1;
 	if (App->collider->CheckColliderCollision(tmp)) {
 		mOnGround = true;
+	}
+	else {
+		mOnGround = false;
 	}
 }
 void j1Player::ChangeStates() 
@@ -668,12 +675,14 @@ bool j1Player::MoveToDirection(MoveDirection moveDir)
 			mJumpSpeed += 0.3f;
 		}
 		else {
-			mCurrentState = CharacterState::Fall;
+		//	mCurrentState = CharacterState::Fall;
 			mJump = false;
 		}
 		AABB_current->rect.y += mJumpSpeed;
 		mPosition.y += mJumpSpeed;
-		
+		if (App->collider->CheckColliderCollision(AABB_current)) {
+			mPosition.y = mOldPosition.y;
+		}
 		break;
 	case Down:
 		AABB_current->rect.y += 4.f;
@@ -681,11 +690,12 @@ bool j1Player::MoveToDirection(MoveDirection moveDir)
 		int posX, posY = 0;
 		if (App->collider->CheckColliderCollision(AABB_current,&posX,&posY)) {
 			mPosition.y = mOldPosition.y;
-			mPosition.y = posY - player_tmx_data.tile_height * 1.5f - 1;
+			mPosition.y = posY - player_tmx_data.tile_height * 1.5f;
+			mOnGround = true;
 		}
 		break;
 	}
-	UpdateAABB();
+	ReSizeAABBFromAnimation();
 	return true;
 }
 bool j1Player::Update(float dt)
@@ -705,38 +715,123 @@ bool j1Player::Update(float dt)
 //Finish this loop state.
 //Now Draw current animation with updated position and AABB position
 
-	GroundCheck();
-	ChangeStates();
-	Gravity();
-
+	//CHANGE STATES
 	switch (mCurrentState)
 	{
-	case Idle:	
-		HorizontalMove();
-		JumpMove();
-		mAnimation = disarmed_idle;
-		break;
-
-	case Run:
-		HorizontalMove();
-		JumpMove();
-		if (mAnimation != disarmed_run) {
+	case Idle:
+		if (mGoLeft || mGoRight) {
+			mCurrentState = CharacterState::Run;
 			mAnimation = disarmed_run;
+			mAnimation->ResetAnim();
+			break;
+		}
+		if (mJump && mOnGround) {
+			mCurrentState = CharacterState::Jump;
+			mAnimation = disarmed_jump;
+			mAnimation->ResetAnim();
+			break;
 		}
 		break;
-	case Jump:		
-		HorizontalMove();
-		JumpMove();
-		if (mAnimation != disarmed_jump) {
-			disarmed_jump->ResetAnim();
+	case Walk:
+		break;
+	case Run:
+		if (mGoLeft == mGoRight) {
+			mCurrentState = CharacterState::Idle;
+			mAnimation = disarmed_idle;
+			mAnimation->ResetAnim();
+			break;
+		}
+		if (mJump) {
+			mCurrentState = CharacterState::Jump;
 			mAnimation = disarmed_jump;
-			mOnGround = false;
+			mAnimation->ResetAnim();
+
+		
+			break;
+		}
+		break;
+	case Jump:
+		if (mAnimation->finished) {
+			if (mGoLeft == mGoRight) {
+				mCurrentState = CharacterState::Idle;
+				mAnimation = disarmed_idle;
+				mAnimation->ResetAnim();
+			}
+			else {
+				mCurrentState = CharacterState::Run;
+				mAnimation = disarmed_run;
+				mAnimation->ResetAnim();
+			}
 		}
 		break;
 	case Fall:
-		HorizontalMove();
+		break;
+	case GrabLedge:
+		break;
+	default:
 		break;
 	}
+	//------------------Update Animation--------------------------//
+	numCurrentAnimation = mAnimation->GetSprite();
+	ReSizeAABBFromAnimation();
+	int posX = 0;
+	int posY = 0;
+
+	GroundCheck();
+	Gravity();
+	HorizontalMove();
+	JumpMove();
+	//State Logic
+	switch (mCurrentState)
+	{
+	case Idle:
+	break;
+	case Walk:
+		break;
+	case Run:
+		break;
+	case Jump:
+	
+		break;
+	case Fall:
+		break;
+	case GrabLedge:
+		break;
+	
+	}
+	LOG("Current state: %i", mCurrentState);
+	//GroundCheck();
+	//ChangeStates();
+	//Gravity();
+
+	//switch (mCurrentState)
+	//{
+	//case Idle:	
+	//	HorizontalMove();
+	//	JumpMove();
+	//	mAnimation = disarmed_idle;
+	//	break;
+
+	//case Run:
+	//	HorizontalMove();
+	//	JumpMove();
+	//	if (mAnimation != disarmed_run) {
+	//		mAnimation = disarmed_run;
+	//	}
+	//	break;
+	//case Jump:		
+	//	HorizontalMove();
+	//	JumpMove();
+	//	if (mAnimation != disarmed_jump) {
+	//		disarmed_jump->ResetAnim();
+	//		mAnimation = disarmed_jump;
+	//		mOnGround = false;
+	//	}
+	//	break;
+	//case Fall:
+	//	HorizontalMove();
+	//	break;
+	//}
 	//CharacterUpdate();
 	//UpdatePhysics();
 
@@ -745,20 +840,28 @@ bool j1Player::Update(float dt)
 	/*LOG("Current state: %i", mCurrentState);
 	LOG("Pos Y: %f", mPosition.y);
 	LOG("Speed: %f", mSpeed.y);*/
+
+	//Update Animation
+
 	Draw(); //Draw all the player
 
 	return true;
 }
 
-void j1Player::UpdateAABB()
+void j1Player::ReSizeAABBFromAnimation()
+{
+	RoundPosition();
+	SDL_Rect r;
+	r.x = mPositionRounded.x + mAnimation->sprites[numCurrentAnimation].AABB_offset.x + 8;
+	r.y = mPositionRounded.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y +3;
+	r.w = mAnimation->sprites[numCurrentAnimation].AABB_rect.w + 10;
+	r.h = mAnimation->sprites[numCurrentAnimation].AABB_rect.h + 15;
+	AABB_current->Resize(r);
+}
+
+void j1Player::RoundPosition()
 { 
-
-
 	mPositionRounded = { (int)roundf(mPosition.x),(int)roundf(mPosition.y) };
-	AABB_current->rect.x = mPositionRounded.x + player_tmx_data.tile_width * 0.5f + 2;
-	AABB_current->rect.y = mPositionRounded.y + 5;
-
-
 }
 
 
@@ -772,10 +875,7 @@ bool j1Player::PostUpdate()
 
 void j1Player::Draw()
 {
-	if (mAnimation == disarmed_jump) {
-		LOG("");
-	}
-	numCurrentAnimation = mAnimation->GetSprite();
+
 
 	App->render->Blit(player_tmx_data.texture, mPositionRounded.x, mPositionRounded.y, &mAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
 }

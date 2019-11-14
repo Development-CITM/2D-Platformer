@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="25" nextobjectid="63">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="25" nextobjectid="63">
  <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
@@ -71,10 +71,10 @@
     </object>
    </objectgroup>
    <objectgroup color="#ff0000" id="21" name="AABB">
-    <object id="58" x="522" y="47" width="13" height="26"/>
+    <object id="58" x="572" y="47" width="13" height="26"/>
    </objectgroup>
   </group>
-  <group id="16" name="DISARMED_JUMP" visible="0">
+  <group id="16" name="DISARMED_JUMP">
    <objectgroup id="18" name="DISARMED_JUMP">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
@@ -104,7 +104,7 @@
     <object id="53" x="469" y="85" width="13" height="25"/>
     <object id="54" x="519" y="87" width="13" height="23"/>
     <object id="55" x="571" y="81" width="13" height="25"/>
-    <object id="56" x="621" y="81" width="13" height="21"/>
+    <object id="56" x="621" y="79" width="13" height="23"/>
    </objectgroup>
   </group>
   <group id="22" name="DISARMED_FALL">
