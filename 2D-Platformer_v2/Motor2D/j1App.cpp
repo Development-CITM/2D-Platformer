@@ -96,6 +96,7 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+		frames = config.child("framerate").child("cap").attribute("value").as_int();
 	}
 
 	if(ret == true)
@@ -116,6 +117,7 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
+	PERF_START(ptimer);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -125,6 +127,8 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -204,22 +208,12 @@ void j1App::FinishUpdate()
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
-	j1PerfTimer cap_timer;
 
-	uint wait_time = 1000 / frame_cap - cap_timer.ReadTicks();
-
-	j1PerfTimer measure;
-	measure.Start();
-	if (1000 / frame_cap > cap_timer.ReadTicks());
-	{
-		SDL_Delay(wait_time);  //EUDALD ???
-	}
-
-
-
+	if((1/frames)>last_frame_ms)
+		SDL_Delay((1/ frames) - last_frame_ms);  //EUDALD ???
+	
+	
 	//Information about frames LOGs
-
-
 	//LOG("We waited for: %u miliseconds and we got back in %f", wait_time, avg_fps);
 	//LOG("we waited for %d and got back in %f", ((1 * 1000 / frame_cap) - last_frame_ms), measure.ReadMs());
 	/*static char title[256];
