@@ -7039,7 +7039,7 @@
    </layer>
    <layer id="35" name="Rocks 2" width="140" height="50">
     <properties>
-     <property name="speed" type="float" value="-0.05"/>
+     <property name="speed" type="float" value="-0.025"/>
     </properties>
     <data>
      <tile gid="19517"/>
@@ -21053,7 +21053,7 @@
    </layer>
    <layer id="37" name="Rocks" width="140" height="50">
     <properties>
-     <property name="speed" type="float" value="-0.2"/>
+     <property name="speed" type="float" value="-0.025"/>
     </properties>
     <data>
      <tile/>
@@ -28060,7 +28060,7 @@
    </layer>
    <layer id="38" name="Mountain" width="140" height="50">
     <properties>
-     <property name="speed" type="float" value="0.25"/>
+     <property name="speed" type="float" value="0.05"/>
     </properties>
     <data>
      <tile/>
@@ -35067,7 +35067,7 @@
    </layer>
    <layer id="39" name="Mountain 2" width="140" height="50">
     <properties>
-     <property name="speed" type="float" value="0.3"/>
+     <property name="speed" type="float" value="0.05"/>
     </properties>
     <data>
      <tile/>

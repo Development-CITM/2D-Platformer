@@ -37,11 +37,11 @@
   </player>
 
   <framerate>
-    <cap value="60"/>
+    <cap value="70"/>
   </framerate>
   
   <audio>
-    <volume value="50"/>
+    <volume value="0"/>
   </audio>
 
   <file_system>
