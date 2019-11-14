@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="45">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="45">
  <tileset firstgid="1" name="mainlevbuild1" tilewidth="16" tileheight="16" tilecount="3200" columns="50">
   <image source="New_Assets/Snow/mainlevbuild1.png" width="800" height="1024"/>
  </tileset>
@@ -57663,7 +57663,7 @@
     </data>
    </layer>
   </group>
-  <group id="22" name="Wall" visible="0">
+  <group id="22" name="Wall">
    <layer id="33" name="Wall back" width="120" height="80">
     <data>
      <tile/>
@@ -76873,7 +76873,7 @@
     </data>
    </layer>
   </group>
-  <group id="23" name="Map Construction" visible="0">
+  <group id="23" name="Map Construction">
    <layer id="35" name="Platforms" width="120" height="80">
     <data>
      <tile/>

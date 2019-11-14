@@ -39650,7 +39650,7 @@
    </layer>
    <layer id="205" name="Mountain" width="165" height="60">
     <properties>
-     <property name="0,05" type="float" value="0"/>
+     <property name="speed" type="float" value="0.05"/>
     </properties>
     <data>
      <tile/>

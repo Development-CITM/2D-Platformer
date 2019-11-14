@@ -206,19 +206,26 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 	j1PerfTimer cap_timer;
 
+	uint wait_time = 1000 / frame_cap - cap_timer.ReadTicks();
+
+	j1PerfTimer measure;
+	measure.Start();
+	if (1000 / frame_cap > cap_timer.ReadTicks());
+	{
+		SDL_Delay(wait_time);  //EUDALD ???
+	}
 
 
+
+	//Information about frames LOGs
+
+
+	//LOG("We waited for: %u miliseconds and we got back in %f", wait_time, avg_fps);
+	//LOG("we waited for %d and got back in %f", ((1 * 1000 / frame_cap) - last_frame_ms), measure.ReadMs());
 	/*static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
 	App->win->SetTitle(title);*/
-
-	j1PerfTimer measure;
-	measure.Start();
-	if(1000/frame_cap>last_frame_ms)
-	SDL_Delay(1000 / frame_cap - last_frame_ms);
-
-	//LOG("we waited for %d and got back in %f", ((1 * 1000 / frame_cap) - last_frame_ms), measure.ReadMs());
 }
 
 // Call modules before each loop iteration
