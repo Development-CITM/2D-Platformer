@@ -690,6 +690,21 @@ bool j1Player::MoveToDirection(MoveDirection moveDir)
 }
 bool j1Player::Update(float dt)
 {
+//---------NEED TO-------//
+//UpdateState depending of inputs
+//Gravity affects allways and its independent from 
+//Iterate from all states and execute the logic from currentState
+//Animations should be declared here once you changed the currentState
+//What happen on every state? (sperate each logic state on functions)
+//Example: OnRunState:Call function to move right or left: 
+//AABB Collider should be diffent from each animation (would be better a differnt collider from each animation frame, but for now, simplify)
+//this function : you should move the player (and update its collider at the same time), before its move, check if can move(if any collision would be in the next move)
+//If no collision detected, keep going or reach the movement, if not, you should snap your collider nexto the collided one. ( this should be AXIS independent to have more control and avoid conflicts of positions)
+//Once you finish this function it should be the position correctly to draw it (round position to int to print) AABB should move on player's position, so it should be rounded by default bc playerposition would be rounded)
+//Here, currentstate keeps updating if there are more functions appart of move logic.
+//Finish this loop state.
+//Now Draw current animation with updated position and AABB position
+
 	GroundCheck();
 	ChangeStates();
 	Gravity();
