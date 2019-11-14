@@ -110,14 +110,14 @@ bool j1Scene::Update(float dt)
 	
 	int x, y;
 	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
+	/*iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->tiles->map_Data.width, App->tiles->map_Data.height,
 					App->tiles->map_Data.tile_width, App->tiles->map_Data.tile_height,
 					App->tiles->map_Data.tilesets.count(),
 					map_coordinates.x, map_coordinates.y);
 
-	App->win->SetTitle(title.GetString());
+	App->win->SetTitle(title.GetString());*/
 	return true;
 }
 
