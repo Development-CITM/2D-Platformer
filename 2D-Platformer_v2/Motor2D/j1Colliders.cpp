@@ -219,9 +219,14 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 
 #pragma region CheckFunctions
 //What's the point of this function? Pos Y? --------------------------------------------------------------------------------------------------- EUDALD: ???
-bool j1Colliders::CheckColliderCollision(Collider* c1,int* posX,int* posY)
+bool j1Colliders::CheckColliderCollision(Collider* c1,p2Point<int>increment, int* posX,int* posY)
 {	
 	bool ret = false;
+	Collider prediction;
+	prediction = *c1;
+	prediction.rect.x = c1->rect.x + increment.x;
+	prediction.rect.y = c1->rect.y + increment.y;
+	LOG("%i %i", prediction.rect.x, c1->rect.x);
 
 	Collider* c2 = nullptr;
 	p2List_item<Collider*>* c = colliders.start;
@@ -229,22 +234,42 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,int* posX,int* posY)
 	for (int i = 0; i < colliders.count(); i++)
 	{
 
-		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW)
+		if (prediction.type != c2->type && c2->type != COLLIDER_WINDOW)
 		{
-			if (c1->CheckCollision(c2->rect)) {
-				c1->callback->OnCollision(c1, c2);
-				if (posX != nullptr && posY != nullptr) {
-					*posX = c2->rect.x;
-					*posY = c2->rect.y;
+			if (increment.x != 0) {
+				if (prediction.CheckCollision(c2->rect)) {
+					if (posX != nullptr && posY != nullptr) {
+						*posX = c2->rect.x;
+						*posY = c2->rect.y;
+					}
+					ret = true;
 				}
-				ret = true;
+			}
+			else if(increment.x == 0){
+				if (prediction.CheckCollision(c2->rect)) {
+					if (posX != nullptr && posY != nullptr) {
+						*posX = c2->rect.x;
+						*posY = c2->rect.y;
+					}
+					ret = true;
+				}		
 			}
 		}
-
 		if (c->next != NULL)
 			c = c->next;
 		c2 = c->data;
 	}
+
+	if (!ret) {
+		c1->rect.x = prediction.rect.x;					
+		c1->rect.y = prediction.rect.y;
+		
+	}
+	if (ret && increment.y > 0) {
+		c1->rect.y = *posY - App->player->player_tmx_data.tile_height - 9;
+		App->player->jumping = false;	
+	}	
+
 
 
 	return ret;

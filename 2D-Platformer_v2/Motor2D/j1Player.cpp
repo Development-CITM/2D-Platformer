@@ -27,21 +27,6 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	
 	LOG("Loading Player...");
 	pugi::xml_node player_values = conf;
-	jumpDistance = player_values.child("jumpDistance").attribute("value").as_uint();
-	timeOnAir = player_values.child("timeOnAir").attribute("value").as_uint();
-
-	max_jumpSpeed = player_values.child("max_jumpSpeed").attribute("value").as_uint();
-	max_FallSpeed = player_values.child("max_FallSpeed").attribute("value").as_uint();
-	gravityForce = player_values.child("gravityForce").attribute("value").as_uint();
-	max_gravityForce = player_values.child("max_gravityForce").attribute("value").as_uint();
-	runSpeed = player_values.child("runSpeed").attribute("value").as_uint();
-	max_dashSpeed = player_values.child("max_dash_Speed").attribute("value").as_uint();
-	dash_distance = player_values.child("dash_distance").attribute("value").as_uint();
-
-	playerheight_dir_down = player_values.child("playerheight_dir_down").attribute("value").as_int();
-	colliderheight_dir_down = player_values.child("colliderheight_dir_down").attribute("value").as_int();
-
-
 
 	pivot_x_flip = player_values.child("pivot_x_flip").attribute("value").as_int();
 	return ret;	
@@ -87,7 +72,7 @@ bool j1Player::Load(const char* file_name)
 	pugi::xml_parse_result result = player_file.load_file(file_name);
 
 	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,50 }, COLLIDER_PLAYER, { 0,0 }, this);
-
+	player_Collider->rect.h = 45;
 	if (result == NULL)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", file_name, result.description());
@@ -150,7 +135,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 	anim->name = obj_group.attribute("name").as_string();
 
 	if (strcmp(anim->name.GetString(), "DISARMED_IDLE") == 0) { disarmed_idle = anim; }
-	else if (strcmp(anim->name.GetString(), "DISARMED_RUN")	== 0) {	disarmed_run = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_RUN") == 0) { disarmed_run = anim; disarmed_run->offset.x = 5; }
 	else if (strcmp(anim->name.GetString(), "DISARMED_JUMP") == 0) { disarmed_jump = anim; disarmed_jump->loop = false; }
 	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0) { disarmed_fall = anim; }
 
@@ -180,6 +165,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 		}
 		i++;
 	}
+
 
 	return anim;
 }
@@ -242,30 +228,66 @@ bool j1Player::PreUpdate()
 {
 	velocity_X = playerPos.x;
 	velocity_Y = playerPos.y;
-	Gravity();
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		moveRight = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		moveRight = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		moveLeft = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		moveLeft = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !jumping) {
+		jumpPressed = true;
+	}
+
+
+	if (moveLeft && moveRight) {
+		runSpeed = 0.f;
+	}
+	if (moveRight) {
+		if(runSpeed< 2.0f)
+		runSpeed += .2f;
+	}
+	else if(moveLeft){
+		if (runSpeed > -2.0f)
+			runSpeed -= .2f;
+	
+	}
+	else {
+		runSpeed = 0.f;
+	}
+
+
+	if (jumpPressed) {
+		jumping = true;
+		verticalSpeed = -10.f;
+		jumpPressed = false;
+	}
+	if (verticalSpeed < 6) {
+		verticalSpeed += gravitySpeed;
+	}
+
+	
+
+
 	//Hold Movements
 	if (canMove) {
 		switch (state)
 		{
 		case ST_Idle:
-			ExitInput();
-			VerticalInput();
-			HorizontalInput();
 			break;
 		case ST_Run:
-			//DashInput();
-			ExitInput();
-			VerticalInput();
-			HorizontalInput();
 			break;
 		case ST_Jump:
-			//DashInput();
-			HorizontalInput();
 			break;
 		case ST_Fall:
-			//DashInput();
-			HorizontalInput();
-
 			break;
 		}
 	}
@@ -274,7 +296,7 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
-
+	
 //---------NEED TO-------//
 //UpdateState depending of inputs
 //Gravity affects allways and its independent from 
@@ -293,70 +315,71 @@ bool j1Player::Update(float dt)
 
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
-	//Change Animations
-	Move();
-	Jump();
-	//Dash();
-	if (velocity_X == 0 && velocity_Y == 0 && !jumping && state != ST_Jump && state != ST_Fall) {
-		ChangeAnimation(disarmed_idle);
-		state = ST_Idle;
-	}
 
-	if (velocity_X != 0 && velocity_Y == 0 && state != ST_Jump && state != ST_Fall) {
-		if (!dash) {
-			ChangeAnimation(disarmed_run);
-			state = ST_Run;
+	if (runSpeed != 0) {
+		if (runSpeed < 0) {
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 		}
-		else {
-			ChangeAnimation(disarmed_jump);
+		else if(runSpeed >0){
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
+		currentAnimation = disarmed_run;
+	}
+	else {
+		if (currentAnimation != disarmed_idle) {
+			currentAnimation->ResetAnim();
+			currentAnimation = disarmed_idle;
 		}
 	}
 
-	if (velocity_Y > 0) {
-		ChangeAnimation(disarmed_jump);
-		state = ST_Jump;
+	if (verticalSpeed <= 0) {
+		currentAnimation = disarmed_jump;
+	}
+	else if (verticalSpeed > 0 && !onGround) {
+		currentAnimation = disarmed_fall;
 	}
 
-	if (velocity_Y < 0 && state != ST_Idle) {
-		if (currentAnimation != disarmed_fall)
-			ChangeAnimation(disarmed_fall);
-		if (state != ST_Fall) {
-			state = ST_Fall;
-			gravityForce = 3;
+	if (onGround && runSpeed == 0) {
+		currentAnimation = disarmed_idle;
+	}
+
+	
+	int posX, posY = 0;
+	App->collider->CheckColliderCollision(player_Collider, {(int) roundf(runSpeed),0 });
+	if (App->collider->CheckColliderCollision(player_Collider, { 0,(int)roundf(verticalSpeed) }, &posX, &posY)) {
+		if (verticalSpeed > 0) {
+			onGround = true;
 		}
+			verticalSpeed = 0.f;
 	}
-
-
-	if (App->tiles->culling_Collider->CheckCollision(player_Collider->rect)) {
-		//LOG("Player_Collider.x: %i", player_Collider->rect.x);
-		//LOG("Camera collider.x: %i", App->tiles->camera_Collider->rect.x);
-
-		relativePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
-		relativePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
-		//LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
+	else {
+		onGround = false;
 	}
 
 	LOG("State: %i", state);
 
 
 	numCurrentAnimation = currentAnimation->GetSprite();
-	ReSizeAABBFromAnimation();
+	
+	playerPos.x = player_Collider->rect.x - (int) roundf( player_tmx_data.tile_width*0.5) - 2;
+	playerPos.y = player_Collider->rect.y-10;
+	//ReSizeAABBFromAnimation();
 	Draw(); //Draw all the player
 
 	return true;
 }
 
-void j1Player::ReSizeAABBFromAnimation()
-{
-
-
-	SDL_Rect r;
-	r.x = playerPos.x + currentAnimation->sprites[numCurrentAnimation].AABB_offset.x + 8;
-	r.y = playerPos.y + currentAnimation->sprites[numCurrentAnimation].AABB_offset.y +3;
-	r.w = currentAnimation->sprites[numCurrentAnimation].AABB_rect.w + 10;
-	r.h = currentAnimation->sprites[numCurrentAnimation].AABB_rect.h + 15;
-	player_Collider->Resize(r);
-}
+//void j1Player::ReSizeAABBFromAnimation()
+//{
+//
+//
+//	SDL_Rect r;
+//	r.x = playerPos.x + currentAnimation->sprites[numCurrentAnimation].AABB_offset.x + 8;
+//	r.y = playerPos.y + currentAnimation->sprites[numCurrentAnimation].AABB_offset.y +3;
+//	r.w = currentAnimation->sprites[numCurrentAnimation].AABB_rect.w + 10;
+//	r.h = currentAnimation->sprites[numCurrentAnimation].AABB_rect.h + 15;
+//	player_Collider->Resize(r);
+//}
 
 
 
@@ -365,21 +388,6 @@ void j1Player::ReSizeAABBFromAnimation()
 bool j1Player::PostUpdate()
 {
 	return true;
-}
-void j1Player::VerticalInput()
-{
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround) {
-		App->audio->PlayFx(2);
-		maxJump = player_Collider->rect.y - jumpDistance;
-		jumping = true;
-		jumpSpeed = max_jumpSpeed;
-		gravityForce = 2;
-		state = ST_Jump;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && onPlatform) {
-		MoveTo(DIR_PLATFORM);
-	}
 }
 
 
@@ -391,247 +399,19 @@ void j1Player::ChangeAnimation(Animation* anim)
 		currentAnimation = anim;
 	}
 }
-void j1Player::ExitInput()
-{
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && App->scene->exitCollider != nullptr) {
-		if (player_Collider->CheckCollision(App->scene->exitCollider->rect)) {
-			LOG("COLLIDER EXIT DONE");
-			App->scene->hasExit = true;
-		}
-	}
-}
-
-void j1Player::HorizontalInput()
-{
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		move_To_Right = true;
-		last_Direction = DIR_RIGHT;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		move_To_Right = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		move_To_Left = true;
-		last_Direction = DIR_LEFT;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		move_To_Left = false;
-	}
-
-}
-
-void j1Player::ResetInputs()
-{
-	move_To_Right = false;
-	move_To_Left = false;
-	move_To_Up = false;
-
-	jumping = false;
-	flip = SDL_FLIP_NONE;
-}
-
-bool j1Player::MoveTo(Directions dir)
-{
-
-		bool ret = false;
-
-		previousColliderPos = player_Collider->GetPosition();
-		previousPlayerPos = playerPos;
-
-		switch (dir)
-		{
-		case DIR_DASH_LEFT:
-			player_Collider->rect.x -= dashSpeed;
-			playerPos.x -= dashSpeed;
-			if (App->collider->CheckColliderCollision(player_Collider)) {
-				player_Collider->rect.x = previousColliderPos.x;
-				playerPos.x = previousPlayerPos.x;
-				state = ST_Fall;
-				dash = false;
-			}
-			else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
-				App->render->camera.x += dashSpeed * 2;
-
-				App->tiles->culling_Collider->rect.x -= dashSpeed;
-			}
-			break;
-
-		case DIR_DASH_RIGHT:
-			player_Collider->rect.x += dashSpeed;
-			playerPos.x += dashSpeed;
-			if (App->collider->CheckColliderCollision(player_Collider)) {
-				player_Collider->rect.x = previousColliderPos.x;
-				playerPos.x = previousPlayerPos.x;
-				state = ST_Fall;
-				dash = false;
-			}
-			else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
-				App->render->camera.x -= dashSpeed * 2;
-				App->tiles->culling_Collider->rect.x += dashSpeed;
-
-			}
-			break;
-
-		case DIR_RIGHT:
-			player_Collider->rect.x += runSpeed;
-			playerPos.x += runSpeed;
-			if (App->collider->CheckColliderCollision(player_Collider)) {
-				player_Collider->rect.x = previousColliderPos.x;
-				playerPos.x = previousPlayerPos.x;
-			}
-			//else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
-			//	App->render->camera.x -= runSpeed * 2;
-			//	App->tiles->culling_Collider->rect.x += runSpeed;
-
-			//}
-			break;
-		case DIR_LEFT:
-			state = ST_Run;
-			player_Collider->rect.x -= runSpeed;
-			playerPos.x -= runSpeed;
-			if (App->collider->CheckColliderCollision(player_Collider)/* || relativePos.x < 6*/) {
-				player_Collider->rect.x = previousColliderPos.x;
-				playerPos.x = previousPlayerPos.x;
-			}
-			//else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
-			//	App->render->camera.x += runSpeed * 2;
-
-			//	App->tiles->culling_Collider->rect.x -= runSpeed;
-			//}
-			break;
-		case DIR_UP:
-			player_Collider->rect.y -= jumpSpeed;
-			playerPos.y -= jumpSpeed;
-
-			if (App->collider->CheckColliderCollision(player_Collider)) {
-				player_Collider->rect.y = previousColliderPos.y;
-				playerPos.y = previousPlayerPos.y;
-				jumping = false;
-				state = ST_Fall;
-				gravityForce = 1;
-				currentTimeAir = 0;
-			}
-			else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10) {
-				App->render->camera.y += 6;
-
-				App->tiles->culling_Collider->rect.y -= 3;
-			}
-
-			break;
-		case DIR_PLATFORM:
-			player_Collider->rect.y += 10;
-			playerPos.y += 10;
-
-			if (App->collider->ThroughPlatform(player_Collider) == false) {
-				state = ST_Fall;
-			}
-
-			break;
-
-		case DIR_DOWN:
-			int offsetY = 0;
-			int offsetX = 0;
-			player_Collider->rect.y += gravityForce;
-			playerPos.y += gravityForce;
-
-			if (App->collider->CheckColliderCollision(player_Collider,&offsetX, &offsetY)) {
-				player_Collider->rect.y = previousColliderPos.y;
-				player_Collider->rect.y = offsetY - colliderheight_dir_down -15;
-				playerPos.y = previousPlayerPos.y;
-				playerPos.y = offsetY - playerheight_dir_down - 15;
-				onGround = true;
-				canDash = true;
-				state = ST_Idle;
-				ret = true;
-				//if (relativePos.y > 330) {
-				//	App->render->camera.y -= 8;
-
-				//	App->tiles->culling_Collider->rect.y += 8 / 2;
-				//}
-			}
-			//else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 250 && state != ST_Jump) {
-			//	int cameraSpeedY = 8;
-			//	if (gravityForce == max_gravityForce) {
-			//		cameraSpeedY = max_gravityForce;
-			//	}
-			//	else {
-			//		cameraSpeedY = 8;
-			//	}
-			//	App->render->camera.y -= cameraSpeedY;
-			//	App->tiles->culling_Collider->rect.y += cameraSpeedY / 2;
-			//}
-
-			else {
-				onGround = false;
-			}
-
-			break;
-
-		}
-	
-	//("Player: %i,%i", playerPos.x, playerPos.y);
-	return ret;
-
-}
-void j1Player::Move() {
-	if (move_To_Left) {
-		MoveTo(DIR_LEFT);
-		flip = SDL_FLIP_HORIZONTAL;
 
 
-	}
-	else if (move_To_Right) {
-		MoveTo(DIR_RIGHT);
-		flip = SDL_FLIP_NONE;
-	}
-}
 
-void j1Player::Jump()
-{
-	if (jumping) {
-		if (player_Collider->rect.y >= maxJump) {
-			MoveTo(DIR_UP);
-
-			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY4) {
-				gravityForce = 4;
-			}
-			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY6) {
-				gravityForce = 6;
-			}
-			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY9) {
-				gravityForce = 9;
-			}
-
-			onGround = false;
-		}
-		else {
-			jumping = false;
-			jumpSpeed = 0;
-			state = ST_Fall;
-			gravityForce = 3;
-			currentTimeAir = 0;
-		}
-	}
-}
-
-void j1Player::Gravity()
-{
-	MoveTo(DIR_DOWN);
-	if (currentTimeAir < timeOnAir) {
-		currentTimeAir++;
-	}
-	else if (gravityForce < max_gravityForce) {
-		currentTimeAir = 0;
-		gravityForce += 2;
-	}
-	else if (gravityForce > max_gravityForce) {
-		gravityForce = max_gravityForce;
-	}
-
-}
 
 void j1Player::Draw()
 {
-	App->render->Blit(player_tmx_data.texture, playerPos.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
+
+	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+		disarmed_run->offset.x = 5;
+	}
+	else {
+		disarmed_run->offset.x = -5;
+	}
+	
+	App->render->Blit(player_tmx_data.texture, playerPos.x + currentAnimation->offset.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
 }

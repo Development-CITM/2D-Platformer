@@ -91,9 +91,9 @@ public:
 
 public:
 
-	bool CheckColliderCollision(Collider*, int* posX = nullptr,int* posY = nullptr);
+	bool CheckColliderCollision(Collider*,p2Point<int> increment, int* posX = nullptr,int* posY = nullptr);
 	bool ThroughPlatform (Collider*);
-	bool collider_debug = false;
+	bool collider_debug = true;
 	
 private:
 	Collider*			collider = nullptr;
