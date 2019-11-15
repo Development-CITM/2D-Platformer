@@ -157,6 +157,7 @@ private:
 
 	//Positions
 		//Positions
+	int					pivot_x_flip = 0;
 	bool				onPlatform = false;
 	p2Point<int>		previousColliderPos = { 0,0 };
 	p2Point<int>		previousPlayerPos{ 0,0 };
@@ -198,7 +199,7 @@ private:
 	uint				fallSpeed = 0u;
 	uint				max_FallSpeed = 0u;
 	uint				gravityForce = 0u;
-	uint				max_gravityForce = 0u;
+	uint				max_gravityForce = 5u;
 	uint				runSpeed = 0u;
 
 
@@ -217,14 +218,11 @@ private:
 
 	//Colliders
 	Collider*			player_Collider = nullptr;
-	Collider*			AABB_previous = nullptr;
+
 
 	//XML Stuff
 	p2SString			folder;
 	bool				map_loaded = false;
-
-	 p2Point<float> mOldPosition;
-
 
 	 p2Point<float> mOldSpeed;
 	 p2Point<float> mSpeed;

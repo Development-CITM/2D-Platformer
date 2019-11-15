@@ -26,7 +26,24 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	bool ret = true; 
 	
 	LOG("Loading Player...");
+	pugi::xml_node player_values = conf;
+	jumpDistance = player_values.child("jumpDistance").attribute("value").as_uint();
+	timeOnAir = player_values.child("timeOnAir").attribute("value").as_uint();
 
+	max_jumpSpeed = player_values.child("max_jumpSpeed").attribute("value").as_uint();
+	max_FallSpeed = player_values.child("max_FallSpeed").attribute("value").as_uint();
+	gravityForce = player_values.child("gravityForce").attribute("value").as_uint();
+	max_gravityForce = player_values.child("max_gravityForce").attribute("value").as_uint();
+	runSpeed = player_values.child("runSpeed").attribute("value").as_uint();
+	max_dashSpeed = player_values.child("max_dash_Speed").attribute("value").as_uint();
+	dash_distance = player_values.child("dash_distance").attribute("value").as_uint();
+
+	playerheight_dir_down = player_values.child("playerheight_dir_down").attribute("value").as_int();
+	colliderheight_dir_down = player_values.child("colliderheight_dir_down").attribute("value").as_int();
+
+
+
+	pivot_x_flip = player_values.child("pivot_x_flip").attribute("value").as_int();
 	return ret;	
 }
 
@@ -236,7 +253,7 @@ bool j1Player::PreUpdate()
 			HorizontalInput();
 			break;
 		case ST_Run:
-			//			DashInput();
+			//DashInput();
 			ExitInput();
 			VerticalInput();
 			HorizontalInput();
@@ -285,15 +302,15 @@ bool j1Player::Update(float dt)
 		state = ST_Idle;
 	}
 
-	//if (velocity_X != 0 && velocity_Y == 0 && state != ST_Jump&& state != ST_Fall) {
-	//	if (!dash) {
-	//		ChangeAnimation(run);
-	//		state = ST_Run;
-	//	}
-	//	else {
-	//		ChangeAnimation(jump);
-	//	}
-	//}
+	if (velocity_X != 0 && velocity_Y == 0 && state != ST_Jump && state != ST_Fall) {
+		if (!dash) {
+			ChangeAnimation(disarmed_run);
+			state = ST_Run;
+		}
+		else {
+			ChangeAnimation(disarmed_jump);
+		}
+	}
 
 	if (velocity_Y > 0) {
 		ChangeAnimation(disarmed_jump);
@@ -416,13 +433,142 @@ void j1Player::ResetInputs()
 
 bool j1Player::MoveTo(Directions dir)
 {
-	bool ret = false;
 
-	previousColliderPos = player_Collider->GetPosition();
-	previousPlayerPos = playerPos;
+		bool ret = false;
 
+		previousColliderPos = player_Collider->GetPosition();
+		previousPlayerPos = playerPos;
 
+		switch (dir)
+		{
+		case DIR_DASH_LEFT:
+			player_Collider->rect.x -= dashSpeed;
+			playerPos.x -= dashSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+				state = ST_Fall;
+				dash = false;
+			}
+			else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
+				App->render->camera.x += dashSpeed * 2;
 
+				App->tiles->culling_Collider->rect.x -= dashSpeed;
+			}
+			break;
+
+		case DIR_DASH_RIGHT:
+			player_Collider->rect.x += dashSpeed;
+			playerPos.x += dashSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+				state = ST_Fall;
+				dash = false;
+			}
+			else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
+				App->render->camera.x -= dashSpeed * 2;
+				App->tiles->culling_Collider->rect.x += dashSpeed;
+
+			}
+			break;
+
+		case DIR_RIGHT:
+			player_Collider->rect.x += runSpeed;
+			playerPos.x += runSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+			}
+			//else if (relativePos.x > 220 && App->tiles->culling_Collider->rect.x < App->scene->camera_limit_right) {
+			//	App->render->camera.x -= runSpeed * 2;
+			//	App->tiles->culling_Collider->rect.x += runSpeed;
+
+			//}
+			break;
+		case DIR_LEFT:
+			state = ST_Run;
+			player_Collider->rect.x -= runSpeed;
+			playerPos.x -= runSpeed;
+			if (App->collider->CheckColliderCollision(player_Collider)/* || relativePos.x < 6*/) {
+				player_Collider->rect.x = previousColliderPos.x;
+				playerPos.x = previousPlayerPos.x;
+			}
+			//else if (relativePos.x < 180 && App->tiles->culling_Collider->rect.x > App->scene->camera_limit_left) {
+			//	App->render->camera.x += runSpeed * 2;
+
+			//	App->tiles->culling_Collider->rect.x -= runSpeed;
+			//}
+			break;
+		case DIR_UP:
+			player_Collider->rect.y -= jumpSpeed;
+			playerPos.y -= jumpSpeed;
+
+			if (App->collider->CheckColliderCollision(player_Collider)) {
+				player_Collider->rect.y = previousColliderPos.y;
+				playerPos.y = previousPlayerPos.y;
+				jumping = false;
+				state = ST_Fall;
+				gravityForce = 1;
+				currentTimeAir = 0;
+			}
+			else if (relativePos.y < 100 && App->tiles->culling_Collider->rect.y > 10) {
+				App->render->camera.y += 6;
+
+				App->tiles->culling_Collider->rect.y -= 3;
+			}
+
+			break;
+		case DIR_PLATFORM:
+			player_Collider->rect.y += 10;
+			playerPos.y += 10;
+
+			if (App->collider->ThroughPlatform(player_Collider) == false) {
+				state = ST_Fall;
+			}
+
+			break;
+
+		case DIR_DOWN:
+			int offsetY = 0;
+			int offsetX = 0;
+			player_Collider->rect.y += gravityForce;
+			playerPos.y += gravityForce;
+
+			if (App->collider->CheckColliderCollision(player_Collider,&offsetX, &offsetY)) {
+				player_Collider->rect.y = previousColliderPos.y;
+				player_Collider->rect.y = offsetY - colliderheight_dir_down -15;
+				playerPos.y = previousPlayerPos.y;
+				playerPos.y = offsetY - playerheight_dir_down - 15;
+				onGround = true;
+				canDash = true;
+				state = ST_Idle;
+				ret = true;
+				//if (relativePos.y > 330) {
+				//	App->render->camera.y -= 8;
+
+				//	App->tiles->culling_Collider->rect.y += 8 / 2;
+				//}
+			}
+			//else if (relativePos.y > 230 && App->tiles->culling_Collider->rect.y < 250 && state != ST_Jump) {
+			//	int cameraSpeedY = 8;
+			//	if (gravityForce == max_gravityForce) {
+			//		cameraSpeedY = max_gravityForce;
+			//	}
+			//	else {
+			//		cameraSpeedY = 8;
+			//	}
+			//	App->render->camera.y -= cameraSpeedY;
+			//	App->tiles->culling_Collider->rect.y += cameraSpeedY / 2;
+			//}
+
+			else {
+				onGround = false;
+			}
+
+			break;
+
+		}
 	
 	//("Player: %i,%i", playerPos.x, playerPos.y);
 	return ret;
