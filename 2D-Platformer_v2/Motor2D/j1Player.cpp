@@ -253,11 +253,11 @@ bool j1Player::PreUpdate()
 	}
 	if (moveRight) {
 		if(runSpeed< 2.0f)
-		runSpeed += .2f;
+		runSpeed += .5f;
 	}
 	else if(moveLeft){
 		if (runSpeed > -2.0f)
-			runSpeed -= .2f;
+			runSpeed -= .5f;
 	
 	}
 	else {
