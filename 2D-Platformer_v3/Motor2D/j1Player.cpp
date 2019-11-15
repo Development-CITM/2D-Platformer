@@ -408,6 +408,9 @@ bool j1Player::Update(float dt)
 		relativePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
 		//LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
 	}
+
+	LOG("COLLIDER: x: %i y: %i", player_Collider->rect.x, player_Collider->rect.y);
+	LOG("PLAYER: x: %i y: %i", playerPos.x, playerPos.y);
 	Draw(); //Draw all the player
 
 	return true;
@@ -816,22 +819,23 @@ void j1Player::Dash() {
 
 void j1Player::Draw()
 {
+	if (currentAnimation != nullptr) {
+		//First check how many frames should repeat before change its sprite frame
+		if (currentAnimation->repeatFrames > 4) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
+			if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
+			{
+				currentAnimation->numFrame++;
+			}
+			else {
+				currentAnimation->numFrame = 0;
+			}
 
-	//First check how many frames should repeat before change its sprite frame
-	if (currentAnimation->repeatFrames > 2) { //need to change this 6 to number of frames of each sprite frame -- trying to remove all magic numbers
-		if (currentAnimation->numFrame < currentAnimation->numRects - 1) //Check if you reach the last frame of the animations (-1 is bc you don't want to go out of the array)
-		{
-			currentAnimation->numFrame++;
+			currentAnimation->repeatFrames = 0; //Reset repeat frames to start again the count of the same sprite. but this should be a function (maybe)
+
 		}
 		else {
-			currentAnimation->numFrame = 0;
+			currentAnimation->repeatFrames++; // Increse num of frames before change its animations sprite
 		}
-
-		currentAnimation->repeatFrames = 0; //Reset repeat frames to start again the count of the same sprite. but this should be a function (maybe)
-		
-	}
-	else {
-		currentAnimation->repeatFrames++; // Increse num of frames before change its animations sprite
 	}
 	if (currentAnimation != nullptr) {
 		App->render->Blit(player_tmx_data.spriteSheet.texture,		//Texture loaded from tmx
@@ -852,7 +856,7 @@ void j1Player::Draw()
 #pragma region Animations
 void j1Player::ChangeAnimation(Animation* anim)
 {
-	if (currentAnimation != anim) {
+	if (currentAnimation != anim && currentAnimation != nullptr) {
 		previousAnimation = currentAnimation;
 		previousAnimation->ResetAnim();
 		currentAnimation = anim;

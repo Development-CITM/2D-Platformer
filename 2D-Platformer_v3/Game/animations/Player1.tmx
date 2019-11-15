@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="29" nextobjectid="74">
+ <properties>
+  <property name="collider_height" type="int" value="31"/>
+  <property name="collider_width" type="int" value="13"/>
+  <property name="offset_collider_h" type="int" value="8"/>
+  <property name="offset_collider_w" type="int" value="3"/>
+ </properties>
+ <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
+  <image source="Pixel_Hero.png" width="1024" height="592"/>
+ </imagelayer>
+ <objectgroup id="26" name="Idle">
+  <object id="64" name="Idle_01" x="450" y="0" width="50" height="37"/>
+  <object id="65" name="Idle_02" x="500" y="0" width="50" height="37"/>
+  <object id="66" name="Idle_03" x="550" y="0" width="50" height="37"/>
+  <object id="67" name="Idle_04" x="600" y="0" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="28" name="Running">
+  <object id="68" x="500" y="37" width="50" height="37"/>
+  <object id="69" x="550" y="37" width="50" height="37"/>
+  <object id="70" x="600" y="37" width="50" height="37"/>
+  <object id="71" x="650" y="37" width="50" height="37"/>
+  <object id="72" x="700" y="37" width="50" height="37"/>
+  <object id="73" x="750" y="37" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="27" name="Collider">
+  <object id="63" x="467" y="8" width="16" height="28"/>
+ </objectgroup>
+</map>

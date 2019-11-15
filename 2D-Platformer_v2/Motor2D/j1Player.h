@@ -11,23 +11,30 @@
 struct Collider;
 enum MapTypes;
 
+#define PLAYERMAXJUMP_GRAVITY4 40
+#define PLAYERMAXJUMP_GRAVITY6 15
+#define PLAYERMAXJUMP_GRAVITY9 5
+
 enum CharacterState {
-	Idle,
-	Walk,
-	Run,
-	Jump,
-	Fall,
-	GrabLedge,
+	ST_Idle,
+	ST_Walk,
+	ST_Run,
+	ST_Jump,
+	ST_Fall,
+	ST_GrabLedge,
 };
 
-enum MoveDirection {
-	None,
-	Right,
-	Left,
-	Up,
-	Down,
+enum Directions
+{
+	DIR_RIGHT,
+	DIR_LEFT,
+	DIR_UP,
+	DIR_DOWN,
+	DIR_PLATFORM,
+	DIR_DASH_LEFT,
+	DIR_DASH_RIGHT,
+	DIR_NONE,
 };
-
 
 
 struct ObjectLayer
@@ -73,7 +80,7 @@ public:
 
 	void ReSizeAABBFromAnimation();
 
-	void RoundPosition();
+
 
 	// Called before all Updates
 	bool PostUpdate();
@@ -89,84 +96,127 @@ public:
 	bool CleanUp();
 
 	void SetPlayerPos(pugi::xml_node& object);
+	Collider* GetPlayerCollider() const { return player_Collider; }
+	int GetVelocityX() { return velocity_X; }
 
 	void OnCollision(Collider* c1, Collider* c2) override;
+
+	void				ResetInputs();
 private:
+	p2Point<int> relativePos = { 0,0 };
+	//Inputs
+	void HorizontalInput();
+	void VerticalInput();
+
+	//void DashInput();
+
+	void ExitInput();
+
+	//Habilities
+	//void Dash();
+
+	//Logic Movements
+	void Move();
+	void Jump();
+	void Gravity();
+
+	bool MoveTo(Directions dir);
 
 	//Load Functions
 	bool LoadPlayerTMX(pugi::xml_node& player_node);
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	SDL_Rect LoadAABB(pugi::xml_node& player_node);
 
-	void MovePlayerX(float value);
-	void MovePlayerY(float value);
-	//void UpdatePhysics();
-	//void UpdateAABB();
-	//void CharacterUpdate();
-
-	void HorizontalMove();
-	void JumpMove();
-	void Gravity();
-	void GroundCheck();
-	void ChangeStates();
-
-	//bool CheckCollision();
-
-	bool MoveToDirection(MoveDirection);
-	//STATE MACHINE
-	//bool StateIdle();
-	//bool StateRun();
-	//bool StateJump();
-	//bool StateFall();
-
+	//Animation Functions
+	void ChangeAnimation(Animation*);
 
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
 	int					groundPos;
 
-	p2Point<float> mPosition{ 0,0 };
-	p2Point<int> mPositionRounded{ 0,0 };
+	p2Point<int> playerPos{ 0,0 };
+
 private:
 
+	//Heights for adjustment while DIR_DOWN
+	int					playerheight_dir_down = 0;
+	int					colliderheight_dir_down = 0;
+
+	bool				canMove = true;
 	//Enums
-
+	bool				jumping = false;
 	SDL_RendererFlip	flip = SDL_FLIP_NONE;
+	//Actual movement speed  direction
+	int					velocity_X = 0;
+	int					velocity_Y = 0;
 
-	MoveDirection		moveDirection = MoveDirection::None;
+	Directions			direction = DIR_RIGHT;
+
+	Directions			last_Direction = DIR_RIGHT;
 
 	//Positions
+		//Positions
+	bool				onPlatform = false;
+	p2Point<int>		previousColliderPos = { 0,0 };
+	p2Point<int>		previousPlayerPos{ 0,0 };
+	p2Point<int>		currentVelocity{ 0,0 };
 
-	CharacterState		mCurrentState = CharacterState::Idle;
-	float				mWalkSpeed = 0.0f;
-	float				mRunSpeed = 2.f;
-	float				mJumpSpeed = 0.f;
-	float				mMaxJumpSpeed = -12.f;
-	float				mRunAcceleration = 0.0f;
-	float				timer = 0.0f;
-	float				delayToJump = 0.f;
-	float				cGravity = 0.5f;
+	CharacterState		state = ST_Idle;
+	int					mWalkSpeed = 0;
+	int					mRunSpeed = 2;
+	int					mJumpSpeed = 0;
+	int					mMaxJumpSpeed = -12;
+	int					mRunAcceleration = 0;
+	int					timer = 0;
+	int					delayToJump = 0;
+	int					cGravity = 1;
 	bool				startJump = false;
+
+	//Jump Variables
+	uint				maxJump = 0u;
+	uint				jumpDistance = 0u;
+	uint				timeOnAir = 0u;
+	uint				currentTimeAir = 0u;
+
+
+	bool				move_To_Right = false;
+	bool				move_To_Left = false;
+	bool				move_To_Up = false;
+	//Dash Variables
+
+	bool				dash = false;
+	int					max_Dash = 0;
+	uint				dash_distance = 0u;
+	uint				dashSpeed = 0u;
+	uint				max_dashSpeed = 0u;
+	bool				canDash = false;
+
+	//Speeds
+	uint				jumpSpeed = 0u;
+	uint				max_jumpSpeed = 0u;
+	uint				fallSpeed = 0u;
+	uint				max_FallSpeed = 0u;
+	uint				gravityForce = 0u;
+	uint				max_gravityForce = 0u;
+	uint				runSpeed = 0u;
+
+
 	//Animations
-	Animation*			mAnimation = nullptr;
+	//Animations
+	Animation*			currentAnimation = nullptr;
+	Animation*			previousAnimation = nullptr;
 
 	Animation*			disarmed_idle = nullptr;
 	Animation*			disarmed_run = nullptr;
 	Animation*			disarmed_jump = nullptr;
 	Animation*			disarmed_fall = nullptr;
 
-
 	//Checkers
 	bool				detected_Collision = false;
 
-
-	bool				mGoRight = false;
-	bool				mGoLeft = false;
-	bool				mJump = false;
-	bool				falling = true;
-
 	//Colliders
-	Collider*			AABB_current = nullptr;
+	Collider*			player_Collider = nullptr;
 	Collider*			AABB_previous = nullptr;
 
 	//XML Stuff
@@ -180,7 +230,7 @@ private:
 	 p2Point<float> mSpeed;
 
 
-	 bool mOnGround = false;
+	 bool onGround = false;
 
 
 	 int numCurrentAnimation = 0;

@@ -34,11 +34,9 @@ bool j1Player::Start()
 {
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
+	state = ST_Idle;
 
-
-	mAnimation = disarmed_idle;
-
-	
+	currentAnimation = disarmed_idle;
 
 	return true;
 }
@@ -71,7 +69,7 @@ bool j1Player::Load(const char* file_name)
 	pugi::xml_document	player_file;
 	pugi::xml_parse_result result = player_file.load_file(file_name);
 
-	AABB_current = App->collider->AddCollider({ (int)mPosition.x,(int)mPosition.y,20,50 }, COLLIDER_PLAYER, { 0,0 }, this);
+	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,50 }, COLLIDER_PLAYER, { 0,0 }, this);
 
 	if (result == NULL)
 	{
@@ -157,7 +155,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
 		 
 		anim->sprites[i].AABB_rect = LoadAABB(AABB_object);
-		anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(mPosition.x),anim->sprites[i].AABB_rect.y - (int)roundf( mPosition.y) };
+		anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(playerPos.x),anim->sprites[i].AABB_rect.y - (int)roundf( playerPos.y) };
 		LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
 
 		if (AABB_object.next_sibling("object")) {
@@ -187,319 +185,12 @@ SDL_Rect j1Player::LoadAABB(pugi::xml_node& AABB_object)
 		offset.y -= player_tmx_data.tile_height;
 	}
 
-	rect.x = mPosition.x + offset.x;
-	rect.y = mPosition.y + offset.y;
+	rect.x = playerPos.x + offset.x;
+	rect.y = playerPos.y + offset.y;
 
 	return rect;
 
 }
-
-void j1Player::MovePlayerX(float value)
-{
-}
-
-
-
-//void j1Player::UpdatePhysics()
-//{
-//
-//		if (mSpeed.y < 6.f)
-//			mSpeed.y += cGravity;
-//	
-//	mOldPosition = mPosition;
-//	mOldSpeed = mSpeed;
-//
-//
-//	mPosition += mSpeed;
-//	numCurrentAnimation = mAnimation->GetSprite();
-//
-//	mPositionRounded = { (int)roundf(mPosition.x),(int)roundf(mPosition.y) };
-//	UpdateAABB();
-//
-//
-//	int offsetY = 0;
-//	if (App->collider->CheckColliderCollision(AABB_current, &offsetY)) {
-//		mPosition.y = mOldPosition.y;
-//		
-//		UpdateAABB();
-//		mOnGround = true;
-//	}
-//
-//
-//
-//
-//}
-
-//void j1Player::UpdateAABB()
-//{
-//	if (flip == SDL_FLIP_NONE) {
-//		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = mPositionRounded.x + mAnimation->sprites[numCurrentAnimation].AABB_offset.x;
-//		mAnimation->sprites[numCurrentAnimation].AABB_rect.y = mPositionRounded.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
-//	}
-//	else {
-//		mAnimation->sprites[numCurrentAnimation].AABB_rect.x = mPositionRounded.x - (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 1.5f) + player_tmx_data.width * 2 + 5;
-//		mAnimation->sprites[numCurrentAnimation].AABB_rect.y = mPositionRounded.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y;
-//	}
-//
-//	AABB_current->Resize({
-//		mAnimation->sprites[numCurrentAnimation].AABB_rect.x + (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.x * 0.5f),
-//		mAnimation->sprites[numCurrentAnimation].AABB_rect.y + (int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_offset.y * 0.5f),
-//		(int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_rect.w * 1.5f),
-//		(int)roundf(mAnimation->sprites[numCurrentAnimation].AABB_rect.h * 1.5f)
-//		});
-//}
-
-//void j1Player::CharacterUpdate()
-//{
-//	switch (mCurrentState)
-//	{
-//	case CharacterState::Idle:
-//		if (StateIdle()) break;
-//		break;
-//
-//	//case CharacterState::Walk:
-//	//	break;
-//
-//	//case CharacterState::Run:
-//	//	if (StateRun()) break;
-//	//	break;
-//
-//	case CharacterState::Jump:
-//		if (StateJump()) break;
-//		break;
-//
-//	case CharacterState::Fall:
-//		if (StateFall()) break;
-//		break;
-//
-//	//case CharacterState::GrabLedge:
-//	//	break;
-//	}
-//
-//	LOG("%i", mCurrentState);
-//}
-
-//State Machine
-
-//bool j1Player::StateIdle()
-//{
-//	mSpeed.x = 0.f;
-//	if (mAnimation != disarmed_idle) {
-//		mAnimation->ResetAnim();
-//		mAnimation = disarmed_idle;
-//	}
-//
-//	if (!mOnGround)
-//	{
-//		//mCurrentState = CharacterState::Fall;
-//		//if (mSpeed.y < 6.f)
-//		//	mSpeed.y += cGravity;
-//		return true;
-//	}
-//	if (mGoLeft != mGoRight && !mJump)
-//	{
-//		mCurrentState = CharacterState::Run;
-//		return true;
-//	}
-//	else if (mJump)
-//	{
-//		mCurrentState = CharacterState::Jump;
-//		return true;
-//	}
-//	return true;
-//}
-
-//bool j1Player::StateRun()
-//{
-//	mSpeed.y = 0.f;
-//	if (mAnimation != disarmed_run) {
-//		mAnimation->ResetAnim();
-//		mAnimation = disarmed_run;
-//	}
-//
-//	if (mGoLeft == mGoRight) {
-//		mCurrentState = CharacterState::Idle;
-//		mSpeed.x = 0.f;
-//		mRunAcceleration = 0.0f;
-//		timer = 0.0f;
-//		
-//	}
-//	else if (mGoRight) {
-//		if (mPushesRightWall) {
-//			mSpeed.x = 0.f;
-//			mRunAcceleration = 0.0f;
-//			timer = 0.0f;
-//		}
-//		else {
-//			if (timer < 1.f) {
-//				timer++;
-//			}
-//			else if (mRunAcceleration < 1.0f) {
-//				mRunAcceleration += 0.25f;
-//				timer = 0.0f;
-//			}
-//			if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
-//
-//			mSpeed.x = mRunSpeed * mRunAcceleration;
-//		}
-//		flip = SDL_FLIP_NONE;
-//	}
-//	else if (mGoLeft) {
-//		if (mPushesLeftWall) {
-//			mSpeed.x = 0.f;
-//			mRunAcceleration = 0.0f;
-//			timer = 0.0f;
-//		}
-//		else {
-//			if (timer < 1.f) {
-//				timer++;
-//			}
-//			else if (mRunAcceleration < 1.0f) {
-//				mRunAcceleration += 0.25f;
-//				timer = 0.0f;
-//			}
-//			if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
-//
-//			mSpeed.x = -mRunSpeed * mRunAcceleration;
-//		}
-//
-//		flip = SDL_FLIP_HORIZONTAL;
-//	}
-//
-//	if (mJump)
-//	{
-//		mCurrentState = CharacterState::Jump;
-//		return true;
-//	}
-//	else if (!mOnGround) {
-//		mCurrentState = CharacterState::Fall;
-//		return true;
-//	}
-//	return true;
-//}
-//
-//bool j1Player::StateJump()
-//{
-//	if (mAnimation != disarmed_jump) {
-//		mAnimation->ResetAnim();
-//		mAnimation = disarmed_jump;
-//		delayToJump = 0.f;
-//		startJump = false;
-//
-//	}
-//	if (delayToJump < 5.f)
-//	{
-//		delayToJump++;
-//		return true;	
-//	}
-//
-//	if (delayToJump >= 5.f) {
-//		if (!startJump) {
-//			mSpeed.y = mJumpSpeed;
-//			startJump = true;
-//		}
-//		if (mSpeed.y > -0.5f && mSpeed.y < 0.3f) {
-//			mSpeed.y += 0.1f;
-//		}
-//		else if (mSpeed.y < 0.5f) {
-//			mSpeed.y += cGravity;
-//		}
-//		else {
-//			mCurrentState = CharacterState::Fall;
-//		}
-//	}
-//	
-//	HorizontalMove();
-//	return true;
-//}
-
-//bool j1Player::StateFall()
-//{
-//	if (mAnimation != disarmed_fall) {
-//		mAnimation->ResetAnim();
-//		mAnimation = disarmed_fall;
-//	} //Just for now
-//
-//	if (mOnGround) {
-//		if (mGoLeft == mGoRight) {
-//			mCurrentState = CharacterState::Idle;
-//		}
-//		else {
-//			mCurrentState = CharacterState::Run;
-//		}
-//		mJump = false;
-//
-//	}
-//
-//	HorizontalMove();
-//	return true;
-//}
-
-//void j1Player::HorizontalMove()
-//{
-//	if (mGoLeft == mGoRight) {
-//
-//		mSpeed.x = 0.f;
-//	}
-//	else if (mGoRight) {
-//		if (mPushesRightWall) {
-//			mSpeed.x = 0.f;
-//			mRunAcceleration = 0.0f;
-//			timer = 0.0f;
-//		}
-//		else {
-//			if (timer < 1.f) {
-//				timer++;
-//			}
-//			else if (mRunAcceleration < 1.0f) {
-//				mRunAcceleration += 0.25f;
-//				timer = 0.0f;
-//			}
-//			if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
-//
-//			mSpeed.x = mRunSpeed * mRunAcceleration;
-//		
-//		}
-//		flip = SDL_FLIP_NONE;
-//	}
-//	else if (mGoLeft) {
-//
-//
-//		if (mPushesLeftWall) {
-//			mSpeed.x = 0.f;
-//			mRunAcceleration = 0.0f;
-//			timer = 0.0f;
-//		}
-//		else {
-//			if (timer < 1.f) {
-//				timer++;
-//			}
-//			else if (mRunAcceleration < 1.0f) {
-//				mRunAcceleration += 0.25f;
-//				timer = 0.0f;
-//			}
-//			if (mRunAcceleration > 1.f) { mRunAcceleration = 1.f; }
-//
-//			mSpeed.x = -mRunSpeed * mRunAcceleration;
-//		}
-//		flip = SDL_FLIP_HORIZONTAL;
-//	}
-//}
-//
-//bool j1Player::CheckCollision()
-//{
-//	if (AABB_current != nullptr) {
-//		LOG("X:%i Y:%i", AABB_current->rect.x, AABB_current->rect.y);
-//		if (App->collider->CheckColliderCollision(AABB_current)) 
-//			return true;
-//
-//	}
-//	return false;
-//}
-
-
-
-
 
 void j1Player::SetPlayerPos(pugi::xml_node& object)
 {
@@ -509,11 +200,11 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 		{
 			if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
 			{
-				mPosition.x = it.attribute("value").as_int();
+				playerPos.x = it.attribute("value").as_int();
 			}
 			if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
 			{
-				mPosition.y = it.attribute("value").as_int();
+				playerPos.y = it.attribute("value").as_int();
 			}
 			if (strcmp(it.attribute("name").as_string(), "ground_pos") == 0)
 			{
@@ -527,179 +218,46 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 void j1Player::OnCollision(Collider* c1, Collider* c2)
 {
 	
-		//mOnGround = true;
-		//mPosition.y = c2->rect.y - player_tmx_data.tile_height * 1.5f;
-	
 }
 
 
 bool j1Player::PreUpdate()
 {
+	velocity_X = playerPos.x;
+	velocity_Y = playerPos.y;
+	Gravity();
+	//Hold Movements
+	if (canMove) {
+		switch (state)
+		{
+		case ST_Idle:
+			ExitInput();
+			VerticalInput();
+			HorizontalInput();
+			break;
+		case ST_Run:
+			//			DashInput();
+			ExitInput();
+			VerticalInput();
+			HorizontalInput();
+			break;
+		case ST_Jump:
+			//DashInput();
+			HorizontalInput();
+			break;
+		case ST_Fall:
+			//DashInput();
+			HorizontalInput();
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		mGoRight = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		mGoRight = false;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		mGoLeft = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		mGoLeft = false;
-	}
-
- 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && mOnGround) {
- 		mJump = true;
-		startJump = true;
+			break;
+		}
 	}
 	return true;
 }
-void j1Player::HorizontalMove()
-{
-	if (mGoRight) {
-		MoveToDirection(MoveDirection::Right);
-	}
-	else if (mGoLeft) {
-		MoveToDirection(MoveDirection::Left);
-	}
-}
 
-void j1Player::JumpMove()
-{
-	if (mJump) {
-		MoveToDirection(MoveDirection::Up);
-	}
-}
-
-void j1Player::Gravity() 
-{
-	MoveToDirection(MoveDirection::Down);
-}
-
-void j1Player::GroundCheck() 
-{
-	Collider* tmp = AABB_current;
-	tmp->rect.y = AABB_current->rect.y +1;
-	if (App->collider->CheckColliderCollision(tmp)) {
-		mOnGround = true;
-	}
-	else {
-		mOnGround = false;
-	}
-}
-void j1Player::ChangeStates() 
-{
-	switch (mCurrentState)
-	{
-	case Idle:
-		if (mGoLeft != mGoRight)
-		{
-			mCurrentState = CharacterState::Run;
-		}
-		else {
-			mCurrentState = CharacterState::Idle;
-		}
-		if (mJump) {
-			mCurrentState = CharacterState::Jump;
-		}
-
-		break;
-	case Walk:
-		break;
-	case Run:
-		if (mGoLeft != mGoRight)
-		{
-			mCurrentState = CharacterState::Run;
-		}
-		else {
-			mCurrentState = CharacterState::Idle;
-			mAnimation->ResetAnim();
-		}
-		if (mJump) {
-			mCurrentState = CharacterState::Jump;
-			mAnimation->ResetAnim();
-		}
-		break;
-	case Jump:
-
-		if (!mJump) {
-			mCurrentState = CharacterState::Fall;
-		}
-		break;
-	case Fall:
-		if (mOnGround) {
-			if (mGoRight != mGoLeft) {
-				mCurrentState = CharacterState::Run;
-			}
-			else {
-				mCurrentState = CharacterState::Idle;
-			}
-		}
-		break;
-	}
-
-
-}
-bool j1Player::MoveToDirection(MoveDirection moveDir)
-{
-	mOldPosition = mPosition;
-	AABB_previous = AABB_current;
-	switch (moveDir)
-	{
-	case Right:
-		AABB_current->rect.x += mRunSpeed;
-		mPosition.x += mRunSpeed;
-		if (App->collider->CheckColliderCollision(AABB_current)) {
-			mPosition.x = mOldPosition.x;
-		}
-
-
-
-		break;
-	case Left:
-		AABB_current->rect.x -= mRunSpeed;
-		mPosition.x -= mRunSpeed;
-		if (App->collider->CheckColliderCollision(AABB_current)) {
-			mPosition.x = mOldPosition.x;
-		}
-
-
-		break;
-	case Up:
-		if (startJump) {
-			mJumpSpeed = mMaxJumpSpeed;
-			startJump = false;
-		}
-		if (mJumpSpeed < 0) {
-			mJumpSpeed += 0.3f;
-		}
-		else {
-		//	mCurrentState = CharacterState::Fall;
-			mJump = false;
-		}
-		AABB_current->rect.y += mJumpSpeed;
-		mPosition.y += mJumpSpeed;
-		if (App->collider->CheckColliderCollision(AABB_current)) {
-			mPosition.y = mOldPosition.y;
-		}
-		break;
-	case Down:
-		AABB_current->rect.y += 4.f;
-		mPosition.y += 4.f;
-		int posX, posY = 0;
-		if (App->collider->CheckColliderCollision(AABB_current,&posX,&posY)) {
-			mPosition.y = mOldPosition.y;
-			mPosition.y = posY - player_tmx_data.tile_height * 1.5f;
-			mOnGround = true;
-		}
-		break;
-	}
-	ReSizeAABBFromAnimation();
-	return true;
-}
 bool j1Player::Update(float dt)
 {
+
 //---------NEED TO-------//
 //UpdateState depending of inputs
 //Gravity affects allways and its independent from 
@@ -715,134 +273,57 @@ bool j1Player::Update(float dt)
 //Finish this loop state.
 //Now Draw current animation with updated position and AABB position
 
-	//CHANGE STATES
-	switch (mCurrentState)
-	{
-	case Idle:
-		if (mGoLeft || mGoRight) {
-			mCurrentState = CharacterState::Run;
-			mAnimation = disarmed_run;
-			mAnimation->ResetAnim();
-			break;
-		}
-		if (mJump && mOnGround) {
-			mCurrentState = CharacterState::Jump;
-			mAnimation = disarmed_jump;
-			mAnimation->ResetAnim();
-			break;
-		}
-		break;
-	case Walk:
-		break;
-	case Run:
-		if (mGoLeft == mGoRight) {
-			mCurrentState = CharacterState::Idle;
-			mAnimation = disarmed_idle;
-			mAnimation->ResetAnim();
-			break;
-		}
-		if (mJump) {
-			mCurrentState = CharacterState::Jump;
-			mAnimation = disarmed_jump;
-			mAnimation->ResetAnim();
 
-		
-			break;
-		}
-		break;
-	case Jump:
-		if (mAnimation->finished) {
-			if (mGoLeft == mGoRight) {
-				mCurrentState = CharacterState::Idle;
-				mAnimation = disarmed_idle;
-				mAnimation->ResetAnim();
-			}
-			else {
-				mCurrentState = CharacterState::Run;
-				mAnimation = disarmed_run;
-				mAnimation->ResetAnim();
-			}
-		}
-		break;
-	case Fall:
-		break;
-	case GrabLedge:
-		break;
-	default:
-		break;
+	velocity_X -= playerPos.x;
+	velocity_Y -= playerPos.y;
+	//Change Animations
+	Move();
+	Jump();
+	//Dash();
+	if (velocity_X == 0 && velocity_Y == 0 && !jumping && state != ST_Jump && state != ST_Fall) {
+		ChangeAnimation(disarmed_idle);
+		state = ST_Idle;
 	}
-	//------------------Update Animation--------------------------//
-	numCurrentAnimation = mAnimation->GetSprite();
-	ReSizeAABBFromAnimation();
-	int posX = 0;
-	int posY = 0;
 
-	GroundCheck();
-	Gravity();
-	HorizontalMove();
-	JumpMove();
-	//State Logic
-	switch (mCurrentState)
-	{
-	case Idle:
-	break;
-	case Walk:
-		break;
-	case Run:
-		break;
-	case Jump:
-	
-		break;
-	case Fall:
-		break;
-	case GrabLedge:
-		break;
-	
-	}
-	LOG("Current state: %i", mCurrentState);
-	//GroundCheck();
-	//ChangeStates();
-	//Gravity();
-
-	//switch (mCurrentState)
-	//{
-	//case Idle:	
-	//	HorizontalMove();
-	//	JumpMove();
-	//	mAnimation = disarmed_idle;
-	//	break;
-
-	//case Run:
-	//	HorizontalMove();
-	//	JumpMove();
-	//	if (mAnimation != disarmed_run) {
-	//		mAnimation = disarmed_run;
+	//if (velocity_X != 0 && velocity_Y == 0 && state != ST_Jump&& state != ST_Fall) {
+	//	if (!dash) {
+	//		ChangeAnimation(run);
+	//		state = ST_Run;
 	//	}
-	//	break;
-	//case Jump:		
-	//	HorizontalMove();
-	//	JumpMove();
-	//	if (mAnimation != disarmed_jump) {
-	//		disarmed_jump->ResetAnim();
-	//		mAnimation = disarmed_jump;
-	//		mOnGround = false;
+	//	else {
+	//		ChangeAnimation(jump);
 	//	}
-	//	break;
-	//case Fall:
-	//	HorizontalMove();
-	//	break;
 	//}
-	//CharacterUpdate();
-	//UpdatePhysics();
+
+	if (velocity_Y > 0) {
+		ChangeAnimation(disarmed_jump);
+		state = ST_Jump;
+	}
+
+	if (velocity_Y < 0 && state != ST_Idle) {
+		if (currentAnimation != disarmed_fall)
+			ChangeAnimation(disarmed_fall);
+		if (state != ST_Fall) {
+			state = ST_Fall;
+			gravityForce = 3;
+		}
+	}
 
 
+	if (App->tiles->culling_Collider->CheckCollision(player_Collider->rect)) {
+		//LOG("Player_Collider.x: %i", player_Collider->rect.x);
+		//LOG("Camera collider.x: %i", App->tiles->camera_Collider->rect.x);
 
-	/*LOG("Current state: %i", mCurrentState);
-	LOG("Pos Y: %f", mPosition.y);
-	LOG("Speed: %f", mSpeed.y);*/
+		relativePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
+		relativePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
+		//LOG("Relative Pos X: %i  Y: %i", relativePos.x, relativePos.y);
+	}
 
-	//Update Animation
+	LOG("State: %i", state);
 
+
+	numCurrentAnimation = currentAnimation->GetSprite();
+	ReSizeAABBFromAnimation();
 	Draw(); //Draw all the player
 
 	return true;
@@ -850,19 +331,17 @@ bool j1Player::Update(float dt)
 
 void j1Player::ReSizeAABBFromAnimation()
 {
-	RoundPosition();
+
+
 	SDL_Rect r;
-	r.x = mPositionRounded.x + mAnimation->sprites[numCurrentAnimation].AABB_offset.x + 8;
-	r.y = mPositionRounded.y + mAnimation->sprites[numCurrentAnimation].AABB_offset.y +3;
-	r.w = mAnimation->sprites[numCurrentAnimation].AABB_rect.w + 10;
-	r.h = mAnimation->sprites[numCurrentAnimation].AABB_rect.h + 15;
-	AABB_current->Resize(r);
+	r.x = playerPos.x + currentAnimation->sprites[numCurrentAnimation].AABB_offset.x + 8;
+	r.y = playerPos.y + currentAnimation->sprites[numCurrentAnimation].AABB_offset.y +3;
+	r.w = currentAnimation->sprites[numCurrentAnimation].AABB_rect.w + 10;
+	r.h = currentAnimation->sprites[numCurrentAnimation].AABB_rect.h + 15;
+	player_Collider->Resize(r);
 }
 
-void j1Player::RoundPosition()
-{ 
-	mPositionRounded = { (int)roundf(mPosition.x),(int)roundf(mPosition.y) };
-}
+
 
 
 
@@ -870,12 +349,143 @@ bool j1Player::PostUpdate()
 {
 	return true;
 }
+void j1Player::VerticalInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround) {
+		App->audio->PlayFx(2);
+		maxJump = player_Collider->rect.y - jumpDistance;
+		jumping = true;
+		jumpSpeed = max_jumpSpeed;
+		gravityForce = 2;
+		state = ST_Jump;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && onPlatform) {
+		MoveTo(DIR_PLATFORM);
+	}
+}
 
 
+void j1Player::ChangeAnimation(Animation* anim)
+{
+	if (currentAnimation != anim) {
+		previousAnimation = currentAnimation;
+		previousAnimation->ResetAnim();
+		currentAnimation = anim;
+	}
+}
+void j1Player::ExitInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && App->scene->exitCollider != nullptr) {
+		if (player_Collider->CheckCollision(App->scene->exitCollider->rect)) {
+			LOG("COLLIDER EXIT DONE");
+			App->scene->hasExit = true;
+		}
+	}
+}
+
+void j1Player::HorizontalInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		move_To_Right = true;
+		last_Direction = DIR_RIGHT;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		move_To_Right = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		move_To_Left = true;
+		last_Direction = DIR_LEFT;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		move_To_Left = false;
+	}
+
+}
+
+void j1Player::ResetInputs()
+{
+	move_To_Right = false;
+	move_To_Left = false;
+	move_To_Up = false;
+
+	jumping = false;
+	flip = SDL_FLIP_NONE;
+}
+
+bool j1Player::MoveTo(Directions dir)
+{
+	bool ret = false;
+
+	previousColliderPos = player_Collider->GetPosition();
+	previousPlayerPos = playerPos;
+
+
+
+	
+	//("Player: %i,%i", playerPos.x, playerPos.y);
+	return ret;
+
+}
+void j1Player::Move() {
+	if (move_To_Left) {
+		MoveTo(DIR_LEFT);
+		flip = SDL_FLIP_HORIZONTAL;
+
+
+	}
+	else if (move_To_Right) {
+		MoveTo(DIR_RIGHT);
+		flip = SDL_FLIP_NONE;
+	}
+}
+
+void j1Player::Jump()
+{
+	if (jumping) {
+		if (player_Collider->rect.y >= maxJump) {
+			MoveTo(DIR_UP);
+
+			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY4) {
+				gravityForce = 4;
+			}
+			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY6) {
+				gravityForce = 6;
+			}
+			if (player_Collider->rect.y < maxJump + PLAYERMAXJUMP_GRAVITY9) {
+				gravityForce = 9;
+			}
+
+			onGround = false;
+		}
+		else {
+			jumping = false;
+			jumpSpeed = 0;
+			state = ST_Fall;
+			gravityForce = 3;
+			currentTimeAir = 0;
+		}
+	}
+}
+
+void j1Player::Gravity()
+{
+	MoveTo(DIR_DOWN);
+	if (currentTimeAir < timeOnAir) {
+		currentTimeAir++;
+	}
+	else if (gravityForce < max_gravityForce) {
+		currentTimeAir = 0;
+		gravityForce += 2;
+	}
+	else if (gravityForce > max_gravityForce) {
+		gravityForce = max_gravityForce;
+	}
+
+}
 
 void j1Player::Draw()
 {
-
-
-	App->render->Blit(player_tmx_data.texture, mPositionRounded.x, mPositionRounded.y, &mAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
+	App->render->Blit(player_tmx_data.texture, playerPos.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="15" nextobjectid="47">
+ <properties>
+  <property name="collider_height" type="int" value="31"/>
+  <property name="collider_width" type="int" value="13"/>
+  <property name="offset_collider_h" type="int" value="8"/>
+  <property name="offset_collider_w" type="int" value="3"/>
+ </properties>
+ <imagelayer id="14" name="Player_Hero">
+  <image source="Pixel_Hero.png" width="1024" height="592"/>
+ </imagelayer>
+ <objectgroup id="13" name="Dead_sfx">
+  <object id="46" x="400" y="0" width="23" height="20">
+   <properties>
+    <property name="value" value="audio/fx/dead_sfx.wav"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="12" name="Jump_sfx">
+  <object id="45" x="400" y="20" width="23" height="21">
+   <properties>
+    <property name="value" value="audio/fx/jump_sfx.wav"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Idle">
+  <object id="1" name="idle_01" x="450" y="0" width="50" height="37"/>
+  <object id="4" name="idle_02" x="500" y="0" width="50" height="37"/>
+  <object id="5" name="idle_03" x="550" y="0" width="50" height="37"/>
+  <object id="7" name="idle_04" x="600" y="0" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="5" name="Running">
+  <object id="17" name="run_01" x="500" y="37" width="50" height="37"/>
+  <object id="18" name="run_02" x="550" y="37" width="50" height="37"/>
+  <object id="19" name="run_03" x="600" y="37" width="50" height="37"/>
+  <object id="20" name="run_04" x="650" y="37" width="50" height="37"/>
+  <object id="21" name="run_05" x="700" y="37" width="50" height="37"/>
+  <object id="22" name="run_06" x="750" y="37" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="6" name="Grab">
+  <object id="25" name="grab_01" x="500" y="148" width="50" height="37"/>
+  <object id="26" name="grab_02" x="550" y="148" width="50" height="37"/>
+  <object id="27" name="grab_03" x="600" y="148" width="50" height="37"/>
+  <object id="28" name="grab_04" x="650" y="148" width="50" height="37"/>
+  <object id="29" name="grab_05" x="700" y="148" width="50" height="37"/>
+  <object id="30" name="grab_06" x="750" y="148" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="8" name="Jump">
+  <object id="32" name="jmp_01" x="550" y="74" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="10" name="MidAir">
+  <object id="40" name="midair_01" x="600" y="74" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="11" name="Falling">
+  <object id="42" name="fall_01" x="500" y="111" width="50" height="37"/>
+ </objectgroup>
+ <objectgroup id="9" name="Collider">
+  <object id="38" x="18" y="5" width="13" height="31"/>
+ </objectgroup>
+</map>
