@@ -91,12 +91,12 @@
     </object>
     <object id="47" name="SHEATHED_JUMP" x="550" y="74" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="20"/>
+      <property name="Frames" type="int" value="5"/>
      </properties>
     </object>
     <object id="48" name="SHEATHED_JUMP" x="600" y="74" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="6"/>
+      <property name="Frames" type="int" value="8"/>
      </properties>
     </object>
    </objectgroup>

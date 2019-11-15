@@ -75,8 +75,16 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
+	void JumpInput();
+
+	void HorizontalInputs();
+
 	// Called each loop iteration
 	bool Update(float dt);
+
+	void JumpMove();
+
+	void HorizontalMove();
 
 	void ReSizeAABBFromAnimation();
 
@@ -118,8 +126,13 @@ public:
 	p2Point<int> playerPos{ 0,0 };
 
 	float				verticalSpeed = 0.f;
+	bool				atCeiling = false;
+
+	int					colliderOffsetY1 = 10;
+	int					colliderOffsetY2 = 9;
+
 private:
-	float				runSpeed = 0.f;
+	float				runSpeed = 2.f;
 	float				gravitySpeed = 0.5f;
 
 	bool				moveRight = false;
@@ -127,6 +140,8 @@ private:
 	bool				jumpPressed = false;
 	bool				onGround = false;
 	bool				canMove = true;
+
+
 	//Enums
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
 
@@ -162,6 +177,7 @@ private:
 
 	//Colliders
 	Collider*			player_Collider = nullptr;
+	Collider*			ceilingChecker = nullptr;
 
 
 	//XML Stuff
