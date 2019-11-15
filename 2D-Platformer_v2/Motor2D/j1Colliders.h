@@ -14,7 +14,7 @@ enum ColliderType
 	COLLIDER_WALL_TRASPASSABLE,
 	COLLIDER_DEAD,
 	COLLIDER_WINDOW,
-	COLLIDER_CAMERA,
+	COLLIDER_CEILING_CHECKER,
 	COLLIDER_EXIT,
 };
 
@@ -89,11 +89,13 @@ public:
 	//Add collider
 	Collider* AddCollider(SDL_Rect rect, ColliderType type, p2Point<int> offset = { 0, 0 },j1Module * callback = nullptr, int Damage = 0);
 
+
 public:
 
 	bool CheckColliderCollision(Collider*,p2Point<int> increment, int* posX = nullptr,int* posY = nullptr);
+	bool CheckColliderCollision(Collider*);
 	bool ThroughPlatform (Collider*);
-	bool collider_debug = true;
+	bool collider_debug = false;
 	
 private:
 	Collider*			collider = nullptr;

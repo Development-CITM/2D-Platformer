@@ -72,6 +72,8 @@ bool j1Player::Load(const char* file_name)
 	pugi::xml_parse_result result = player_file.load_file(file_name);
 
 	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,50 }, COLLIDER_PLAYER, { 0,0 }, this);
+	ceilingChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,20,5 }, COLLIDER_CEILING_CHECKER, { 0,0 }, this);
+
 	player_Collider->rect.h = 45;
 	if (result == NULL)
 	{
@@ -229,8 +231,45 @@ bool j1Player::PreUpdate()
 	velocity_X = playerPos.x;
 	velocity_Y = playerPos.y;
 
+
+	//Hold Movements
+	if (canMove) {
+		switch (state)
+		{
+		case ST_Idle:
+			HorizontalInputs();
+			JumpInput();
+			break;
+		case ST_Run:
+			HorizontalInputs();
+			JumpInput();
+			break;
+		case ST_Jump:
+			HorizontalInputs();
+			break;
+		case ST_Fall:
+			HorizontalInputs();
+			break;
+		}
+	}
+	return true;
+}
+
+void j1Player::JumpInput()
+{
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
+		jumpPressed = true;
+	}
+}
+
+void j1Player::HorizontalInputs()
+{
+
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveRight = true;
+		last_Direction = direction;
+		direction = DIR_RIGHT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveRight = false;
@@ -238,60 +277,13 @@ bool j1Player::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveLeft = true;
+		last_Direction = direction;
+		direction = DIR_LEFT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveLeft = false;
+		//direction = DIR_UP;
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !jumping) {
-		jumpPressed = true;
-	}
-
-
-	if (moveLeft && moveRight) {
-		runSpeed = 0.f;
-	}
-	if (moveRight) {
-		if(runSpeed< 2.0f)
-		runSpeed += .5f;
-	}
-	else if(moveLeft){
-		if (runSpeed > -2.0f)
-			runSpeed -= .5f;
-	
-	}
-	else {
-		runSpeed = 0.f;
-	}
-
-
-	if (jumpPressed) {
-		jumping = true;
-		verticalSpeed = -10.f;
-		jumpPressed = false;
-	}
-	if (verticalSpeed < 6) {
-		verticalSpeed += gravitySpeed;
-	}
-
-	
-
-
-	//Hold Movements
-	if (canMove) {
-		switch (state)
-		{
-		case ST_Idle:
-			break;
-		case ST_Run:
-			break;
-		case ST_Jump:
-			break;
-		case ST_Fall:
-			break;
-		}
-	}
-	return true;
 }
 
 bool j1Player::Update(float dt)
@@ -312,37 +304,55 @@ bool j1Player::Update(float dt)
 //Finish this loop state.
 //Now Draw current animation with updated position and AABB position
 
-
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
 
-	if (runSpeed != 0) {
-		if (runSpeed < 0) {
+	//Change animation && state
+	if (runSpeed == 0.f && onGround) {
+		ChangeAnimation(disarmed_idle);
+		state = CharacterState::ST_Idle;
+	}
+	else if (runSpeed != 0.f && onGround) {
+		if (runSpeed < 0.f) {
 			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 		}
-		else if(runSpeed >0){
+		else if (runSpeed > 0.f) {
 			flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
-		currentAnimation = disarmed_run;
+		ChangeAnimation(disarmed_run);
+		state = CharacterState::ST_Run;
 	}
-	else {
-		if (currentAnimation != disarmed_idle) {
-			currentAnimation->ResetAnim();
-			currentAnimation = disarmed_idle;
+	else if (runSpeed != 0) {
+		if (runSpeed < 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else if (runSpeed > 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
 	}
 
+
+	
+
+	HorizontalMove();
+	JumpMove();
+	LOG("Left: %i Right: %i", moveLeft, moveRight);
+	LOG("State: %i", state);
+	LOG("Anim: %s", currentAnimation->name.GetString());
+	LOG("OnGround: %i", onGround);
+
+	
+
 	if (verticalSpeed <= 0) {
-		currentAnimation = disarmed_jump;
+		ChangeAnimation(disarmed_jump);
+		state = CharacterState::ST_Jump;
 	}
 	else if (verticalSpeed > 0 && !onGround) {
-		currentAnimation = disarmed_fall;
+		ChangeAnimation(disarmed_fall);
+		state = CharacterState::ST_Fall;
 	}
 
-	if (onGround && runSpeed == 0) {
-		currentAnimation = disarmed_idle;
-	}
-
+	numCurrentAnimation = currentAnimation->GetSprite();
 	
 	int posX, posY = 0;
 	App->collider->CheckColliderCollision(player_Collider, {(int) roundf(runSpeed),0 });
@@ -355,18 +365,51 @@ bool j1Player::Update(float dt)
 	else {
 		onGround = false;
 	}
-
+	if (App->collider->CheckColliderCollision(ceilingChecker)) {
+		atCeiling = true;
+	}
+	else {
+		atCeiling = false;
+	}
 	LOG("State: %i", state);
 
 
-	numCurrentAnimation = currentAnimation->GetSprite();
-	
+
 	playerPos.x = player_Collider->rect.x - (int) roundf( player_tmx_data.tile_width*0.5) - 2;
-	playerPos.y = player_Collider->rect.y-10;
+	playerPos.y = player_Collider->rect.y - colliderOffsetY1;
+
+	ceilingChecker->rect.x = player_Collider->rect.x;
+	ceilingChecker->rect.y = player_Collider->rect.y -3;
+
 	//ReSizeAABBFromAnimation();
 	Draw(); //Draw all the player
 
 	return true;
+}
+
+void j1Player::JumpMove()
+{
+	if (jumpPressed) {
+		jumping = true;
+		verticalSpeed = -10.f;
+		jumpPressed = false;
+	}
+	if (verticalSpeed < 6) {
+		verticalSpeed += gravitySpeed;
+	}
+}
+
+void j1Player::HorizontalMove()
+{
+	if (moveLeft == moveRight) {
+		runSpeed = 0.f;
+	}
+	else if (moveLeft) {
+		runSpeed = -2.f;
+	}
+	else if (moveRight) {
+			runSpeed = 2.f;
+	}
 }
 
 //void j1Player::ReSizeAABBFromAnimation()
@@ -411,6 +454,20 @@ void j1Player::Draw()
 	}
 	else {
 		disarmed_run->offset.x = -5;
+	}
+
+	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+		disarmed_jump->offset.x = 5;
+	}
+	else {
+		disarmed_jump->offset.x = -5;
+	}
+
+	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+		disarmed_fall->offset.x = 5;
+	}
+	else {
+		disarmed_fall->offset.x = -5;
 	}
 	
 	App->render->Blit(player_tmx_data.texture, playerPos.x + currentAnimation->offset.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);

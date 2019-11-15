@@ -188,7 +188,7 @@ void j1Colliders::Draw()
 			case COLLIDER_WINDOW:
 				App->render->DrawQuad(rect, 0, 255, 255, 50);
 				break;
-			case COLLIDER_CAMERA:
+			case COLLIDER_CEILING_CHECKER:
 				App->render->DrawQuad(rect, 0, 0, 0, 50, false);
 				break;
 			case COLLIDER_EXIT:
@@ -226,7 +226,6 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,p2Point<int>increment, int
 	prediction = *c1;
 	prediction.rect.x = c1->rect.x + increment.x;
 	prediction.rect.y = c1->rect.y + increment.y;
-	LOG("%i %i", prediction.rect.x, c1->rect.x);
 
 	Collider* c2 = nullptr;
 	p2List_item<Collider*>* c = colliders.start;
@@ -234,7 +233,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,p2Point<int>increment, int
 	for (int i = 0; i < colliders.count(); i++)
 	{
 
-		if (prediction.type != c2->type && c2->type != COLLIDER_WINDOW)
+		if (prediction.type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CEILING_CHECKER)
 		{
 			if (increment.x != 0) {
 				if (prediction.CheckCollision(c2->rect)) {
@@ -266,12 +265,33 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,p2Point<int>increment, int
 		
 	}
 	if (ret && increment.y > 0) {
-		c1->rect.y = *posY - App->player->player_tmx_data.tile_height - 9;
+		c1->rect.y = *posY - App->player->player_tmx_data.tile_height - App->player->colliderOffsetY2;
 		App->player->jumping = false;	
 	}	
 
 
 
+	return ret;
+}
+
+bool j1Colliders::CheckColliderCollision(Collider* c1)
+{ 
+	bool ret = false;
+	Collider* c2 = nullptr;
+	p2List_item<Collider*>* c = colliders.start;
+	c2 = c->data;
+	for (int i = 0; i < colliders.count(); i++)
+	{
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER)
+		{
+			if (c1->CheckCollision(c2->rect)) {
+				ret = true;
+			}
+		}
+		if (c->next != NULL)
+			c = c->next;
+		c2 = c->data;
+	}
 	return ret;
 }
 
@@ -283,7 +303,7 @@ bool j1Colliders::ThroughPlatform(Collider* c1)
 	c2 = c->data;
 	for (uint i = 0; i < colliders.count(); i++)
 	{
-		if (c1 != c2 && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_CAMERA) {
+		if (c1 != c2 && c2->type != COLLIDER_WINDOW) {
 
 			if (c2->type == COLLIDER_WALL_TRASPASSABLE) {
 				if (c1->CheckCollision(c2->rect)) {
