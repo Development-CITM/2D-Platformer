@@ -206271,7 +206271,7 @@
   <object id="46" type="Dead" x="832" y="1168" width="112" height="16"/>
   <object id="47" type="Dead" x="624" y="1168" width="96" height="16"/>
   <object id="48" type="Dead" x="928" y="704" width="192" height="16"/>
-  <object id="49" type="Transition" x="320" y="288" width="32" height="144">
+  <object id="49" type="Transition" x="304" y="288" width="16" height="144">
    <properties>
     <property name="swap" value="A2toA1"/>
    </properties>

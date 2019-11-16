@@ -283,21 +283,43 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 	{
 		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) 
 		{
-			if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
+			if (App->scene->swapping)
 			{
-				playerPos.x = it.attribute("value").as_int();
-				if (player_Collider != nullptr)
+				if (strcmp(it.attribute("name").as_string(), "player_pos_x_swap") == 0)
 				{
-					player_Collider->rect.x = it.attribute("value").as_int();
+					playerPos.x = it.attribute("value").as_int();
+					if (player_Collider != nullptr)
+					{
+						player_Collider->rect.x = it.attribute("value").as_int();
+					}
 				}
-				
-			}
-			if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
-			{
-				playerPos.y = it.attribute("value").as_int();
-				if (player_Collider != nullptr)
+				if (strcmp(it.attribute("name").as_string(), "player_pos_y_swap") == 0)
 				{
-					player_Collider->rect.y = it.attribute("value").as_int();
+					playerPos.y = it.attribute("value").as_int();
+					if (player_Collider != nullptr)
+					{
+						player_Collider->rect.y = it.attribute("value").as_int();
+					}
+				}
+			}
+			else
+			{
+				if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
+				{
+					playerPos.x = it.attribute("value").as_int();
+					if (player_Collider != nullptr)
+					{
+						player_Collider->rect.x = it.attribute("value").as_int();
+					}
+
+				}
+				if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
+				{
+					playerPos.y = it.attribute("value").as_int();
+					if (player_Collider != nullptr)
+					{
+						player_Collider->rect.y = it.attribute("value").as_int();
+					}
 				}
 			}
 		}

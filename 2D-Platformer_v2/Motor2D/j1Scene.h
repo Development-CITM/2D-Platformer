@@ -64,6 +64,7 @@ public:
 	bool notfirst=false;
 
 	bool loading = false;
+	bool swapping = false;
 	p2List<p2SString*> levels;
 	p2SString A1 = "maps/A1.tmx";
 	p2SString A2 = "maps/A2.tmx";

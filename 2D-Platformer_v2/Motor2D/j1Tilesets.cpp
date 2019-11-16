@@ -496,13 +496,27 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 	{
 		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
 		{
-			if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
+			if (App->scene->swapping == true)
 			{
-				culling_pos_x = it.attribute("value").as_int();
+				if (strcmp(it.attribute("name").as_string(), "culling_pos_x_swap") == 0)
+				{
+					culling_pos_x = it.attribute("value").as_int();
+				}
+				if (strcmp(it.attribute("name").as_string(), "culling_pos_y_swap") == 0)
+				{
+					culling_pos_y = it.attribute("value").as_int();
+				}
 			}
-			if (strcmp(it.attribute("name").as_string(), "culling_pos_y") == 0)
+			else
 			{
-				culling_pos_y = it.attribute("value").as_int();
+				if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
+				{
+					culling_pos_x = it.attribute("value").as_int();
+				}
+				if (strcmp(it.attribute("name").as_string(), "culling_pos_y") == 0)
+				{
+					culling_pos_y = it.attribute("value").as_int();
+				}
 			}
 		}
 	}

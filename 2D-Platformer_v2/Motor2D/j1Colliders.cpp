@@ -320,6 +320,10 @@ void j1Colliders::ChooseSwap(pugi::xml_node& node,Collider* c)
 	{
 		c->swap = SwapTo::A2_TO_A1;
 	}
+	if (strcmp(node.attribute("value").as_string(), "A1toA2") == 0)
+	{
+		c->swap = SwapTo::A1_TO_A2;
+	}
 }
 
 bool j1Colliders::ThroughPlatform(Collider* c1)
