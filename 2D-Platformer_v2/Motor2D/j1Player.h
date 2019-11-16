@@ -82,6 +82,14 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void UpdatePlayerPosition();
+
+	void UpdateCheckersPosition();
+
+	void UpdateCheckersBools();
+
+	void ChangeStatesAndAnimations();
+
 	void JumpMove();
 
 	void HorizontalMove();

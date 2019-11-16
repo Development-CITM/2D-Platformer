@@ -13,8 +13,10 @@
 #include <math.h>
 
 #pragma region Constructor/Awake/Start/CleanUp
-
 struct Collider;
+
+#pragma region Constructor/Awake/Start
+
 j1Player::j1Player()
 {
 	//Set module name
@@ -43,6 +45,73 @@ bool j1Player::Start()
 	return true;
 }
 
+#pragma endregion
+
+#pragma region PreUpdate/Update/PostUpdate
+
+bool j1Player::PreUpdate()
+{
+	velocity_X = playerPos.x;
+	velocity_Y = playerPos.y;
+
+	//Hold Movements
+	if (canMove) {
+		switch (state)
+		{
+		case ST_Idle:
+			HorizontalInputs();
+			JumpInput();
+			break;
+		case ST_Run:
+			HorizontalInputs();
+			JumpInput();
+			break;
+		case ST_Jump:
+			HorizontalInputs();
+			break;
+		case ST_Fall:
+			HorizontalInputs();
+			break;
+		}
+	}
+	return true;
+}
+
+bool j1Player::Update(float dt)
+{
+
+	velocity_X -= playerPos.x;
+	velocity_Y -= playerPos.y;
+
+
+	ChangeStatesAndAnimations();
+
+	numCurrentAnimation = currentAnimation->GetSprite();
+	
+	UpdateCheckersBools();
+
+	JumpMove();
+
+	HorizontalMove();
+
+	UpdatePlayerPosition();
+
+	UpdateCheckersPosition();
+
+	Draw(); //Draw all the player
+
+	return true;
+}
+
+bool j1Player::PostUpdate()
+{
+	return true;
+}
+
+#pragma endregion
+
+#pragma region CleanUp
+
 bool j1Player::CleanUp()
 {
 	//// Remove all layers
@@ -63,7 +132,9 @@ bool j1Player::CleanUp()
 	return true;
 }
 
+#pragma endregion
 
+#pragma region Loads
 
 bool j1Player::Load(const char* file_name)
 {
@@ -73,17 +144,19 @@ bool j1Player::Load(const char* file_name)
 
 	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,45 }, COLLIDER_PLAYER, { 0,0 }, this);
 
+	groundChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w - 1,5 }, COLLIDER_CEILING_CHECKER, { 1,player_Collider->rect.h }, this);
+	groundChecker->checkerType = ColliderChecker::Ground;
+
 	ceilingChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w-1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,-4 }, this);
 	ceilingChecker->checkerType = ColliderChecker::Top;
 
-	rightChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h}, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,0 }, this);
+	rightChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h-10}, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,5 }, this);
 	rightChecker->checkerType = ColliderChecker::Right;
 
-	leftChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h}, COLLIDER_CEILING_CHECKER, { -3,0 }, this);
+	leftChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h -10}, COLLIDER_CEILING_CHECKER, { -3,5 }, this);
 	leftChecker->checkerType = ColliderChecker::Left;
 
-	groundChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w -1,5}, COLLIDER_CEILING_CHECKER, { 1,player_Collider->rect.h }, this);
-	groundChecker->checkerType = ColliderChecker::Ground;
+
 
 	if (result == NULL)
 	{
@@ -230,40 +303,18 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 	
 }
 
+#pragma endregion
+
+#pragma region OnCollision
+
 void j1Player::OnCollision(Collider* c1, Collider* c2)
 {
 	
 }
 
+#pragma endregion
 
-bool j1Player::PreUpdate()
-{
-	velocity_X = playerPos.x;
-	velocity_Y = playerPos.y;
-
-
-	//Hold Movements
-	if (canMove) {
-		switch (state)
-		{
-		case ST_Idle:
-			HorizontalInputs();
-			JumpInput();
-			break;
-		case ST_Run:
-			HorizontalInputs();
-			JumpInput();
-			break;
-		case ST_Jump:
-			HorizontalInputs();
-			break;
-		case ST_Fall:
-			HorizontalInputs();
-			break;
-		}
-	}
-	return true;
-}
+#pragma region Inputs
 
 void j1Player::JumpInput()
 {
@@ -296,57 +347,29 @@ void j1Player::HorizontalInputs()
 	}
 }
 
-bool j1Player::Update(float dt)
+#pragma endregion
+
+#pragma region UpdateColliders
+
+void j1Player::UpdateCheckersPosition()
 {
+	//Update Checkers position
 
-	velocity_X -= playerPos.x;
-	velocity_Y -= playerPos.y;
+	ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
+	ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
 
+	groundChecker->rect.x = player_Collider->rect.x + groundChecker->offset.x;
+	groundChecker->rect.y = player_Collider->rect.y + groundChecker->offset.y;
 
-	//Change animation && state
-	if (runSpeed == 0.f && onGround) {
-		ChangeAnimation(disarmed_idle);
-		state = CharacterState::ST_Idle;
-	}
-	else if (runSpeed != 0.f && onGround) {
-		if (runSpeed < 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		}
-		else if (runSpeed > 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		}
-		ChangeAnimation(disarmed_run);
-		state = CharacterState::ST_Run;
-	}
-	else if (runSpeed != 0) {
-		if (runSpeed < 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		}
-		else if (runSpeed > 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		}
-	}
+	leftChecker->rect.x = player_Collider->rect.x + leftChecker->offset.x;
+	leftChecker->rect.y = player_Collider->rect.y + leftChecker->offset.y;
 
-	if (jumping) {
-		ChangeAnimation(disarmed_jump);
-		state = CharacterState::ST_Jump;
-	}
-	else if(!jumping && !onGround) {
-		ChangeAnimation(disarmed_fall);
-		state = CharacterState::ST_Fall;
-		player_Collider->rect.h = 40;
-		
-	}
-	if (previous_state != state) {
-		previous_state = state;
-		LOG("State: %i", state);
-	}
+	rightChecker->rect.x = player_Collider->rect.x + rightChecker->offset.x;
+	rightChecker->rect.y = player_Collider->rect.y + rightChecker->offset.y;
+}
 
-
-
-
-	numCurrentAnimation = currentAnimation->GetSprite();
-	
+void j1Player::UpdateCheckersBools()
+{
 
 	//Check Collisions
 	if (App->collider->CheckColliderCollision(rightChecker)) {
@@ -368,14 +391,21 @@ bool j1Player::Update(float dt)
 		groundChecker->collided = false;
 		onGround = false;
 	}
-	
+
 	if (App->collider->CheckColliderCollision(ceilingChecker)) {
 		ceilingChecker->collided = true;
 	}
 	else {
 		ceilingChecker->collided = false;
 	}
+}
 
+#pragma endregion
+
+#pragma region Movement
+
+void j1Player::JumpMove()
+{
 	if (jumpPressed) {
 		verticalSpeed = jumpSpeed;
 		state = CharacterState::ST_Jump;
@@ -394,14 +424,14 @@ bool j1Player::Update(float dt)
 		gravitySpeed = max_gravitySpeed;
 	}
 
-	if (!onGround && !jumping) {
+	if (!jumping) {
 		if (verticalSpeed < 6.f) {
 			verticalSpeed += gravitySpeed;
 		}
 		else if (verticalSpeed > 6.f) {
 			verticalSpeed = 6.f;
 		}
-	
+
 		int posY = 0;
 
 		player_Collider->rect.y += (int)roundf(verticalSpeed);
@@ -424,47 +454,6 @@ bool j1Player::Update(float dt)
 				verticalSpeed = 0.0f;
 			}
 		}
-	}
-
-
-	HorizontalMove();
-
-
-
-
-	//Update Player Pos
-	playerPos.x = player_Collider->rect.x - (int) roundf( player_tmx_data.tile_width*0.5) - 2;
-	playerPos.y = player_Collider->rect.y - colliderOffsetY1;
-
-	//Update Checkers position
-
-	ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
-	ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
-
-	groundChecker->rect.x = player_Collider->rect.x + groundChecker->offset.x;
-	groundChecker->rect.y = player_Collider->rect.y + groundChecker->offset.y;
-
-	leftChecker->rect.x = player_Collider->rect.x + leftChecker->offset.x;
-	leftChecker->rect.y = player_Collider->rect.y + leftChecker->offset.y;
-
-	rightChecker->rect.x = player_Collider->rect.x + rightChecker->offset.x;
-	rightChecker->rect.y = player_Collider->rect.y + rightChecker->offset.y;
-
-	//ReSizeAABBFromAnimation();
-	Draw(); //Draw all the player
-
-	return true;
-}
-
-void j1Player::JumpMove()
-{
-	if (jumpPressed) {
-		jumping = true;
-		verticalSpeed = -10.f;
-		jumpPressed = false;
-	}
-	if (verticalSpeed < 6) {
-		verticalSpeed += gravitySpeed;
 	}
 }
 
@@ -502,27 +491,65 @@ void j1Player::HorizontalMove()
 	}
 }
 
-//void j1Player::ReSizeAABBFromAnimation()
-//{
-//
-//
-//	SDL_Rect r;
-//	r.x = playerPos.x + currentAnimation->sprites[numCurrentAnimation].AABB_offset.x + 8;
-//	r.y = playerPos.y + currentAnimation->sprites[numCurrentAnimation].AABB_offset.y +3;
-//	r.w = currentAnimation->sprites[numCurrentAnimation].AABB_rect.w + 10;
-//	r.h = currentAnimation->sprites[numCurrentAnimation].AABB_rect.h + 15;
-//	player_Collider->Resize(r);
-//}
-
-
-
-
-
-bool j1Player::PostUpdate()
+void j1Player::UpdatePlayerPosition()
 {
-	return true;
+	//Update Player Pos
+	playerPos.x = player_Collider->rect.x - (int)roundf(player_tmx_data.tile_width * 0.5) - 2;
+	playerPos.y = player_Collider->rect.y - colliderOffsetY1;
 }
 
+#pragma endregion
+
+#pragma region Change States/Animations
+
+void j1Player::ChangeStatesAndAnimations()
+{
+	//Change animation && state
+	if (runSpeed == 0.f && onGround) {
+		ChangeAnimation(disarmed_idle);
+		state = CharacterState::ST_Idle;
+	}
+	else if (runSpeed != 0.f && onGround) {
+		if (runSpeed < 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else if (runSpeed > 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
+		ChangeAnimation(disarmed_run);
+		state = CharacterState::ST_Run;
+	}
+	else if (runSpeed != 0) {
+		if (runSpeed < 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else if (runSpeed > 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
+	}
+
+	if (jumping) {
+		ChangeAnimation(disarmed_jump);
+		state = CharacterState::ST_Jump;
+	}
+	else if (!jumping && !onGround) {
+		ChangeAnimation(disarmed_fall);
+		state = CharacterState::ST_Fall;
+		player_Collider->rect.h = 40;
+		groundChecker->offset.y = player_Collider->rect.h;
+		leftChecker->rect.h = rightChecker->rect.h = player_Collider->rect.h - 10;
+	}
+	else {
+		player_Collider->rect.h = 45;
+		groundChecker->offset.y = player_Collider->rect.h;
+		leftChecker->rect.h = rightChecker->rect.h = player_Collider->rect.h - 10;
+	}
+	if (previous_state != state) {
+		previous_state = state;
+		LOG("State: %i", state);
+	}
+
+}
 
 void j1Player::ChangeAnimation(Animation* anim)
 {
@@ -532,9 +559,9 @@ void j1Player::ChangeAnimation(Animation* anim)
 		currentAnimation = anim;
 	}
 }
+#pragma endregion
 
-
-
+#pragma region Draw
 
 void j1Player::Draw()
 {
@@ -562,3 +589,5 @@ void j1Player::Draw()
 	
 	App->render->Blit(player_tmx_data.texture, playerPos.x + currentAnimation->offset.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
 }
+
+#pragma endregion

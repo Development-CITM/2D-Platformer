@@ -300,7 +300,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 						ret = true;
 						break;
 					case Directions::DIR_DOWN:
-						*snapPos = c2->rect.y -46;
+						*snapPos = c2->rect.y - App->player->GetCollider()->rect.h - 2;
 						ret = true;
 						break;
 					case Directions::DIR_UP:
