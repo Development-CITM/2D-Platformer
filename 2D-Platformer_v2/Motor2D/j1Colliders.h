@@ -5,7 +5,6 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
-#include "j1Player.h"
 
 enum ColliderType
 {
@@ -20,6 +19,17 @@ enum ColliderType
 	COLLIDER_EXIT,
 };
 
+enum class Directions
+{
+	DIR_RIGHT,
+	DIR_LEFT,
+	DIR_UP,
+	DIR_DOWN,
+	DIR_PLATFORM,
+	DIR_DASH_LEFT,
+	DIR_DASH_RIGHT,
+	DIR_NONE,
+};
 enum SwapTo
 {
 	NOWHERE,

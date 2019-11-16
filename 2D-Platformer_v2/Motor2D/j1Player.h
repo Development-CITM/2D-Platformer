@@ -20,17 +20,6 @@ enum CharacterState {
 	ST_GrabLedge,
 };
 
-enum class Directions
-{
-	DIR_RIGHT,
-	DIR_LEFT,
-	DIR_UP,
-	DIR_DOWN,
-	DIR_PLATFORM,
-	DIR_DASH_LEFT,
-	DIR_DASH_RIGHT,
-	DIR_NONE,
-};
 
 
 struct ObjectLayer
