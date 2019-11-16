@@ -18,6 +18,7 @@ enum ColliderType
 	COLLIDER_CEILING_CHECKER,
 	COLLIDER_EXIT,
 };
+
 enum ColliderChecker {
 	None,
 	Ground,
@@ -105,10 +106,11 @@ public:
 
 public:
 
-	bool CheckColliderCollision(Collider*,p2Point<int> increment, int* posX = nullptr,int* posY = nullptr);
 	bool CheckColliderCollision(Collider*, Directions dir, int* snapPos = nullptr);
 	bool CheckColliderCollision(Collider*);
+
 	bool ThroughPlatform (Collider*);
+
 	bool collider_debug = true;
 	
 private:

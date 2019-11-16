@@ -27,8 +27,6 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	
 	LOG("Loading Player...");
 	pugi::xml_node player_values = conf;
-
-	pivot_x_flip = player_values.child("pivot_x_flip").attribute("value").as_int();
 	return ret;	
 }
 
@@ -292,13 +290,8 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 			{
 				playerPos.y = it.attribute("value").as_int();
 			}
-			if (strcmp(it.attribute("name").as_string(), "ground_pos") == 0)
-			{
-				groundPos = it.attribute("value").as_int();
-			}
 		}
-	}
-	
+	}	
 }
 
 #pragma endregion
@@ -327,8 +320,6 @@ void j1Player::HorizontalInputs()
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveRight = true;
-		last_Direction = direction;
-		direction = Directions::DIR_RIGHT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveRight = false;
@@ -336,8 +327,6 @@ void j1Player::HorizontalInputs()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveLeft = true;
-		last_Direction = direction;
-		direction = Directions::DIR_LEFT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveLeft = false;

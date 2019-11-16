@@ -11,10 +11,6 @@
 struct Collider;
 enum MapTypes;
 
-#define PLAYERMAXJUMP_GRAVITY4 40
-#define PLAYERMAXJUMP_GRAVITY6 15
-#define PLAYERMAXJUMP_GRAVITY9 5
-
 enum CharacterState {
 	ST_Idle,
 	ST_Walk,
@@ -44,7 +40,7 @@ struct ObjectLayer
 };
 
 struct PlayerTMXData {
-	SDL_Texture* texture = nullptr;
+	SDL_Texture*			texture = nullptr;
 	uint					width = 0u;
 	uint					height = 0u;
 	int						tile_width = 0u;
@@ -82,6 +78,36 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	// Called before all Updates
+	bool PostUpdate();
+
+	// Called each loop iteration if has one
+	bool Load(const char* path);
+
+	// Called each loop iteration if has one
+	void Draw();
+
+	// Called before quitting
+	bool CleanUp();
+
+
+	void OnCollision(Collider* c1, Collider* c2) override;
+
+	Collider* GetCollider() { return player_Collider; }
+
+	void SetPlayerPos(pugi::xml_node& object);
+
+private:
+
+	//Load Functions
+	bool LoadPlayerTMX(pugi::xml_node& player_node);
+	Animation* LoadAnimation(pugi::xml_node& obj_group);
+	SDL_Rect LoadAABB(pugi::xml_node& player_node);
+
+	//Animation Functions
+	void ChangeAnimation(Animation*);
+
+	//Logical Functions
 	void UpdatePlayerPosition();
 
 	void UpdateCheckersPosition();
@@ -94,88 +120,45 @@ public:
 
 	void HorizontalMove();
 
-	void ReSizeAABBFromAnimation();
-
-
-
-	// Called before all Updates
-	bool PostUpdate();
-
-	// Called each loop iteration if has one
-	bool Load(const char* path);
-
-
-	// Called each loop iteration if has one
-	void Draw();
-
-	// Called before quitting
-	bool CleanUp();
-
-	void SetPlayerPos(pugi::xml_node& object);
-
-
-	void OnCollision(Collider* c1, Collider* c2) override;
-
-	Collider* GetCollider() { return player_Collider; }
-
-private:
-	//Load Functions
-	bool LoadPlayerTMX(pugi::xml_node& player_node);
-	Animation* LoadAnimation(pugi::xml_node& obj_group);
-	SDL_Rect LoadAABB(pugi::xml_node& player_node);
-
-	//Animation Functions
-	void ChangeAnimation(Animation*);
-
 //---------------VARIABLES --------------------//
 public:
 	PlayerTMXData		player_tmx_data;
-	int					groundPos;
 
-	bool				jumping = false;
-	p2Point<int> playerPos{ 0,0 };
-
-	float				verticalSpeed = 0.f;
-	bool				atCeiling = false;
-
-	int					colliderOffsetY1 = 10;
-	int					colliderOffsetY2 = 9;
+	p2Point<int>		playerPos{ 0,0 };
 
 private:
+	//Run Speeds
 	float				runSpeed = 2.f;
 	float				max_runSpeed = 2.f;
 	float				gravitySpeed = 0.4f;
+
+	//Jump Speed
 	float				max_gravitySpeed = 0.7f;
 	float				jumpSpeed = -10.f;
+	float				verticalSpeed = 0.f;
 
+	//Move bools
 	bool				moveRight = false;
 	bool				moveLeft = false;
 	bool				jumpPressed = false;
 	bool				onGround = false;
 	bool				canMove = true;
-
+	bool				atCeiling = false;
+	bool				jumping = false;
 
 	//Enums
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
+
+	CharacterState		state = CharacterState::ST_Idle;
+	CharacterState		previous_state = CharacterState::ST_Idle;
 
 	//Actual movement speed  direction
 	int					velocity_X = 0;
 	int					velocity_Y = 0;
 
-	Directions			direction = Directions::DIR_RIGHT;
-
-	Directions			last_Direction = Directions::DIR_RIGHT;
-
 	//Positions
-		//Positions
-	int					pivot_x_flip = 0;
 	bool				onPlatform = false;
-	p2Point<int>		previousColliderPos = { 0,0 };
-	p2Point<int>		previousPlayerPos{ 0,0 };
 	p2Point<int>		currentVelocity{ 0,0 };
-
-	CharacterState		state = CharacterState::ST_Idle;
-	CharacterState		previous_state = CharacterState::ST_Idle;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;
@@ -186,8 +169,7 @@ private:
 	Animation*			disarmed_jump = nullptr;
 	Animation*			disarmed_fall = nullptr;
 
-	//Checkers
-	bool				detected_Collision = false;
+	int					numCurrentAnimation = 0;
 
 	//Colliders
 	Collider*			player_Collider = nullptr;
@@ -198,16 +180,13 @@ private:
 	Collider*			leftChecker = nullptr;
 	Collider*			rightChecker = nullptr;
 
+	//Offsets
+	int					colliderOffsetY1 = 10;
+	int					colliderOffsetY2 = 9;
 
 	//XML Stuff
 	p2SString			folder;
 	bool				map_loaded = false;
-
-
-	int numCurrentAnimation = 0;
-
-	 
-
 };
 
 

@@ -147,7 +147,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 
 		App->player->playerPos.x = data.child("playerPos").attribute("player_pos_x").as_float();
 		App->player->playerPos.y = data.child("playerPos").attribute("player_pos_y").as_float();
-		App->player->groundPos = data.child("playerPos").attribute("ground_pos").as_int();
 
 		destination_level = data.child("scene").attribute("current_map").as_string();
 		current_level = data.child("scene").attribute("current_map").as_string();
@@ -165,7 +164,6 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	player.append_attribute("player_pos_x") = App->player->playerPos.x;
 	player.append_attribute("player_pos_y") = App->player->playerPos.y;
-	player.append_attribute("ground_pos") = App->player->groundPos; //EUDALD: DELETE WHEN COLLIDERS WORKING
 
 	pugi::xml_node player_collider = data.append_child("player_collider");
 
