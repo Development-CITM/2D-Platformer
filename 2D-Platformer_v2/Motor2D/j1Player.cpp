@@ -12,10 +12,8 @@
 #include "j1Scene.h"
 #include <math.h>
 
-#pragma region Constructor/Awake/Start/CleanUp
-struct Collider;
-
 #pragma region Constructor/Awake/Start
+struct Collider;
 
 j1Player::j1Player()
 {
