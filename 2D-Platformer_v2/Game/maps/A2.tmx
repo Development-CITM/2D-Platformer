@@ -206271,9 +206271,9 @@
   <object id="46" type="Dead" x="832" y="1168" width="112" height="16"/>
   <object id="47" type="Dead" x="624" y="1168" width="96" height="16"/>
   <object id="48" type="Dead" x="928" y="704" width="192" height="16"/>
-  <object id="49" type="Map_change " x="320" y="288" width="32" height="144">
+  <object id="49" type="Transition" x="320" y="288" width="32" height="144">
    <properties>
-    <property name="source" value="A1.tmx"/>
+    <property name="swap" value="A2toA1"/>
    </properties>
   </object>
   <object id="50" type="Map_change" x="1440" y="512" width="32" height="128">
@@ -206286,24 +206286,23 @@
  <objectgroup id="155" name="Culling_pos">
   <object id="53" name="Culling Pos" x="320" y="0" width="16" height="16">
    <properties>
-    <property name="culling_pos_x" type="int" value="10"/>
+    <property name="culling_pos_x" type="int" value="330"/>
     <property name="culling_pos_y" type="int" value="100"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="161" name="Player_pos" visible="0">
+ <objectgroup id="161" name="Player_pos">
   <object id="55" name="Player Pos" x="352" y="0" width="16" height="16">
    <properties>
-    <property name="ground_pos" type="int" value="250"/>
-    <property name="player_pos_x" type="float" value="10"/>
-    <property name="player_pos_y" type="float" value="243"/>
+    <property name="player_pos_x" type="int" value="380"/>
+    <property name="player_pos_y" type="int" value="373"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="160" name="Camera_pos" visible="0">
+ <objectgroup id="160" name="Camera_pos">
   <object id="54" name="Camera Pos" x="336" y="0" width="16" height="16">
    <properties>
-    <property name="camera_pos_x" type="int" value="-20"/>
+    <property name="camera_pos_x" type="int" value="-660"/>
     <property name="camera_pos_y" type="int" value="-200"/>
    </properties>
   </object>

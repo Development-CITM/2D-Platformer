@@ -75,7 +75,8 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
-
+	LOG("Playerpos X: %i",playerPos.x);
+	LOG("Playerpos Y: %i",playerPos.y);
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
 
@@ -285,13 +286,28 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 			if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
 			{
 				playerPos.x = it.attribute("value").as_int();
+				if (player_Collider != nullptr)
+				{
+					player_Collider->rect.x = it.attribute("value").as_int();
+				}
+				
 			}
 			if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
 			{
 				playerPos.y = it.attribute("value").as_int();
+				if (player_Collider != nullptr)
+				{
+					player_Collider->rect.y = it.attribute("value").as_int();
+				}
 			}
 		}
-	}	
+	}
+	else
+	{
+		player_Collider->rect.x = playerPos.x;
+		player_Collider->rect.y = playerPos.y;
+	}
+
 }
 
 #pragma endregion
@@ -481,8 +497,11 @@ void j1Player::HorizontalMove()
 void j1Player::UpdatePlayerPosition()
 {
 	//Update Player Pos
-	playerPos.x = player_Collider->rect.x - (int)roundf(player_tmx_data.tile_width * 0.5) - 2;
-	playerPos.y = player_Collider->rect.y - colliderOffsetY1;
+	if (App->scene->loading == false)
+	{
+		playerPos.x = player_Collider->rect.x - (int)roundf(player_tmx_data.tile_width * 0.5) - 2;
+		playerPos.y = player_Collider->rect.y - colliderOffsetY1;
+	}
 }
 
 #pragma endregion

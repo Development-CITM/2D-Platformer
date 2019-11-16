@@ -119170,7 +119170,7 @@
  <objectgroup id="32" name="Camera_pos">
   <object id="39" name="Camera Pos" x="496" y="0" width="16" height="16">
    <properties>
-    <property name="camera_pos_x" type="int" value="-1500"/>
+    <property name="camera_pos_x" type="int" value="-2500"/>
     <property name="camera_pos_y" type="int" value="-200"/>
    </properties>
   </object>
@@ -119178,7 +119178,7 @@
  <objectgroup id="27" name="Culling_pos">
   <object id="38" name="Culling Pos" x="480" y="0" width="16" height="16">
    <properties>
-    <property name="culling_pos_x" type="int" value="750"/>
+    <property name="culling_pos_x" type="int" value="1250"/>
     <property name="culling_pos_y" type="int" value="100"/>
    </properties>
   </object>
@@ -119186,9 +119186,8 @@
  <objectgroup id="33" name="Player_pos">
   <object id="40" name="Player pos" x="512" y="0" width="16" height="16">
    <properties>
-    <property name="ground_pos" type="int" value="230"/>
-    <property name="player_pos_x" type="float" value="780"/>
-    <property name="player_pos_y" type="float" value="230"/>
+    <property name="player_pos_x" type="int" value="1690"/>
+    <property name="player_pos_y" type="int" value="150"/>
    </properties>
   </object>
  </objectgroup>

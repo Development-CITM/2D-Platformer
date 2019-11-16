@@ -256,6 +256,17 @@ void j1Scene::DecideMapToLoad()
 	}
 }
 
+void j1Scene::ColliderMapToLoad(Collider* c2)
+{
+	
+	if (c2->swap==A2_TO_A1)
+	{
+		destination_level = "maps/A1.tmx";
+		App->debug->CallFade();
+		c2->Enabled = true;
+	}
+}
+
 
 
 

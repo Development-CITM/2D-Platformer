@@ -11,6 +11,7 @@
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Player.h"
+#include "j1Debug.h"
 #include <math.h>
 
 #pragma region Constructor / Destructor
@@ -125,6 +126,7 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	collider->rect.y = node.attribute("y").as_int();
 	collider->rect.w = node.attribute("width").as_int();
 	collider->rect.h = node.attribute("height").as_int();
+	
 
 	//Selects the type of collider ---------------------------------------------------------------------
 	if (strcmp(node.attribute("type").as_string(), "Jumpable") == 0)
@@ -139,6 +141,12 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	{
 		collider->type = COLLIDER_WALL_SOLID;
 	}	
+	if (strcmp(node.attribute("type").as_string(), "Transition") == 0)
+	{
+		collider->type = COLLIDER_TRANSITION;	
+		pugi::xml_node swap = node.child("properties").child("property");
+		ChooseSwap(swap, collider);
+	}
 	if (strcmp(node.attribute("type").as_string(), "Exit") == 0)
 	{
 		collider->type = COLLIDER_EXIT;
@@ -172,6 +180,11 @@ void j1Colliders::Draw()
 			case COLLIDER_WALL_SOLID:
 				App->render->DrawQuad(rect, 255, 0, 0, 100);
 				break;
+			case COLLIDER_TRANSITION:
+			{
+				App->render->DrawQuad(rect, 182, 149, 192,100);
+				break;
+			}
 			case COLLIDER_WALL_TRASPASSABLE:			
 				App->render->DrawQuad(rect, 0, 0, 255, 100);
 				break;
@@ -235,7 +248,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 				if (dir != Directions::DIR_NONE && snapPos != nullptr) {
 					switch (dir)
 					{
-					case Directions::DIR_RIGHT:						
+					case Directions::DIR_RIGHT:	
 							*snapPos = c2->rect.x - 22;						
 						ret = true;
 						break;
@@ -286,6 +299,10 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 					c2->Enabled = false;
 					detected_Colliders.add(c2);
 				}
+				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground) && c2->type == COLLIDER_TRANSITION && c2->Enabled) {
+					c2->Enabled = false;
+					App->scene->ColliderMapToLoad(c2);
+				}
 				ret = true;
 				
 			}
@@ -295,6 +312,14 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 		c2 = c->data;
 	}
 	return ret;
+}
+
+void j1Colliders::ChooseSwap(pugi::xml_node& node,Collider* c)
+{
+	if (strcmp(node.attribute("value").as_string(), "A2toA1")==0)
+	{
+		c->swap = SwapTo::A2_TO_A1;
+	}
 }
 
 bool j1Colliders::ThroughPlatform(Collider* c1)

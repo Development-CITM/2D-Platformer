@@ -13,10 +13,20 @@ enum ColliderType
 	COLLIDER_PLAYER,
 	COLLIDER_WALL_SOLID,
 	COLLIDER_WALL_TRASPASSABLE,
+	COLLIDER_TRANSITION,
 	COLLIDER_DEAD,
 	COLLIDER_WINDOW,
 	COLLIDER_CEILING_CHECKER,
 	COLLIDER_EXIT,
+};
+
+enum SwapTo
+{
+	NOWHERE,
+	A1_TO_A2,
+	A1_TO_A3,
+	A2_TO_A1,
+	A2_TO_A3,
 };
 
 enum ColliderChecker {
@@ -38,6 +48,7 @@ struct Collider
 	bool			collided = false;
 	int				ColliderDamage = 0;
 	ColliderType	type = ColliderType::COLLIDER_NONE;
+	SwapTo			swap = SwapTo::NOWHERE;
 	ColliderChecker checkerType = ColliderChecker::None;
 
 	Collider() {
@@ -108,6 +119,7 @@ public:
 
 	bool CheckColliderCollision(Collider*, Directions dir, int* snapPos = nullptr);
 	bool CheckColliderCollision(Collider*);
+	void ChooseSwap(pugi::xml_node& node,Collider* c);
 
 	bool ThroughPlatform (Collider*);
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="50">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="50">
  <tileset firstgid="1" name="mainlevbuild1" tilewidth="16" tileheight="16" tilecount="3200" columns="50">
   <image source="New_Assets/Snow/mainlevbuild1.png" width="800" height="1024"/>
  </tileset>
@@ -124956,9 +124956,8 @@
  <objectgroup id="25" name="Player_pos">
   <object id="43" name="Player pos" x="352" y="0" width="16" height="16">
    <properties>
-    <property name="ground_pos" type="int" value="1095"/>
-    <property name="player_pos_x" type="float" value="500"/>
-    <property name="player_pos_y" type="float" value="1050"/>
+    <property name="player_pos_x" type="int" value="420"/>
+    <property name="player_pos_y" type="int" value="900"/>
    </properties>
   </object>
  </objectgroup>

@@ -5,12 +5,12 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos player_pos_x="473" player_pos_y="1096" ground_pos="1095" />
+		<playerPos player_pos_x="671" player_pos_y="1111" />
 		<player_collider />
-		<camera x="-700" y="-1700" />
-		<culling x="350" y="850" />
+		<camera x="-868" y="-1680" />
+		<culling x="434" y="840" />
 		<current_lvl />
-		<scene current_map="maps/A6.tmx" />
+		<scene current_map="maps/A2.tmx" />
 	</scene>
 	<map />
 	<player />
