@@ -72,10 +72,18 @@ bool j1Player::Load(const char* file_name)
 	pugi::xml_parse_result result = player_file.load_file(file_name);
 
 	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,45 }, COLLIDER_PLAYER, { 0,0 }, this);
-	ceilingChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w ,3 }, COLLIDER_CEILING_CHECKER, { 0,-3 }, this);
+
+	ceilingChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w-1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,-4 }, this);
+	ceilingChecker->checkerType = ColliderChecker::Top;
+
 	rightChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h}, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,0 }, this);
+	rightChecker->checkerType = ColliderChecker::Right;
+
 	leftChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h}, COLLIDER_CEILING_CHECKER, { -3,0 }, this);
-	groundChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w,5}, COLLIDER_CEILING_CHECKER, { 0,player_Collider->rect.h }, this);
+	leftChecker->checkerType = ColliderChecker::Left;
+
+	groundChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w -1,5}, COLLIDER_CEILING_CHECKER, { 1,player_Collider->rect.h }, this);
+	groundChecker->checkerType = ColliderChecker::Ground;
 
 	if (result == NULL)
 	{
@@ -290,24 +298,10 @@ void j1Player::HorizontalInputs()
 
 bool j1Player::Update(float dt)
 {
-	
-//---------NEED TO-------//
-//UpdateState depending of inputs
-//Gravity affects allways and its independent from 
-//Iterate from all states and execute the logic from currentState
-//Animations should be declared here once you changed the currentState
-//What happen on every state? (sperate each logic state on functions)
-//Example: OnRunState:Call function to move right or left: 
-//AABB Collider should be diffent from each animation (would be better a differnt collider from each animation frame, but for now, simplify)
-//this function : you should move the player (and update its collider at the same time), before its move, check if can move(if any collision would be in the next move)
-//If no collision detected, keep going or reach the movement, if not, you should snap your collider nexto the collided one. ( this should be AXIS independent to have more control and avoid conflicts of positions)
-//Once you finish this function it should be the position correctly to draw it (round position to int to print) AABB should move on player's position, so it should be rounded by default bc playerposition would be rounded)
-//Here, currentstate keeps updating if there are more functions appart of move logic.
-//Finish this loop state.
-//Now Draw current animation with updated position and AABB position
 
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
+
 
 	//Change animation && state
 	if (runSpeed == 0.f && onGround) {
@@ -333,26 +327,23 @@ bool j1Player::Update(float dt)
 		}
 	}
 
+	if (jumping) {
+		ChangeAnimation(disarmed_jump);
+		state = CharacterState::ST_Jump;
+	}
+	else if(!jumping && !onGround) {
+		ChangeAnimation(disarmed_fall);
+		state = CharacterState::ST_Fall;
+		player_Collider->rect.h = 40;
+		
+	}
+	if (previous_state != state) {
+		previous_state = state;
+		LOG("State: %i", state);
+	}
 
-	
 
-	//HorizontalMove();
-	//JumpMove();
-	LOG("Left: %i Right: %i", moveLeft, moveRight);
-	LOG("State: %i", state);
-	LOG("Anim: %s", currentAnimation->name.GetString());
-	LOG("OnGround: %i", onGround);
 
-	
-
-	//if (verticalSpeed <= 0) {
-	//	ChangeAnimation(disarmed_jump);
-	//	state = CharacterState::ST_Jump;
-	//}
-	//else if (verticalSpeed > 0 && !onGround) {
-	//	ChangeAnimation(disarmed_fall);
-	//	state = CharacterState::ST_Fall;
-	//}
 
 	numCurrentAnimation = currentAnimation->GetSprite();
 	
@@ -384,87 +375,68 @@ bool j1Player::Update(float dt)
 	else {
 		ceilingChecker->collided = false;
 	}
-	
-	if (verticalSpeed < 6.f) {
-		verticalSpeed += gravitySpeed;
-	}
 
 	if (jumpPressed) {
-		verticalSpeed = -10;
+		verticalSpeed = jumpSpeed;
 		state = CharacterState::ST_Jump;
 		jumpPressed = false;
 		onGround = false;
 		jumping = true;
 	}
-	if (verticalSpeed >= 0.f) {
+	if (verticalSpeed >= 1.f) {
 		jumping = false;
 	}
 	//Gravity
+	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
+		gravitySpeed = 0.2f;
+	}
+	else {
+		gravitySpeed = max_gravitySpeed;
+	}
+
 	if (!onGround && !jumping) {
+		if (verticalSpeed < 6.f) {
+			verticalSpeed += gravitySpeed;
+		}
+		else if (verticalSpeed > 6.f) {
+			verticalSpeed = 6.f;
+		}
+	
 		int posY = 0;
-		player_Collider->rect.y += verticalSpeed;
+
+		player_Collider->rect.y += (int)roundf(verticalSpeed);
+		groundChecker->rect.y += (int)roundf(verticalSpeed);
 		if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
 			player_Collider->rect.y = posY;
 			onGround = true;
 		}
 	}
-	else if(!onGround) {
-		player_Collider->rect.y += verticalSpeed;
-	}
-	
-	if (moveLeft == moveRight) {
-		runSpeed = 0.f;
-	}
-	else if (moveRight) {
-		int posX = 0;
-		player_Collider->rect.x += runSpeed;
-		if (App->collider->CheckColliderCollision(rightChecker,Directions::DIR_RIGHT,&posX)) {
-			if (posX != 0) {
-			runSpeed = 0.f;
-				player_Collider->rect.x = posX;
+	else if (!onGround && jumping) {
+		int posY = 0;
+		if (verticalSpeed < 6.f) {
+			verticalSpeed += gravitySpeed;
+			player_Collider->rect.y += (int)roundf(verticalSpeed);
+
+			ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
+			ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+				player_Collider->rect.y = posY;
+				verticalSpeed = 0.0f;
 			}
 		}
-		else {
-			runSpeed = 2.f;
-		}
-	}
-	else if (moveLeft) {
-		int posX = 0;
-		player_Collider->rect.x += runSpeed;
-		if (App->collider->CheckColliderCollision(leftChecker,Directions::DIR_LEFT,&posX)) {
-			if (posX != 0) {
-				runSpeed = 0.f;
-				player_Collider->rect.x = posX;
-			}
-		}
-		else {
-			runSpeed = -2.f;
-		}
 	}
 
 
-	//App->collider->CheckColliderCollision(player_Collider, {(int) roundf(runSpeed),0 });
-	//if (App->collider->CheckColliderCollision(player_Collider, { 0,(int)roundf(verticalSpeed) }, &posX, &posY)) {
-	//	if (verticalSpeed > 0) {
-	//		onGround = true;
-	//	}
-	//		verticalSpeed = 0.f;
-	//}
-	//else {
-	//	onGround = false;
-	//}
-	//if (App->collider->CheckColliderCollision(ceilingChecker)) {
-	//	atCeiling = true;
-	//}
-	//else {
-	//	atCeiling = false;
-	//}
-	LOG("State: %i", state);
+	HorizontalMove();
 
 
 
+
+	//Update Player Pos
 	playerPos.x = player_Collider->rect.x - (int) roundf( player_tmx_data.tile_width*0.5) - 2;
 	playerPos.y = player_Collider->rect.y - colliderOffsetY1;
+
+	//Update Checkers position
 
 	ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
 	ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
@@ -501,11 +473,32 @@ void j1Player::HorizontalMove()
 	if (moveLeft == moveRight) {
 		runSpeed = 0.f;
 	}
-	else if (moveLeft) {
-		runSpeed = -2.f;
-	}
 	else if (moveRight) {
-			runSpeed = 2.f;
+		int posX = 0;
+		player_Collider->rect.x += (int)roundf(runSpeed);
+		if (App->collider->CheckColliderCollision(rightChecker, Directions::DIR_RIGHT, &posX)) {
+			if (posX != 0) {
+				runSpeed = 0.f;
+				player_Collider->rect.x = posX;
+			}
+		}
+		else {
+			runSpeed = max_runSpeed;
+		}
+	}
+	else if (moveLeft) {
+		int posX = 0;
+		player_Collider->rect.x += (int)roundf(runSpeed);
+		if (App->collider->CheckColliderCollision(leftChecker, Directions::DIR_LEFT, &posX)) {
+			if (posX != 0) {
+				runSpeed = 0.f;
+				player_Collider->rect.x = posX;
+			}
+
+		}
+		else {
+			runSpeed = -max_runSpeed;
+		}
 	}
 }
 

@@ -53,16 +53,16 @@ bool j1Colliders::PreUpdate()
 	}
 	p2List_item<Collider*>* detected_collider = detected_Colliders.start;
 
-	// Disable all colliders in the list ------------------------------------------------------------------
-	//for (uint i = 0; i < detected_Colliders.count(); ++i)
-	//{
-	//	if (App->player->GetPlayerCollider()->rect.y + 30 < detected_collider->data->rect.y) {
-	//		detected_collider->data->Enabled = true;
-	//		detected_Colliders.del(detected_collider);
-	//	}
-	//	detected_collider = detected_collider->next;
+	 //Disable all colliders in the list ------------------------------------------------------------------
+	for (uint i = 0; i < detected_Colliders.count(); ++i)
+	{
+		if (App->player->GetCollider()->rect.y + 45 < detected_collider->data->rect.y) {
+			detected_collider->data->Enabled = true;
+			detected_Colliders.del(detected_collider);
+		}
+		detected_collider = detected_collider->next;
 
-	//}
+	}
 	return true;
 }
 
@@ -285,37 +285,63 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 	{
 		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER)
 		{
-			if (c1->CheckCollision(c2->rect)) {
+			if (c1->CheckCollision(c2->rect) && c2->Enabled) {
 				if (dir != Directions::DIR_NONE && snapPos != nullptr) {
 					switch (dir)
 					{
-					case Directions::DIR_RIGHT:
-						if (c2->type != COLLIDER_WALL_TRASPASSABLE) {
-							*snapPos = c2->rect.x - 22;
-						}
-						else {
-							*snapPos = 0;
-						}
+					case Directions::DIR_RIGHT:						
+							*snapPos = c2->rect.x - 22;						
+						ret = true;
 						break;
 
-					case Directions::DIR_LEFT:
-						if (c2->type != COLLIDER_WALL_TRASPASSABLE) {
+					case Directions::DIR_LEFT:				
 							*snapPos = c2->rect.x + c2->rect.w + 2;
-						}
-						else {
-							*snapPos = 0;
-						}
+
+						ret = true;
 						break;
 					case Directions::DIR_DOWN:
 						*snapPos = c2->rect.y -46;
+						ret = true;
 						break;
 					case Directions::DIR_UP:
+						if (c2->type != COLLIDER_WALL_TRASPASSABLE) {
+							*snapPos = c2->rect.y + c2->rect.h + 5;
+							ret = true;
+						}
+						else {
+							ret = false;
+						}
 						//*snapPos = c2->rect.y -46;
 						break;
 					}
 
 				}
+
+			}
+		}
+		if (c->next != NULL)
+			c = c->next;
+		c2 = c->data;
+	}
+	return ret;
+}
+bool j1Colliders::CheckColliderCollision(Collider* c1)
+{
+	bool ret = false;
+	Collider* c2 = nullptr;
+	p2List_item<Collider*>* c = colliders.start;
+	c2 = c->data;
+	for (int i = 0; i < colliders.count(); i++)
+	{
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER)
+		{
+			if (c1->CheckCollision(c2->rect)) {
+				if (c1->checkerType == ColliderChecker::Top && c2->type == COLLIDER_WALL_TRASPASSABLE && c2->Enabled) {
+					c2->Enabled = false;
+					detected_Colliders.add(c2);
+				}
 				ret = true;
+				
 			}
 		}
 		if (c->next != NULL)

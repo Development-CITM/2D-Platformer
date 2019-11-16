@@ -41,32 +41,32 @@
     </properties>
     <object id="35" name="SHEATHED_RUN" type="SHEATHED_RUN" x="500" y="37" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="6"/>
+      <property name="Frames" type="int" value="7"/>
      </properties>
     </object>
     <object id="36" name="SHEATHED_RUN" type="SHEATHED_RUN" x="550" y="37" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="5"/>
+      <property name="Frames" type="int" value="6"/>
      </properties>
     </object>
     <object id="37" name="SHEATHED_RUN" type="SHEATHED_RUN" x="600" y="37" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="4"/>
+      <property name="Frames" type="int" value="5"/>
      </properties>
     </object>
     <object id="38" name="SHEATHED_RUN" type="SHEATHED_RUN" x="650" y="37" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="6"/>
+      <property name="Frames" type="int" value="7"/>
      </properties>
     </object>
     <object id="39" name="SHEATHED_RUN" type="SHEATHED_RUN" x="700" y="37" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="5"/>
+      <property name="Frames" type="int" value="6"/>
      </properties>
     </object>
     <object id="40" name="SHEATHED_RUN" type="SHEATHED_RUN" x="750" y="37" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="4"/>
+      <property name="Frames" type="int" value="5"/>
      </properties>
     </object>
    </objectgroup>

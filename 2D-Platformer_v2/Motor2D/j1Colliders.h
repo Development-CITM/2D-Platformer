@@ -18,6 +18,13 @@ enum ColliderType
 	COLLIDER_CEILING_CHECKER,
 	COLLIDER_EXIT,
 };
+enum ColliderChecker {
+	None,
+	Ground,
+	Left,
+	Right,
+	Top,
+};
 
 
 struct Collider
@@ -29,7 +36,8 @@ struct Collider
 	bool			Enabled = true;
 	bool			collided = false;
 	int				ColliderDamage = 0;
-	ColliderType	type = COLLIDER_NONE;
+	ColliderType	type = ColliderType::COLLIDER_NONE;
+	ColliderChecker checkerType = ColliderChecker::None;
 
 	Collider() {
 		ColliderDamage = 0;
@@ -98,7 +106,8 @@ public:
 public:
 
 	bool CheckColliderCollision(Collider*,p2Point<int> increment, int* posX = nullptr,int* posY = nullptr);
-	bool CheckColliderCollision(Collider*, Directions dir = Directions::DIR_NONE, int* snapPos = nullptr);
+	bool CheckColliderCollision(Collider*, Directions dir, int* snapPos = nullptr);
+	bool CheckColliderCollision(Collider*);
 	bool ThroughPlatform (Collider*);
 	bool collider_debug = true;
 	

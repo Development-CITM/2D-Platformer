@@ -5,7 +5,7 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos player_pos_x="500" player_pos_y="1050" ground_pos="1095" />
+		<playerPos player_pos_x="473" player_pos_y="1096" ground_pos="1095" />
 		<player_collider />
 		<camera x="-700" y="-1700" />
 		<culling x="350" y="850" />

@@ -108,6 +108,8 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
+	Collider* GetCollider() { return player_Collider; }
+
 private:
 	//Load Functions
 	bool LoadPlayerTMX(pugi::xml_node& player_node);
@@ -133,7 +135,10 @@ public:
 
 private:
 	float				runSpeed = 2.f;
-	float				gravitySpeed = 0.5f;
+	float				max_runSpeed = 2.f;
+	float				gravitySpeed = 0.4f;
+	float				max_gravitySpeed = 0.7f;
+	float				jumpSpeed = -10.f;
 
 	bool				moveRight = false;
 	bool				moveLeft = false;
@@ -162,6 +167,7 @@ private:
 	p2Point<int>		currentVelocity{ 0,0 };
 
 	CharacterState		state = CharacterState::ST_Idle;
+	CharacterState		previous_state = CharacterState::ST_Idle;
 
 	//Animations
 	Animation*			currentAnimation = nullptr;
