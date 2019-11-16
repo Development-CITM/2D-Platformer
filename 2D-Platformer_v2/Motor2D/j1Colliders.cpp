@@ -301,7 +301,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 				}
 				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground) && c2->type == COLLIDER_TRANSITION && c2->Enabled) {
 					c2->Enabled = false;
-					App->scene->ColliderMapToLoad(c2);
+					App->scene->ColliderMapToLoad(c2); //EUDALD: change site
 				}
 				ret = true;
 				
