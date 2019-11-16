@@ -116,9 +116,9 @@ private:
 
 	void ChangeStatesAndAnimations();
 
-	void JumpMove();
+	void JumpMove(float dt);
 
-	void HorizontalMove();
+	void HorizontalMove(float);
 
 //---------------VARIABLES --------------------//
 public:

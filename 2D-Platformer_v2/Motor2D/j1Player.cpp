@@ -87,9 +87,9 @@ bool j1Player::Update(float dt)
 	
 	UpdateCheckersBools();
 
-	JumpMove();
+	JumpMove(dt);
 
-	HorizontalMove();
+	HorizontalMove(dt);
 
 	UpdatePlayerPosition();
 
@@ -429,7 +429,7 @@ void j1Player::UpdateCheckersBools()
 
 #pragma region Movement
 
-void j1Player::JumpMove()
+void j1Player::JumpMove(float dt)
 {
 	if (jumpPressed) {
 		verticalSpeed = jumpSpeed;
@@ -459,8 +459,8 @@ void j1Player::JumpMove()
 
 		int posY = 0;
 
-		player_Collider->rect.y += (int)roundf(verticalSpeed);
-		groundChecker->rect.y += (int)roundf(verticalSpeed);
+		player_Collider->rect.y += (int)roundf(verticalSpeed * ceil(dt * 50));
+		groundChecker->rect.y += (int)roundf(verticalSpeed * ceil(dt * 50));
 		if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
 			player_Collider->rect.y = posY;
 			onGround = true;
@@ -470,7 +470,7 @@ void j1Player::JumpMove()
 		int posY = 0;
 		if (verticalSpeed < 6.f) {
 			verticalSpeed += gravitySpeed;
-			player_Collider->rect.y += (int)roundf(verticalSpeed);
+			player_Collider->rect.y += (int)roundf(verticalSpeed * ceil(dt * 50));
 
 			ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
 			ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
@@ -482,14 +482,14 @@ void j1Player::JumpMove()
 	}
 }
 
-void j1Player::HorizontalMove()
+void j1Player::HorizontalMove(float dt)
 {
 	if (moveLeft == moveRight) {
 		runSpeed = 0.f;
 	}
 	else if (moveRight) {
 		int posX = 0;
-		player_Collider->rect.x += (int)roundf(runSpeed);
+		player_Collider->rect.x += (int)roundf(runSpeed * ceil(dt * 50));
 		if (App->collider->CheckColliderCollision(rightChecker, Directions::DIR_RIGHT, &posX)) {
 			if (posX != 0) {
 				runSpeed = 0.f;
@@ -502,7 +502,7 @@ void j1Player::HorizontalMove()
 	}
 	else if (moveLeft) {
 		int posX = 0;
-		player_Collider->rect.x += (int)roundf(runSpeed);
+		player_Collider->rect.x += (int)roundf(runSpeed * ceil(dt * 50));
 		if (App->collider->CheckColliderCollision(leftChecker, Directions::DIR_LEFT, &posX)) {
 			if (posX != 0) {
 				runSpeed = 0.f;

@@ -273,9 +273,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 						//*snapPos = c2->rect.y -46;
 						break;
 					}
-
 				}
-
 			}
 		}
 		if (c->next != NULL)
