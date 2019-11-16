@@ -71,10 +71,12 @@ bool j1Player::Load(const char* file_name)
 	pugi::xml_document	player_file;
 	pugi::xml_parse_result result = player_file.load_file(file_name);
 
-	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,50 }, COLLIDER_PLAYER, { 0,0 }, this);
-	ceilingChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,20,5 }, COLLIDER_CEILING_CHECKER, { 0,0 }, this);
+	player_Collider = App->collider->AddCollider({ playerPos.x,playerPos.y,20,45 }, COLLIDER_PLAYER, { 0,0 }, this);
+	ceilingChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w ,3 }, COLLIDER_CEILING_CHECKER, { 0,-3 }, this);
+	rightChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h}, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,0 }, this);
+	leftChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h}, COLLIDER_CEILING_CHECKER, { -3,0 }, this);
+	groundChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,player_Collider->rect.w,5}, COLLIDER_CEILING_CHECKER, { 0,player_Collider->rect.h }, this);
 
-	player_Collider->rect.h = 45;
 	if (result == NULL)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", file_name, result.description());
@@ -269,7 +271,7 @@ void j1Player::HorizontalInputs()
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveRight = true;
 		last_Direction = direction;
-		direction = DIR_RIGHT;
+		direction = Directions::DIR_RIGHT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveRight = false;
@@ -278,7 +280,7 @@ void j1Player::HorizontalInputs()
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveLeft = true;
 		last_Direction = direction;
-		direction = DIR_LEFT;
+		direction = Directions::DIR_LEFT;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveLeft = false;
@@ -334,8 +336,8 @@ bool j1Player::Update(float dt)
 
 	
 
-	HorizontalMove();
-	JumpMove();
+	//HorizontalMove();
+	//JumpMove();
 	LOG("Left: %i Right: %i", moveLeft, moveRight);
 	LOG("State: %i", state);
 	LOG("Anim: %s", currentAnimation->name.GetString());
@@ -343,34 +345,120 @@ bool j1Player::Update(float dt)
 
 	
 
-	if (verticalSpeed <= 0) {
-		ChangeAnimation(disarmed_jump);
-		state = CharacterState::ST_Jump;
-	}
-	else if (verticalSpeed > 0 && !onGround) {
-		ChangeAnimation(disarmed_fall);
-		state = CharacterState::ST_Fall;
-	}
+	//if (verticalSpeed <= 0) {
+	//	ChangeAnimation(disarmed_jump);
+	//	state = CharacterState::ST_Jump;
+	//}
+	//else if (verticalSpeed > 0 && !onGround) {
+	//	ChangeAnimation(disarmed_fall);
+	//	state = CharacterState::ST_Fall;
+	//}
 
 	numCurrentAnimation = currentAnimation->GetSprite();
 	
-	int posX, posY = 0;
-	App->collider->CheckColliderCollision(player_Collider, {(int) roundf(runSpeed),0 });
-	if (App->collider->CheckColliderCollision(player_Collider, { 0,(int)roundf(verticalSpeed) }, &posX, &posY)) {
-		if (verticalSpeed > 0) {
-			onGround = true;
-		}
-			verticalSpeed = 0.f;
+
+	//Check Collisions
+	if (App->collider->CheckColliderCollision(rightChecker)) {
+		rightChecker->collided = true;
 	}
 	else {
+		rightChecker->collided = false;
+	}
+	if (App->collider->CheckColliderCollision(leftChecker)) {
+		leftChecker->collided = true;
+	}
+	else {
+		leftChecker->collided = false;
+	}
+	if (App->collider->CheckColliderCollision(groundChecker)) {
+		groundChecker->collided = true;
+	}
+	else {
+		groundChecker->collided = false;
 		onGround = false;
 	}
+	
 	if (App->collider->CheckColliderCollision(ceilingChecker)) {
-		atCeiling = true;
+		ceilingChecker->collided = true;
 	}
 	else {
-		atCeiling = false;
+		ceilingChecker->collided = false;
 	}
+	
+	if (verticalSpeed < 6.f) {
+		verticalSpeed += gravitySpeed;
+	}
+
+	if (jumpPressed) {
+		verticalSpeed = -10;
+		state = CharacterState::ST_Jump;
+		jumpPressed = false;
+		onGround = false;
+		jumping = true;
+	}
+	if (verticalSpeed >= 0.f) {
+		jumping = false;
+	}
+	//Gravity
+	if (!onGround && !jumping) {
+		int posY = 0;
+		player_Collider->rect.y += verticalSpeed;
+		if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
+			player_Collider->rect.y = posY;
+			onGround = true;
+		}
+	}
+	else if(!onGround) {
+		player_Collider->rect.y += verticalSpeed;
+	}
+	
+	if (moveLeft == moveRight) {
+		runSpeed = 0.f;
+	}
+	else if (moveRight) {
+		int posX = 0;
+		player_Collider->rect.x += runSpeed;
+		if (App->collider->CheckColliderCollision(rightChecker,Directions::DIR_RIGHT,&posX)) {
+			if (posX != 0) {
+			runSpeed = 0.f;
+				player_Collider->rect.x = posX;
+			}
+		}
+		else {
+			runSpeed = 2.f;
+		}
+	}
+	else if (moveLeft) {
+		int posX = 0;
+		player_Collider->rect.x += runSpeed;
+		if (App->collider->CheckColliderCollision(leftChecker,Directions::DIR_LEFT,&posX)) {
+			if (posX != 0) {
+				runSpeed = 0.f;
+				player_Collider->rect.x = posX;
+			}
+		}
+		else {
+			runSpeed = -2.f;
+		}
+	}
+
+
+	//App->collider->CheckColliderCollision(player_Collider, {(int) roundf(runSpeed),0 });
+	//if (App->collider->CheckColliderCollision(player_Collider, { 0,(int)roundf(verticalSpeed) }, &posX, &posY)) {
+	//	if (verticalSpeed > 0) {
+	//		onGround = true;
+	//	}
+	//		verticalSpeed = 0.f;
+	//}
+	//else {
+	//	onGround = false;
+	//}
+	//if (App->collider->CheckColliderCollision(ceilingChecker)) {
+	//	atCeiling = true;
+	//}
+	//else {
+	//	atCeiling = false;
+	//}
 	LOG("State: %i", state);
 
 
@@ -378,8 +466,17 @@ bool j1Player::Update(float dt)
 	playerPos.x = player_Collider->rect.x - (int) roundf( player_tmx_data.tile_width*0.5) - 2;
 	playerPos.y = player_Collider->rect.y - colliderOffsetY1;
 
-	ceilingChecker->rect.x = player_Collider->rect.x;
-	ceilingChecker->rect.y = player_Collider->rect.y -3;
+	ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
+	ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
+
+	groundChecker->rect.x = player_Collider->rect.x + groundChecker->offset.x;
+	groundChecker->rect.y = player_Collider->rect.y + groundChecker->offset.y;
+
+	leftChecker->rect.x = player_Collider->rect.x + leftChecker->offset.x;
+	leftChecker->rect.y = player_Collider->rect.y + leftChecker->offset.y;
+
+	rightChecker->rect.x = player_Collider->rect.x + rightChecker->offset.x;
+	rightChecker->rect.y = player_Collider->rect.y + rightChecker->offset.y;
 
 	//ReSizeAABBFromAnimation();
 	Draw(); //Draw all the player

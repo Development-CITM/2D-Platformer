@@ -24,7 +24,7 @@ enum CharacterState {
 	ST_GrabLedge,
 };
 
-enum Directions
+enum class Directions
 {
 	DIR_RIGHT,
 	DIR_LEFT,
@@ -177,7 +177,12 @@ private:
 
 	//Colliders
 	Collider*			player_Collider = nullptr;
+
+	//Checkers
 	Collider*			ceilingChecker = nullptr;
+	Collider*			groundChecker = nullptr;
+	Collider*			leftChecker = nullptr;
+	Collider*			rightChecker = nullptr;
 
 
 	//XML Stuff

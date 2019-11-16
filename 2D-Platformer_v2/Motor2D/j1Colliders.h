@@ -5,6 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "j1Player.h"
 
 enum ColliderType
 {
@@ -18,6 +19,7 @@ enum ColliderType
 	COLLIDER_EXIT,
 };
 
+
 struct Collider
 {
 	SDL_Rect		rect{ 0,0,0,0 };
@@ -25,6 +27,7 @@ struct Collider
 	j1Module*		callback = nullptr;
 	bool			to_delete = false;
 	bool			Enabled = true;
+	bool			collided = false;
 	int				ColliderDamage = 0;
 	ColliderType	type = COLLIDER_NONE;
 
@@ -39,6 +42,8 @@ struct Collider
 		type(type),
 		callback(callback),
 		ColliderDamage(Damage) {
+		rect.x += offset.x;
+		rect.y += offset.y;
 
 	}
 	void Resize(SDL_Rect rect_target) {
@@ -93,9 +98,9 @@ public:
 public:
 
 	bool CheckColliderCollision(Collider*,p2Point<int> increment, int* posX = nullptr,int* posY = nullptr);
-	bool CheckColliderCollision(Collider*);
+	bool CheckColliderCollision(Collider*, Directions dir = Directions::DIR_NONE, int* snapPos = nullptr);
 	bool ThroughPlatform (Collider*);
-	bool collider_debug = false;
+	bool collider_debug = true;
 	
 private:
 	Collider*			collider = nullptr;

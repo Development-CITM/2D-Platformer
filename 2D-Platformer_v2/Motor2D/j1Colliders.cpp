@@ -189,7 +189,8 @@ void j1Colliders::Draw()
 				App->render->DrawQuad(rect, 0, 255, 255, 50);
 				break;
 			case COLLIDER_CEILING_CHECKER:
-				App->render->DrawQuad(rect, 0, 0, 0, 50, false);
+
+				App->render->DrawQuad(rect, 0, 0, 0, 255,collider->data->collided);
 				break;
 			case COLLIDER_EXIT:
 				App->render->DrawQuad(rect, 100, 200, 100, 100);
@@ -274,7 +275,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,p2Point<int>increment, int
 	return ret;
 }
 
-bool j1Colliders::CheckColliderCollision(Collider* c1)
+bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapPos)
 { 
 	bool ret = false;
 	Collider* c2 = nullptr;
@@ -285,6 +286,35 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER)
 		{
 			if (c1->CheckCollision(c2->rect)) {
+				if (dir != Directions::DIR_NONE && snapPos != nullptr) {
+					switch (dir)
+					{
+					case Directions::DIR_RIGHT:
+						if (c2->type != COLLIDER_WALL_TRASPASSABLE) {
+							*snapPos = c2->rect.x - 22;
+						}
+						else {
+							*snapPos = 0;
+						}
+						break;
+
+					case Directions::DIR_LEFT:
+						if (c2->type != COLLIDER_WALL_TRASPASSABLE) {
+							*snapPos = c2->rect.x + c2->rect.w + 2;
+						}
+						else {
+							*snapPos = 0;
+						}
+						break;
+					case Directions::DIR_DOWN:
+						*snapPos = c2->rect.y -46;
+						break;
+					case Directions::DIR_UP:
+						//*snapPos = c2->rect.y -46;
+						break;
+					}
+
+				}
 				ret = true;
 			}
 		}
