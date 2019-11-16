@@ -451,7 +451,7 @@ void j1Player::JumpMove(float dt)
 
 	if (!jumping) {
 		if (verticalSpeed < 6.f) {
-			verticalSpeed += gravitySpeed;
+			verticalSpeed += gravitySpeed * ceil (dt * 50);
 		}
 		else if (verticalSpeed > 6.f) {
 			verticalSpeed = 6.f;
@@ -459,8 +459,8 @@ void j1Player::JumpMove(float dt)
 
 		int posY = 0;
 
-		player_Collider->rect.y += (int)roundf(verticalSpeed * ceil(dt * 50));
-		groundChecker->rect.y += (int)roundf(verticalSpeed * ceil(dt * 50));
+		player_Collider->rect.y += (int)roundf(verticalSpeed);
+		groundChecker->rect.y += (int)roundf(verticalSpeed);
 		if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
 			player_Collider->rect.y = posY;
 			onGround = true;
@@ -469,8 +469,8 @@ void j1Player::JumpMove(float dt)
 	else if (!onGround && jumping) {
 		int posY = 0;
 		if (verticalSpeed < 6.f) {
-			verticalSpeed += gravitySpeed;
-			player_Collider->rect.y += (int)roundf(verticalSpeed * ceil(dt * 50));
+			verticalSpeed += gravitySpeed * ceil(dt * 50);
+			player_Collider->rect.y += (int)roundf(verticalSpeed);
 
 			ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
 			ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
