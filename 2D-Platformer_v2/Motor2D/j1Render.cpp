@@ -131,8 +131,8 @@ void j1Render::SetCameraPos(pugi::xml_node& object)
 
 void j1Render::SetCameraPos(p2Point<int> pos)
 {
-	App->tiles->culling_Collider->rect.x = pos.x - App->tiles->culling_Collider->rect.w * 0.5 + App->player->player_tmx_data.tile_width *.5f;
-	App->tiles->culling_Collider->rect.y = pos.y - App->tiles->culling_Collider->rect.h * 0.5;
+	App->tiles->culling_Collider->rect.x = pos.x - (int)(App->tiles->culling_Collider->rect.w * 0.5 + App->player->player_tmx_data.tile_width *.5f);
+	App->tiles->culling_Collider->rect.y = pos.y - (int) (App->tiles->culling_Collider->rect.h * 0.5);
 
 	camera.x = App->tiles->culling_Collider->rect.x * -2;
 	camera.y = App->tiles->culling_Collider->rect.y * -2;
