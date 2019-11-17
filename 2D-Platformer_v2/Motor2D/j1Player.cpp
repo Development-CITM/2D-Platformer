@@ -80,45 +80,61 @@ bool j1Player::Update(float dt)
 	velocity_Y -= playerPos.y;
 
 
-	ChangeStatesAndAnimations();
 
 	numCurrentAnimation = currentAnimation->GetSprite();
 	
 	UpdateCheckersBools();
+
+	Gravity();
 	//JumpMove(dt);
 
 	//HorizontalMove(dt);
-
-
-
-
 	//CHANGE STATE MACHINE STATE
 	ChangeStates();
-
+	ChangeStatesAndAnimations();
 
 	//STATE MACHINE EXECUTE LOGIC ON STATE MACHINE
 	switch (state)
 	{
 	case ST_Idle:
-		ChangeAnimation(disarmed_idle);
+		if (jumpPressed && jumpCount == 0) {
+			verticalSpeed = jumpSpeed;
+			state = CharacterState::ST_Jump;
+			jumpPressed = false;
+			jumping = true;
+			falling = false;
+			canDoubleJump = true;
+			jumpCount++;
+		}
 		break;
 	case ST_Walk:
 		break;
 	case ST_Run:
-		ChangeAnimation(disarmed_run);
 		HorizontalMove(dt);
-
-		if (runSpeed < 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		if (jumpPressed && jumpCount == 0) {
+			verticalSpeed = jumpSpeed;
+			state = CharacterState::ST_Jump;
+			jumpPressed = false;
+			jumping = true;
+			falling = false;
+			canDoubleJump = true;
+			jumpCount++;
 		}
-		else if (runSpeed > 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		}
-
 
 		break;
 	case ST_Jump:
 		ChangeAnimation(disarmed_jump);
+		if (state == CharacterState::ST_Jump) {
+			int posY = 0;
+			player_Collider->rect.y += (int)roundf(verticalSpeed);
+			ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
+			ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+				player_Collider->rect.y = posY;
+				verticalSpeed = 0.0f;
+			}
+		}
+		HorizontalMove(dt);
 		break;
 	case ST_DoubleJump:
 		break;
@@ -127,32 +143,17 @@ bool j1Player::Update(float dt)
 	case ST_LK:
 		break;
 	case ST_Fall:
-		//If falling
-		if (falling) {
-			//Limit fall speed
-			if (verticalSpeed < 6.f) {
-				verticalSpeed += gravitySpeed;
-			}
-			else if (verticalSpeed > 6.f) {
-				verticalSpeed = 6.f;
-			}
-
-			//Move and check if we are on Ground
-			int posY = 0;
-			player_Collider->rect.y += (int)roundf(verticalSpeed);
-			groundChecker->rect.y += (int)roundf(verticalSpeed);
-			if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
-				player_Collider->rect.y = posY;
-				onGround = true;
-				jumpCount = 0;
-			}
-		}
+		ChangeAnimation(disarmed_fall);
+		HorizontalMove(dt);
 		break;
 	case ST_GrabLedge:
 		break;
 	default:
 		break;
 	}
+
+
+
 	UpdateCheckersPosition();
 
 	UpdatePlayerPosition();
@@ -162,12 +163,51 @@ bool j1Player::Update(float dt)
 	return true;
 }
 
+void j1Player::Gravity()
+{
+	if (verticalSpeed >= 1.f) {
+		jumping = false;
+		falling = true;
+	}
+
+	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
+		gravitySpeed = 0.2f;
+	}
+	else {
+		gravitySpeed = max_gravitySpeed;
+	}
+	
+
+	if (verticalSpeed < 6.f) {
+			verticalSpeed += gravitySpeed;
+	}
+	else if (verticalSpeed > 6.f) {
+		verticalSpeed = 6.f;
+	}	
+
+
+	//Move and check if we are on Ground
+	int posY = 0;
+	player_Collider->rect.y += (int)roundf(verticalSpeed);
+	groundChecker->rect.y += (int)roundf(verticalSpeed);
+	if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
+		player_Collider->rect.y = posY;
+		onGround = true;
+		jumpCount = 0;
+	}
+}
+
 void j1Player::ChangeStates()
 {
 	switch (state)
 	{
 	case ST_Idle:
-		if (runSpeed != 0.f && onGround) {
+		ChangeAnimation(disarmed_idle);
+		if (!onGround) {
+			state = CharacterState::ST_Fall;
+			break;
+		}
+		if (moveLeft != moveRight && onGround) {
 			state = CharacterState::ST_Run;
 			break;
 		}
@@ -175,11 +215,13 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_Jump;
 			break;
 		}
+
 		break;
 	case ST_Walk:
 		break;
 	case ST_Run:
-		if (runSpeed == 0.f && onGround) {
+		ChangeAnimation(disarmed_run);
+		if (moveLeft == moveRight && onGround) {
 			state = CharacterState::ST_Idle;
 			break;
 		}
@@ -209,13 +251,11 @@ void j1Player::ChangeStates()
 	case ST_LK:
 		break;
 	case ST_Fall:
-		if (onGround && runSpeed == 0) {
+		if (onGround) {
 			state = CharacterState::ST_Idle;
-			break;
 		}
-		else if (onGround && runSpeed != 0) {
+		if (onGround && moveLeft != moveRight) {
 			state = CharacterState::ST_Run;
-			break;
 		}
 		if (doubleJumped) {
 			state = CharacterState::ST_DoubleJump;
@@ -560,54 +600,8 @@ void j1Player::UpdateCheckersBools()
 
 void j1Player::JumpMove(float dt)
 {
-
-	//Set jump speed
-	if (jumpPressed && jumpCount == 0) {
-		verticalSpeed = jumpSpeed;
-		state = CharacterState::ST_Jump;
-		jumpPressed = false;
-		jumping = true;
-		falling = false;
-		canDoubleJump = true;
-		jumpCount++;
-	}
-	if (jumpPressed && canDoubleJump && jumpCount > 0) {
-		verticalSpeed = double_jumpSpeed;
-		state = CharacterState::ST_DoubleJump;
-		jumpCount = 0;
-	}
-
-	//Check if falling or jumping
-	if (verticalSpeed >= 1.f) {
-		jumping = false;
-		falling = true;
-	}
-
-
-	//Change Gravity speed
-	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
-		gravitySpeed = 0.2f;
-	}
-	else {
-		gravitySpeed = max_gravitySpeed;
-	}
-
-
 	//If Jumping Check if reach rooftop
-	if (jumping) {
-		int posY = 0;
-		if (verticalSpeed < 6.f) {
-			verticalSpeed += gravitySpeed;
-		}
 
-		player_Collider->rect.y += (int)roundf(verticalSpeed);
-		ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
-		ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
-		if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
-			player_Collider->rect.y = posY;
-			verticalSpeed = 0.0f;
-		}
-	}
 }
 
 void j1Player::HorizontalMove(float dt)
@@ -642,6 +636,12 @@ void j1Player::HorizontalMove(float dt)
 			runSpeed = -max_runSpeed;
 		}
 	}
+	if (runSpeed < 0.f) {
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+	else if (runSpeed > 0.f) {
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
 }
 
 void j1Player::UpdatePlayerPosition()
@@ -660,10 +660,7 @@ void j1Player::UpdatePlayerPosition()
 
 void j1Player::ChangeStatesAndAnimations()
 {
-
-	else if (!jumping && !onGround) {
-		ChangeAnimation(disarmed_fall);
-		state = CharacterState::ST_Fall;
+	if (state == ST_Fall) {
 		player_Collider->rect.h = 40;
 		groundChecker->offset.y = player_Collider->rect.h;
 		leftChecker->rect.h = rightChecker->rect.h = player_Collider->rect.h - 10;
@@ -673,6 +670,7 @@ void j1Player::ChangeStatesAndAnimations()
 		groundChecker->offset.y = player_Collider->rect.h;
 		leftChecker->rect.h = rightChecker->rect.h = player_Collider->rect.h - 10;
 	}
+
 	if (previous_state != state) {
 		previous_state = state;
 		LOG("State: %i", state);

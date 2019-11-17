@@ -81,6 +81,10 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void Gravity();
+
+	void ChangeStates();
+
 	// Called before all Updates
 	bool PostUpdate();
 
@@ -137,7 +141,7 @@ private:
 
 	//Jump Speed
 	float				max_gravitySpeed = 0.7f;
-	float				jumpSpeed = -10.f;
+	float				jumpSpeed = -7.f;
 	float				double_jumpSpeed = -5.f;
 	float				verticalSpeed = 0.f;
 
