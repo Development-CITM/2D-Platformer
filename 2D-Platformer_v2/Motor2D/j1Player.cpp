@@ -97,29 +97,13 @@ bool j1Player::Update(float dt)
 	switch (state)
 	{
 	case ST_Idle:
-		if (jumpPressed && jumpCount == 0) {
-			verticalSpeed = jumpSpeed;
-			state = CharacterState::ST_Jump;
-			jumpPressed = false;
-			jumping = true;
-			falling = false;
-			canDoubleJump = true;
-			jumpCount++;
-		}
+		JumpStart();
 		break;
 	case ST_Walk:
 		break;
 	case ST_Run:
 		HorizontalMove(dt);
-		if (jumpPressed && jumpCount == 0) {
-			verticalSpeed = jumpSpeed;
-			state = CharacterState::ST_Jump;
-			jumpPressed = false;
-			jumping = true;
-			falling = false;
-			canDoubleJump = true;
-			jumpCount++;
-		}
+		JumpStart();
 
 		break;
 	case ST_Jump:
@@ -152,8 +136,6 @@ bool j1Player::Update(float dt)
 		break;
 	}
 
-
-
 	UpdateCheckersPosition();
 
 	UpdatePlayerPosition();
@@ -161,6 +143,19 @@ bool j1Player::Update(float dt)
 	Draw(); //Draw all the player
 
 	return true;
+}
+
+void j1Player::JumpStart()
+{
+	if (jumpPressed && jumpCount == 0) {
+		verticalSpeed = jumpSpeed;
+		state = CharacterState::ST_Jump;
+		jumpPressed = false;
+		jumping = true;
+		falling = false;
+		canDoubleJump = true;
+		jumpCount++;
+	}
 }
 
 void j1Player::Gravity()
@@ -172,19 +167,21 @@ void j1Player::Gravity()
 
 	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
 		gravitySpeed = 0.2f;
+	}	
+	
+	else if (verticalSpeed > -3.f && verticalSpeed < -1.f) {
+		gravitySpeed = 0.3f;
 	}
 	else {
 		gravitySpeed = max_gravitySpeed;
 	}
 	
-
 	if (verticalSpeed < 6.f) {
 			verticalSpeed += gravitySpeed;
 	}
 	else if (verticalSpeed > 6.f) {
 		verticalSpeed = 6.f;
 	}	
-
 
 	//Move and check if we are on Ground
 	int posY = 0;
@@ -597,12 +594,6 @@ void j1Player::UpdateCheckersBools()
 #pragma endregion
 
 #pragma region Movement
-
-void j1Player::JumpMove(float dt)
-{
-	//If Jumping Check if reach rooftop
-
-}
 
 void j1Player::HorizontalMove(float dt)
 {
