@@ -109,7 +109,6 @@ bool j1Player::Update(float dt)
 	case ST_Run:
 		HorizontalMove(dt);
 		JumpStart();
-
 		break;
 	case ST_Jump:
 		ChangeAnimation(disarmed_jump);
@@ -154,6 +153,7 @@ bool j1Player::Update(float dt)
 	case ST_LK:
 		break;
 	case ST_Fall:
+		canDoubleJump = true;
 		ChangeAnimation(disarmed_fall);
 		HorizontalMove(dt);
 		DoubleJumpStart();
@@ -260,6 +260,10 @@ void j1Player::ChangeStates()
 		if (moveLeft == moveRight && onGround) {
 			state = CharacterState::ST_Idle;
 			break;
+		}
+		if (!onGround) {
+			state = CharacterState::ST_Fall;
+			verticalSpeed = 0.f;
 		}
 		if (jumping) {
 			state = CharacterState::ST_Jump;
