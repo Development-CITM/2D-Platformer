@@ -74,12 +74,12 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
-	void JumpInput();
 
-	void HorizontalInputs();
 
 	// Called each loop iteration
 	bool Update(float dt);
+
+	void LogicStateMachine(float dt);
 
 	void JumpStart();
 
@@ -125,9 +125,15 @@ private:
 
 	void UpdateCheckersBools();
 
-	void ChangeStatesAndAnimations();
+	void UpdateColliderSize();
 
 	void HorizontalMove(float);
+
+
+	//Inputs Functions
+	void JumpInput();
+	void HorizontalInputs();
+	void AttackInputs();
 
 //---------------VARIABLES --------------------//
 public:
@@ -151,6 +157,9 @@ private:
 	bool				moveRight = false;
 	bool				moveLeft = false;
 	bool				jumpPressed = false;
+	bool				MP_attackPressed = false;
+	bool				LK_attackPressed = false;
+
 	bool				canDoubleJump = true;
 	bool				onGround = false;
 	bool				canMove = true;
@@ -160,7 +169,7 @@ private:
 	bool				doubleJumped = false;
 
 	//Jump ints
-	int					jumpCount = 0;
+	int					doublejumpCount = 0;
 
 
 	//Enums

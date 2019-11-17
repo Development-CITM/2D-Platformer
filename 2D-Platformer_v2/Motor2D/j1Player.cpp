@@ -57,10 +57,12 @@ bool j1Player::PreUpdate()
 		case ST_Idle:
 			HorizontalInputs();
 			JumpInput();
+			AttackInputs();
 			break;
 		case ST_Run:
 			HorizontalInputs();
 			JumpInput();
+			AttackInputs();
 			break;
 		case ST_Jump:
 			HorizontalInputs();
@@ -72,6 +74,12 @@ bool j1Player::PreUpdate()
 		case ST_Fall:
 			HorizontalInputs();
 			JumpInput();
+			break;
+		case ST_MP:
+			HorizontalInputs();
+			break;
+		case ST_LK:
+			HorizontalInputs();
 			break;
 		}
 	}
@@ -86,19 +94,41 @@ bool j1Player::Update(float dt)
 
 
 
-	numCurrentAnimation = currentAnimation->GetSprite();
 	
 	UpdateCheckersBools();
 
 	Gravity();
-	//JumpMove(dt);
 
-	//HorizontalMove(dt);
-	//CHANGE STATE MACHINE STATE
 	ChangeStates();
-	ChangeStatesAndAnimations();
 
-	//STATE MACHINE EXECUTE LOGIC ON STATE MACHINE
+	UpdateColliderSize();
+
+	LogicStateMachine(dt);
+
+	UpdateCheckersPosition();
+
+	UpdatePlayerPosition();
+
+	if (previous_state != state) {
+		previous_state = state;
+		LOG("State: %i");
+	}
+
+	Draw(); //Draw all the player
+
+	return true;
+}
+
+
+bool j1Player::PostUpdate()
+{
+	return true;
+}
+
+#pragma endregion
+
+void j1Player::LogicStateMachine(float dt)
+{
 	switch (state)
 	{
 	case ST_Idle:
@@ -149,8 +179,12 @@ bool j1Player::Update(float dt)
 		HorizontalMove(dt);
 		break;
 	case ST_MP:
+		ChangeAnimation(disarmed_mp);
+		MP_attackPressed = false;
 		break;
 	case ST_LK:
+		ChangeAnimation(disarmed_lk);
+		LK_attackPressed = false;
 		break;
 	case ST_Fall:
 		canDoubleJump = true;
@@ -163,16 +197,6 @@ bool j1Player::Update(float dt)
 	default:
 		break;
 	}
-
-	LOG("Double Jumped: %i", doubleJumped);
-	LOG("Can Double Jumped: %i", canDoubleJump);
-	UpdateCheckersPosition();
-
-	UpdatePlayerPosition();
-
-	Draw(); //Draw all the player
-
-	return true;
 }
 
 void j1Player::JumpStart()
@@ -197,12 +221,12 @@ void j1Player::DoubleJumpStart()
 		doubleJumped = false;
 		jumping = true;
 		falling = false;
+		doublejumpCount++;
 	}
 }
 
 void j1Player::Gravity()
 {
-
 
 	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
 		gravitySpeed = 0.2f;
@@ -230,6 +254,7 @@ void j1Player::Gravity()
 		player_Collider->rect.y = posY;
 		onGround = true;
 		canDoubleJump = false;
+		doublejumpCount = 0;
 	}
 }
 
@@ -251,7 +276,14 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_Jump;
 			break;
 		}
-
+		if (MP_attackPressed) {
+			state = CharacterState::ST_MP;
+			break;
+		}	
+		if (LK_attackPressed) {
+			state = CharacterState::ST_LK;
+			break;
+		}
 		break;
 	case ST_Walk:
 		break;
@@ -267,6 +299,15 @@ void j1Player::ChangeStates()
 		}
 		if (jumping) {
 			state = CharacterState::ST_Jump;
+			break;
+		}
+		if (MP_attackPressed) {
+			state = CharacterState::ST_MP;
+			break;
+		}
+
+		if (LK_attackPressed) {
+			state = CharacterState::ST_LK;
 			break;
 		}
 		break;
@@ -292,8 +333,20 @@ void j1Player::ChangeStates()
 		}
 		break;
 	case ST_MP:
+		if (disarmed_mp->finished && moveLeft == moveRight) {
+			state = CharacterState::ST_Idle;
+		}
+		else if (disarmed_mp->finished) {
+			state = CharacterState::ST_Run;
+		}
 		break;
 	case ST_LK:
+		if (disarmed_lk->finished && moveLeft == moveRight) {
+			state = CharacterState::ST_Idle;
+		}
+		else if (disarmed_lk->finished) {
+			state = CharacterState::ST_Run;
+		}
 		break;
 	case ST_Fall:
 		if (onGround) {
@@ -309,13 +362,6 @@ void j1Player::ChangeStates()
 		break;
 	}
 }
-
-bool j1Player::PostUpdate()
-{
-	return true;
-}
-
-#pragma endregion
 
 #pragma region CleanUp
 
@@ -602,9 +648,22 @@ void j1Player::JumpInput()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
 		jumpPressed = true;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && !atCeiling) {
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && doublejumpCount == 0 && !atCeiling) {
 		doubleJumped = true;
 	}
+}
+void j1Player::AttackInputs()
+{
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
+		MP_attackPressed = true;
+	}	
+	
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN){
+		LK_attackPressed = true;
+	}
+
+
 }
 
 void j1Player::HorizontalInputs()
@@ -737,7 +796,7 @@ void j1Player::UpdatePlayerPosition()
 
 #pragma region Change States/Animations
 
-void j1Player::ChangeStatesAndAnimations()
+void j1Player::UpdateColliderSize()
 {
 	if (state == ST_Fall) {
 		player_Collider->rect.h = 40;
@@ -771,6 +830,7 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 void j1Player::Draw()
 {
+	numCurrentAnimation = currentAnimation->GetSprite();
 
 	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
 		disarmed_run->offset.x = 5;
