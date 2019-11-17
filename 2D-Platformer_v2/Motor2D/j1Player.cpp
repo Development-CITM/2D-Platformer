@@ -197,6 +197,7 @@ void j1Player::DoubleJumpStart()
 		doubleJumped = false;
 		jumping = true;
 		falling = false;
+		doublejumpCount++;
 	}
 }
 
@@ -230,6 +231,7 @@ void j1Player::Gravity()
 		player_Collider->rect.y = posY;
 		onGround = true;
 		canDoubleJump = false;
+		doublejumpCount = 0;
 	}
 }
 
@@ -602,7 +604,7 @@ void j1Player::JumpInput()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
 		jumpPressed = true;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && !atCeiling) {
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && doublejumpCount == 0 && !atCeiling) {
 		doubleJumped = true;
 	}
 }

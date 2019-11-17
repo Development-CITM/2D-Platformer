@@ -160,7 +160,7 @@ private:
 	bool				doubleJumped = false;
 
 	//Jump ints
-	int					jumpCount = 0;
+	int					doublejumpCount = 0;
 
 
 	//Enums
