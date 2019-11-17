@@ -75,8 +75,7 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
-	LOG("Playerpos X: %i",playerPos.x);
-	LOG("Playerpos Y: %i",playerPos.y);
+
 	velocity_X -= playerPos.x;
 	velocity_Y -= playerPos.y;
 
@@ -86,18 +85,145 @@ bool j1Player::Update(float dt)
 	numCurrentAnimation = currentAnimation->GetSprite();
 	
 	UpdateCheckersBools();
+	//JumpMove(dt);
 
-	JumpMove(dt);
+	//HorizontalMove(dt);
 
-	HorizontalMove(dt);
+
+
+
+	//CHANGE STATE MACHINE STATE
+	ChangeStates();
+
+
+	//STATE MACHINE EXECUTE LOGIC ON STATE MACHINE
+	switch (state)
+	{
+	case ST_Idle:
+		ChangeAnimation(disarmed_idle);
+		break;
+	case ST_Walk:
+		break;
+	case ST_Run:
+		ChangeAnimation(disarmed_run);
+		HorizontalMove(dt);
+
+		if (runSpeed < 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else if (runSpeed > 0.f) {
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
+
+
+		break;
+	case ST_Jump:
+		ChangeAnimation(disarmed_jump);
+		break;
+	case ST_DoubleJump:
+		break;
+	case ST_MP:
+		break;
+	case ST_LK:
+		break;
+	case ST_Fall:
+		//If falling
+		if (falling) {
+			//Limit fall speed
+			if (verticalSpeed < 6.f) {
+				verticalSpeed += gravitySpeed;
+			}
+			else if (verticalSpeed > 6.f) {
+				verticalSpeed = 6.f;
+			}
+
+			//Move and check if we are on Ground
+			int posY = 0;
+			player_Collider->rect.y += (int)roundf(verticalSpeed);
+			groundChecker->rect.y += (int)roundf(verticalSpeed);
+			if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
+				player_Collider->rect.y = posY;
+				onGround = true;
+				jumpCount = 0;
+			}
+		}
+		break;
+	case ST_GrabLedge:
+		break;
+	default:
+		break;
+	}
+	UpdateCheckersPosition();
 
 	UpdatePlayerPosition();
-
-	UpdateCheckersPosition();
 
 	Draw(); //Draw all the player
 
 	return true;
+}
+
+void j1Player::ChangeStates()
+{
+	switch (state)
+	{
+	case ST_Idle:
+		if (runSpeed != 0.f && onGround) {
+			state = CharacterState::ST_Run;
+			break;
+		}
+		if (jumping) {
+			state = CharacterState::ST_Jump;
+			break;
+		}
+		break;
+	case ST_Walk:
+		break;
+	case ST_Run:
+		if (runSpeed == 0.f && onGround) {
+			state = CharacterState::ST_Idle;
+			break;
+		}
+		if (jumping) {
+			state = CharacterState::ST_Jump;
+			break;
+		}
+		break;
+	case ST_Jump:
+		if (atCeiling) {
+			state = CharacterState::ST_Fall;
+			break;
+		}
+		if (doubleJumped) {
+			state = CharacterState::ST_DoubleJump;
+			break;
+		}
+		if (falling) {
+			state = CharacterState::ST_Fall;
+			break;
+		}
+		break;
+	case ST_DoubleJump:
+		break;
+	case ST_MP:
+		break;
+	case ST_LK:
+		break;
+	case ST_Fall:
+		if (onGround && runSpeed == 0) {
+			state = CharacterState::ST_Idle;
+			break;
+		}
+		else if (onGround && runSpeed != 0) {
+			state = CharacterState::ST_Run;
+			break;
+		}
+		if (doubleJumped) {
+			state = CharacterState::ST_DoubleJump;
+		}
+		break;
+	case ST_GrabLedge:
+		break;
+	}
 }
 
 bool j1Player::PostUpdate()
@@ -216,10 +342,13 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 	Animation* anim = new Animation();
 	anim->name = obj_group.attribute("name").as_string();
 
-	if (strcmp(anim->name.GetString(), "DISARMED_IDLE") == 0) { disarmed_idle = anim; }
-	else if (strcmp(anim->name.GetString(), "DISARMED_RUN") == 0) { disarmed_run = anim; disarmed_run->offset.x = 5; }
-	else if (strcmp(anim->name.GetString(), "DISARMED_JUMP") == 0) { disarmed_jump = anim; disarmed_jump->loop = false; }
-	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0) { disarmed_fall = anim; }
+	if		(strcmp(anim->name.GetString(),	"DISARMED_IDLE") == 0)	{ disarmed_idle = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_RUN")	 == 0)	{ disarmed_run = anim; disarmed_run->offset.x = 5; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_JUMP") == 0)	{ disarmed_jump = anim; disarmed_jump->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_DJUMP")== 0)	{ disarmed_double_jump = anim; disarmed_double_jump->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0)	{ disarmed_fall = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_MP")	 == 0)	{ disarmed_mp = anim; disarmed_mp->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_LK")	 == 0)	{ disarmed_lk = anim; disarmed_lk->loop = false; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 
@@ -348,7 +477,7 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 void j1Player::JumpInput()
 {
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !atCeiling) {
 		jumpPressed = true;
 	}
 }
@@ -431,17 +560,31 @@ void j1Player::UpdateCheckersBools()
 
 void j1Player::JumpMove(float dt)
 {
-	if (jumpPressed) {
+
+	//Set jump speed
+	if (jumpPressed && jumpCount == 0) {
 		verticalSpeed = jumpSpeed;
 		state = CharacterState::ST_Jump;
 		jumpPressed = false;
-		onGround = false;
 		jumping = true;
+		falling = false;
+		canDoubleJump = true;
+		jumpCount++;
 	}
+	if (jumpPressed && canDoubleJump && jumpCount > 0) {
+		verticalSpeed = double_jumpSpeed;
+		state = CharacterState::ST_DoubleJump;
+		jumpCount = 0;
+	}
+
+	//Check if falling or jumping
 	if (verticalSpeed >= 1.f) {
 		jumping = false;
+		falling = true;
 	}
-	//Gravity
+
+
+	//Change Gravity speed
 	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
 		gravitySpeed = 0.2f;
 	}
@@ -449,35 +592,20 @@ void j1Player::JumpMove(float dt)
 		gravitySpeed = max_gravitySpeed;
 	}
 
-	if (!jumping) {
-		if (verticalSpeed < 6.f) {
-			verticalSpeed += gravitySpeed * ceil (dt * 50);
-		}
-		else if (verticalSpeed > 6.f) {
-			verticalSpeed = 6.f;
-		}
 
+	//If Jumping Check if reach rooftop
+	if (jumping) {
 		int posY = 0;
+		if (verticalSpeed < 6.f) {
+			verticalSpeed += gravitySpeed;
+		}
 
 		player_Collider->rect.y += (int)roundf(verticalSpeed);
-		groundChecker->rect.y += (int)roundf(verticalSpeed);
-		if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
+		ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
+		ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
+		if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
 			player_Collider->rect.y = posY;
-			onGround = true;
-		}
-	}
-	else if (!onGround && jumping) {
-		int posY = 0;
-		if (verticalSpeed < 6.f) {
-			verticalSpeed += gravitySpeed * ceil(dt * 50);
-			player_Collider->rect.y += (int)roundf(verticalSpeed);
-
-			ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
-			ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
-			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
-				player_Collider->rect.y = posY;
-				verticalSpeed = 0.0f;
-			}
+			verticalSpeed = 0.0f;
 		}
 	}
 }
@@ -532,34 +660,7 @@ void j1Player::UpdatePlayerPosition()
 
 void j1Player::ChangeStatesAndAnimations()
 {
-	//Change animation && state
-	if (runSpeed == 0.f && onGround) {
-		ChangeAnimation(disarmed_idle);
-		state = CharacterState::ST_Idle;
-	}
-	else if (runSpeed != 0.f && onGround) {
-		if (runSpeed < 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		}
-		else if (runSpeed > 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		}
-		ChangeAnimation(disarmed_run);
-		state = CharacterState::ST_Run;
-	}
-	else if (runSpeed != 0) {
-		if (runSpeed < 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		}
-		else if (runSpeed > 0.f) {
-			flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		}
-	}
 
-	if (jumping) {
-		ChangeAnimation(disarmed_jump);
-		state = CharacterState::ST_Jump;
-	}
 	else if (!jumping && !onGround) {
 		ChangeAnimation(disarmed_fall);
 		state = CharacterState::ST_Fall;
