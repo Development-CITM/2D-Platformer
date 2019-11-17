@@ -72,7 +72,7 @@ public:
 	p2SString A5 = "maps/A5.tmx";
 	p2SString A6 = "maps/A6.tmx";
 	p2SString current_level;
-	p2SString destination_level = "maps/A1.tmx";
+	p2SString destination_level = "maps/A3.tmx";
 
 	int camera_limit_left = 0;
 	int camera_limit_right = 0;

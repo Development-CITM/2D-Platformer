@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="112" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="185" nextobjectid="57">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="112" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="185" nextobjectid="64">
  <tileset firstgid="1" name="mainlevbuild2" tilewidth="16" tileheight="16" tilecount="2500" columns="50">
   <image source="New_Assets/Snow/mainlevbuild2.png" width="800" height="800"/>
  </tileset>
@@ -183099,10 +183099,6 @@
      <tile/>
      <tile gid="4471"/>
      <tile gid="4472"/>
-     <tile gid="4462"/>
-     <tile gid="4463"/>
-     <tile gid="4468"/>
-     <tile gid="4469"/>
      <tile gid="4459"/>
      <tile gid="4470"/>
      <tile/>
@@ -183209,14 +183205,18 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
      <tile gid="4521"/>
      <tile gid="4522"/>
-     <tile gid="4512"/>
-     <tile gid="4513"/>
-     <tile gid="4518"/>
-     <tile gid="4519"/>
      <tile gid="4509"/>
      <tile gid="4520"/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
      <tile/>
      <tile/>
      <tile/>
@@ -199882,10 +199882,6 @@
      <tile/>
      <tile/>
      <tile/>
-     <tile gid="4461"/>
-     <tile gid="4462"/>
-     <tile gid="4469"/>
-     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -199994,10 +199990,14 @@
      <tile/>
      <tile/>
      <tile/>
-     <tile gid="4511"/>
-     <tile gid="4512"/>
-     <tile gid="4519"/>
-     <tile gid="4520"/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
+     <tile/>
      <tile/>
      <tile/>
      <tile/>
@@ -200440,6 +200440,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4469"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -200548,6 +200552,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4519"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -200894,6 +200902,9 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201003,6 +201014,9 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201098,6 +201112,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4469"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201206,6 +201224,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4519"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201571,6 +201593,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4469"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201679,6 +201705,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4519"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201754,6 +201784,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4469"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -201862,6 +201896,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4519"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -202418,6 +202456,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4469"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -202526,6 +202568,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4519"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -203082,6 +203128,10 @@
      <tile/>
      <tile/>
      <tile/>
+     <tile gid="4461"/>
+     <tile gid="4462"/>
+     <tile gid="4469"/>
+     <tile gid="4470"/>
      <tile/>
      <tile/>
      <tile/>
@@ -203190,60 +203240,10 @@
      <tile/>
      <tile/>
      <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
-     <tile/>
+     <tile gid="4511"/>
+     <tile gid="4512"/>
+     <tile gid="4519"/>
+     <tile gid="4520"/>
      <tile/>
      <tile/>
      <tile/>
@@ -206261,7 +206261,7 @@
   <object id="34" type="Barrier" x="320" y="272" width="96" height="16"/>
   <object id="35" type="Barrier" x="320" y="256" width="112" height="16"/>
   <object id="36" type="Jumpable" x="688" y="432" width="96" height="16"/>
-  <object id="38" type="Jumpable" x="912" y="544" width="128" height="16"/>
+  <object id="38" type="Jumpable" x="912" y="544" width="64" height="16"/>
   <object id="39" type="Barrier" x="1104" y="112" width="48" height="400"/>
   <object id="40" type="Barrier" x="1152" y="464" width="320" height="48"/>
   <object id="42" type="Barrier" x="368" y="112" width="736" height="32"/>
@@ -206282,7 +206282,13 @@
    </properties>
   </object>
   <object id="51" type="Map_change" x="1440" y="816" width="32" height="160"/>
-  <object id="56" type="Jumpable" x="544" y="384" width="64" height="16"/>
+  <object id="57" type="Jumpable" x="1040" y="624" width="64" height="16"/>
+  <object id="58" type="Jumpable" x="512" y="560" width="64" height="16"/>
+  <object id="59" type="Jumpable" x="512" y="656" width="64" height="16"/>
+  <object id="60" type="Jumpable" x="512" y="752" width="64" height="16"/>
+  <object id="61" type="Jumpable" x="512" y="848" width="64" height="16"/>
+  <object id="62" type="Jumpable" x="512" y="464" width="64" height="16"/>
+  <object id="63" type="Jumpable" x="736" y="528" width="48" height="16"/>
  </objectgroup>
  <objectgroup id="155" name="Culling_pos">
   <object id="53" name="Culling Pos" x="320" y="0" width="16" height="16">

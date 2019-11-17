@@ -144,7 +144,7 @@ private:
 	//Jump Speed
 	float				max_gravitySpeed = 0.7f;
 	float				jumpSpeed = -6.f;
-	float				double_jumpSpeed = -5.f;
+	float				double_jumpSpeed = -6.f;
 	float				verticalSpeed = 0.f;
 
 	//Move bools

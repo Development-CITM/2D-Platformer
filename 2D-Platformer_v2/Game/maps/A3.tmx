@@ -151484,7 +151484,7 @@
      <tile gid="15816"/>
      <tile gid="15817"/>
      <tile gid="15816"/>
-     <tile gid="15816"/>
+     <tile/>
      <tile/>
      <tile/>
      <tile/>
@@ -151604,7 +151604,7 @@
      <tile gid="15891"/>
      <tile gid="15892"/>
      <tile gid="15891"/>
-     <tile gid="15891"/>
+     <tile/>
      <tile/>
      <tile/>
      <tile/>
@@ -151724,7 +151724,7 @@
      <tile gid="15966"/>
      <tile gid="15967"/>
      <tile gid="15966"/>
-     <tile gid="15966"/>
+     <tile/>
      <tile/>
      <tile/>
      <tile/>
@@ -201742,16 +201742,16 @@
   <object id="5" type="Jumpable" x="1088" y="992" width="48" height="16"/>
   <object id="6" type="Jumpable" x="1088" y="1104" width="48" height="16"/>
   <object id="7" type="Jumpable" x="848" y="1120" width="160" height="16"/>
-  <object id="8" type="Jumpable" x="880" y="992" width="96" height="16"/>
+  <object id="8" type="Jumpable" x="864" y="992" width="112" height="16"/>
   <object id="9" type="Dead" x="976" y="992" width="112" height="16"/>
-  <object id="10" type="Dead" x="752" y="992" width="128" height="16"/>
+  <object id="10" type="Dead" x="752" y="992" width="112" height="16"/>
   <object id="11" type="Barrier" x="720" y="976" width="32" height="32"/>
   <object id="12" type="Barrier" x="720" y="1152" width="48" height="128"/>
   <object id="13" type="Barrier" x="320" y="1152" width="400" height="32"/>
   <object id="14" type="Barrier" x="320" y="944" width="320" height="32"/>
   <object id="15" type="Barrier" x="592" y="528" width="48" height="416"/>
-  <object id="16" type="Barrier" x="800" y="832" width="32" height="48"/>
-  <object id="17" type="Barrier" x="768" y="848" width="32" height="32"/>
+  <object id="16" type="Barrier" x="800" y="832" width="32" height="16"/>
+  <object id="17" type="Barrier" x="768" y="848" width="32" height="16"/>
   <object id="18" type="Jumpable" x="704" y="864" width="64" height="16"/>
   <object id="19" type="Dead" x="832" y="832" width="128" height="16"/>
   <object id="20" type="Barrier" x="960" y="832" width="32" height="32"/>
