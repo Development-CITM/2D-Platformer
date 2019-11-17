@@ -41,6 +41,7 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 	void SetCameraPos(pugi::xml_node& object);
+	void SetCameraPos(p2Point<int>);
 	void SetCameraPosFromCurrentLevel(pugi::xml_node& it);
 
 public:

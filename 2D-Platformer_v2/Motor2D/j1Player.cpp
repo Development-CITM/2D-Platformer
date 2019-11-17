@@ -114,6 +114,13 @@ bool j1Player::Update(float dt)
 		LOG("State: %i");
 	}
 
+	//Update Camera Position
+	App->render->SetCameraPos(playerPos);
+
+	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
+	LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
+	LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
+
 	Draw(); //Draw all the player
 
 	return true;

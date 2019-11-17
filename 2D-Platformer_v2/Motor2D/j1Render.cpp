@@ -5,6 +5,8 @@
 #include "j1Render.h"
 #include "j1Player.h"
 #include "j1Scene.h"
+#include "j1Tilesets.h"
+#include "j1Colliders.h"
 
 #define VSYNC true
 
@@ -125,6 +127,15 @@ void j1Render::SetCameraPos(pugi::xml_node& object)
 		}
 		
 	}
+}
+
+void j1Render::SetCameraPos(p2Point<int> pos)
+{
+	App->tiles->culling_Collider->rect.x = pos.x - App->tiles->culling_Collider->rect.w * 0.5 + App->player->player_tmx_data.tile_width *.5f;
+	App->tiles->culling_Collider->rect.y = pos.y - App->tiles->culling_Collider->rect.h * 0.5;
+
+	camera.x = App->tiles->culling_Collider->rect.x * -2;
+	camera.y = App->tiles->culling_Collider->rect.y * -2;
 }
 
 void j1Render::SetCameraPosFromCurrentLevel(pugi::xml_node& it)
