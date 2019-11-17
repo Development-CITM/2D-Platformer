@@ -268325,10 +268325,10 @@
  <objectgroup id="141" name="Player_pos">
   <object id="3" name="Player_pos" x="496" y="0" width="16" height="16">
    <properties>
-    <property name="player_pos_x" type="int" value="600"/>
+    <property name="player_pos_x" type="int" value="482"/>
     <property name="player_pos_x_swap_from_A2" type="int" value="2090"/>
     <property name="player_pos_x_swap_from_A5" type="int" value="772"/>
-    <property name="player_pos_y" type="int" value="372"/>
+    <property name="player_pos_y" type="int" value="640"/>
     <property name="player_pos_y_swap_from_A2" type="int" value="620"/>
     <property name="player_pos_y_swap_from_A5" type="int" value="851"/>
    </properties>
