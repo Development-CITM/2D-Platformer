@@ -268270,28 +268270,6 @@
    </layer>
   </group>
  </group>
- <objectgroup id="139" name="Culling_pos">
-  <object id="1" name="Culling Pos" x="480" y="0" width="16" height="16">
-   <properties>
-    <property name="culling_pos_x" type="int" value="350"/>
-    <property name="culling_pos_x_swap" type="int" value="1645"/>
-    <property name="culling_pos_y" type="int" value="400"/>
-    <property name="culling_pos_y_swap" type="int" value="400"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="140" name="Camera Limit">
-  <properties>
-   <property name="Limit Left" type="int" value="25"/>
-   <property name="Limit Right" type="int" value="2798"/>
-  </properties>
-  <object id="2" name="Camera Limit" x="464.25" y="0" width="15.75" height="16">
-   <properties>
-    <property name="Limit Left" type="int" value="25"/>
-    <property name="Limit Right" type="int" value="2798"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup id="143" name="Colliders">
   <object id="4" type="Barrier" x="464" y="688" width="304" height="32"/>
   <object id="5" type="Barrier" x="864" y="688" width="1296" height="32"/>
@@ -268309,9 +268287,9 @@
   <object id="18" type="Jumpable" x="768" y="816" width="32" height="16"/>
   <object id="19" type="Jumpable" x="768" y="912" width="32" height="16"/>
   <object id="20" type="Barrier" x="432" y="0" width="32" height="720"/>
-  <object id="22" type="Map_change" x="768" y="1008" width="96" height="32">
+  <object id="22" type="Transition" x="768" y="1024" width="96" height="16">
    <properties>
-    <property name="swap" value=" A1toA5"/>
+    <property name="swap" value="A1toA5"/>
    </properties>
   </object>
   <object id="23" type="Transition" x="2160" y="480" width="16" height="144">
@@ -268320,15 +268298,39 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="140" name="Camera Limit">
+  <properties>
+   <property name="Limit Left" type="int" value="25"/>
+   <property name="Limit Right" type="int" value="2798"/>
+  </properties>
+  <object id="2" name="Camera Limit" x="464.25" y="0" width="15.75" height="16">
+   <properties>
+    <property name="Limit Left" type="int" value="25"/>
+    <property name="Limit Right" type="int" value="2798"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="139" name="Culling_pos">
+  <object id="1" name="Culling Pos" x="480" y="0" width="16" height="16">
+   <properties>
+    <property name="culling_pos_x" type="int" value="350"/>
+    <property name="culling_pos_x_swap_from_A2" type="int" value="1645"/>
+    <property name="culling_pos_x_swap_from_A5" type="int" value="500"/>
+    <property name="culling_pos_y" type="int" value="400"/>
+    <property name="culling_pos_y_swap_from_A2" type="int" value="400"/>
+    <property name="culling_pos_y_swap_from_A5" type="int" value="550"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="141" name="Player_pos">
   <object id="3" name="Player_pos" x="496" y="0" width="16" height="16">
    <properties>
     <property name="player_pos_x" type="int" value="600"/>
     <property name="player_pos_x_swap_from_A2" type="int" value="2090"/>
-    <property name="player_pos_x_swap_from_A5" type="int" value="0"/>
-    <property name="player_pos_y" type="int" value="502"/>
+    <property name="player_pos_x_swap_from_A5" type="int" value="772"/>
+    <property name="player_pos_y" type="int" value="372"/>
     <property name="player_pos_y_swap_from_A2" type="int" value="620"/>
-    <property name="player_pos_y_swap_from_A5" type="int" value="0"/>
+    <property name="player_pos_y_swap_from_A5" type="int" value="851"/>
    </properties>
   </object>
  </objectgroup>
@@ -268336,9 +268338,11 @@
   <object id="24" name="Camera Pos" x="464" y="16" width="16" height="16">
    <properties>
     <property name="camera_pos_x" value="-700"/>
-    <property name="camera_pos_x_swap" type="int" value="-3290"/>
+    <property name="camera_pos_x_swap_from_A2" type="int" value="-3290"/>
+    <property name="camera_pos_x_swap_from_A5" type="int" value="-1000"/>
     <property name="camera_pos_y" value="-800"/>
-    <property name="camera_pos_y_swap" type="int" value="-800"/>
+    <property name="camera_pos_y_swap_from_A2" type="int" value="-800"/>
+    <property name="camera_pos_y_swap_from_A5" type="int" value="-1100"/>
    </properties>
   </object>
  </objectgroup>

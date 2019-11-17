@@ -442,6 +442,10 @@ bool j1Tilesets::LoadAllObjects(pugi::xml_node& object)
 	{
 		LoadObject(object);
 	}
+	if (App->scene->swapping)
+	{
+		App->scene->swapping = false;
+	}
 	return ret;
 }
 
@@ -494,20 +498,16 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 	//Sets Culling Pos ----------------------------------------------------------------------------------------------------
 	if( App->scene->loading == false)
 	{
-		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
+		if (App->scene->swapping == true)
 		{
-			if (App->scene->swapping == true)
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
 			{
-				if (strcmp(it.attribute("name").as_string(), "culling_pos_x_swap") == 0)
-				{
-					culling_pos_x = it.attribute("value").as_int();
-				}
-				if (strcmp(it.attribute("name").as_string(), "culling_pos_y_swap") == 0)
-				{
-					culling_pos_y = it.attribute("value").as_int();
-				}
+				SetCullingPosFromCurrentLevel(it);
 			}
-			else
+		}
+		else
+		{
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
 			{
 				if (strcmp(it.attribute("name").as_string(), "culling_pos_x") == 0)
 				{
@@ -530,6 +530,40 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 	else
 	{
 		culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);
+	}
+}
+void j1Tilesets::SetCullingPosFromCurrentLevel(pugi::xml_node& it)
+{
+	char* pos_x = "culling_pos_x";
+	char* pos_y = "culling_pos_y";
+	if (App->scene->current_level == App->scene->A1)
+	{
+		pos_x = "culling_pos_x_swap_from_A1";
+		pos_y = "culling_pos_y_swap_from_A1";
+	}
+	else if (App->scene->current_level == App->scene->A2)
+	{
+		pos_x = "culling_pos_x_swap_from_A2";
+		pos_y = "culling_pos_y_swap_from_A2";
+	}
+	else if (App->scene->current_level == App->scene->A3)
+	{
+		pos_x = "culling_pos_x_swap_from_A3";
+		pos_y = "culling_pos_y_swap_from_A3";
+	}
+	else if (App->scene->current_level == App->scene->A5)
+	{
+		pos_x = "culling_pos_x_swap_from_A5";
+		pos_y = "culling_pos_y_swap_from_A5";
+	}
+
+	if (strcmp(it.attribute("name").as_string(), pos_x) == 0)
+	{
+		culling_pos_x = it.attribute("value").as_int();
+	}
+	if (strcmp(it.attribute("name").as_string(), pos_y) == 0)
+	{
+		culling_pos_y = it.attribute("value").as_int();
 	}
 }
 #pragma endregion

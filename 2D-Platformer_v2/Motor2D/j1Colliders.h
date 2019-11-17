@@ -27,6 +27,10 @@ enum SwapTo
 	A1_TO_A3,
 	A2_TO_A1,
 	A2_TO_A3,
+	A5_TO_A1,
+	A5_TO_A6,
+	A1_TO_A5,
+	A3_TO_A2,
 };
 
 enum ColliderChecker {

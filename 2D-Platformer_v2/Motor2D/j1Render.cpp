@@ -101,31 +101,64 @@ void j1Render::SetCameraPos(pugi::xml_node& object)
 {
 	if (App->scene->loading == false)
 	{
-		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
+
+		if (App->scene->swapping)
 		{
-			if (App->scene->swapping)
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
 			{
-				if (strcmp(it.attribute("name").as_string(), "camera_pos_x_swap") == 0)
-				{
-					camera.x = it.attribute("value").as_int();
-				}
-				if (strcmp(it.attribute("name").as_string(), "camera_pos_y_swap") == 0)
-				{
-					camera.y = it.attribute("value").as_int();
-				}
-			}
-			else
-			{
-				if (strcmp(it.attribute("name").as_string(), "camera_pos_x") == 0)
-				{
-					camera.x = it.attribute("value").as_int();
-				}
-				if (strcmp(it.attribute("name").as_string(), "camera_pos_y") == 0)
-				{
-					camera.y = it.attribute("value").as_int();
-				}
+				SetCameraPosFromCurrentLevel(it);
 			}
 		}
+		else
+		{
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) //EUDALD: Check this when changing start cameras and cullings
+			{	
+					if (strcmp(it.attribute("name").as_string(), "camera_pos_x") == 0)
+					{
+						camera.x = it.attribute("value").as_int();
+					}
+					if (strcmp(it.attribute("name").as_string(), "camera_pos_y") == 0)
+					{
+						camera.y = it.attribute("value").as_int();
+					}
+			}
+		}
+		
+	}
+}
+
+void j1Render::SetCameraPosFromCurrentLevel(pugi::xml_node& it)
+{
+	char* pos_x = "camera_pos_x";
+	char* pos_y = "camera_pos_y";
+	if (App->scene->current_level == App->scene->A1)
+	{
+		pos_x = "camera_pos_x_swap_from_A1";
+		pos_y = "camera_pos_y_swap_from_A1";
+	}
+	else if (App->scene->current_level == App->scene->A2)
+	{
+		pos_x = "camera_pos_x_swap_from_A2";
+		pos_y = "camera_pos_y_swap_from_A2";
+	}
+	else if (App->scene->current_level == App->scene->A3)
+	{
+		pos_x = "camera_pos_x_swap_from_A3";
+		pos_y = "camera_pos_y_swap_from_A3";
+	}
+	else if (App->scene->current_level == App->scene->A5)
+	{
+		pos_x = "camera_pos_x_swap_from_A5";
+		pos_y = "camera_pos_y_swap_from_A5";
+	}
+
+	if (strcmp(it.attribute("name").as_string(), pos_x) == 0)
+	{
+		camera.x = it.attribute("value").as_int();
+	}
+	if (strcmp(it.attribute("name").as_string(), pos_y) == 0)
+	{
+		camera.y = it.attribute("value").as_int();
 	}
 }
 

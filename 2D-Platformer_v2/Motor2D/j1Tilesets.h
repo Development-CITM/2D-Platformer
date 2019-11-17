@@ -132,6 +132,7 @@ private:
 	
 	//
 	void		SetCullingPos(pugi::xml_node& object);
+	void		SetCullingPosFromCurrentLevel(pugi::xml_node& it);
 	
 
 public:

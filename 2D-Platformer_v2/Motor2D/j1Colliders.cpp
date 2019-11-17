@@ -297,9 +297,9 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 					c2->Enabled = false;
 					detected_Colliders.add(c2);
 				}
-				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground) && c2->type == COLLIDER_TRANSITION && c2->Enabled) {
-					c2->Enabled = false;
-					App->scene->ColliderMapToLoad(c2); //EUDALD: change site
+				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type == COLLIDER_TRANSITION && c2->Enabled) {
+					//c2->Enabled = false;
+				App->scene->ColliderMapToLoad(c2); //EUDALD: change site
 				}
 				ret = true;
 				
@@ -318,9 +318,29 @@ void j1Colliders::ChooseSwap(pugi::xml_node& node,Collider* c)
 	{
 		c->swap = SwapTo::A2_TO_A1;
 	}
-	if (strcmp(node.attribute("value").as_string(), "A1toA2") == 0)
+	else if (strcmp(node.attribute("value").as_string(), "A1toA2") == 0)
 	{
 		c->swap = SwapTo::A1_TO_A2;
+	}
+	else if (strcmp(node.attribute("value").as_string(), "A3toA2") == 0)
+	{
+		c->swap = SwapTo::A3_TO_A2;
+	}
+	else if (strcmp(node.attribute("value").as_string(), "A2toA3") == 0)
+	{
+		c->swap = SwapTo::A2_TO_A3;
+	}
+	else if (strcmp(node.attribute("value").as_string(), "A1toA5") == 0)
+	{
+		c->swap = SwapTo::A1_TO_A5;
+	}
+	else if (strcmp(node.attribute("value").as_string(), "A5toA1") == 0)
+	{
+		c->swap = SwapTo::A5_TO_A1;
+	}
+	else if (strcmp(node.attribute("value").as_string(), "A5toA6") == 0)
+	{
+		c->swap = SwapTo::A5_TO_A6;
 	}
 }
 
