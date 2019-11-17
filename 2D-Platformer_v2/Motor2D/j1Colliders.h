@@ -127,7 +127,7 @@ public:
 
 	bool ThroughPlatform (Collider*);
 
-	bool collider_debug = true;
+	bool collider_debug = false;
 	
 private:
 	Collider*			collider = nullptr;
