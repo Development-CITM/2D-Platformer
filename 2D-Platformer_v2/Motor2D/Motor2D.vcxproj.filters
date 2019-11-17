@@ -53,7 +53,16 @@
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
     <ClCompile Include="j1GameObjects.cpp">
-      <Filter>Desenvolupament  ========</Filter>
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicObjects.cpp">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterObjects.cpp">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObjects.cpp">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Player_Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +142,16 @@
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
     <ClInclude Include="j1GameObjects.h">
-      <Filter>Desenvolupament  ========</Filter>
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicObjects.h">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterObjects.h">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObjects.h">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Player_Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +172,18 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Tools\PuguiXML">
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Game Objects">
+      <UniqueIdentifier>{daab7548-928c-4cd5-9929-fc35b2bcdb6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Game Objects\Dynamic Objects">
+      <UniqueIdentifier>{39167a07-e1a2-4f06-a7b6-46ff29503ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects">
+      <UniqueIdentifier>{71a2586e-0fab-4e81-b781-b15bdb455e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Player_Objects">
+      <UniqueIdentifier>{8ae465a1-2813-42f1-8b43-d40be225447c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

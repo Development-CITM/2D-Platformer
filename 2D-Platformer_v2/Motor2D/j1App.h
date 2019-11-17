@@ -19,6 +19,7 @@ class j1Colliders;
 class j1Player;
 class j1Fade2Black;
 class j1Debug;
+class j1GameObjects;
 
 class j1App
 {
@@ -92,7 +93,8 @@ public:
 	j1Player*			player;
 	j1Colliders*		collider;
 	j1Fade2Black*		fade2black;
-	j1Debug*			 debug;
+	j1Debug*			debug;
+	j1GameObjects*		gameobjects;
 
 private:
 

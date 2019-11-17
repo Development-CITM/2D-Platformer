@@ -11,13 +11,24 @@ enum class_type {
 	STATIC,
 	DYNAMIC,
 };
+enum Dynamic_type {
+	CHARACTER,
+	MAP_OBJECT,
+};
+enum Character_type {
+	PLAYER,
+	ENEMY,
+};
+enum Enemy_type {
+	ENEMY_GROUND,
+	ENEMY_FLYING,
+};
 class Object_Static;
 class Object_Dynamic;
 
 
 class EntityManager {
 	friend class j1GameObjects; //This way we can access Objects functions through the functions of GameObjects class which should be protected
-	
 
 	//Maybe we should think about a function which updates all entities through dt
 	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects
@@ -50,8 +61,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-public:
-	p2List<EntityManager*>* objects;
+	void CreateStaticObject();
+	void CreateDynamicObject();
+
+private:
+	p2List<EntityManager*>  objects;
 };
 
 #endif // 
