@@ -490,28 +490,16 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 {
 	if (App->scene->loading == false)
 	{
-		for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property")) 
+		if (App->scene->swapping)
 		{
-			if (App->scene->swapping)
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
 			{
-				if (strcmp(it.attribute("name").as_string(), "player_pos_x_swap") == 0)
-				{
-					playerPos.x = it.attribute("value").as_int();
-					if (player_Collider != nullptr)
-					{
-						player_Collider->rect.x = it.attribute("value").as_int();
-					}
-				}
-				if (strcmp(it.attribute("name").as_string(), "player_pos_y_swap") == 0)
-				{
-					playerPos.y = it.attribute("value").as_int();
-					if (player_Collider != nullptr)
-					{
-						player_Collider->rect.y = it.attribute("value").as_int();
-					}
-				}
+				SetPlayerPosFromCurrentLevel(it);
 			}
-			else
+		}
+		else
+		{
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
 			{
 				if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
 				{
@@ -539,6 +527,56 @@ void j1Player::SetPlayerPos(pugi::xml_node& object)
 		player_Collider->rect.y = playerPos.y;
 	}
 
+}
+
+void j1Player::SetPlayerPosFromCurrentLevel(pugi::xml_node& it)
+{
+	char* pos_x = "player_pos_x";
+	char* pos_y = "player_pos_y";
+
+	if (App->scene->current_level == App->scene->A1)
+	{
+		pos_x = "player_pos_x_swap_from_A1";
+		pos_y = "player_pos_y_swap_from_A1";
+
+	}
+	else if (App->scene->current_level == App->scene->A2)
+	{
+		pos_x = "player_pos_x_swap_from_A2";
+		pos_y = "player_pos_y_swap_from_A2";
+	}
+	else if (App->scene->current_level == App->scene->A3)
+	{
+		pos_x = "player_pos_x_swap_from_A3";
+		pos_y = "player_pos_y_swap_from_A3";
+	}
+	else if (App->scene->current_level == App->scene->A5)
+	{
+		pos_x = "player_pos_x_swap_from_A5";
+		pos_y = "player_pos_y_swap_from_A5";
+	}
+	else if (App->scene->current_level == App->scene->A6)
+	{
+		pos_x = "player_pos_x_swap_from_A6";
+		pos_y = "player_pos_y_swap_from_A6";
+	}
+
+	if (strcmp(it.attribute("name").as_string(), pos_x) == 0)
+	{
+		playerPos.x = it.attribute("value").as_int();
+		if (player_Collider != nullptr)
+		{
+			player_Collider->rect.x = it.attribute("value").as_int();
+		}
+	}
+	if (strcmp(it.attribute("name").as_string(), pos_y) == 0)
+	{
+		playerPos.y = it.attribute("value").as_int();
+		if (player_Collider != nullptr)
+		{
+			player_Collider->rect.y = it.attribute("value").as_int();
+		}
+	}
 }
 
 #pragma endregion

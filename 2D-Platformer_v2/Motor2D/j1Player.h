@@ -107,7 +107,7 @@ public:
 	Collider* GetCollider() { return player_Collider; }
 
 	void SetPlayerPos(pugi::xml_node& object);
-
+	void SetPlayerPosFromCurrentLevel(pugi::xml_node& it);
 private:
 
 	//Load Functions
