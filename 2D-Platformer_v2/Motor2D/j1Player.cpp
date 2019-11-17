@@ -64,9 +64,14 @@ bool j1Player::PreUpdate()
 			break;
 		case ST_Jump:
 			HorizontalInputs();
+			JumpInput();
+			break;	
+		case ST_DoubleJump:
+			HorizontalInputs();
 			break;
 		case ST_Fall:
 			HorizontalInputs();
+			JumpInput();
 			break;
 		}
 	}
@@ -108,6 +113,12 @@ bool j1Player::Update(float dt)
 		break;
 	case ST_Jump:
 		ChangeAnimation(disarmed_jump);
+		canDoubleJump = true;
+		if (verticalSpeed >= 1.f) {
+			jumping = false;
+			falling = true;
+		}
+		DoubleJumpStart();
 		if (state == CharacterState::ST_Jump) {
 			int posY = 0;
 			player_Collider->rect.y += (int)roundf(verticalSpeed);
@@ -121,6 +132,22 @@ bool j1Player::Update(float dt)
 		HorizontalMove(dt);
 		break;
 	case ST_DoubleJump:
+		ChangeAnimation(disarmed_double_jump);
+		if (verticalSpeed >= 1.f) {
+			jumping = false;
+			falling = true;
+		}
+		if (state == CharacterState::ST_DoubleJump) {
+			int posY = 0;
+			player_Collider->rect.y += (int)roundf(verticalSpeed);
+			ceilingChecker->rect.x = player_Collider->rect.x + ceilingChecker->offset.x;
+			ceilingChecker->rect.y = player_Collider->rect.y + ceilingChecker->offset.y;
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+				player_Collider->rect.y = posY;
+				verticalSpeed = 0.0f;
+			}
+		}
+		HorizontalMove(dt);
 		break;
 	case ST_MP:
 		break;
@@ -129,6 +156,7 @@ bool j1Player::Update(float dt)
 	case ST_Fall:
 		ChangeAnimation(disarmed_fall);
 		HorizontalMove(dt);
+		DoubleJumpStart();
 		break;
 	case ST_GrabLedge:
 		break;
@@ -136,6 +164,8 @@ bool j1Player::Update(float dt)
 		break;
 	}
 
+	LOG("Double Jumped: %i", doubleJumped);
+	LOG("Can Double Jumped: %i", canDoubleJump);
 	UpdateCheckersPosition();
 
 	UpdatePlayerPosition();
@@ -147,23 +177,32 @@ bool j1Player::Update(float dt)
 
 void j1Player::JumpStart()
 {
-	if (jumpPressed && jumpCount == 0) {
+	if (jumpPressed) {
 		verticalSpeed = jumpSpeed;
 		state = CharacterState::ST_Jump;
 		jumpPressed = false;
 		jumping = true;
 		falling = false;
 		canDoubleJump = true;
-		jumpCount++;
+
+	}
+}
+
+void j1Player::DoubleJumpStart()
+{
+	if (doubleJumped) {
+		verticalSpeed = double_jumpSpeed;
+		state = CharacterState::ST_DoubleJump;
+		canDoubleJump = false;
+		doubleJumped = false;
+		jumping = true;
+		falling = false;
 	}
 }
 
 void j1Player::Gravity()
 {
-	if (verticalSpeed >= 1.f) {
-		jumping = false;
-		falling = true;
-	}
+
 
 	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
 		gravitySpeed = 0.2f;
@@ -190,7 +229,7 @@ void j1Player::Gravity()
 	if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
 		player_Collider->rect.y = posY;
 		onGround = true;
-		jumpCount = 0;
+		canDoubleJump = false;
 	}
 }
 
@@ -232,16 +271,21 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_Fall;
 			break;
 		}
-		if (doubleJumped) {
-			state = CharacterState::ST_DoubleJump;
-			break;
-		}
 		if (falling) {
 			state = CharacterState::ST_Fall;
 			break;
 		}
 		break;
 	case ST_DoubleJump:
+
+		if (atCeiling) {
+			state = CharacterState::ST_Fall;
+			break;
+		}
+		if (falling) {
+			state = CharacterState::ST_Fall;
+			break;
+		}
 		break;
 	case ST_MP:
 		break;
@@ -250,12 +294,11 @@ void j1Player::ChangeStates()
 	case ST_Fall:
 		if (onGround) {
 			state = CharacterState::ST_Idle;
+			break;
 		}
 		if (onGround && moveLeft != moveRight) {
 			state = CharacterState::ST_Run;
-		}
-		if (doubleJumped) {
-			state = CharacterState::ST_DoubleJump;
+			break;
 		}
 		break;
 	case ST_GrabLedge:
@@ -514,8 +557,11 @@ void j1Player::OnCollision(Collider* c1, Collider* c2)
 void j1Player::JumpInput()
 {
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !atCeiling) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
 		jumpPressed = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && !atCeiling) {
+		doubleJumped = true;
 	}
 }
 

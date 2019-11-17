@@ -83,6 +83,8 @@ public:
 
 	void JumpStart();
 
+	void DoubleJumpStart();
+
 	void Gravity();
 
 	void ChangeStates();
@@ -124,8 +126,6 @@ private:
 	void UpdateCheckersBools();
 
 	void ChangeStatesAndAnimations();
-
-	void JumpMove(float dt);
 
 	void HorizontalMove(float);
 
