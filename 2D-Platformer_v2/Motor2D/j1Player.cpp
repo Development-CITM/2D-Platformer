@@ -97,11 +97,11 @@ bool j1Player::Update(float dt)
 	
 	UpdateCheckersBools();
 
+	UpdateColliderSize();
+
 	Gravity();
 
 	ChangeStates();
-
-	UpdateColliderSize();
 
 	LogicStateMachine(dt);
 
