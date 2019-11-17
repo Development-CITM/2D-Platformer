@@ -16,6 +16,9 @@ enum CharacterState {
 	ST_Walk,
 	ST_Run,
 	ST_Jump,
+	ST_DoubleJump,
+	ST_MP,
+	ST_LK,
 	ST_Fall,
 	ST_GrabLedge,
 };
@@ -78,6 +81,14 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void JumpStart();
+
+	void DoubleJumpStart();
+
+	void Gravity();
+
+	void ChangeStates();
+
 	// Called before all Updates
 	bool PostUpdate();
 
@@ -116,8 +127,6 @@ private:
 
 	void ChangeStatesAndAnimations();
 
-	void JumpMove(float dt);
-
 	void HorizontalMove(float);
 
 //---------------VARIABLES --------------------//
@@ -134,17 +143,25 @@ private:
 
 	//Jump Speed
 	float				max_gravitySpeed = 0.7f;
-	float				jumpSpeed = -10.f;
+	float				jumpSpeed = -6.f;
+	float				double_jumpSpeed = -5.f;
 	float				verticalSpeed = 0.f;
 
 	//Move bools
 	bool				moveRight = false;
 	bool				moveLeft = false;
 	bool				jumpPressed = false;
+	bool				canDoubleJump = true;
 	bool				onGround = false;
 	bool				canMove = true;
 	bool				atCeiling = false;
 	bool				jumping = false;
+	bool				falling = true;
+	bool				doubleJumped = false;
+
+	//Jump ints
+	int					jumpCount = 0;
+
 
 	//Enums
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
@@ -168,6 +185,11 @@ private:
 	Animation*			disarmed_run = nullptr;
 	Animation*			disarmed_jump = nullptr;
 	Animation*			disarmed_fall = nullptr;
+	Animation*			disarmed_double_jump = nullptr;
+
+	//Attacks
+	Animation*			disarmed_mp = nullptr;
+	Animation*			disarmed_lk = nullptr;
 
 	int					numCurrentAnimation = 0;
 
