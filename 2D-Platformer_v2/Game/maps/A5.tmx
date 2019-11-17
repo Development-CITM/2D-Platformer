@@ -214347,7 +214347,7 @@
   <object id="23" type="Barrier" x="720" y="480" width="48" height="256"/>
   <object id="24" type="Barrier" x="480" y="704" width="240" height="32"/>
   <object id="25" type="Barrier" x="480" y="880" width="240" height="32"/>
-  <object id="26" type="Barrier" x="592" y="768" width="32" height="96"/>
+  <object id="26" type="Barrier" x="592" y="736" width="32" height="128"/>
   <object id="27" type="Dead" x="992" y="848" width="64" height="16"/>
   <object id="28" type="Dead" x="1120" y="848" width="64" height="16"/>
   <object id="29" type="Dead " x="672" y="1088" width="288" height="16"/>
