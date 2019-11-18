@@ -376,6 +376,7 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
+	LoadProperties(node, layer->properties);
 	if (node.child("properties").child("property").attribute("name"))
 	{
 		layer->speed = node.child("properties").child("property").attribute("value").as_float();
@@ -711,7 +712,30 @@ bool j1Tilesets::CreateWalkabilityMap(int& width, int& height, uchar** buffer) c
 
 	return ret;
 }
+// Load a group of properties from a node and fill a list with it
+bool j1Tilesets::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+	bool ret = false;
 
+	pugi::xml_node data = node.child("properties");
+
+	if (data != NULL)
+	{
+		pugi::xml_node prop;
+
+		for (prop = data.child("property"); prop; prop = prop.next_sibling("property"))
+		{
+			Properties::Property* p = new Properties::Property();
+
+			p->name = prop.attribute("name").as_string();
+			p->value = prop.attribute("value").as_int();
+
+			properties.list.add(p);
+		}
+	}
+
+	return ret;
+}
 int Properties::Get(const char* value, int default_value) const
 {
 	p2List_item<Property*>* item = list.start;

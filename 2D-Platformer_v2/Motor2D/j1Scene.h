@@ -48,7 +48,6 @@ public:
 
 	void ColliderMapToLoad(Collider* c2);
 	
-private:
 
 private:
 	
@@ -57,6 +56,8 @@ private:
 	//pugis
 	pugi::xml_parse_result result;
 	pugi::xml_node renderer;
+
+	SDL_Texture* debug_tex;
 
 	
 public:
@@ -72,7 +73,7 @@ public:
 	p2SString A5 = "maps/A5.tmx";
 	p2SString A6 = "maps/A6.tmx";
 	p2SString current_level;
-	p2SString destination_level = "maps/A3.tmx";
+	p2SString destination_level = "maps/A1.tmx";
 
 	int camera_limit_left = 0;
 	int camera_limit_right = 0;

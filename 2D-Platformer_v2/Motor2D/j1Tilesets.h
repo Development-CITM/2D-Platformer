@@ -152,6 +152,9 @@ private:
 
 	bool		LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
+	//Load Properties
+	bool		LoadProperties(pugi::xml_node& node, Properties& properties);
+
 	//Objects loading functions
 	bool		LoadAllObjects(pugi::xml_node& object);
 

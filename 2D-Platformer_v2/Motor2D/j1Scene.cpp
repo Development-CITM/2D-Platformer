@@ -10,6 +10,7 @@
 #include "j1Player.h"
 #include "j1Colliders.h"
 #include "j1Fade2Black.h"
+#include "j1PathFinding.h"
 #include "j1Debug.h"
 #include "j1Scene.h"
 
@@ -40,6 +41,7 @@ bool j1Scene::Start()
 		App->player->Load("animations/Player.tmx");
 	}
 
+	debug_tex = App->tex->Load("maps/path2.png");
 	DecideMapToLoad();
 	return true;
 }
@@ -243,7 +245,15 @@ void j1Scene::DecideMapToLoad()
 	{
 		if (strcmp(level->GetString(), destination_level.GetString()) == 0)
 		{
-			App->tiles->Load(level->GetString());
+			if (App->tiles->Load(level->GetString()) == true)
+			{
+				int w, h;
+				uchar* data = NULL;
+				if (App->tiles->CreateWalkabilityMap(w, h, &data))
+					App->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
 			current_level = level->GetString();
 			break;
 		}
