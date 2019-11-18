@@ -178,7 +178,7 @@ public:
 
 	//PathFinding
 
-	bool show_path = true;
+	bool show_path = false;
 
 private:
 
