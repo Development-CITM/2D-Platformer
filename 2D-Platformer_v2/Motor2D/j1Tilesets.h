@@ -7,13 +7,41 @@
 #include "j1Module.h"
 
 // ----------------------------------------------------
+struct Properties
+{
+	struct Property
+	{
+		p2SString name;
+		int value;
+	};
+
+	~Properties()
+	{
+		p2List_item<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+
+		list.clear();
+	}
+
+	int Get(const char* name, int default_value = 0) const;
+
+	p2List<Property*>	list;
+};
+
 struct MapLayer
 {
 	p2SString	name;
-	uint		num_tile_width = 0u;
-	uint		num_tile_height = 0u;
+	uint		width = 0u;
+	uint		height = 0u;
 	int*		data = NULL;
 	float		speed=0.0f;
+	Properties	properties;
 
 	MapLayer()  : data(NULL)
 	{}
@@ -25,7 +53,7 @@ struct MapLayer
 
 	// TODO 6 (old): Short function to get the value of x,y
 	inline uint Get(int x, int y) const {
-		return data[(y* num_tile_width) + x];
+		return data[(y* width) + x];
 	}
 };
 
@@ -104,6 +132,8 @@ public:
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
+
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 private:
 

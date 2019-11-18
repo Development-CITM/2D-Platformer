@@ -374,8 +374,8 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	bool ret = true;
 	//Loading all layer attributes  -----------------------------------------------------------------------------------------
 	layer->name = node.attribute("name").as_string();
-	layer->num_tile_width = node.attribute("width").as_int();
-	layer->num_tile_height = node.attribute("height").as_int();
+	layer->width = node.attribute("width").as_int();
+	layer->height = node.attribute("height").as_int();
 	if (node.child("properties").child("property").attribute("name"))
 	{
 		layer->speed = node.child("properties").child("property").attribute("value").as_float();
@@ -391,8 +391,8 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	//Loading each tile from the layer into an array (The respective GID from the tileset) ----------------------------------
 	else
 	{
-		layer->data = new int[layer->num_tile_width * layer->num_tile_height];
-		memset(layer->data, 0, layer->num_tile_width * layer->num_tile_height);
+		layer->data = new int[layer->width * layer->height];
+		memset(layer->data, 0, layer->width * layer->height);
 
 		int i = 0;
 		for (pugi::xml_node tiles = layer_data.child("tile"); tiles; tiles = tiles.next_sibling("tile"))
@@ -429,7 +429,7 @@ void j1Tilesets::LogLayerInfo(const char* file_name)
 		MapLayer* l = item_layer->data;
 		LOG("Layer ----");
 		LOG("name: %s", l->name.GetString());
-		LOG("tile width: %d tile height: %d", l->num_tile_width, l->num_tile_height);
+		LOG("tile width: %d tile height: %d", l->width, l->height);
 		item_layer = item_layer->next;
 	}
 }
@@ -664,4 +664,64 @@ SDL_Rect j1Tilesets::GetRect(TileSet* tileset, int id)
 
 #pragma endregion
 
+bool j1Tilesets::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	p2List_item<MapLayer*>* item;
+	item = map_Data.layers.start;
 
+	for (item = map_Data.layers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->properties.Get("Navigation", 0) == 0)
+			continue;
+
+		uchar* map = new uchar[layer->width * layer->height];
+		memset(map, 1, layer->width * layer->height);
+
+		for (int y = 0; y < map_Data.height; ++y)
+		{
+			for (int x = 0; x < map_Data.width; ++x)
+			{
+				int i = (y * layer->width) + x;
+
+				int tile_id = layer->Get(x, y);
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+
+				if (tileset != NULL)
+				{
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					/*TileType* ts = tileset->GetTileType(tile_id);
+					if(ts != NULL)
+					{
+						map[i] = ts->properties.Get("walkable", 1);
+					}*/
+				}
+			}
+		}
+
+		*buffer = map;
+		width = map_Data.width;
+		height = map_Data.height;
+		ret = true;
+
+		break;
+	}
+
+	return ret;
+}
+
+int Properties::Get(const char* value, int default_value) const
+{
+	p2List_item<Property*>* item = list.start;
+
+	while (item)
+	{
+		if (item->data->name == value)
+			return item->data->value;
+		item = item->next;
+	}
+
+	return default_value;
+}

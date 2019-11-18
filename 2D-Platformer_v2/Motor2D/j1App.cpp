@@ -11,6 +11,7 @@
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
+#include "j1PathFinding.h"
 #include "j1Tilesets.h"
 #include "j1Player.h"
 #include "j1Colliders.h"
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade2black = new j1Fade2Black();
 	debug = new j1Debug();
 	gameobjects = new j1GameObjects();
+	pathfinding = new j1PathFinding();
 	
 
 	// Ordered for awake / Start / Update
@@ -52,6 +54,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade2black);
 	AddModule(debug);
 	AddModule(gameobjects);
+	AddModule(pathfinding);
 
 	// render last to swap buffer
 	AddModule(render);

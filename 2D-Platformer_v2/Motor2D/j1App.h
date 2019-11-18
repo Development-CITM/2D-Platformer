@@ -14,6 +14,7 @@ class j1Render;
 class j1Textures;
 class j1Audio;
 class j1Scene;
+class j1PathFinding;
 class j1Tilesets;
 class j1Colliders;
 class j1Player;
@@ -95,6 +96,7 @@ public:
 	j1Fade2Black*		fade2black;
 	j1Debug*			debug;
 	j1GameObjects*		gameobjects;
+	j1PathFinding*		pathfinding;
 
 private:
 

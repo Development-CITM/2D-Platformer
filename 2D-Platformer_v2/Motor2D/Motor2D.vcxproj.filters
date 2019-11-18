@@ -64,6 +64,9 @@
     <ClCompile Include="PlayerObjects.cpp">
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Player_Objects</Filter>
     </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -152,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="PlayerObjects.h">
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Player_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
