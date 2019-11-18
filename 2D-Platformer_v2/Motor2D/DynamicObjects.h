@@ -15,10 +15,10 @@ public:
 	Object_Dynamic();
 	Object_Dynamic(Dynamic_type type);
 	~Object_Dynamic();
+	virtual bool Preupdate();
 
 private:
 	void CreateCharacter();
-	p2List<Object_Dynamic*> dynamic_objects;
 };
 
 #endif

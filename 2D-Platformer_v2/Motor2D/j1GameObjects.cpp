@@ -10,6 +10,7 @@ j1GameObjects::~j1GameObjects()
 
 bool j1GameObjects::Awake(pugi::xml_node & conf)
 {
+	//Load all textures,sfx here? so we just need to print them not loading each time
 	bool ret = true;
 	return ret;
 }
@@ -24,6 +25,15 @@ bool j1GameObjects::Start()
 bool j1GameObjects::PreUpdate()
 {
 	bool ret = true;
+
+	p2List_item<EntityManager*>* item;
+	item = objects.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->PreUpdate();
+		item = item->next;
+	}
 	return ret;
 }
 
@@ -53,4 +63,19 @@ void j1GameObjects::CreateDynamicObject()
 
 
 //ENTITY MANAGER ----------------------------------------------------------------------------------------------------------------------------------------
+
+bool EntityManager::PreUpdate()
+{
+	bool ret = true;
+
+	p2List_item<Object_Dynamic*>* item;
+	item = dynamic_objects.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->PreUpdate();
+		item = item->next;
+	}
+	return ret;
+}
 

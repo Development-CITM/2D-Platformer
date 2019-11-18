@@ -18,6 +18,12 @@ Object_Dynamic::~Object_Dynamic()
 {
 }
 
+bool Object_Dynamic::Preupdate()
+{
+	bool ret = true;
+	return ret;
+}
+
 void Object_Dynamic::CreateCharacter()
 {
 	Object_Character* character_object = new Object_Character(Character_type::PLAYER);
