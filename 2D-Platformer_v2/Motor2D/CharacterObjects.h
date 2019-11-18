@@ -14,17 +14,13 @@ class Object_Character : public Object_Dynamic{
 
 public:
 	Object_Character();
-	Object_Character(Character_type type);
 	~Object_Character();
 	bool PreUpdate();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
-private:
-	void CreatePlayer();
 
 public:
-	p2List<Object_Character*> character_objects;
-	Object_Player* player_object;
+	p2Point<int*> point;
 };
 
 #endif // !_CHARACTEROBJECTS_H

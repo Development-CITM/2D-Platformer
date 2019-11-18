@@ -67,6 +67,9 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="EnemiesObjects.cpp">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Enemies_Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="EnemiesObjects.h">
+      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Enemies_Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -190,6 +196,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Player_Objects">
       <UniqueIdentifier>{8ae465a1-2813-42f1-8b43-d40be225447c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Enemies_Objects">
+      <UniqueIdentifier>{a7e1744d-4b70-4b18-a207-0161447e86dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

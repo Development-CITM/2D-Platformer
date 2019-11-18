@@ -1,5 +1,10 @@
 #include "j1GameObjects.h"
 #include "DynamicObjects.h"
+#include "CharacterObjects.h"
+#include "PlayerObjects.h"
+#include "EnemiesObjects.h"
+
+
 
 
 j1GameObjects::j1GameObjects()
@@ -17,7 +22,8 @@ bool j1GameObjects::Awake(pugi::xml_node & conf)
 
 bool j1GameObjects::Start()
 {
-	CreateDynamicObject();
+	CreatePlayer();
+	CreateEnemyGround();
 	bool ret = true;
 	return ret;
 }
@@ -44,7 +50,7 @@ bool j1GameObjects::Update(float dt)
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->Update();
+		ret = item->data->Update(dt);
 		item = item->next;
 	}
 	return ret;
@@ -70,12 +76,25 @@ bool j1GameObjects::CleanUp()
 	return ret;
 }
 
-void j1GameObjects::CreateDynamicObject()
+void j1GameObjects::CreatePlayer()
 {
-	Object_Dynamic* dynamic_object = new Object_Dynamic(Dynamic_type::CHARACTER);	 
-	objects.add(dynamic_object);
+	Object_Player* player = new Object_Player(1);
+	objects.add(player);
 }
 
+void j1GameObjects::CreateEnemyGround()
+{
+	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND);
+	Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING);
+	enemy_fly->aha = 2;
+	enemy_ground->aha = 3;
+	objects.add(enemy_ground);
+}
+
+void j1GameObjects::CreateEnemyFlying()
+{
+	//Enemy flying creation
+}
 
 //ENTITY MANAGER ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -85,7 +104,7 @@ bool EntityManager::PreUpdate()
 	return ret;
 }
 
-bool EntityManager::Update()
+bool EntityManager::Update(float dt)
 {
 	bool ret = true;
 	return ret;

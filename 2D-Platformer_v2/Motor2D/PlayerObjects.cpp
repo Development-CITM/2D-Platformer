@@ -19,8 +19,9 @@ bool Object_Player::PreUpdate()
 	return ret;
 }
 
-bool Object_Player::Update()
+bool Object_Player::Update(float dt)
 {
+	Object_Dynamic::Draw();
 	bool ret = true;
 	aha++;
 	return ret;

@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CharacterObjects.cpp" />
+    <ClCompile Include="EnemiesObjects.cpp" />
     <ClCompile Include="j1Colliders.cpp" />
     <ClCompile Include="j1Debug.cpp" />
     <ClCompile Include="DynamicObjects.cpp" />
@@ -102,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="CharacterObjects.h" />
+    <ClInclude Include="EnemiesObjects.h" />
     <ClInclude Include="j1Colliders.h" />
     <ClInclude Include="j1Debug.h" />
     <ClInclude Include="DynamicObjects.h" />

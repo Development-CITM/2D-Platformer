@@ -6,20 +6,15 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-enum class_type {
-	
-	STATIC,
-	DYNAMIC,
+struct FlyingEnemy {
+
 };
-enum Dynamic_type {
-	CHARACTER,
-	MAP_OBJECT,
+struct GroundEnemy {
+
 };
-enum Character_type {
+
+enum Object_type {
 	PLAYER,
-	ENEMY,
-};
-enum Enemy_type {
 	ENEMY_GROUND,
 	ENEMY_FLYING,
 };
@@ -31,7 +26,7 @@ class EntityManager {
 	friend class j1GameObjects; //This way we can access Objects functions through the functions of GameObjects class which should be protected
 private:
 	virtual bool PreUpdate();
-	virtual bool Update();
+	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 public:
 	p2List<Object_Dynamic*> dynamic_objects;
@@ -66,10 +61,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void CreateStaticObject();
+	void CreatePlayer();
+	void CreateEnemyGround();
+	void CreateEnemyFlying();
 	void CreateDynamicObject();
 
-private:
+public:
 	p2List<EntityManager*>  objects;
 };
 

@@ -2,16 +2,10 @@
 #include "CharacterObjects.h"
 #include "p2Defs.h"
 #include "p2Log.h"
-Object_Dynamic::Object_Dynamic()
-{
-}
-Object_Dynamic::Object_Dynamic(Dynamic_type type): EntityManager()
+
+Object_Dynamic::Object_Dynamic(): EntityManager()
 {
 	
-	if (type == Dynamic_type::CHARACTER)
-	{
-		CreateCharacter();
-	}
 }
 
 Object_Dynamic::~Object_Dynamic()
@@ -21,30 +15,14 @@ Object_Dynamic::~Object_Dynamic()
 bool Object_Dynamic::PreUpdate()
 {
 	bool ret = true;
-
-	p2List_item<Object_Character*>* item;
-	item = character_objects.start;
-
-	while (item != NULL && ret == true)
-	{
-		item->data->PreUpdate();
-		item = item->next;
-  	}
 	return ret;
 }
 
-bool Object_Dynamic::Update()
+bool Object_Dynamic::Update(float dt)
 {
 	bool ret = true;
 
-	p2List_item<Object_Character*>* item;
-	item = character_objects.start;
-
-	while (item != NULL && ret == true)
-	{
-		item->data->Update();
-		item = item->next;
-	}
+	
 	return ret;
 }
 
@@ -52,19 +30,11 @@ bool Object_Dynamic::PostUpdate()
 {
 	bool ret = true;
 
-	p2List_item<Object_Character*>* item;
-	item = character_objects.start;
 
-	while (item != NULL && ret == true)
-	{
-		item->data->PostUpdate();
-		item = item->next;
-	}
 	return ret;
 }
 
-void Object_Dynamic::CreateCharacter()
+void Object_Dynamic::Draw()
 {
-	Object_Character* character_object = new Object_Character(Character_type::PLAYER);
-	character_objects.add(character_object);
 }
+

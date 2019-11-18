@@ -13,15 +13,12 @@ class Object_Dynamic : public  EntityManager {
 
 public:
 	Object_Dynamic();
-	Object_Dynamic(Dynamic_type type);
 	~Object_Dynamic();
 	bool PreUpdate();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
-private:
-	void CreateCharacter();
-public:
-	p2List<Object_Character*> character_objects;
+	void Draw();
+
 };
 
 #endif
