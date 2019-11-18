@@ -29,8 +29,10 @@ class Object_Dynamic;
 
 class EntityManager {
 	friend class j1GameObjects; //This way we can access Objects functions through the functions of GameObjects class which should be protected
-public:
+private:
 	virtual bool PreUpdate();
+	virtual bool Update();
+	virtual bool PostUpdate();
 public:
 	p2List<Object_Dynamic*> dynamic_objects;
 	//Maybe we should think about a function which updates all entities through dt

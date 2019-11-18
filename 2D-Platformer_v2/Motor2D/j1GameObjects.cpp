@@ -25,7 +25,6 @@ bool j1GameObjects::Start()
 bool j1GameObjects::PreUpdate()
 {
 	bool ret = true;
-
 	p2List_item<EntityManager*>* item;
 	item = objects.start;
 
@@ -40,12 +39,28 @@ bool j1GameObjects::PreUpdate()
 bool j1GameObjects::Update(float dt)
 {
 	bool ret = true;
+	p2List_item<EntityManager*>* item;
+	item = objects.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Update();
+		item = item->next;
+	}
 	return ret;
 }
 
 bool j1GameObjects::PostUpdate()
 {
 	bool ret = true;
+	p2List_item<EntityManager*>* item;
+	item = objects.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->PostUpdate();
+		item = item->next;
+	}
 	return ret;
 }
 
@@ -67,15 +82,18 @@ void j1GameObjects::CreateDynamicObject()
 bool EntityManager::PreUpdate()
 {
 	bool ret = true;
+	return ret;
+}
 
-	p2List_item<Object_Dynamic*>* item;
-	item = dynamic_objects.start;
+bool EntityManager::Update()
+{
+	bool ret = true;
+	return ret;
+}
 
-	while (item != NULL && ret == true)
-	{
-		ret = item->data->PreUpdate();
-		item = item->next;
-	}
+bool EntityManager::PostUpdate()
+{
+	bool ret = true;
 	return ret;
 }
 

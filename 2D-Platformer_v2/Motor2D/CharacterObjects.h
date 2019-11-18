@@ -16,10 +16,15 @@ public:
 	Object_Character();
 	Object_Character(Character_type type);
 	~Object_Character();
-
+	bool PreUpdate();
+	bool Update();
+	bool PostUpdate();
 private:
 	void CreatePlayer();
+
+public:
 	p2List<Object_Character*> character_objects;
+	Object_Player* player_object;
 };
 
 #endif // !_CHARACTEROBJECTS_H

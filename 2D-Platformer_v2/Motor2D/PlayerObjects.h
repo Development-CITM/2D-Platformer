@@ -11,9 +11,15 @@
 
 class Object_Player : public Object_Character {
 public:
-	Object_Player();
+	Object_Player(int var);
 	~Object_Player();
-private:
+	bool PreUpdate();
+	bool Update();
+	bool PostUpdate();
+public:
+
+	int aha;
+
 
 };
 #endif // !_PLAYEROBJECTS_H

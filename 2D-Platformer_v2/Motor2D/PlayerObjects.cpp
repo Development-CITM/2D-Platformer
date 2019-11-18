@@ -5,11 +5,31 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 
-Object_Player::Object_Player(): Object_Character()
+Object_Player::Object_Player(int var): Object_Character()
 {
-	LOG("WE DID IT BOYZ");
+	aha = var;
 }
 
 Object_Player::~Object_Player()
+{}
+
+bool Object_Player::PreUpdate()
 {
+	bool ret = true;
+	return ret;
 }
+
+bool Object_Player::Update()
+{
+	bool ret = true;
+	aha++;
+	return ret;
+}
+
+bool Object_Player::PostUpdate()
+{
+	bool ret = true;
+	return ret;
+}
+
+
