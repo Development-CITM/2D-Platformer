@@ -112,25 +112,32 @@ void j1Tilesets::Draw()
 						//Does the conversion from Tiled map to an Orthogonal world -----------------------------------------
 						iPoint pos = MapToWorld(x, y);
 
-						// Parallax -----------------------------------------------------------------------------------------
-						if (strcmp(layer->name.GetString(), "Mountain") == 0 || strcmp(layer->name.GetString(), "Rocks 2")==0 || strcmp(layer->name.GetString(), "Mountain 2")==0 || strcmp(layer->name.GetString(), "Rocks") == 0)
-						{
-							if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x  * layer->speed)),pos.y,r.w,r.h })) {
-								pos.x = pos.x + (App->render->camera.x * layer->speed);
-								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
+							// Parallax -----------------------------------------------------------------------------------------
+							if (strcmp(layer->name.GetString(), "Mountain") == 0 || strcmp(layer->name.GetString(), "Rocks 2") == 0 || strcmp(layer->name.GetString(), "Mountain 2") == 0 || strcmp(layer->name.GetString(), "Rocks") == 0)
+							{
+								if (culling_Collider->CheckCollision({ (int)(pos.x + (App->render->camera.x * layer->speed)),pos.y,r.w,r.h })) {
+									pos.x = pos.x + (App->render->camera.x * layer->speed);
+									App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
+								}
 							}
-						}
-						else if (strcmp(layer->name.GetString(), "Sea") == 0)
-						{
-							if (culling_Collider->CheckCollision({  pos.x,pos.y ,r.w,r.h }))
-								App->render->Blit(tileset->texture, pos.x, pos.y, &r, App->render->drawsize);
-						}
-						// Default draw -------------------------------------------------------------------------------------
-						else
-						{
-							if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, 2.0f);
-						}
+							// Default draw -------------------------------------------------------------------------------------
+							else
+							{
+								if ((strcmp(layer->name.GetString(), "Path") == 0) && show_path)
+								{
+									if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
+										App->render->Blit(tileset->texture, pos.x, pos.y, &r, 2.0f);
+								}
+								else
+								{
+									if (strcmp(layer->name.GetString(), "Path") == 0)
+										break;
+
+									if (culling_Collider->CheckCollision({ pos.x,pos.y,r.w,r.h }))
+										App->render->Blit(tileset->texture, pos.x, pos.y, &r, 2.0f);
+								}
+							}
+						
 						
 					}
 				}

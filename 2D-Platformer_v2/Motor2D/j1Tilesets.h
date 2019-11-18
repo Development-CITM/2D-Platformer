@@ -176,6 +176,10 @@ public:
 	int						culling_pos_x = 0;
 	int						culling_pos_y = 0;
 
+	//PathFinding
+
+	bool show_path = true;
+
 private:
 
 	p2SString				folder;
@@ -186,11 +190,9 @@ private:
 	MapLayer*				lays = nullptr;
 	int						layercnt = 0;
 
-
-
-
 	int						currentFrame=0;
 	int						maxFrames=0;
+
 };
 
 #endif // __j1MAP_H__

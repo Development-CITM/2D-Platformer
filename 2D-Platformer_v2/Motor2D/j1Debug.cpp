@@ -73,6 +73,10 @@ bool j1Debug::Update(float dt)
 		{
 			//GOD MODE
 		}
+		if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		{
+			App->tiles->show_path = !App->tiles->show_path;
+		}
 
 		//Show colliders --------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
