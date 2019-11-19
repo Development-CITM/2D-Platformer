@@ -5,10 +5,10 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos player_pos_x="745" player_pos_y="855" />
+		<playerPos player_pos_x="455" player_pos_y="631" />
 		<player_collider />
-		<camera x="-1000" y="-1100" />
-		<culling x="500" y="550" />
+		<camera x="-448" y="-878" />
+		<culling x="224" y="439" />
 		<current_lvl />
 		<scene current_map="maps/A1.tmx" />
 	</scene>
@@ -17,5 +17,7 @@
 	<colliders />
 	<fade2Black />
 	<debug />
+	<:anonymous />
+	<pathfinding />
 	<renderer />
 </game_state>

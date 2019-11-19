@@ -44,6 +44,9 @@ public:
 	void SetCameraPos(p2Point<int>);
 	void SetCameraPosFromCurrentLevel(pugi::xml_node& it);
 
+
+	iPoint ScreenToWorld(int x, int y) const;
+
 public:
 
 	float			drawsize = 2.0f;
