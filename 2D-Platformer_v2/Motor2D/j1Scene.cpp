@@ -58,6 +58,8 @@ bool j1Scene::PreUpdate()
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->tiles->WorldToMap(p.x, p.y);
+	
+
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -68,7 +70,7 @@ bool j1Scene::PreUpdate()
 		}
 		else
 		{
-			origin = p;
+			origin = App->tiles->WorldToMap(App->player->GetCollider()->GetPosition().x, App->player->GetCollider()->GetPosition().y);
 			origin_selected = true;
 		}
 	}
@@ -134,7 +136,7 @@ bool j1Scene::Update(float dt)
 	
 	
 	int x, y;
-	App->input->GetMousePosition(x, y);
+
 	/*iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->tiles->map_Data.width, App->tiles->map_Data.height,
@@ -150,14 +152,14 @@ bool j1Scene::Update(float dt)
 	p = App->tiles->WorldToMap(p.x, p.y);
 	p = App->tiles->MapToWorld(p.x, p.y);
 
-	App->render->Blit(debug_tex, p.x, p.y);
+	App->render->Blit(debug_tex, p.x , p.y,NULL,App->render->drawsize);
 
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
 	for (uint i = 0; i < path->Count(); ++i)
 	{
 		iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
-		App->render->Blit(debug_tex, pos.x, pos.y);
+		App->render->Blit(debug_tex, pos.x, pos.y,NULL, App->render->drawsize);
 	}
 	return true;
 }

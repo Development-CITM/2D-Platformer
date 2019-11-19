@@ -681,7 +681,7 @@ bool j1Tilesets::CreateWalkabilityMap(int& width, int& height, uchar** buffer) c
 	for (item = map_Data.layers.start; item != NULL; item = item->next)
 	{
 		MapLayer* layer = item->data;
-
+		p2SString name = layer->name.GetString();
 		if (layer->properties.Get("Navigation", 0) == 0)
 			continue;
 
@@ -693,15 +693,14 @@ bool j1Tilesets::CreateWalkabilityMap(int& width, int& height, uchar** buffer) c
 			for (int x = 0; x < map_Data.width; ++x)
 			{
 				int i = (y * layer->width) + x;
-
 				int tile_id = layer->Get(x, y);
-				//TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
 
-				//if (tileset != NULL)
-				//{
-				if(tile_id != 0){
-					map[i] = 0;
-
+				if (tileset != NULL)
+				{
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					int num = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					LOG("");
 					/*TileType* ts = tileset->GetTileType(tile_id);
 					if(ts != NULL)
 					{
