@@ -22,9 +22,19 @@ bool j1GameObjects::Awake(pugi::xml_node & conf)
 
 bool j1GameObjects::Start()
 {
+	bool ret = true;
 	CreatePlayer();
 	CreateEnemyGround();
-	bool ret = true;
+	p2List_item<EntityManager*>* item;
+	item = objects.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Start();
+		item = item->next;
+	}
+	return ret;
+
 	return ret;
 }
 
@@ -98,6 +108,12 @@ void j1GameObjects::CreateEnemyFlying()
 }
 
 //ENTITY MANAGER ----------------------------------------------------------------------------------------------------------------------------------------
+
+bool EntityManager::Start()
+{
+	bool ret = true;
+	return ret;
+}
 
 bool EntityManager::PreUpdate()
 {

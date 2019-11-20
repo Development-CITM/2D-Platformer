@@ -5,6 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "j1Render.h"
 
 struct FlyingEnemy {
 
@@ -25,10 +26,14 @@ class Object_Dynamic;
 class EntityManager {
 	friend class j1GameObjects; //This way we can access Objects functions through the functions of GameObjects class which should be protected
 private:
+	virtual bool Start();
 	virtual bool PreUpdate();
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 public:
+
+	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
+
 	p2List<Object_Dynamic*> dynamic_objects;
 	//Maybe we should think about a function which updates all entities through dt
 	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects
