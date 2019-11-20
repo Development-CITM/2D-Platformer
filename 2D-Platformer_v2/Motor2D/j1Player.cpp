@@ -10,6 +10,7 @@
 #include "j1Audio.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+#include "Brofiler/Brofiler.h"
 #include <math.h>
 
 #pragma region Constructor/Awake/Start
@@ -837,6 +838,7 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 void j1Player::Draw()
 {
+	BROFILER_CATEGORY("DrawLogic", Profiler::Color::Orchid)
 	numCurrentAnimation = currentAnimation->GetSprite();
 
 	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {

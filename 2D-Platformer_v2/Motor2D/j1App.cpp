@@ -85,6 +85,7 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
+
 	PERF_START(ptimer);
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
@@ -143,6 +144,7 @@ bool j1App::Start()
 // Called each loop iteration
 bool j1App::Update()
 {
+
 	bool ret = true;
 	PrepareUpdate();
 

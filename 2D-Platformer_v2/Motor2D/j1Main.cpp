@@ -7,8 +7,10 @@
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "SDL/include/SDL.h"
+#include "Brofiler/Brofiler.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
+#pragma comment( lib, "Brofiler/ProfilerCore32")
 
 enum MainState
 {
@@ -30,6 +32,8 @@ int main(int argc, char* args[])
 
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
+	
+
 
 	while(state != EXIT)
 	{
@@ -78,9 +82,10 @@ int main(int argc, char* args[])
 			break;
 
 			// Loop all modules until we are asked to leave ---------------------
-			case LOOP:
-			if(App->Update() == false)
-				state = CLEAN;
+			case LOOP: {
+				BROFILER_FRAME("Update");
+				if (App->Update() == false)
+					state = CLEAN; }
 			break;
 
 			// Cleanup allocated memory -----------------------------------------

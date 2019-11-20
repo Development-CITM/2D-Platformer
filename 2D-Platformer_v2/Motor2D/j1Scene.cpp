@@ -74,7 +74,6 @@ bool j1Scene::PreUpdate()
 			origin_selected = true;
 		}
 	}
-
 	return true;
 
 }
@@ -95,23 +94,27 @@ bool j1Scene::Update(float dt)
 			App->tiles->culling_Collider->rect.y -= 2;
 
 		}
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-		App->render->camera.y -= 4;
-		App->tiles->culling_Collider->rect.y += 2;
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+			App->render->camera.y -= 4;
+			App->tiles->culling_Collider->rect.y += 2;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 
 			App->render->camera.x += 4;
 			App->tiles->culling_Collider->rect.x -= 2;
-	}
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 			App->render->camera.x -= 4;
 			App->tiles->culling_Collider->rect.x += 2;
+		}	
+		
+
 	}
+
+
 
 	//if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->culling_Collider->rect.w) {
 	//	if (App->scene->lvl1 == true)
