@@ -61,7 +61,7 @@ bool j1Scene::PreUpdate()
 	
 
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		if (origin_selected == true)
 		{

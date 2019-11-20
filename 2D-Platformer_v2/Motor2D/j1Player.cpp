@@ -838,7 +838,7 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 void j1Player::Draw()
 {
-	BROFILER_CATEGORY("DrawLogic", Profiler::Color::Orchid)
+	BROFILER_CATEGORY("DrawLogic", Profiler::Color::Aqua)
 	numCurrentAnimation = currentAnimation->GetSprite();
 
 	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {

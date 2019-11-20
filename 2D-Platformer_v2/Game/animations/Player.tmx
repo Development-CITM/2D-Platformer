@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="32" nextobjectid="78">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="32" nextobjectid="78">
  <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
@@ -129,27 +129,27 @@
     </properties>
     <object id="69" name="DISARMED_MP" type="DISARMED_MP" x="650" y="222" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="4"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
     <object id="70" name="DISARMED_MP" type="DISARMED_MP" x="700" y="222" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="5"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
     <object id="71" name="DISARMED_MP" type="DISARMED_MP" x="750" y="222" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="6"/>
+      <property name="Frames" type="int" value="4"/>
      </properties>
     </object>
     <object id="72" name="DISARMED_MP" type="DISARMED_MP" x="450" y="259" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="4"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
     <object id="73" name="DISARMED_MP" type="DISARMED_MP" x="500" y="259" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="3"/>
+      <property name="Frames" type="int" value="2"/>
      </properties>
     </object>
    </objectgroup>
@@ -171,12 +171,12 @@
     </object>
     <object id="76" name="DISARMED_LK" type="DISARMED_LK" x="500" y="333" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="9"/>
+      <property name="Frames" type="int" value="5"/>
      </properties>
     </object>
     <object id="77" name="DISARMED_LK" type="DISARMED_LK" x="550" y="333" width="50" height="37">
      <properties>
-      <property name="Frames" type="int" value="4"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
    </objectgroup>
