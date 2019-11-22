@@ -19,9 +19,9 @@ bool Object_Player::Start()
 {
 	bool ret = true;
 	Load("animations/Player.tmx");
-	state = ST_Idle_v2;
-
+	//InitCheckers();
 	currentAnimation = disarmed_idle;
+	state = ST_Idle_v2;
 	return ret;
 }
 
@@ -47,28 +47,63 @@ bool Object_Player::PostUpdate()
 
 bool Object_Player::InitCheckers()
 {
-	return true;
-	/*bool ret = true;
-	player_Collider = App->collider->AddCollider({ characterPos.x,characterPos.y,20,45 }, COLLIDER_PLAYER, { 0,0 }, this);
+	bool ret = true;
+	// CHANGE CALLBACK TYPE IN ORDER TO CREATE CHECKERS ONCE ALL IS DONE AND WE CAN IGNORE PLAYERCPP
+	//
+	//player_Collider = App->collider->AddCollider({ characterPos.x,characterPos.y,20,45 }, COLLIDER_PLAYER, { 0,0 }, this);
 
-	groundChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,player_Collider->rect.w - 1,5 }, COLLIDER_CEILING_CHECKER, { 1,player_Collider->rect.h }, this);
-	groundChecker->checkerType = ColliderChecker::Ground;
+	//groundChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,player_Collider->rect.w - 1,5 }, COLLIDER_CEILING_CHECKER, { 1,player_Collider->rect.h }, this);
+	//groundChecker->checkerType = ColliderChecker::Ground;
 
-	ceilingChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,player_Collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,-4 }, this);
-	ceilingChecker->checkerType = ColliderChecker::Top;
+	//ceilingChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,player_Collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,-4 }, this);
+	//ceilingChecker->checkerType = ColliderChecker::Top;
 
-	rightChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,4,player_Collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,5 }, this);
-	rightChecker->checkerType = ColliderChecker::Right;
+	//rightChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,4,player_Collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,5 }, this);
+	//rightChecker->checkerType = ColliderChecker::Right;
 
-	leftChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,4,player_Collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { -3,5 }, this);
-	leftChecker->checkerType = ColliderChecker::Left;
-	return ret;*/
+	//leftChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,4,player_Collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { -3,5 }, this);
+	//leftChecker->checkerType = ColliderChecker::Left;
+	return ret;
 }
 
 Animation* Object_Player::LoadAnimation(pugi::xml_node& obj_group)
 {
-	
-	return nullptr;
+	Animation* anim = new Animation();
+	anim->name = obj_group.attribute("name").as_string();
+
+	if (strcmp(anim->name.GetString(), "DISARMED_IDLE") == 0) { disarmed_idle = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_RUN") == 0) { disarmed_run = anim; disarmed_run->offset.x = 5; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_JUMP") == 0) { disarmed_jump = anim; disarmed_jump->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_DJUMP") == 0) { disarmed_double_jump = anim; disarmed_double_jump->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0) { disarmed_fall = anim; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_MP") == 0) { disarmed_mp = anim; disarmed_mp->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_LK") == 0) { disarmed_lk = anim; disarmed_lk->loop = false; }
+
+	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
+
+	anim->sprites = new Sprite[anim->num_sprites];
+	int i = 0;
+	pugi::xml_node AABB_object = obj_group.next_sibling("objectgroup").child("object");
+
+	for (pugi::xml_node object = obj_group.child("object"); object; object = object.next_sibling("object"))
+	{
+		anim->sprites[i].rect.x = object.attribute("x").as_int();
+		anim->sprites[i].rect.y = object.attribute("y").as_int();
+		anim->sprites[i].rect.w = object.attribute("width").as_int();
+		anim->sprites[i].rect.h = object.attribute("height").as_int();
+
+		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
+
+		/*	anim->sprites[i].AABB_rect = LoadAABB(AABB_object);
+			anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(playerPos.x),anim->sprites[i].AABB_rect.y - (int)roundf(playerPos.y) };
+			LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
+
+			if (AABB_object.next_sibling("object")) {
+				AABB_object = AABB_object.next_sibling("object");
+			}*/
+		i++;
+	}
+	return anim;
 }
 
 

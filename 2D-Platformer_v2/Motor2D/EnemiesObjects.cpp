@@ -8,6 +8,14 @@ Object_Enemy::~Object_Enemy()
 {
 }
 
+bool Object_Enemy::Start()
+{
+	bool ret = true;
+	Load("animations/Enemy_Kobold.tmx");
+	currentAnimation = idle;
+	return ret;
+}
+
 bool Object_Enemy::PreUpdate()
 {
 	bool ret = true;

@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "j1Player.h"
+#include "PlayerObjects.h"
 
 enum ColliderType
 {

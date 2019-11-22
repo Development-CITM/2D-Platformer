@@ -34,7 +34,6 @@ public:
 
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
 
-	p2List<Object_Dynamic*> dynamic_objects;
 	//Maybe we should think about a function which updates all entities through dt
 	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects
 	//We need to check all collisions between objects so function 'OnCollision' or it's homologus should be in here

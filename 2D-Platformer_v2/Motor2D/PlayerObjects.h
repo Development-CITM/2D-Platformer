@@ -22,8 +22,6 @@ public:
 	bool InitCheckers();
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 public:
-
-private:
 	//Move bools
 	bool				moveRight = false;
 	bool				moveLeft = false;
@@ -42,6 +40,15 @@ private:
 	//Jump ints
 	int					doublejumpCount = 0;
 
+	//Colliders
+	Collider* player_Collider = nullptr;
+
+	//Checkers
+	Collider* ceilingChecker = nullptr;
+	Collider* groundChecker = nullptr;
+	Collider* leftChecker = nullptr;
+	Collider* rightChecker = nullptr;
+
 	//Animations
 	Animation* disarmed_idle = nullptr;
 	Animation* disarmed_run = nullptr;
@@ -52,15 +59,6 @@ private:
 	//Attacks
 	Animation* disarmed_mp = nullptr;
 	Animation* disarmed_lk = nullptr;
-
-	//Colliders
-	Collider* player_Collider = nullptr;
-
-	//Checkers
-	Collider* ceilingChecker = nullptr;
-	Collider* groundChecker = nullptr;
-	Collider* leftChecker = nullptr;
-	Collider* rightChecker = nullptr;
 
 	int					colliderOffsetY1 = 10;
 	int					colliderOffsetY2 = 9;

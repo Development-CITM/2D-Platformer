@@ -15,12 +15,15 @@ public:
 
 	Object_Enemy(Object_type type);
 	~Object_Enemy();
+	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 public:
-
 	int aha;
+	Animation* idle;
+	Animation* running;
+	Animation* hurt;
 
 
 

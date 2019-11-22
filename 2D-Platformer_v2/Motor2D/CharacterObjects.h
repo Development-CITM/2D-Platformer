@@ -78,6 +78,7 @@ private:
 
 public:
 
+
 	CharacterTMXData		character_tmx_data;
 	p2Point<int>		characterPos{ 0,0 };
 
@@ -86,7 +87,6 @@ public:
 
 	Animation* currentAnimation = nullptr;
 	Animation* previousAnimation = nullptr;
-
 
 	int					numCurrentAnimation = 0;
 	

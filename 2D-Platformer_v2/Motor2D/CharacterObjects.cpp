@@ -42,8 +42,8 @@ bool Object_Character::PostUpdate()
 bool Object_Character::Load(const char* file_name)
 {
 	bool ret = true;
-	pugi::xml_document	player_file;
-	pugi::xml_parse_result result = player_file.load_file(file_name);
+	pugi::xml_document	character_file;
+	pugi::xml_parse_result result = character_file.load_file(file_name);
 
 	if (result == NULL)
 	{
@@ -54,11 +54,11 @@ bool Object_Character::Load(const char* file_name)
 	//Load info
 	if (ret == true) {
 
-		pugi::xml_node	player_node = player_file.child("map");
+		pugi::xml_node	character_node = character_file.child("map");
 
-		LoadCharacterTMX(player_node);
+		LoadCharacterTMX(character_node);
 
-		pugi::xml_node pre_group = player_node.child("group");
+		pugi::xml_node pre_group = character_node.child("group");
 		pugi::xml_node group = pre_group.child("group");
 
 		for (group; group && ret; group = group.next_sibling("group"))
