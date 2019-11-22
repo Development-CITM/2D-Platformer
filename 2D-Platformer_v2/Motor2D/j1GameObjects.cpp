@@ -96,10 +96,9 @@ void j1GameObjects::CreateEnemyGround()
 {
 	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND);
 	//Prove that we can access through different instances of the same class
-	/*Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING);
-	enemy_fly->aha = 2;
-	enemy_ground->aha = 3;*/
+	Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING);
 	objects.add(enemy_ground);
+	objects.add(enemy_fly);
 }
 
 void j1GameObjects::CreateEnemyFlying()

@@ -1,52 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="6" height="5" tilewidth="41" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="27">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="6" height="5" tilewidth="41" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="27">
  <imagelayer id="3" name="Sheet">
   <image source="Water_wisp.png" width="246" height="160"/>
  </imagelayer>
- <group id="13" name="DEAD">
-  <objectgroup id="14" name="DEAD">
-   <object id="14" name="DEAD" x="123" y="96" width="41" height="32"/>
-   <object id="15" name="DEAD" x="164" y="96" width="41" height="32"/>
-   <object id="16" name="DEAD" x="205" y="96" width="41" height="32"/>
-   <object id="17" name="DEAD" x="0" y="128" width="41" height="32"/>
-   <object id="18" name="DEAD" x="41" y="128" width="41" height="32"/>
-   <object id="19" name="DEAD" x="82" y="128" width="41" height="32"/>
-   <object id="20" name="DEAD" x="123" y="128" width="41" height="32"/>
-  </objectgroup>
-  <objectgroup color="#ff0000" id="16" name="AABB">
-   <object id="26" x="150" y="116" width="4" height="5"/>
-  </objectgroup>
- </group>
- <group id="10" name="HURT">
-  <objectgroup id="12" name="HURT">
-   <object id="11" name="HURT" x="0" y="96" width="41" height="32"/>
-   <object id="12" name="HURT" x="41" y="96" width="41" height="32"/>
-   <object id="13" name="HURT" x="82" y="96" width="41" height="32"/>
-  </objectgroup>
-  <objectgroup color="#ff0000" id="15" name="AABB">
-   <object id="24" x="23" y="113" width="11" height="11"/>
-  </objectgroup>
- </group>
- <group id="7" name="RUN">
-  <objectgroup id="8" name="RUN">
-   <object id="7" name="RUN" x="164" y="0" width="41" height="32"/>
-   <object id="8" name="RUN" x="205" y="0" width="41" height="32"/>
-   <object id="9" name="RUN" x="0" y="32" width="41" height="32"/>
-   <object id="10" name="RUN" x="41" y="32" width="41" height="32"/>
-  </objectgroup>
-  <objectgroup color="#ff0000" id="9" name="AABB">
-   <object id="23" x="184" y="9" width="15" height="14"/>
-  </objectgroup>
- </group>
- <group id="4" name="IDLE">
-  <objectgroup id="5" name="IDLE">
-   <object id="1" name="IDLE" x="0" y="0" width="41" height="32"/>
-   <object id="2" name="IDLE" x="41" y="0" width="41" height="32"/>
-   <object id="3" name="IDLE" x="82" y="0" width="41" height="32"/>
-   <object id="4" name="IDLE" x="123" y="0" width="41" height="32"/>
-  </objectgroup>
-  <objectgroup color="#ff0000" id="6" name="AABB">
-   <object id="21" x="18" y="9" width="16" height="16"/>
-  </objectgroup>
+ <group id="17" name="ANIMATIONS">
+  <group id="4" name="IDLE">
+   <objectgroup id="5" name="IDLE">
+    <properties>
+     <property name="num_sprites" type="int" value="4"/>
+    </properties>
+    <object id="1" name="IDLE" x="0" y="0" width="41" height="32"/>
+    <object id="2" name="IDLE" x="41" y="0" width="41" height="32"/>
+    <object id="3" name="IDLE" x="82" y="0" width="41" height="32"/>
+    <object id="4" name="IDLE" x="123" y="0" width="41" height="32"/>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="6" name="AABB">
+    <object id="21" x="18" y="9" width="16" height="16"/>
+   </objectgroup>
+  </group>
+  <group id="7" name="RUN">
+   <objectgroup id="8" name="RUN">
+    <properties>
+     <property name="num_sprites" type="int" value="4"/>
+    </properties>
+    <object id="7" name="RUN" x="164" y="0" width="41" height="32"/>
+    <object id="8" name="RUN" x="205" y="0" width="41" height="32"/>
+    <object id="9" name="RUN" x="0" y="32" width="41" height="32"/>
+    <object id="10" name="RUN" x="41" y="32" width="41" height="32"/>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="9" name="AABB">
+    <object id="23" x="184" y="9" width="15" height="14"/>
+   </objectgroup>
+  </group>
+  <group id="10" name="HURT">
+   <objectgroup id="12" name="HURT">
+    <properties>
+     <property name="num_sprites" type="int" value="3"/>
+    </properties>
+    <object id="11" name="HURT" x="0" y="96" width="41" height="32"/>
+    <object id="12" name="HURT" x="41" y="96" width="41" height="32"/>
+    <object id="13" name="HURT" x="82" y="96" width="41" height="32"/>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="15" name="AABB">
+    <object id="24" x="23" y="113" width="11" height="11"/>
+   </objectgroup>
+  </group>
+  <group id="13" name="DEAD">
+   <objectgroup id="14" name="DEAD">
+    <properties>
+     <property name="num_sprites" type="int" value="7"/>
+    </properties>
+    <object id="14" name="DEAD" x="123" y="96" width="41" height="32"/>
+    <object id="15" name="DEAD" x="164" y="96" width="41" height="32"/>
+    <object id="16" name="DEAD" x="205" y="96" width="41" height="32"/>
+    <object id="17" name="DEAD" x="0" y="128" width="41" height="32"/>
+    <object id="18" name="DEAD" x="41" y="128" width="41" height="32"/>
+    <object id="19" name="DEAD" x="82" y="128" width="41" height="32"/>
+    <object id="20" name="DEAD" x="123" y="128" width="41" height="32"/>
+   </objectgroup>
+   <objectgroup color="#ff0000" id="16" name="AABB">
+    <object id="26" x="150" y="116" width="4" height="5"/>
+   </objectgroup>
+  </group>
  </group>
 </map>

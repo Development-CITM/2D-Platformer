@@ -116,7 +116,7 @@ bool j1Player::Update(float dt)
 	}
 
 	//Update Camera Position
-	App->render->SetCameraPos(playerPos);
+	//App->render->SetCameraPos(playerPos);
 
 	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
 	LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);

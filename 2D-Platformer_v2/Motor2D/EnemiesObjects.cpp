@@ -1,4 +1,4 @@
-#include "EnemiesObjects.h"
+﻿#include "EnemiesObjects.h"
 #include "p2Log.h"
 
 Object_Enemy::Object_Enemy(Object_type type) : Object_Character()
@@ -12,6 +12,8 @@ Object_Enemy::~Object_Enemy()
 bool Object_Enemy::Start()
 {
 	bool ret = true;
+	//Divide enemy into each type of enemy
+	Load("animations/Enemy_Wwisp.tmx");
 	Load("animations/Enemy_Kobold.tmx");
 	currentAnimation = idle;
 	return ret;
