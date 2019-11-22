@@ -9,10 +9,26 @@
     <properties>
      <property name="num_sprites" value="4"/>
     </properties>
-    <object id="1" name="IDLE" x="0" y="0" width="68" height="35"/>
-    <object id="2" name="IDLE" x="68" y="0" width="68" height="35"/>
-    <object id="3" name="IDLE" x="136" y="0" width="68" height="35"/>
-    <object id="4" name="IDLE" x="204" y="0" width="68" height="35"/>
+    <object id="1" name="IDLE" x="0" y="0" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="6"/>
+     </properties>
+    </object>
+    <object id="2" name="IDLE" x="68" y="0" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="8"/>
+     </properties>
+    </object>
+    <object id="3" name="IDLE" x="136" y="0" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="8"/>
+     </properties>
+    </object>
+    <object id="4" name="IDLE" x="204" y="0" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="6"/>
+     </properties>
+    </object>
    </objectgroup>
    <objectgroup color="#ff0000" id="8" name="AABB">
     <object id="24" x="35" y="6" width="19" height="28"/>
@@ -52,7 +68,7 @@
   <group id="7" name="DEAD">
    <objectgroup id="15" name="DEAD">
     <properties>
-     <property name="num_sprites" value="5"/>
+     <property name="num_sprites" value="6"/>
     </properties>
     <object id="16" name="DEAD" x="272" y="105" width="68" height="35"/>
     <object id="17" name="DEAD" x="0" y="140" width="68" height="35"/>

@@ -19,11 +19,14 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
+	Animation* LoadAnimation(pugi::xml_node& obj_group);
+	SDL_Rect LoadAABB(pugi::xml_node& AABB_object);
 public:
 	int aha;
 	Animation* idle;
 	Animation* running;
 	Animation* hurt;
+	Animation* dead;
 
 
 

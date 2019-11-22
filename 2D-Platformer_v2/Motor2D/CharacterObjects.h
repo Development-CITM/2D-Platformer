@@ -71,16 +71,19 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Load(const char* path);
+	void Draw();
 
 private:
 	bool LoadCharacterTMX(pugi::xml_node& character_node);
 	virtual Animation* LoadAnimation(pugi::xml_node& obj_group);
+	virtual SDL_Rect LoadAABB(pugi::xml_node& AABB_object);
+
 
 public:
 
 
 	CharacterTMXData		character_tmx_data;
-	p2Point<int>		characterPos{ 0,0 };
+	p2Point<int>		characterPos{ 397,375 };
 
 	CharacterState_v2	state = CharacterState_v2::ST_Idle_v2;
 	CharacterState_v2		previous_state = CharacterState_v2::ST_Idle_v2;

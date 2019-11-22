@@ -21,6 +21,7 @@ public:
 	bool PostUpdate();
 	bool InitCheckers();
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
+	SDL_Rect LoadAABB(pugi::xml_node& AABB_object);
 public:
 	//Move bools
 	bool				moveRight = false;

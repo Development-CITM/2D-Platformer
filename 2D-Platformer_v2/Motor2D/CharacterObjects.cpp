@@ -28,7 +28,6 @@ bool Object_Character::PreUpdate()
 bool Object_Character::Update(float dt)
 {
 		bool ret = true;
-
 		return ret;
 }
 
@@ -103,5 +102,17 @@ bool Object_Character::LoadCharacterTMX(pugi::xml_node& character_node)
 Animation* Object_Character::LoadAnimation(pugi::xml_node& obj_group)
 {
 	return nullptr;
+}
+
+SDL_Rect Object_Character::LoadAABB(pugi::xml_node& AABB_object)
+{
+	return SDL_Rect();
+}
+
+void Object_Character::Draw()
+{
+	numCurrentAnimation = currentAnimation->GetSprite();
+
+	App->render->Blit(character_tmx_data.texture, characterPos.x + currentAnimation->offset.x, characterPos.y, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
 }
 
