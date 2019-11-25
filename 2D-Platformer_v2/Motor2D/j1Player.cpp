@@ -116,7 +116,7 @@ bool j1Player::Update(float dt)
 	}
 
 	//Update Camera Position
-	//App->render->SetCameraPos(playerPos);
+	App->render->SetCameraPos(playerPos);
 
 	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
 	LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
@@ -862,7 +862,7 @@ void j1Player::Draw()
 		disarmed_fall->offset.x = -5;
 	}
 	
-	App->render->Blit(player_tmx_data.texture, playerPos.x + currentAnimation->offset.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,2.f,true,flip);
+	App->render->Blit(player_tmx_data.texture, playerPos.x + currentAnimation->offset.x, playerPos.y, &currentAnimation->sprites[numCurrentAnimation].rect,App->render->drawsize,true,flip);
 }
 
 #pragma endregion

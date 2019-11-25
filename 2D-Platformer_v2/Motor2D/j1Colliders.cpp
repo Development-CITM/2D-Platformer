@@ -178,18 +178,18 @@ void j1Colliders::Draw()
 			switch (collider->data->type)
 			{
 			case COLLIDER_WALL_SOLID:
-				App->render->DrawQuad(rect, 255, 0, 0, 100,true,true);
+				App->render->DrawQuad(rect, 255, 0, 0, 100);
 				break;
 			case COLLIDER_TRANSITION:
 			{
-				App->render->DrawQuad(rect, 182, 149, 192,100, true, false);
+				App->render->DrawQuad(rect, 182, 149, 192,100);
 				break;
 			}
 			case COLLIDER_WALL_TRASPASSABLE:			
-				App->render->DrawQuad(rect, 0, 0, 255, 100, true, false);
+				App->render->DrawQuad(rect, 0, 0, 255, 100);
 				break;
 			case COLLIDER_DEAD:
-				App->render->DrawQuad(rect, 0, 0, 0, 100, true, false);
+				App->render->DrawQuad(rect, 0, 0, 0, 100);
 				break;
 			case COLLIDER_PLAYER:
 				rect.x = collider->data->rect.x * size * scale;
