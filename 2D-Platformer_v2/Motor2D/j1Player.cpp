@@ -20,6 +20,7 @@ j1Player::j1Player()
 {
 	//Set module name
 	name.create("player");
+	absolutePos = { 0,0 };
 }
 
 bool j1Player::Awake(pugi::xml_node& conf)
@@ -38,6 +39,7 @@ bool j1Player::Start()
 	state = ST_Idle;
 
 	currentAnimation = disarmed_idle;
+	App->render->SetCameraPos(playerPos);
 
 	return true;
 }
@@ -115,21 +117,51 @@ bool j1Player::Update(float dt)
 		LOG("State: %i");
 	}
 
+	absolutePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
+	absolutePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
+
+
 	//Update Camera Position
-	App->render->SetCameraPos(playerPos);
+	//App->render->MoveCamera({ -2,2 });
 
 	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
 	LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
 	LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
+	LOG("Absolute Pos: (%i,%i)", absolutePos.x, absolutePos.y);
 
 	Draw(); //Draw all the player
-
+	dt_variable = dt;
 	return true;
 }
 
 
 bool j1Player::PostUpdate()
 {
+	float speed = runSpeed *2;
+	if (runSpeed < 0) {
+		speed *= -1.f;
+	}
+
+	if (App->player->absolutePos.x < 160) {
+		App->render->MoveCamera({ (int)roundf(speed * ceil(dt_variable * 50)), 0 });
+	}	
+
+	if (App->player->absolutePos.x > 285) {
+		App->render->MoveCamera({ -(int)roundf(speed * ceil(dt_variable * 50)), 0 });
+	}
+
+	if (App->player->absolutePos.y < 100) {
+		App->render->MoveCamera({ 0, (int)roundf(6* ceil(dt_variable * 50)) });
+	}	
+	
+	if (App->player->absolutePos.y > 260) {
+		App->render->MoveCamera({ 0, -(int)roundf(10 * ceil(dt_variable * 50)) });
+	}
+
+
+
+
+
 	return true;
 }
 
@@ -247,11 +279,11 @@ void j1Player::Gravity()
 		gravitySpeed = max_gravitySpeed;
 	}
 	
-	if (verticalSpeed < 6.f) {
+	if (verticalSpeed < max_verticalSpeed) {
 			verticalSpeed += gravitySpeed;
 	}
-	else if (verticalSpeed > 6.f) {
-		verticalSpeed = 6.f;
+	else if (verticalSpeed > max_verticalSpeed) {
+		verticalSpeed = max_verticalSpeed;
 	}	
 
 	//Move and check if we are on Ground

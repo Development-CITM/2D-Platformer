@@ -140,6 +140,7 @@ public:
 	PlayerTMXData		player_tmx_data;
 
 	p2Point<int>		playerPos{ 0,0 };
+	p2Point<int>		absolutePos;
 
 private:
 	//Run Speeds
@@ -152,6 +153,7 @@ private:
 	float				jumpSpeed = -6.f;
 	float				double_jumpSpeed = -6.f;
 	float				verticalSpeed = 0.f;
+	float				max_verticalSpeed = 6.f;
 
 	//Move bools
 	bool				moveRight = false;
@@ -218,6 +220,7 @@ private:
 	//XML Stuff
 	p2SString			folder;
 	bool				map_loaded = false;
+	float				dt_variable;
 };
 
 

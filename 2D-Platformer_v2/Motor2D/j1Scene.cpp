@@ -92,7 +92,6 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 			App->render->camera.y += 4;
 			App->tiles->culling_Collider->rect.y -= 2;
-
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
@@ -110,7 +109,7 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x -= 4;
 			App->tiles->culling_Collider->rect.x += 2;
 		}	
-		
+
 
 	}
 

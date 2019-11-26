@@ -43,6 +43,7 @@ public:
 	void SetCameraPos(pugi::xml_node& object);
 	void SetCameraPos(p2Point<int>);
 	void SetCameraPosFromCurrentLevel(pugi::xml_node& it);
+	void MoveCamera(p2Point<int> speed);
 
 
 	iPoint ScreenToWorld(int x, int y) const;

@@ -174,6 +174,15 @@ void j1Render::SetCameraPosFromCurrentLevel(pugi::xml_node& it)
 	}
 }
 
+void j1Render::MoveCamera(p2Point<int> speed)
+{
+	App->render->camera.x += speed.x;
+	App->tiles->culling_Collider->rect.x -= (int)roundf( speed.x * 0.5f);
+
+	App->render->camera.y += speed.y;
+	App->tiles->culling_Collider->rect.y -= (int)roundf( speed.y * 0.5f);
+}
+
 void j1Render::SetViewPort(const SDL_Rect& rect)
 {
 	SDL_RenderSetViewport(renderer, &rect);
