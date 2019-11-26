@@ -102,8 +102,10 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
-		framerateCap = config.child("framerate").child("cap").attribute("value").as_int();
-		capTime = 1000 / config.child("framerate").child("cap").attribute("value").as_int();
+		maxframerateCap = config.child("framerate").child("max").attribute("value").as_int();
+		maxcapTime = 1000 / config.child("framerate").child("max").attribute("value").as_int();
+		minframerateCap = config.child("framerate").child("min").attribute("value").as_int();
+		mincapTime = 1000 / config.child("framerate").child("min").attribute("value").as_int();
 	}
 
 	if(ret == true)
@@ -186,7 +188,14 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	if (transition) {
-		dt = 1.0f / framerateCap;
+		if (maxcapFrames)
+		{
+			dt = 1.0f / maxframerateCap;
+		}
+		else
+		{
+			dt = 1.0f / minframerateCap;
+		}
 		transition = false;
 	}
 	else {
@@ -224,12 +233,16 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	if (capFrames) {
-		uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
-
+	if (maxcapFrames)
+	{
+		uint32 delay = MAX(0, (int)maxcapTime - (int)last_frame_ms);
 		SDL_Delay(delay);
 	}
-	
+	else
+	{
+		uint32 delay = MAX(0, (int)mincapTime - (int)last_frame_ms);
+		SDL_Delay(delay);
+	}
 	
 	//Information about frames LOGs
 	

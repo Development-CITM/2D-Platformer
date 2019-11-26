@@ -102,7 +102,7 @@ bool j1Player::Update(float dt)
 
 	UpdateColliderSize();
 
-	Gravity();
+	Gravity(dt);
 
 	ChangeStates();
 
@@ -265,7 +265,7 @@ void j1Player::DoubleJumpStart()
 	}
 }
 
-void j1Player::Gravity()
+void j1Player::Gravity(float dt)
 {
 
 	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
@@ -288,8 +288,8 @@ void j1Player::Gravity()
 
 	//Move and check if we are on Ground
 	int posY = 0;
-	player_Collider->rect.y += (int)roundf(verticalSpeed);
-	groundChecker->rect.y += (int)roundf(verticalSpeed);
+	player_Collider->rect.y += (int)roundf(verticalSpeed * dt * 60);
+	groundChecker->rect.y += (int)roundf(verticalSpeed * dt * 60);
 	if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
 		player_Collider->rect.y = posY;
 		onGround = true;

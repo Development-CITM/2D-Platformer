@@ -201809,8 +201809,8 @@
    <properties>
     <property name="player_pos_x" type="int" value="390"/>
     <property name="player_pos_x_swap_from_A2" type="int" value="390"/>
-    <property name="player_pos_y" type="int" value="1090"/>
-    <property name="player_pos_y_swap_from_A2" type="int" value="1090"/>
+    <property name="player_pos_y" type="int" value="1030"/>
+    <property name="player_pos_y_swap_from_A2" type="int" value="1030"/>
    </properties>
   </object>
  </objectgroup>

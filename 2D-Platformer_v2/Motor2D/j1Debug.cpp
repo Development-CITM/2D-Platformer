@@ -90,6 +90,10 @@ bool j1Debug::Update(float dt)
 				App->collider->collider_debug = false;
 			}
 		}
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		{
+			App->maxcapFrames = !App->maxcapFrames;
+		}
 	}
 	return true;
 }

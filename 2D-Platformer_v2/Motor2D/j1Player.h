@@ -85,7 +85,7 @@ public:
 
 	void DoubleJumpStart();
 
-	void Gravity();
+	void Gravity(float dt);
 
 	void ChangeStates();
 

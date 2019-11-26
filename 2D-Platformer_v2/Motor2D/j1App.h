@@ -97,6 +97,7 @@ public:
 	j1Fade2Black*		fade2black;
 	j1Debug*			debug;
 	j1PathFinding*		pathfinding;
+	bool				maxcapFrames = true;
 
 private:
 
@@ -120,12 +121,12 @@ private:
 	j1Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
-	uint32				capTime = 0;
-	float				framerateCap = 0.0f;
+	uint32				maxcapTime = 0;
+	uint32				mincapTime = 0;
+	float				maxframerateCap = 0.0f;
+	float				minframerateCap = 0.0f;
 	
 	float				seconds_since_sartup = 0.0f;
-
-	bool				capFrames = true;
 	bool				transition = false;
 };
 

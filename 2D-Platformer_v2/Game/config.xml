@@ -7,7 +7,7 @@
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
   </renderer>
 
   <window>
@@ -37,7 +37,8 @@
   </player>
 
   <framerate>
-    <cap value="60"/>
+    <min value="30"/>
+    <max value="60"/>
   </framerate>
   
   <audio>
