@@ -4,12 +4,12 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "p2Point.h"
-#include "j1GameObjects.h"
+#include "j1EntityManager.h"
 
 class Object_Character;
 class Object_Map_Object;
 
-class Object_Dynamic : public  EntityManager {
+class Object_Dynamic : public  GameObject {
 
 public:
 	Object_Dynamic();

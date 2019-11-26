@@ -4,7 +4,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "p2Point.h"
-#include "j1GameObjects.h"
+#include "j1EntityManager.h"
 #include "DynamicObjects.h"
 #include "CharacterObjects.h"
 #include "Animation.h"

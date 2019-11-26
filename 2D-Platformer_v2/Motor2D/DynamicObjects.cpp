@@ -3,7 +3,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 
-Object_Dynamic::Object_Dynamic(): EntityManager()
+Object_Dynamic::Object_Dynamic(): GameObject()
 {
 	
 }
