@@ -20,7 +20,7 @@ class j1Colliders;
 class j1Player;
 class j1Fade2Black;
 class j1Debug;
-class j1GameObjects;
+class j1EntityManager;
 
 class j1App
 {
@@ -91,7 +91,7 @@ public:
 	j1Audio*			audio;
 	j1Scene*			scene;
 	j1Tilesets*			tiles;
-	j1GameObjects*		gameobjects;
+	j1EntityManager*	entity;
 	j1Player*			player;
 	j1Colliders*		collider;
 	j1Fade2Black*		fade2black;

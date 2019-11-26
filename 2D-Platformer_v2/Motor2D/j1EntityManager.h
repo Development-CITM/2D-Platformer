@@ -24,8 +24,8 @@ class Object_Static;
 class Object_Dynamic;
 
 
-class EntityManager {
-	friend class j1GameObjects; //This way we can access Objects functions through the functions of GameObjects class which should be protected
+class GameObject {
+	friend class j1EntityManager; //This way we can access Objects functions through the functions of GameObjects class which should be protected
 private:
 	virtual bool Start();
 	virtual bool PreUpdate();
@@ -44,11 +44,11 @@ public:
 };
 
 
-class j1GameObjects :public j1Module
+class j1EntityManager :public j1Module
 {
 public:
-	j1GameObjects();
-	virtual ~j1GameObjects();
+	j1EntityManager();
+	virtual ~j1EntityManager();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
@@ -74,7 +74,7 @@ public:
 	void CreateDynamicObject();
 
 public:
-	p2List<EntityManager*>  objects;
+	p2List<GameObject*>  objects;
 };
 
 #endif // 
