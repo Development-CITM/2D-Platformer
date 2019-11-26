@@ -13,7 +13,7 @@ class Object_Enemy : public Object_Character {
 
 public:
 
-	Object_Enemy(Object_type type);
+	Object_Enemy(Object_type type, p2Point<int> posInit = { 0,0 });
 	~Object_Enemy();
 	bool Start();
 	bool PreUpdate();

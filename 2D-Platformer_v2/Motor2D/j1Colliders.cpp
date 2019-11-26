@@ -178,7 +178,7 @@ void j1Colliders::Draw()
 			switch (collider->data->type)
 			{
 			case COLLIDER_WALL_SOLID:
-				App->render->DrawQuad(rect, 255, 0, 0, 100);
+				App->render->DrawQuad(rect, 255, 100, 0, 100);
 				break;
 			case COLLIDER_TRANSITION:
 			{
@@ -197,6 +197,13 @@ void j1Colliders::Draw()
 				rect.w = collider->data->rect.w * size * scale;
 				rect.h = collider->data->rect.h * size * scale;
 				App->render->DrawQuad(rect, 0, 255, 0, 100);
+				break;
+			case COLLIDER_ENEMY:
+				rect.x = collider->data->rect.x * size * scale;
+				rect.y = collider->data->rect.y * size * scale;
+				rect.w = collider->data->rect.w * size * scale;
+				rect.h = collider->data->rect.h * size * scale;
+				App->render->DrawQuad(rect, 255, 0, 0, 60);
 				break;
 			case COLLIDER_WINDOW:
 				App->render->DrawQuad(rect, 0, 255, 255, 50);

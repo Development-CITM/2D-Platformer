@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "j1Render.h"
+#include "j1App.h"
 
 struct FlyingEnemy {
 
@@ -33,6 +34,8 @@ private:
 public:
 
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	Collider* collider = nullptr;
+	p2Point<int> position;
 
 	//Maybe we should think about a function which updates all entities through dt
 	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects

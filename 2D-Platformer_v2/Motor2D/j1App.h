@@ -91,11 +91,11 @@ public:
 	j1Audio*			audio;
 	j1Scene*			scene;
 	j1Tilesets*			tiles;
+	j1GameObjects*		gameobjects;
 	j1Player*			player;
 	j1Colliders*		collider;
 	j1Fade2Black*		fade2black;
 	j1Debug*			debug;
-	j1GameObjects*		gameobjects;
 	j1PathFinding*		pathfinding;
 
 private:

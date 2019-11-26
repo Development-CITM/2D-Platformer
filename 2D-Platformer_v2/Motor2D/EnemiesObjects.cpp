@@ -1,8 +1,10 @@
 ﻿#include "EnemiesObjects.h"
 #include "p2Log.h"
+#include "j1Colliders.h"
 
-Object_Enemy::Object_Enemy(Object_type type) : Object_Character()
+Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Character()
 {
+	position = pos;
 }
 
 Object_Enemy::~Object_Enemy()
@@ -16,6 +18,9 @@ bool Object_Enemy::Start()
 	Load("animations/Enemy_Wwisp.tmx");
 	Load("animations/Enemy_Kobold.tmx");
 	currentAnimation = idle;
+	collider = App->collider->AddCollider({ characterPos.x + 56,characterPos.y + 5,25,46 }, COLLIDER_ENEMY);
+	
+	
 	return ret;
 }
 

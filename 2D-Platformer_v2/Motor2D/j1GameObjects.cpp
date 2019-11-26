@@ -8,7 +8,8 @@
 
 
 j1GameObjects::j1GameObjects()
-{}
+{
+}
 
 j1GameObjects::~j1GameObjects()
 {}
@@ -26,7 +27,9 @@ bool j1GameObjects::Start()
 	CreatePlayer();
 	CreateEnemyGround();
 	p2List_item<EntityManager*>* item;
+	//objects.clear();
 	item = objects.start;
+	
 
 	while (item != NULL && ret == true)
 	{
@@ -94,7 +97,7 @@ void j1GameObjects::CreatePlayer()
 
 void j1GameObjects::CreateEnemyGround()
 {
-	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND);
+	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND, { 500,400 });
 	//Prove that we can access through different instances of the same class
 	Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING);
 	objects.add(enemy_ground);

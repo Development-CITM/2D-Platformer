@@ -49,11 +49,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(tiles);
+	AddModule(gameobjects);
 	AddModule(player);
 	AddModule(collider);
 	AddModule(fade2black);
 	AddModule(debug);
-	AddModule(gameobjects);
 	AddModule(pathfinding);
 
 	// render last to swap buffer
