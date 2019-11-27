@@ -111,8 +111,8 @@ void j1EntityManager::DestroyEnemies()
 
 void j1EntityManager::CreateEnemyGround()
 {
-	/*Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND, { 500,400 });
-	objects.add(enemy_ground);*/
+	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND, { 500,400 });
+	objects.add(enemy_ground);
 
 	Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING, {700,400});
 	objects.add(enemy_fly);

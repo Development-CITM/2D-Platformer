@@ -112,7 +112,7 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 		else if (characterPos.x > target.x) {
 			characterPos.x -= 2;
 		}
-		else if(characterPos.y < target.y) {
+		else if(characterPos.y < target.y ) {
 			characterPos.y += 2;
 		}
 		else if(characterPos.y > target.y){
