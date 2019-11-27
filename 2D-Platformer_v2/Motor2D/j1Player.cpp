@@ -151,11 +151,11 @@ bool j1Player::PostUpdate()
 	}
 
 	if (App->player->absolutePos.y < 100) {
-		App->render->MoveCamera({ 0, (int)roundf(6* ceil(dt_variable * 50)) });
+		App->render->MoveCamera({ 0, (int)roundf(6* ceil(dt_variable * 32)) });
 	}	
 	
 	if (App->player->absolutePos.y > 260) {
-		App->render->MoveCamera({ 0, -(int)roundf(10 * ceil(dt_variable * 50)) });
+		App->render->MoveCamera({ 0, -(int)roundf(10 * ceil(dt_variable * 32)) });
 	}
 
 
@@ -172,22 +172,22 @@ void j1Player::LogicStateMachine(float dt)
 	switch (state)
 	{
 	case ST_Idle:
-		JumpStart();
+		JumpStart(dt);
 		break;
 	case ST_Walk:
 		break;
 	case ST_Run:
 		HorizontalMove(dt);
-		JumpStart();
+		JumpStart(dt);
 		break;
 	case ST_Jump:
 		ChangeAnimation(disarmed_jump);
 		canDoubleJump = true;
-		if (verticalSpeed >= 1.f) {
+		if (verticalSpeed >= 1.f * dt * 45) {
 			jumping = false;
 			falling = true;
 		}
-		DoubleJumpStart();
+		DoubleJumpStart(dt);
 		if (state == CharacterState::ST_Jump) {
 			int posY = 0;
 			player_Collider->rect.y += (int)roundf(verticalSpeed);
@@ -202,7 +202,7 @@ void j1Player::LogicStateMachine(float dt)
 		break;
 	case ST_DoubleJump:
 		ChangeAnimation(disarmed_double_jump);
-		if (verticalSpeed >= 1.f) {
+		if (verticalSpeed >= 1.f * dt * 45) {
 			jumping = false;
 			falling = true;
 		}
@@ -230,7 +230,7 @@ void j1Player::LogicStateMachine(float dt)
 		canDoubleJump = true;
 		ChangeAnimation(disarmed_fall);
 		HorizontalMove(dt);
-		DoubleJumpStart();
+		DoubleJumpStart(dt);
 		break;
 	case ST_GrabLedge:
 		break;
@@ -239,10 +239,10 @@ void j1Player::LogicStateMachine(float dt)
 	}
 }
 
-void j1Player::JumpStart()
+void j1Player::JumpStart(float dt)
 {
 	if (jumpPressed) {
-		verticalSpeed = jumpSpeed;
+		verticalSpeed = jumpSpeed * dt * 32;
 		state = CharacterState::ST_Jump;
 		jumpPressed = false;
 		jumping = true;
@@ -252,10 +252,10 @@ void j1Player::JumpStart()
 	}
 }
 
-void j1Player::DoubleJumpStart()
+void j1Player::DoubleJumpStart(float dt)
 {
 	if (doubleJumped) {
-		verticalSpeed = double_jumpSpeed;
+		verticalSpeed = double_jumpSpeed * dt * 32;
 		state = CharacterState::ST_DoubleJump;
 		canDoubleJump = false;
 		doubleJumped = false;
@@ -268,28 +268,28 @@ void j1Player::DoubleJumpStart()
 void j1Player::Gravity(float dt)
 {
 
-	if (verticalSpeed > -1.f && verticalSpeed < 2.f) {
-		gravitySpeed = 0.2f;
+	if (verticalSpeed > -1.f && verticalSpeed  < 2.f) {
+		gravitySpeed = 0.2f * dt * 40;
 	}	
 	
 	else if (verticalSpeed > -3.f && verticalSpeed < -1.f) {
-		gravitySpeed = 0.3f;
+		gravitySpeed = 0.3f * dt * 40;
 	}
 	else {
 		gravitySpeed = max_gravitySpeed;
 	}
 	
 	if (verticalSpeed < max_verticalSpeed) {
-			verticalSpeed += gravitySpeed;
+			verticalSpeed += gravitySpeed * dt * 35;
 	}
 	else if (verticalSpeed > max_verticalSpeed) {
-		verticalSpeed = max_verticalSpeed;
+		verticalSpeed = max_verticalSpeed * dt * 35;
 	}	
 
 	//Move and check if we are on Ground
 	int posY = 0;
-	player_Collider->rect.y += (int)roundf(verticalSpeed * dt * 60);
-	groundChecker->rect.y += (int)roundf(verticalSpeed * dt * 60);
+	player_Collider->rect.y += (int)roundf(verticalSpeed);
+	groundChecker->rect.y += (int)roundf(verticalSpeed);
 	if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
 		player_Collider->rect.y = posY;
 		onGround = true;
@@ -797,7 +797,7 @@ void j1Player::HorizontalMove(float dt)
 			}
 		}
 		else {
-			runSpeed = max_runSpeed;
+			runSpeed = max_runSpeed ;
 		}
 	}
 	else if (moveLeft) {

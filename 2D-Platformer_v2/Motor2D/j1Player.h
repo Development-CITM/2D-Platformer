@@ -81,9 +81,9 @@ public:
 
 	void LogicStateMachine(float dt);
 
-	void JumpStart();
+	void JumpStart(float dt);
 
-	void DoubleJumpStart();
+	void DoubleJumpStart(float dt);
 
 	void Gravity(float dt);
 
