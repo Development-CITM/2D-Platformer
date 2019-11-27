@@ -2,6 +2,7 @@
 #define __ANIMATION_H__
 #include "p2SString.h"
 #include "SDL/include/SDL_rect.h"
+#include "j1App.h"
 
 struct Sprite {
 
@@ -35,11 +36,18 @@ public:
 		}
 	}
 
-	int GetSprite()
+	int GetSprite(float dt)
 	{
 		if (sprites[current_sprite].current_frame != sprites[current_sprite].frames) 
 		{
-			sprites[current_sprite].current_frame++;
+			if (App->maxcapFrames)
+			{
+				sprites[current_sprite].current_frame = sprites[current_sprite].current_frame + ceil(dt);//+ (int)(ceil(1 * dt * 50));
+			}
+			else
+			{
+				sprites[current_sprite].current_frame = sprites[current_sprite].current_frame + ceil(dt / 10000);//+ (int)(ceil(1 * dt * 50));
+			}
 		}
 		else {
 			sprites[current_sprite].current_frame = 0;
@@ -51,7 +59,7 @@ public:
 			}
 		}
 		else if(current_sprite == num_sprites){
-			current_sprite = num_sprites-1;
+			current_sprite = num_sprites - ceil(1*dt);
 			finished = true;
 			
 		}

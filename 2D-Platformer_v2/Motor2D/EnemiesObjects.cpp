@@ -4,7 +4,18 @@
 
 Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Character()
 {
-	position = pos;
+	characterPos = pos;
+	if (type == Object_type::ENEMY_GROUND)
+	{
+		Load("animations/Enemy_Kobold.tmx");
+		collider = App->collider->AddCollider({ characterPos.x + 56,characterPos.y + 5,25,46 }, COLLIDER_ENEMY);
+	}
+	else if (type == Object_type::ENEMY_FLYING)
+	{
+		Load("animations/Enemy_Wwisp.tmx");
+		collider = App->collider->AddCollider({ characterPos.x+25 ,characterPos.y + 12,25,25 }, COLLIDER_ENEMY);
+	}
+	currentAnimation = idle;
 }
 
 Object_Enemy::~Object_Enemy()
@@ -14,11 +25,8 @@ Object_Enemy::~Object_Enemy()
 bool Object_Enemy::Start()
 {
 	bool ret = true;
-	//Divide enemy into each type of enemy
-	Load("animations/Enemy_Wwisp.tmx");
-	Load("animations/Enemy_Kobold.tmx");
-	currentAnimation = idle;
-	collider = App->collider->AddCollider({ characterPos.x + 56,characterPos.y + 5,25,46 }, COLLIDER_ENEMY);
+	
+	
 	
 	
 	return ret;
@@ -67,38 +75,7 @@ Animation* Object_Enemy::LoadAnimation(pugi::xml_node& obj_group)
 		anim->sprites[i].rect.h = object.attribute("height").as_int();
 
 		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
-
-			anim->sprites[i].AABB_rect = LoadAABB(AABB_object);
-			anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(characterPos.x),anim->sprites[i].AABB_rect.y - (int)roundf(characterPos.y) };
-			LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
-
-			if (AABB_object.next_sibling("object")) {
-				AABB_object = AABB_object.next_sibling("object");
-			}
 		i++;
 	}
 	return anim;
-}
-
-SDL_Rect Object_Enemy::LoadAABB(pugi::xml_node& AABB_object)
-{
-	SDL_Rect rect;
-	p2Point<int> offset{ 0,0 };
-
-	offset.x = AABB_object.attribute("x").as_int();
-	offset.y = AABB_object.attribute("y").as_int();
-	rect.w = AABB_object.attribute("width").as_int();
-	rect.h = AABB_object.attribute("height").as_int();
-
-	while (offset.x - character_tmx_data.tile_width > 0 || offset.x - character_tmx_data.tile_width > character_tmx_data.tile_width) {
-		offset.x -= character_tmx_data.tile_width;
-	}
-
-	while (offset.y - character_tmx_data.tile_height > 0 || offset.y - character_tmx_data.tile_height > character_tmx_data.tile_height) {
-		offset.y -= character_tmx_data.tile_height;
-	}
-
-	rect.x = characterPos.x + offset.x;
-	rect.y = characterPos.y + offset.y;
-	return rect;
 }

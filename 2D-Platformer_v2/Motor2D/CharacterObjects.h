@@ -83,7 +83,7 @@ public:
 
 
 	CharacterTMXData		character_tmx_data;
-	p2Point<int>		characterPos{ 397,375 };
+	p2Point<int>		characterPos{ 0,0 };
 
 	CharacterState_v2	state = CharacterState_v2::ST_Idle_v2;
 	CharacterState_v2		previous_state = CharacterState_v2::ST_Idle_v2;

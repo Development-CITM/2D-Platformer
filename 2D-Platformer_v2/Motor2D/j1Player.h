@@ -96,7 +96,7 @@ public:
 	bool Load(const char* path);
 
 	// Called each loop iteration if has one
-	void Draw();
+	void Draw(float dt);
 
 	// Called before quitting
 	bool CleanUp();

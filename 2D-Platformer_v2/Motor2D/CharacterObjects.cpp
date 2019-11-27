@@ -111,8 +111,8 @@ SDL_Rect Object_Character::LoadAABB(pugi::xml_node& AABB_object)
 
 void Object_Character::Draw()
 {
-	numCurrentAnimation = currentAnimation->GetSprite();
+	//numCurrentAnimation = currentAnimation->GetSprite();
 
-	App->render->Blit(character_tmx_data.texture, characterPos.x + currentAnimation->offset.x, characterPos.y, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
+	//App->render->Blit(character_tmx_data.texture, characterPos.x + currentAnimation->offset.x, characterPos.y, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
 }
 

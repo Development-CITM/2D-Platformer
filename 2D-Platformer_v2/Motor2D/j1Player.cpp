@@ -129,7 +129,7 @@ bool j1Player::Update(float dt)
 	LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
 	LOG("Absolute Pos: (%i,%i)", absolutePos.x, absolutePos.y);
 
-	Draw(); //Draw all the player
+	Draw(dt); //Draw all the player
 	dt_variable = dt;
 	return true;
 }
@@ -242,7 +242,7 @@ void j1Player::LogicStateMachine(float dt)
 void j1Player::JumpStart(float dt)
 {
 	if (jumpPressed) {
-		verticalSpeed = jumpSpeed * dt * 32;
+		verticalSpeed = jumpSpeed * dt * 37;
 		state = CharacterState::ST_Jump;
 		jumpPressed = false;
 		jumping = true;
@@ -255,7 +255,7 @@ void j1Player::JumpStart(float dt)
 void j1Player::DoubleJumpStart(float dt)
 {
 	if (doubleJumped) {
-		verticalSpeed = double_jumpSpeed * dt * 32;
+		verticalSpeed = double_jumpSpeed * dt * 35;
 		state = CharacterState::ST_DoubleJump;
 		canDoubleJump = false;
 		doubleJumped = false;
@@ -269,7 +269,7 @@ void j1Player::Gravity(float dt)
 {
 
 	if (verticalSpeed > -1.f && verticalSpeed  < 2.f) {
-		gravitySpeed = 0.2f * dt * 40;
+  		gravitySpeed = 0.2f * dt * 60;
 	}	
 	
 	else if (verticalSpeed > -3.f && verticalSpeed < -1.f) {
@@ -280,10 +280,10 @@ void j1Player::Gravity(float dt)
 	}
 	
 	if (verticalSpeed < max_verticalSpeed) {
-			verticalSpeed += gravitySpeed * dt * 35;
+			verticalSpeed += gravitySpeed * dt * 40;
 	}
 	else if (verticalSpeed > max_verticalSpeed) {
-		verticalSpeed = max_verticalSpeed * dt * 35;
+		verticalSpeed = max_verticalSpeed * dt * 40;
 	}	
 
 	//Move and check if we are on Ground
@@ -868,10 +868,10 @@ void j1Player::ChangeAnimation(Animation* anim)
 
 #pragma region Draw
 
-void j1Player::Draw()
+void j1Player::Draw(float dt)
 {
 	BROFILER_CATEGORY("DrawLogic", Profiler::Color::Aqua)
-	numCurrentAnimation = currentAnimation->GetSprite();
+	numCurrentAnimation = currentAnimation->GetSprite(dt);
 
 	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
 		disarmed_run->offset.x = 5;
