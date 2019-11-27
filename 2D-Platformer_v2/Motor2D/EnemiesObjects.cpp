@@ -74,8 +74,8 @@ void Object_Enemy::StablishPath()
 	origin.x = characterPos.x;
 	origin.y = characterPos.y;
 
-	player_pos.x = App->player->playerPos.x;
-	player_pos.y = App->player->playerPos.y;
+	player_pos.x = App->player->GetCollider()->GetPosition().x;
+	player_pos.y = App->player->GetCollider()->GetPosition().y;
 
 	origin = App->tiles->WorldToMap(origin.x, origin.y);
 	player_pos = App->tiles->WorldToMap(player_pos.x, player_pos.y);
@@ -92,22 +92,33 @@ void Object_Enemy::StablishPath()
 			App->render->Blit(App->scene->debug_tex, pos.x, pos.y, NULL, App->render->drawsize);
 		}
 	}
-
-	MoveToTarget(player_pos);
+	if (path->At(1)) {
+		MoveToTarget(App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y));
+		
+		LOG("Path(0) (%i,%i)", App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).x, App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).y);
+		LOG("Path(1) (%i,%i)", App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).x, App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).y);
+		LOG("Enemy (%i,%i)", App->tiles->MapToWorld(origin.x, origin.y).x, App->tiles->MapToWorld(origin.x, origin.y).y);
+		LOG("Enemy pos: (%i,%i)", characterPos.x, characterPos.y);
+	}
 }
 
 void Object_Enemy::MoveToTarget(p2Point<int> target)
 {
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-	if (path->At(0) != nullptr && path->At(1)) {
-		LOG("PATH 1: %i", path->At(0)->x);
-		LOG("PATH 2: %i", path->At(1)->x);
-		if (characterPos.x > App->tiles->MapToWorld(target.x, target.y).x) {
-			characterPos.x -= 2;
-		}
-		else if (characterPos.x < App->tiles->MapToWorld(target.x, target.y).x) {
+	if (path->At(1) != nullptr) {
+		if (characterPos.x < target.x) {
 			characterPos.x += 2;
 		}
+		else if (characterPos.x > target.x) {
+			characterPos.x -= 2;
+		}
+		else if(characterPos.y < target.y) {
+			characterPos.y += 2;
+		}
+		else if(characterPos.y > target.y){
+			characterPos.y -= 2;
+		}
+
 	}
 }
 
