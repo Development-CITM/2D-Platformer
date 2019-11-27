@@ -180,11 +180,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	open.list.add(PathNode(0, origin.DistanceTo(destination), origin, NULL));
 	// Iterate while we have tile in the open list
 
-	PathNode* current_node;
+	PathNode* current_node = nullptr;
+	p2List<PathNode*> ptr_trash;
 
 	while (open.GetNodeLowestScore() != NULL)
 	{
 		current_node = new PathNode(open.GetNodeLowestScore()->data);
+		ptr_trash.add(current_node);
 		// TODO 3: Move the lowest score cell from open list to the closed list
 		closed.list.add(*current_node);
 		open.list.del(open.Find(current_node->pos));
@@ -199,6 +201,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				last_path.PushBack(iterator->pos);
 			}
 			last_path.PushBack(origin);
+
+			for (int i = 0; i < ptr_trash.count(); i++)
+			{
+				delete ptr_trash[i];
+			}
 
 			last_path.Flip();
 			return 0;
@@ -229,8 +236,6 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				}
 			}
 		}
-
-
 	}
 
 }

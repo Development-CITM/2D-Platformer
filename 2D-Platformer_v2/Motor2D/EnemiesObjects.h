@@ -19,6 +19,9 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
+	bool CleanUp();
+	void StablishPath();
+	void MoveToTarget(p2Point<int>);
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 public:
 	int aha;

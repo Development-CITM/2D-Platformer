@@ -112,10 +112,10 @@ bool j1Player::Update(float dt)
 
 	UpdatePlayerPosition();
 
-	if (previous_state != state) {
-		previous_state = state;
-		LOG("State: %i");
-	}
+	//if (previous_state != state) {
+	//	previous_state = state;
+	//	LOG("State: %i",state);
+	//}
 
 	absolutePos.x = player_Collider->rect.x - App->tiles->culling_Collider->rect.x;
 	absolutePos.y = player_Collider->rect.y - App->tiles->culling_Collider->rect.y;
@@ -124,10 +124,10 @@ bool j1Player::Update(float dt)
 	//Update Camera Position
 	//App->render->MoveCamera({ -2,2 });
 
-	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
-	LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
-	LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
-	LOG("Absolute Pos: (%i,%i)", absolutePos.x, absolutePos.y);
+	//LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
+	//LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
+	//LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
+	//LOG("Absolute Pos: (%i,%i)", absolutePos.x, absolutePos.y);
 
 	Draw(dt); //Draw all the player
 	dt_variable = dt;
@@ -849,10 +849,10 @@ void j1Player::UpdateColliderSize()
 		leftChecker->rect.h = rightChecker->rect.h = player_Collider->rect.h - 10;
 	}
 
-	if (previous_state != state) {
-		previous_state = state;
-		LOG("State: %i", state);
-	}
+	//if (previous_state != state) {
+	//	previous_state = state;
+	//	LOG("State: %i", state);
+	//}
 
 }
 

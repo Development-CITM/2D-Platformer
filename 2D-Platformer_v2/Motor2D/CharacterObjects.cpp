@@ -109,10 +109,10 @@ SDL_Rect Object_Character::LoadAABB(pugi::xml_node& AABB_object)
 	return SDL_Rect();
 }
 
-void Object_Character::Draw()
+void Object_Character::Draw(float dt)
 {
-	//numCurrentAnimation = currentAnimation->GetSprite();
+	numCurrentAnimation = currentAnimation->GetSprite(dt);
 
-	//App->render->Blit(character_tmx_data.texture, characterPos.x + currentAnimation->offset.x, characterPos.y, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
+	App->render->Blit(character_tmx_data.texture, characterPos.x + currentAnimation->offset.x, characterPos.y, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
 }
 

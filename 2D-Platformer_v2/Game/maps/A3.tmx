@@ -211417,8 +211417,8 @@
    <properties>
     <property name="player_pos_x" type="int" value="390"/>
     <property name="player_pos_x_swap_from_A2" type="int" value="390"/>
-    <property name="player_pos_y" type="int" value="920"/>
-    <property name="player_pos_y_swap_from_A2" type="int" value="920"/>
+    <property name="player_pos_y" type="int" value="820"/>
+    <property name="player_pos_y_swap_from_A2" type="int" value="820"/>
    </properties>
   </object>
  </objectgroup>

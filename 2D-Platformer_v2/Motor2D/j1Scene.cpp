@@ -12,6 +12,7 @@
 #include "j1Fade2Black.h"
 #include "j1PathFinding.h"
 #include "j1Debug.h"
+#include "j1EntityManager.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -152,7 +153,6 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->tiles->WorldToMap(p.x, p.y);
-	p = App->tiles->MapToWorld(p.x, p.y);
 
 	App->render->Blit(debug_tex, p.x , p.y,NULL,App->render->drawsize);
 
@@ -250,7 +250,8 @@ bool j1Scene::CleanUp()
 	levels.clear();
 	App->tiles->CleanUp();
 	App->collider->CleanUp();
-	App->player->CleanUp();	
+	App->player->CleanUp();
+	App->entity->CleanUp();
 	notfirst = true;
 	return true;
 }

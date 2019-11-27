@@ -57,7 +57,6 @@ private:
 	pugi::xml_parse_result result;
 	pugi::xml_node renderer;
 
-	SDL_Texture* debug_tex;
 
 	
 public:
@@ -81,7 +80,7 @@ public:
 	bool hasExit = false;
 
 	Collider* exitCollider = nullptr;
-
+	SDL_Texture* debug_tex;
 };
 
 #endif // __j1SCENE_H__

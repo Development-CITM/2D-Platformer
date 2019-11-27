@@ -71,7 +71,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Load(const char* path);
-	void Draw();
+	void Draw(float dt);
 
 private:
 	bool LoadCharacterTMX(pugi::xml_node& character_node);

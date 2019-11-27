@@ -1,3 +1,4 @@
+#include "p2Log.h"
 #include "j1EntityManager.h"
 #include "DynamicObjects.h"
 #include "CharacterObjects.h"
@@ -85,20 +86,33 @@ bool j1EntityManager::PostUpdate()
 
 bool j1EntityManager::CleanUp()
 {
+	DestroyEnemies();
 	bool ret = true;
 	return ret;
 }
 
 void j1EntityManager::CreatePlayer()
 {
-	Object_Player* player = new Object_Player(1);
-	objects.add(player);
+	/*Object_Player* player = new Object_Player(1);
+	objects.add(player);*/
+}
+
+void j1EntityManager::DestroyEnemies()
+{
+	for (int i = objects.count() - 1; i >= 0; i--)
+	{
+		if (objects.At(i)->data->type_object == Object_type::ENEMY_GROUND || objects.At(i)->data->type_object == Object_type::ENEMY_FLYING)
+		{
+			objects.At(i)->data->CleanUp();
+			objects.del(objects.At(i));
+		}
+	}				
 }
 
 void j1EntityManager::CreateEnemyGround()
 {
-	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND, { 500,400 });
-	objects.add(enemy_ground);
+	/*Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND, { 500,400 });
+	objects.add(enemy_ground);*/
 
 	Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING, {700,400});
 	objects.add(enemy_fly);
@@ -133,5 +147,10 @@ bool GameObject::PostUpdate()
 {
 	bool ret = true;
 	return ret;
+}
+
+bool GameObject::CleanUp()
+{
+	return false;
 }
 

@@ -31,11 +31,13 @@ private:
 	virtual bool PreUpdate();
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
+	virtual bool CleanUp();
 public:
 
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	Collider* collider = nullptr;
 	p2Point<int> position;
+	Object_type type_object;
 
 	//Maybe we should think about a function which updates all entities through dt
 	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects
@@ -69,6 +71,7 @@ public:
 	bool CleanUp();
 
 	void CreatePlayer();
+	void DestroyEnemies();
 	void CreateEnemyGround();
 	void CreateEnemyFlying();
 	void CreateDynamicObject();

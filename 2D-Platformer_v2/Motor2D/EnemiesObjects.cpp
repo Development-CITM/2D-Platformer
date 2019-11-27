@@ -1,10 +1,16 @@
 ﻿#include "EnemiesObjects.h"
 #include "p2Log.h"
 #include "j1Colliders.h"
+#include "j1App.h"
+#include "j1Player.h"
+#include "j1Pathfinding.h"
+#include "j1Tilesets.h"
+#include "j1Scene.h"
 
 Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Character()
 {
 	characterPos = pos;
+	type_object = type;
 	if (type == Object_type::ENEMY_GROUND)
 	{
 		Load("animations/Enemy_Kobold.tmx");
@@ -41,7 +47,9 @@ bool Object_Enemy::PreUpdate()
 bool Object_Enemy::Update(float dt)
 {
 	bool ret = true;
-	Draw();
+	StablishPath();
+	//move
+	Draw(dt);
 	return ret;
 }
 
@@ -49,6 +57,58 @@ bool Object_Enemy::PostUpdate()
 {
 	bool ret = true;
 	return ret;
+}
+
+bool Object_Enemy::CleanUp()
+{
+	bool ret = true;
+	
+	return ret;
+}
+
+void Object_Enemy::StablishPath()
+{
+	iPoint origin;
+	iPoint player_pos;
+
+	origin.x = characterPos.x;
+	origin.y = characterPos.y;
+
+	player_pos.x = App->player->playerPos.x;
+	player_pos.y = App->player->playerPos.y;
+
+	origin = App->tiles->WorldToMap(origin.x, origin.y);
+	player_pos = App->tiles->WorldToMap(player_pos.x, player_pos.y);
+
+	if (origin.DistanceNoSqrt(player_pos) < 100) {
+		App->pathfinding->CreatePath(origin, player_pos);
+	}
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		if (origin.DistanceNoSqrt(player_pos) < 100) {
+			iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
+			App->render->Blit(App->scene->debug_tex, pos.x, pos.y, NULL, App->render->drawsize);
+		}
+	}
+
+	MoveToTarget(player_pos);
+}
+
+void Object_Enemy::MoveToTarget(p2Point<int> target)
+{
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	if (path->At(0) != nullptr && path->At(1)) {
+		LOG("PATH 1: %i", path->At(0)->x);
+		LOG("PATH 2: %i", path->At(1)->x);
+		if (characterPos.x > App->tiles->MapToWorld(target.x, target.y).x) {
+			characterPos.x -= 2;
+		}
+		else if (characterPos.x < App->tiles->MapToWorld(target.x, target.y).x) {
+			characterPos.x += 2;
+		}
+	}
 }
 
 Animation* Object_Enemy::LoadAnimation(pugi::xml_node& obj_group)
