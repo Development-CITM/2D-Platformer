@@ -198,6 +198,13 @@ void j1Colliders::Draw()
 				rect.h = collider->data->rect.h * size * scale;
 				App->render->DrawQuad(rect, 0, 255, 0, 100);
 				break;
+			case COLLIDER_PLAYER_HIT:
+				rect.x = collider->data->rect.x * size * scale;
+				rect.y = collider->data->rect.y * size * scale;
+				rect.w = collider->data->rect.w * size * scale;
+				rect.h = collider->data->rect.h * size * scale;
+				App->render->DrawQuad(rect, 255, 0, 0, 60);
+				break;
 			case COLLIDER_ENEMY:
 				rect.x = collider->data->rect.x * size * scale;
 				rect.y = collider->data->rect.y * size * scale;
@@ -249,7 +256,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 	c2 = c->data;
 	for (int i = 0; i < colliders.count(); i++)
 	{
-		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER)
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_HIT && c2->type != COLLIDER_ENEMY)
 		{
 			if (c1->CheckCollision(c2->rect) && c2->Enabled) {
 				if (dir != Directions::DIR_NONE && snapPos != nullptr) {

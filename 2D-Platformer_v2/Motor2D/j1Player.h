@@ -197,6 +197,7 @@ private:
 	Animation*			disarmed_jump = nullptr;
 	Animation*			disarmed_fall = nullptr;
 	Animation*			disarmed_double_jump = nullptr;
+	Animation*			disarmed_dead = nullptr;
 
 	//Attacks
 	Animation*			disarmed_mp = nullptr;
@@ -212,6 +213,10 @@ private:
 	Collider*			groundChecker = nullptr;
 	Collider*			leftChecker = nullptr;
 	Collider*			rightChecker = nullptr;
+
+	//Hit Collider
+	Collider*			collider_attack = nullptr;
+
 
 	//Offsets
 	int					colliderOffsetY1 = 10;

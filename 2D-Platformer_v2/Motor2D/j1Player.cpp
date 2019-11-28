@@ -221,6 +221,12 @@ void j1Player::LogicStateMachine(float dt)
 	case ST_MP:
 		ChangeAnimation(disarmed_mp);
 		MP_attackPressed = false;
+		if (disarmed_mp->current_sprite == 3) {
+			collider_attack->Enabled = true;
+		}
+		else {
+			collider_attack->Enabled = false;
+		}
 		break;
 	case ST_LK:
 		ChangeAnimation(disarmed_lk);
@@ -449,6 +455,9 @@ bool j1Player::Load(const char* file_name)
 	leftChecker = App->collider->AddCollider({ playerPos.x,playerPos.y,4,player_Collider->rect.h -10}, COLLIDER_CEILING_CHECKER, { -3,5 }, this);
 	leftChecker->checkerType = ColliderChecker::Left;
 
+	collider_attack = App->collider->AddCollider({ playerPos.x,playerPos.y,14,8 }, COLLIDER_PLAYER_HIT, { 27,16 },this);
+	collider_attack->Enabled = false;
+
 
 
 	if (result == NULL)
@@ -519,6 +528,7 @@ Animation* j1Player::LoadAnimation(pugi::xml_node& obj_group)
 	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0)	{ disarmed_fall = anim; }
 	else if (strcmp(anim->name.GetString(), "DISARMED_MP")	 == 0)	{ disarmed_mp = anim; disarmed_mp->loop = false; }
 	else if (strcmp(anim->name.GetString(), "DISARMED_LK")	 == 0)	{ disarmed_lk = anim; disarmed_lk->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_DEAD") == 0)	{ disarmed_dead = anim; disarmed_dead->loop = false; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 
@@ -744,11 +754,19 @@ void j1Player::UpdateCheckersPosition()
 
 	rightChecker->rect.x = player_Collider->rect.x + rightChecker->offset.x;
 	rightChecker->rect.y = player_Collider->rect.y + rightChecker->offset.y;
+
+	if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
+		collider_attack->rect.x = player_Collider->rect.x + collider_attack->offset.x;
+		collider_attack->rect.y = player_Collider->rect.y + collider_attack->offset.y;
+	}
+	else if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+		collider_attack->rect.x = player_Collider->rect.x - collider_attack->offset.x + 6;
+		collider_attack->rect.y = player_Collider->rect.y + collider_attack->offset.y;
+	}
 }
 
 void j1Player::UpdateCheckersBools()
 {
-
 	//Check Collisions
 	if (App->collider->CheckColliderCollision(rightChecker)) {
 		rightChecker->collided = true;
