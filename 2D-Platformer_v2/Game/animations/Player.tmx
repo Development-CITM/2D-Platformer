@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="32" nextobjectid="78">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="50" tileheight="37" infinite="0" nextlayerid="35" nextobjectid="86">
  <imagelayer id="5" name="Pixel_Hero_Layer" locked="1">
   <image source="Pixel_Hero.png" width="1024" height="592"/>
  </imagelayer>
  <group id="13" name="DISARMED">
-  <group id="14" name="DISARMED_IDLE">
+  <group id="14" name="DISARMED_IDLE" visible="0">
    <objectgroup id="9" name="DISARMED_IDLE">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
@@ -34,7 +34,7 @@
     <object id="50" x="468" y="7" width="13" height="29"/>
    </objectgroup>
   </group>
-  <group id="15" name="DISARMED_RUN">
+  <group id="15" name="DISARMED_RUN" visible="0">
    <objectgroup id="12" name="DISARMED_RUN">
     <properties>
      <property name="num_sprites" type="int" value="6"/>
@@ -74,7 +74,7 @@
     <object id="58" x="572" y="47" width="13" height="26"/>
    </objectgroup>
   </group>
-  <group id="16" name="DISARMED_JUMP">
+  <group id="16" name="DISARMED_JUMP" visible="0">
    <objectgroup id="18" name="DISARMED_JUMP">
     <properties>
      <property name="num_sprites" type="int" value="2"/>
@@ -95,7 +95,7 @@
     <object id="56" x="621" y="79" width="13" height="23"/>
    </objectgroup>
   </group>
-  <group id="25" name="DISARMED_DJUMP">
+  <group id="25" name="DISARMED_DJUMP" visible="0">
    <objectgroup id="27" name="DISARMED_DJUMP">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
@@ -154,7 +154,7 @@
     </object>
    </objectgroup>
   </group>
-  <group id="30" name="DISARMED_LK">
+  <group id="30" name="DISARMED_LK" visible="0">
    <objectgroup id="31" name="DISARMED_LK">
     <properties>
      <property name="num_sprites" type="int" value="4"/>
@@ -200,6 +200,53 @@
    <objectgroup color="#ff0000" id="23" name="AABB">
     <object id="61" x="521" y="117" width="13" height="26"/>
     <object id="62" x="571" y="117" width="13" height="26"/>
+   </objectgroup>
+  </group>
+  <group id="32" name="DISARMED_DEAD">
+   <objectgroup id="33" name="DISARMED_DEAD">
+    <properties>
+     <property name="num_sprites" type="int" value="8"/>
+    </properties>
+    <object id="78" name="DISARMED_DEAD" type="DISARMED_DEAD" x="650" y="370" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="79" name="DISARMED_DEAD" type="DISARMED_DEAD" x="700" y="370" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="80" name="DISARMED_DEAD" type="DISARMED_DEAD" x="750" y="370" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="81" name="DISARMED_DEAD" type="DISARMED_DEAD" x="450" y="407" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="82" name="DISARMED_DEAD" type="DISARMED_DEAD" x="500" y="407" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="83" name="DISARMED_DEAD" type="DISARMED_DEAD" x="550" y="407" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="84" name="DISARMED_DEAD" type="DISARMED_DEAD" x="600" y="407" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="85" name="DISARMED_DEAD" type="DISARMED_DEAD" x="650" y="407" width="50" height="37">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
    </objectgroup>
   </group>
  </group>
