@@ -188,20 +188,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 			enemy += enemy_identificator;
 			App->entity->backup.At(i)->data->position.y = data.child("enemies").attribute((enemy += y).GetString()).as_int();
 			enemy = "enemy_";
-
-		/*	enemy += enemy_identificator;
-			type_id = data.child("enemies").attribute((enemy += type_string).GetString()).as_int();
-			enemy = "enemy_";
-
-			switch (type_id)
-			{
-			case 1:
-				App->entity->backup.At(i)->data->type_object = Object_type::ENEMY_GROUND;
-				break;
-			case 2:
-				App->entity->backup.At(i)->data->type_object = Object_type::ENEMY_FLYING;
-				break;
-			}*/
 		}	
 	return true;
 }
