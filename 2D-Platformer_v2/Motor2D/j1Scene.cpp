@@ -167,23 +167,42 @@ bool j1Scene::Load(pugi::xml_node& data)
 		//-------------ENEMIES-----------------------//
 		
 		p2Point<int> pos = { 0,0 };
+		Object_type type;
+		int type_id;
 		int object_count = App->entity->objects.count();
 		int id = 1;
 		p2SString enemy_identificator;
 		p2SString enemy = "enemy_";
 		p2SString x = "_x";
 		p2SString y = "_y";
+		p2SString type_string = "_type";
 
 		for(int i=0;i < object_count;i++)
 		{
 			enemy_identificator = p2SString("%d", id);
+
 			enemy += enemy_identificator;
-			pos.x = data.child("enemies_position").attribute((enemy += x).GetString()).as_int();
+			pos.x = data.child("enemies").attribute((enemy += x).GetString()).as_int();
 			enemy = "enemy_";
+
 			enemy += enemy_identificator;
-			pos.y = data.child("enemies_position").attribute((enemy += y).GetString()).as_int();
+			pos.y = data.child("enemies").attribute((enemy += y).GetString()).as_int();
 			enemy = "enemy_";
-			App->entity->CreateEnemy(pos, Object_type::ENEMY_FLYING);
+
+			enemy += enemy_identificator;
+			type_id = data.child("enemies").attribute((enemy += type_string).GetString()).as_int();
+
+			switch (type_id)
+			{
+			case 1: 
+				type = Object_type::ENEMY_GROUND;
+				break;
+			case 2:
+				type = Object_type::ENEMY_FLYING;
+				break;
+			}
+
+			App->entity->CreateEnemy(pos,type);
 			id++;
 		}
 		
@@ -220,7 +239,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	scene.append_attribute("current_map") = current_level.GetString();
 
 	//-------------ENEMIES---------------//
-	pugi::xml_node enemies = data.append_child("enemies_position");
+	pugi::xml_node enemies = data.append_child("enemies");
 
 	p2List_item<GameObject*>* item;
 	item = App->entity->objects.start;
@@ -229,16 +248,25 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	p2SString enemy = "enemy_";
 	p2SString x = "_x";
 	p2SString y = "_y";
+	p2SString type = "_type";
 	while (item != NULL)
-	{		if (item->data->type_object == Object_type::ENEMY_FLYING || item->data->type_object == Object_type::ENEMY_GROUND)
+	{	
+		if (item->data->type_object == Object_type::ENEMY_FLYING || item->data->type_object == Object_type::ENEMY_GROUND)
 		{
 				enemy_identificator = p2SString("%d", id);
+
 				enemy += enemy_identificator;
 				enemies.append_attribute((enemy += x).GetString()) = item->data->position.x;
 				enemy = "enemy_";
+
 				enemy += enemy_identificator;
 				enemies.append_attribute((enemy += y).GetString()) = item->data->position.y;
 				enemy = "enemy_";
+
+				enemy += enemy_identificator;
+				enemies.append_attribute((enemy += type).GetString()) = item->data->type_object;
+				enemy = "enemy_";
+
 				id++;
 		}
 		item = item->next;

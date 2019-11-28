@@ -498,8 +498,15 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Enemy_pos") == 0)
 	{
-		objects = node.child("object");
-		App->entity->LoadEnemiesFromMap(objects);
+		if (App->scene->loading == false)
+		{
+			objects = node.child("object");
+			App->entity->LoadEnemiesFromMap(objects);
+		}
+		else
+		{
+			App->entity->LoadEnemiesFromBackup();
+		}
 	}
 
 	return ret;

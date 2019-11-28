@@ -109,22 +109,36 @@ void j1EntityManager::DestroyEnemies()
 
 void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)
 {
-	if (type == Object_type::ENEMY_GROUND)
+	if (App->scene->loading == false)
 	{
-		Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
-		objects.add(enemy_ground);
+		if (type == Object_type::ENEMY_GROUND)
+		{
+			Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
+			objects.add(enemy_ground);
+		}
+		else if (type == Object_type::ENEMY_FLYING)
+		{
+			Object_Enemy* enemy_fly = new Object_Enemy(type, pos);
+			objects.add(enemy_fly);
+		}
 	}
-	else if (type == Object_type::ENEMY_FLYING)
+	else
 	{
-		Object_Enemy* enemy_fly = new Object_Enemy(type,pos);
-		objects.add(enemy_fly);
+		if (type == Object_type::ENEMY_GROUND)
+		{
+			Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
+			backup.add(enemy_ground);
+		}
+		else if (type == Object_type::ENEMY_FLYING)
+		{
+			Object_Enemy* enemy_fly = new Object_Enemy(type, pos);
+			backup.add(enemy_fly);
+		}
 	}
 }
 
 void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 {
-	if (App->scene->loading == false)
-	{
 		Object_type type;
 		p2Point<int> pos;
 		for (pugi::xml_node all = object; all; all = all.next_sibling("object"))
@@ -160,10 +174,28 @@ void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 					}
 				}
 				CreateEnemy(pos, type);
-			}
-		}
+			}	
 	}
 	
+}
+
+void j1EntityManager::LoadEnemiesFromBackup()
+{
+	p2List_item<GameObject*>* it_objects = objects.start;
+	p2List_item<GameObject*>* it_backups = backup.start;
+	
+	while (it_backups != NULL)
+	{
+		objects.add(it_backups->data);
+		it_backups = it_backups->next;
+	}
+
+	for (int i = backup.count() - 1; i >= 0; i--)
+	{	
+			backup.At(i)->data->CleanUp();
+			backup.del(backup.At(i));
+	}
+
 }
 
 //ENTITY MANAGER ----------------------------------------------------------------------------------------------------------------------------------------
