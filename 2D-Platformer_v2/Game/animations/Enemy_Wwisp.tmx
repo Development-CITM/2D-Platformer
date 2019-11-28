@@ -41,22 +41,22 @@
     </properties>
     <object id="7" name="RUN" x="164" y="0" width="41" height="32">
      <properties>
-      <property name="Frames" type="int" value="0"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
     <object id="8" name="RUN" x="205" y="0" width="41" height="32">
      <properties>
-      <property name="Frames" type="int" value="0"/>
+      <property name="Frames" type="int" value="4"/>
      </properties>
     </object>
     <object id="9" name="RUN" x="0" y="32" width="41" height="32">
      <properties>
-      <property name="Frames" type="int" value="0"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
     <object id="10" name="RUN" x="41" y="32" width="41" height="32">
      <properties>
-      <property name="Frames" type="int" value="0"/>
+      <property name="Frames" type="int" value="3"/>
      </properties>
     </object>
    </objectgroup>

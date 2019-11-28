@@ -72,9 +72,8 @@ public:
 
 	void CreatePlayer();
 	void DestroyEnemies();
-	void CreateEnemyGround();
-	void CreateEnemyFlying();
-	void CreateDynamicObject();
+	void CreateEnemy(p2Point<int> pos, Object_type type);
+	void LoadEnemiesFromMap(pugi::xml_node& object);
 
 public:
 	p2List<GameObject*>  objects;

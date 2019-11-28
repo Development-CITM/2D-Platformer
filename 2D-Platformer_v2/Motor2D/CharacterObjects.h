@@ -77,6 +77,7 @@ private:
 	bool LoadCharacterTMX(pugi::xml_node& character_node);
 	virtual Animation* LoadAnimation(pugi::xml_node& obj_group);
 	virtual SDL_Rect LoadAABB(pugi::xml_node& AABB_object);
+	
 
 
 public:

@@ -98,6 +98,7 @@ public:
 	j1Debug*			debug;
 	j1PathFinding*		pathfinding;
 	bool				maxcapFrames = true;
+	bool				transition = false;
 
 private:
 
@@ -127,7 +128,7 @@ private:
 	float				minframerateCap = 0.0f;
 	
 	float				seconds_since_sartup = 0.0f;
-	bool				transition = false;
+
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

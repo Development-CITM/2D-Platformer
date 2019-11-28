@@ -48,7 +48,6 @@ bool Object_Enemy::Update(float dt)
 {
 	bool ret = true;
 	StablishPath();
-	//move
 	Draw(dt);
 	return ret;
 }
@@ -91,6 +90,10 @@ void Object_Enemy::StablishPath()
 			iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
 			App->render->Blit(App->scene->debug_tex, pos.x, pos.y, NULL, App->render->drawsize);
 		}
+		else
+		{
+			currentAnimation = idle;
+		}
 	}
 	if (path->At(1)) {
 		MoveToTarget(App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y));
@@ -108,15 +111,21 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 	if (path->At(1) != nullptr) {
 		if (characterPos.x < target.x) {
 			characterPos.x += 2;
+			currentAnimation = running;
+			//flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;		//check why player position delays on getting updated
 		}
 		else if (characterPos.x > target.x) {
 			characterPos.x -= 2;
+			currentAnimation = running;
+			//flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
 		else if(characterPos.y < target.y && type_object == Object_type::ENEMY_FLYING) {
 			characterPos.y += 2;
+			currentAnimation = running;
 		}
 		else if(characterPos.y > target.y && type_object == Object_type::ENEMY_FLYING ){
 			characterPos.y -= 2;
+			currentAnimation = running;
 		}
 
 	}

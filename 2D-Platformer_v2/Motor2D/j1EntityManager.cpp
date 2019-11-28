@@ -26,7 +26,7 @@ bool j1EntityManager::Start()
 {
 	bool ret = true;
 	CreatePlayer();
-	CreateEnemyGround();
+	//CreateEnemyGround();
 	p2List_item<GameObject*>* item;
 	//objects.clear();
 	item = objects.start;
@@ -109,18 +109,60 @@ void j1EntityManager::DestroyEnemies()
 	}				
 }
 
-void j1EntityManager::CreateEnemyGround()
+void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)
 {
-	Object_Enemy* enemy_ground = new Object_Enemy(Object_type::ENEMY_GROUND, { 500,400 });
-	objects.add(enemy_ground);
-
-	Object_Enemy* enemy_fly = new Object_Enemy(Object_type::ENEMY_FLYING, {700,400});
-	objects.add(enemy_fly);
+	if (type == Object_type::ENEMY_GROUND)
+	{
+		Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
+		objects.add(enemy_ground);
+	}
+	else if (type == Object_type::ENEMY_FLYING)
+	{
+		Object_Enemy* enemy_fly = new Object_Enemy(type,pos);
+		objects.add(enemy_fly);
+	}
 }
 
-void j1EntityManager::CreateEnemyFlying()
+void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 {
-	//Enemy flying creation
+	Object_type type;
+	p2Point<int> pos;
+	for (pugi::xml_node all = object; all; all = all.next_sibling("object"))
+	{
+		if (strcmp(all.attribute("name").as_string(), "Kobold pos") == 0)
+		{
+			type = Object_type::ENEMY_GROUND;
+			for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
+			{
+				if (strcmp(it.attribute("name").as_string(), "kobold_pos_x") == 0)
+				{
+					pos.x = it.attribute("value").as_int();
+				}
+				else if (strcmp(it.attribute("name").as_string(), "kobold_pos_y") == 0)
+				{
+					pos.y = it.attribute("value").as_int();
+				}
+			}
+			CreateEnemy(pos, type);
+		}
+		else if (strcmp(all.attribute("name").as_string(), "Whisp pos") == 0)
+		{
+			type = Object_type::ENEMY_FLYING;
+			for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
+			{
+				if (strcmp(it.attribute("name").as_string(), "whisp_pos_x") == 0)
+				{
+					pos.x = it.attribute("value").as_int();
+				}
+				else if (strcmp(it.attribute("name").as_string(), "whisp_pos_y") == 0)
+				{
+					pos.y = it.attribute("value").as_int();
+				}
+			}
+			CreateEnemy(pos, type);
+		}
+	}
+	
 }
 
 //ENTITY MANAGER ----------------------------------------------------------------------------------------------------------------------------------------
