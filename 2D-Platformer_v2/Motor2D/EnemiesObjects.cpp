@@ -9,7 +9,7 @@
 
 Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Character()
 {
-	characterPos = pos;
+	position = pos;
 	type_object = type;
 	if (type == Object_type::ENEMY_GROUND)
 	{
@@ -80,8 +80,8 @@ void Object_Enemy::StablishPath()
 	iPoint origin;
 	iPoint player_pos;
 
-	origin.x = characterPos.x;
-	origin.y = characterPos.y;
+	origin.x = position.x;
+	origin.y = position.y;
 
 	player_pos.x = App->player->GetCollider()->GetPosition().x;
 	player_pos.y = App->player->GetCollider()->GetPosition().y;
@@ -111,7 +111,7 @@ void Object_Enemy::StablishPath()
 		LOG("Path(0) (%i,%i)", App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).x, App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).y);
 		LOG("Path(1) (%i,%i)", App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).x, App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).y);
 		LOG("Enemy (%i,%i)", App->tiles->MapToWorld(origin.x, origin.y).x, App->tiles->MapToWorld(origin.x, origin.y).y);
-		LOG("Enemy pos: (%i,%i)", characterPos.x, characterPos.y);
+		LOG("Enemy pos: (%i,%i)", position.x, position.y);
 	}
 }
 
@@ -119,22 +119,22 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 {
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 	if (path->At(1) != nullptr) {
-		if (characterPos.x < target.x) {
-			characterPos.x += 2;
+		if (position.x < target.x) {
+			position.x += 2;
 			currentAnimation = running;
 			//flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;		//check why player position delays on getting updated
 		}
-		else if (characterPos.x > target.x) {
-			characterPos.x -= 2;
+		else if (position.x > target.x) {
+			position.x -= 2;
 			currentAnimation = running;
 			//flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
-		else if(characterPos.y < target.y && type_object == Object_type::ENEMY_FLYING) {
-			characterPos.y += 2;
+		else if(position.y < target.y && type_object == Object_type::ENEMY_FLYING) {
+			position.y += 2;
 			currentAnimation = running;
 		}
-		else if(characterPos.y > target.y && type_object == Object_type::ENEMY_FLYING ){
-			characterPos.y -= 2;
+		else if(position.y > target.y && type_object == Object_type::ENEMY_FLYING ){
+			position.y -= 2;
 			currentAnimation = running;
 		}
 

@@ -110,36 +110,10 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x -= 4;
 			App->tiles->culling_Collider->rect.x += 2;
 		}	
-
-
-	}
-
-
-
-	//if (App->player->GetPlayerCollider()->GetPosition().x > camera_limit_right + App->tiles->culling_Collider->rect.w) {
-	//	if (App->scene->lvl1 == true)
-	//	{
-	//		App->scene->lvl2 = true;
-	//		App->scene->lvl1 = false;
-	//	}
-	//	else if (App->scene->lvl2 == true)
-	//	{
-	//		App->scene->lvl1 = true;
-	//		App->scene->lvl2 = false;
-	//	}
-	//	App->fade2black->FadeToBlack(App->scene, App->scene);
-	//}
-
-	if (hasExit) {
-		App->fade2black->FadeToBlack(App->scene, App->scene);
-		/*App->scene->lvl2 = false;
-		App->scene->lvl1 = true;*/
 	}
 		App->tiles->Draw();
 	
 	
-	int x, y;
-
 	/*iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->tiles->map_Data.width, App->tiles->map_Data.height,
@@ -148,21 +122,6 @@ bool j1Scene::Update(float dt)
 					map_coordinates.x, map_coordinates.y);
 
 	App->win->SetTitle(title.GetString());*/
-	// Debug pathfinding ------------------------------
-//int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->tiles->WorldToMap(p.x, p.y);
-
-	App->render->Blit(debug_tex, p.x , p.y,NULL,App->render->drawsize);
-
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
-		App->render->Blit(debug_tex, pos.x, pos.y,NULL, App->render->drawsize);
-	}
 	return true;
 }
 
@@ -184,20 +143,46 @@ bool j1Scene::Load(pugi::xml_node& data)
 		loading = true;
 		App->fade2black->FadeToBlack(App->scene, App->scene);
 
+		//----------------CULLING--------------//
 		App->tiles->culling_pos_x = data.child("culling").attribute("x").as_int();
 		App->tiles->culling_pos_y = data.child("culling").attribute("y").as_int();
-	
+
+		//---------------CAMERA--------------//
 		App->render->camera.x = data.child("camera").attribute("x").as_int();
 		App->render->camera.y = data.child("camera").attribute("y").as_int();
 
+		//--------------PLAYER--------------//
 		App->player->playerPos.x = data.child("playerPos").attribute("player_pos_x").as_float();
 		App->player->playerPos.y = data.child("playerPos").attribute("player_pos_y").as_float();
 
+		//-------------LEVEL SELECTION----------------//
 		destination_level = data.child("scene").attribute("current_map").as_string();
 		current_level = data.child("scene").attribute("current_map").as_string();
 
-		
+		//-------------ENEMIES-----------------------//
 
+		p2List_item<GameObject*>* item;
+		item = App->entity->objects.start;
+		int id = 1;
+		p2SString enemy_identificator;
+		p2SString enemy = "enemy_";
+		p2SString x = "_x";
+		p2SString y = "_y";
+
+		while (item != NULL)
+		{
+			enemy_identificator = p2SString("%d", id);
+			enemy += enemy_identificator;
+			item->data->position.x = data.child("enemies_position").attribute((enemy += x).GetString()).as_int();
+			enemy = "enemy_";
+			enemy += enemy_identificator;
+			item->data->position.y = data.child("enemies_position").attribute((enemy += y).GetString()).as_int();
+			enemy = "enemy_";
+			item = item->next;
+			id++;
+		}
+		
+	
 	return true;
 }
 
@@ -212,10 +197,6 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	pugi::xml_node player_collider = data.append_child("player_collider");
 
-	//player_collider=data.append_child("") EUDALD: SAVE/LOAD PLAYER POS(SAVEGAME) FLOAT, 
-
-
-
 	//------------CAMERA --------------------//
 	pugi::xml_node cam = data.append_child("camera");
 
@@ -228,14 +209,35 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	cull.append_attribute("y") = App->tiles->culling_Collider->rect.y;
 
 	pugi::xml_node current_lvl = data.append_child("current_lvl");
-
-	//current_lvl.append_attribute("lvl1") = lvl1;
-	//current_lvl.append_attribute("lvl2") = lvl2;
-
 	//-------------SCENE-------------------//
 	pugi::xml_node scene = data.append_child("scene");
 
 	scene.append_attribute("current_map") = current_level.GetString();
+
+	//-------------ENEMIES---------------//
+	pugi::xml_node enemies = data.append_child("enemies_position");
+
+	p2List_item<GameObject*>* item;
+	item = App->entity->objects.start;
+	int id = 1;
+	p2SString enemy_identificator;
+	p2SString enemy = "enemy_";
+	p2SString x = "_x";
+	p2SString y = "_y";
+	while (item != NULL)
+	{		if (item->data->type_object == Object_type::ENEMY_FLYING || item->data->type_object == Object_type::ENEMY_GROUND)
+		{
+				enemy_identificator = p2SString("%d", id);
+				enemy += enemy_identificator;
+				enemies.append_attribute((enemy += x).GetString()) = item->data->position.x;
+				enemy = "enemy_";
+				enemy += enemy_identificator;
+				enemies.append_attribute((enemy += y).GetString()) = item->data->position.y;
+				enemy = "enemy_";
+				id++;
+		}
+		item = item->next;
+	}
 
 	return true;
 }

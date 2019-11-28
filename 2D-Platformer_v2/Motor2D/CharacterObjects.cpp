@@ -113,7 +113,7 @@ void Object_Character::Draw(float dt)
 {
 	numCurrentAnimation = currentAnimation->GetSprite(dt);
 
-	App->render->Blit(character_tmx_data.texture, characterPos.x + currentAnimation->offset.x -30, characterPos.y - 15, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
+	App->render->Blit(character_tmx_data.texture, position.x + currentAnimation->offset.x -30, position.y - 15, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
 }
 
 
