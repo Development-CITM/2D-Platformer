@@ -73,8 +73,10 @@ public:
 	void CreatePlayer();
 	void DestroyEnemies();
 	void CreateEnemy(p2Point<int> pos, Object_type type);
+	void FillBackup(p2Point<int> pos, Object_type type);
 	void LoadEnemiesFromMap(pugi::xml_node& object);
 	void LoadEnemiesFromBackup();
+	void ClearBackup();
 
 public:
 	p2List<GameObject*>  objects;

@@ -109,8 +109,6 @@ void j1EntityManager::DestroyEnemies()
 
 void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)
 {
-	if (App->scene->loading == false)
-	{
 		if (type == Object_type::ENEMY_GROUND)
 		{
 			Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
@@ -121,19 +119,19 @@ void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)
 			Object_Enemy* enemy_fly = new Object_Enemy(type, pos);
 			objects.add(enemy_fly);
 		}
-	}
-	else
+}
+
+void j1EntityManager::FillBackup(p2Point<int> pos, Object_type type)
+{
+	if (type == Object_type::ENEMY_GROUND)
 	{
-		if (type == Object_type::ENEMY_GROUND)
-		{
-			Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
-			backup.add(enemy_ground);
-		}
-		else if (type == Object_type::ENEMY_FLYING)
-		{
-			Object_Enemy* enemy_fly = new Object_Enemy(type, pos);
-			backup.add(enemy_fly);
-		}
+		Object_Enemy* enemy_ground = new Object_Enemy(type, pos);
+		backup.add(enemy_ground);
+	}
+	else if (type == Object_type::ENEMY_FLYING)
+	{
+		Object_Enemy* enemy_fly = new Object_Enemy(type, pos);
+		backup.add(enemy_fly);
 	}
 }
 
@@ -189,13 +187,15 @@ void j1EntityManager::LoadEnemiesFromBackup()
 		objects.add(it_backups->data);
 		it_backups = it_backups->next;
 	}
+}
 
+void j1EntityManager::ClearBackup()
+{
 	for (int i = backup.count() - 1; i >= 0; i--)
-	{	
-			backup.At(i)->data->CleanUp();
-			backup.del(backup.At(i));
+	{
+		backup.At(i)->data->CleanUp();
+		backup.del(backup.At(i));
 	}
-
 }
 
 //ENTITY MANAGER ----------------------------------------------------------------------------------------------------------------------------------------
