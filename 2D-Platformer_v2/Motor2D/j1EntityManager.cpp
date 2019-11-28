@@ -84,7 +84,6 @@ bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
 
-	if(App->scene->loading==false)
 	DestroyEnemies();
 	
 	return ret;

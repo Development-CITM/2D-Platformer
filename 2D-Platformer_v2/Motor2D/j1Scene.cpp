@@ -85,10 +85,15 @@ bool j1Scene::Update(float dt)
 	if (App->debug->input == true)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
+			App->debug->CallFade();
 			App->LoadGame("save_game.xml");
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
 			App->SaveGame("save_game.xml");
+		}	
 
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 			App->render->camera.y += 4;
@@ -141,7 +146,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::Load(pugi::xml_node& data)
 {
 		loading = true;
-		App->fade2black->FadeToBlack(App->scene, App->scene);
+		//App->fade2black->FadeToBlack(App->scene, App->scene);
 
 		//----------------CULLING--------------//
 		App->tiles->culling_pos_x = data.child("culling").attribute("x").as_int();
@@ -160,25 +165,25 @@ bool j1Scene::Load(pugi::xml_node& data)
 		current_level = data.child("scene").attribute("current_map").as_string();
 
 		//-------------ENEMIES-----------------------//
-
-		p2List_item<GameObject*>* item;
-		item = App->entity->objects.start;
+		
+		p2Point<int> pos = { 0,0 };
+		int object_count = App->entity->objects.count();
 		int id = 1;
 		p2SString enemy_identificator;
 		p2SString enemy = "enemy_";
 		p2SString x = "_x";
 		p2SString y = "_y";
 
-		while (item != NULL)
+		for(int i=0;i < object_count;i++)
 		{
 			enemy_identificator = p2SString("%d", id);
 			enemy += enemy_identificator;
-			item->data->position.x = data.child("enemies_position").attribute((enemy += x).GetString()).as_int();
+			pos.x = data.child("enemies_position").attribute((enemy += x).GetString()).as_int();
 			enemy = "enemy_";
 			enemy += enemy_identificator;
-			item->data->position.y = data.child("enemies_position").attribute((enemy += y).GetString()).as_int();
+			pos.y = data.child("enemies_position").attribute((enemy += y).GetString()).as_int();
 			enemy = "enemy_";
-			item = item->next;
+			App->entity->CreateEnemy(pos, Object_type::ENEMY_FLYING);
 			id++;
 		}
 		
