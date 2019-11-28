@@ -4,6 +4,7 @@
 #include "CharacterObjects.h"
 #include "PlayerObjects.h"
 #include "EnemiesObjects.h"
+#include "j1Scene.h"
 
 
 
@@ -26,19 +27,14 @@ bool j1EntityManager::Start()
 {
 	bool ret = true;
 	CreatePlayer();
-	//CreateEnemyGround();
 	p2List_item<GameObject*>* item;
-	//objects.clear();
 	item = objects.start;
-	
 
 	while (item != NULL && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
 	}
-
-
 	return ret;
 }
 
@@ -86,8 +82,11 @@ bool j1EntityManager::PostUpdate()
 
 bool j1EntityManager::CleanUp()
 {
-	DestroyEnemies();
 	bool ret = true;
+
+	if(App->scene->loading==false)
+	DestroyEnemies();
+	
 	return ret;
 }
 
@@ -125,41 +124,44 @@ void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)
 
 void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 {
-	Object_type type;
-	p2Point<int> pos;
-	for (pugi::xml_node all = object; all; all = all.next_sibling("object"))
+	if (App->scene->loading == false)
 	{
-		if (strcmp(all.attribute("name").as_string(), "Kobold") == 0)
+		Object_type type;
+		p2Point<int> pos;
+		for (pugi::xml_node all = object; all; all = all.next_sibling("object"))
 		{
-			type = Object_type::ENEMY_GROUND;
-			for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
+			if (strcmp(all.attribute("name").as_string(), "Kobold") == 0)
 			{
-				if (strcmp(it.attribute("name").as_string(), "kobold_pos_x") == 0)
+				type = Object_type::ENEMY_GROUND;
+				for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
 				{
-					pos.x = it.attribute("value").as_int();
+					if (strcmp(it.attribute("name").as_string(), "kobold_pos_x") == 0)
+					{
+						pos.x = it.attribute("value").as_int();
+					}
+					else if (strcmp(it.attribute("name").as_string(), "kobold_pos_y") == 0)
+					{
+						pos.y = it.attribute("value").as_int();
+					}
 				}
-				else if (strcmp(it.attribute("name").as_string(), "kobold_pos_y") == 0)
-				{
-					pos.y = it.attribute("value").as_int();
-				}
+				CreateEnemy(pos, type);
 			}
-			CreateEnemy(pos, type);
-		}
-		else if (strcmp(all.attribute("name").as_string(), "Whisp") == 0)
-		{
-			type = Object_type::ENEMY_FLYING;
-			for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
+			else if (strcmp(all.attribute("name").as_string(), "Whisp") == 0)
 			{
-				if (strcmp(it.attribute("name").as_string(), "whisp_pos_x") == 0)
+				type = Object_type::ENEMY_FLYING;
+				for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
 				{
-					pos.x = it.attribute("value").as_int();
+					if (strcmp(it.attribute("name").as_string(), "whisp_pos_x") == 0)
+					{
+						pos.x = it.attribute("value").as_int();
+					}
+					else if (strcmp(it.attribute("name").as_string(), "whisp_pos_y") == 0)
+					{
+						pos.y = it.attribute("value").as_int();
+					}
 				}
-				else if (strcmp(it.attribute("name").as_string(), "whisp_pos_y") == 0)
-				{
-					pos.y = it.attribute("value").as_int();
-				}
+				CreateEnemy(pos, type);
 			}
-			CreateEnemy(pos, type);
 		}
 	}
 	

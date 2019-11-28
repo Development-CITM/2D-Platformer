@@ -95,7 +95,7 @@ Animation* Object_Player::LoadAnimation(pugi::xml_node& obj_group)
 		anim->sprites[i].frames = object.child("properties").child("property").attribute("value").as_int();
 
 			anim->sprites[i].AABB_rect = LoadAABB(AABB_object);
-			anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(characterPos.x),anim->sprites[i].AABB_rect.y - (int)roundf(characterPos.y) };
+			anim->sprites[i].AABB_offset = { anim->sprites[i].AABB_rect.x - (int)roundf(position.x),anim->sprites[i].AABB_rect.y - (int)roundf(position.y) };
 			LOG("AABB Rect X:%i Y: %i W:%i H:%i", anim->sprites[i].AABB_rect.x, anim->sprites[i].AABB_rect.y, anim->sprites[i].AABB_rect.w, anim->sprites[i].AABB_rect.h);
 
 			if (AABB_object.next_sibling("object")) {
@@ -124,8 +124,8 @@ SDL_Rect Object_Player::LoadAABB(pugi::xml_node& AABB_object)
 		offset.y -= character_tmx_data.tile_height;
 	}
 
-	rect.x = characterPos.x + offset.x;
-	rect.y = characterPos.y + offset.y;
+	rect.x = position.x + offset.x;
+	rect.y = position.y + offset.y;
 	return rect;
 }
 
