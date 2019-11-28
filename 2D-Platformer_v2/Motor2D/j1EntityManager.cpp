@@ -129,7 +129,7 @@ void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 	p2Point<int> pos;
 	for (pugi::xml_node all = object; all; all = all.next_sibling("object"))
 	{
-		if (strcmp(all.attribute("name").as_string(), "Kobold pos") == 0)
+		if (strcmp(all.attribute("name").as_string(), "Kobold") == 0)
 		{
 			type = Object_type::ENEMY_GROUND;
 			for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
@@ -145,7 +145,7 @@ void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 			}
 			CreateEnemy(pos, type);
 		}
-		else if (strcmp(all.attribute("name").as_string(), "Whisp pos") == 0)
+		else if (strcmp(all.attribute("name").as_string(), "Whisp") == 0)
 		{
 			type = Object_type::ENEMY_FLYING;
 			for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))

@@ -13,13 +13,23 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 	type_object = type;
 	if (type == Object_type::ENEMY_GROUND)
 	{
-		Load("animations/Enemy_Kobold.tmx");
-		collider = App->collider->AddCollider({ characterPos.x + 56,characterPos.y + 5,25,46 }, COLLIDER_ENEMY);
+		if (firstkobold)
+		{
+			Load("animations/Enemy_Kobold.tmx");
+			firstkobold = false;
+		}
+
+		//collider = App->collider->AddCollider({ characterPos.x + 56,characterPos.y + 5,25,46 }, COLLIDER_ENEMY);
 	}
 	else if (type == Object_type::ENEMY_FLYING)
 	{
-		Load("animations/Enemy_Wwisp.tmx");
-		collider = App->collider->AddCollider({ characterPos.x+25 ,characterPos.y + 12,25,25 }, COLLIDER_ENEMY);
+		if (firstwhisp)
+		{
+			Load("animations/Enemy_Wwisp.tmx");
+			firstwhisp = false;
+		}
+
+		//collider = App->collider->AddCollider({ characterPos.x+25 ,characterPos.y + 12,25,25 }, COLLIDER_ENEMY);
 	}
 	currentAnimation = idle;
 }

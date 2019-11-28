@@ -211422,7 +211422,11 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="55" name="Kobold_pos"/>
+ <objectgroup id="55" name="Kobold_pos">
+  <properties>
+   <property name="kobold_pos_y" type="int" value="700"/>
+  </properties>
+ </objectgroup>
  <objectgroup id="56" name="Whisp_pos">
   <object id="63" name="Whisp Pos" x="368" y="0" width="16" height="16"/>
   <object id="64" name="Kobold Pos" x="384" y="0" width="16" height="16">

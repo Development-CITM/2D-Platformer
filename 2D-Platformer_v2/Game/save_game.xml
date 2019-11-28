@@ -5,19 +5,19 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos player_pos_x="455" player_pos_y="631" />
+		<playerPos player_pos_x="696" player_pos_y="355" />
 		<player_collider />
-		<camera x="-448" y="-878" />
-		<culling x="224" y="439" />
+		<camera x="-882" y="-408" />
+		<culling x="441" y="204" />
 		<current_lvl />
-		<scene current_map="maps/A1.tmx" />
+		<scene current_map="maps/A2.tmx" />
 	</scene>
 	<map />
+	<:anonymous />
 	<player />
 	<colliders />
 	<fade2Black />
 	<debug />
-	<:anonymous />
 	<pathfinding />
 	<renderer />
 </game_state>

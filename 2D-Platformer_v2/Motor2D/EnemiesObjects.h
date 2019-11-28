@@ -24,7 +24,8 @@ public:
 	void MoveToTarget(p2Point<int>);
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 public:
-	int aha;
+	bool firstkobold = true;
+	bool firstwhisp = true;
 	Animation* idle;
 	Animation* running;
 	Animation* hurt;
