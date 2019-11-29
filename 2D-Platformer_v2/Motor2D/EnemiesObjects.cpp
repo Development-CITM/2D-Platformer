@@ -88,7 +88,7 @@ void Object_Enemy::StablishPath()
 
 	origin = App->tiles->WorldToMap(origin.x, origin.y);
 	player_pos = App->tiles->WorldToMap(player_pos.x, player_pos.y);
-
+	
 	if (origin.DistanceNoSqrt(player_pos) < 100) {
 		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 		App->pathfinding->CreatePath(origin, player_pos);
@@ -103,13 +103,9 @@ void Object_Enemy::StablishPath()
 			}
 			for (uint i = 0; i < path->Count(); ++i)
 			{
-				if (origin.DistanceNoSqrt(player_pos) < 100 && App->collider->collider_debug) {
+				if (path->Count() != 0 && App->collider->collider_debug) {
 					iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
 					App->render->Blit(App->scene->debug_tex, pos.x, pos.y, NULL, App->render->drawsize);
-				}
-				else
-				{
-					currentAnimation = idle;
 				}
 			}
 		}
@@ -117,30 +113,55 @@ void Object_Enemy::StablishPath()
 	else {
 		App->pathfinding->ClearPath();
 	}
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	if ((origin.x - player_pos.x) * (origin.x - player_pos.x) <= 0) {
+		currentAnimation = idle;
+	}
+	LOG("Count: %i", path->Count());
 }
 
 void Object_Enemy::MoveToTarget(p2Point<int> target)
 {
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 	if (path->At(1) != nullptr) {
-		if (position.x < target.x) {
-			position.x += 2;
-			currentAnimation = running;	//check why player position delays on getting updated
-		}
-		else if (position.x > target.x) {
-			position.x -= 2;
-			currentAnimation = running;
-		}
-		if(position.y < target.y && type_object == Object_type::ENEMY_FLYING) {
-			position.y += 2;
-			currentAnimation = running;
-		}
-		else if(position.y > target.y && type_object == Object_type::ENEMY_FLYING ){
-			position.y -= 2;
-			currentAnimation = running;
-		}
+		switch (type_object)
+		{
+		case PLAYER:
+			break;
+		case ENEMY_GROUND:
 
+			if (position.x < App->player->GetCollider()->GetPosition().x) {
+				position.x += 1;
+				currentAnimation = running;
+			}
+			if (position.x > App->player->GetCollider()->GetPosition().x) {
+				position.x -= 1;
+				currentAnimation = running;
+			}
+			break;
+		case ENEMY_FLYING:
+			if (position.x < target.x) {
+				position.x += 1;
+				currentAnimation = running;
+			}
+			if (position.x > target.x) {
+				position.x -= 1;
+				currentAnimation = running;
+			}
+
+			if (position.y < target.y) {
+				position.y += 1;
+				currentAnimation = running;
+			}
+			if (position.y > target.y) {
+				position.y -= 1;
+				currentAnimation = running;
+			}
+			break;
+		}
 	}
+
+
 }
 
 Animation* Object_Enemy::LoadAnimation(pugi::xml_node& obj_group)

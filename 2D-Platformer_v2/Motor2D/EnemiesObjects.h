@@ -31,7 +31,7 @@ public:
 	Animation* hurt;
 	Animation* dead;
 
-
+	bool moving = false;
 
 
 };

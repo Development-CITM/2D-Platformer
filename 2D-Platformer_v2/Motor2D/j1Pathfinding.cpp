@@ -60,6 +60,7 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 
 void j1PathFinding::ClearPath()
 {
+	if(last_path.Count() != 0)
 	last_path.Clear();
 }
 
