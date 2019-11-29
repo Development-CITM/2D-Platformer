@@ -215303,8 +215303,8 @@
  <objectgroup id="187" name="Camera_limits">
   <object id="76" name="Camera Limits" x="320" y="16" width="16" height="16">
    <properties>
-    <property name="limit_bot" type="int" value="619"/>
-    <property name="limit_left" type="int" value="313"/>
+    <property name="limit_bot" type="int" value="1833"/>
+    <property name="limit_left" type="int" value="660"/>
     <property name="limit_right" type="int" value="1850"/>
     <property name="limit_top" type="int" value="0"/>
    </properties>

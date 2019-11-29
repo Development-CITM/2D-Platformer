@@ -124,9 +124,9 @@ bool j1Player::Update(float dt)
 	//Update Camera Position
 	//App->render->MoveCamera({ -2,2 });
 
-	//LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
+	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
 	//LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
-	LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
+	//LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
 	//LOG("Absolute Pos: (%i,%i)", absolutePos.x, absolutePos.y);
 
 	Draw(dt); //Draw all the player
@@ -154,7 +154,7 @@ bool j1Player::PostUpdate()
 		App->render->MoveCamera({ 0, (int)roundf(6* ceil(dt_variable * 32)) });
 	}	
 	
-	if (App->player->absolutePos.y > 260) {
+	if (App->player->absolutePos.y > 260 && -App->render->camera.y < App->scene->camera_limit_bot) {
 		App->render->MoveCamera({ 0, -(int)roundf(10 * ceil(dt_variable * 32)) });
 	}
 
