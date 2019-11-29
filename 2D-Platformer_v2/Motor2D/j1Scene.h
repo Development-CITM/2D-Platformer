@@ -76,6 +76,8 @@ public:
 
 	int camera_limit_left = 0;
 	int camera_limit_right = 0;
+	int camera_limit_bot = 0;
+	int camera_limit_top = 0;
 
 	bool hasExit = false;
 

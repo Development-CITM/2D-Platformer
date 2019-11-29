@@ -281,13 +281,21 @@ bool j1Scene::LoadSceneLimits(pugi::xml_node object)
 {
 	for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
 	{
-		if (strcmp(it.attribute("name").as_string(), "Limit Left") == 0)
+		if (strcmp(it.attribute("name").as_string(), "limit_left") == 0)
 		{
 			camera_limit_left = it.attribute("value").as_int();
 		}
-		if (strcmp(it.attribute("name").as_string(), "Limit Right") == 0)
+		else if (strcmp(it.attribute("name").as_string(), "limit_right") == 0)
 		{
 			camera_limit_right = it.attribute("value").as_int();
+		}
+		else if (strcmp(it.attribute("name").as_string(), "limit_bot") == 0)
+		{
+			camera_limit_bot = it.attribute("value").as_int();
+		}
+		else if (strcmp(it.attribute("name").as_string(), "limit_top") == 0)
+		{
+			camera_limit_top = it.attribute("value").as_int();
 		}
 	}
 

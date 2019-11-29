@@ -39,7 +39,7 @@ bool j1Player::Start()
 	state = ST_Idle;
 
 	currentAnimation = disarmed_idle;
-	App->render->SetCameraPos(playerPos);
+	//App->render->SetCameraPos(playerPos);
 
 	return true;
 }
@@ -126,7 +126,7 @@ bool j1Player::Update(float dt)
 
 	//LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
 	//LOG("Culling: (%i,%i)", App->tiles->culling_Collider->rect.x, App->tiles->culling_Collider->rect.y);
-	//LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
+	LOG("Player: (%i,%i)", playerPos.x, playerPos.y);
 	//LOG("Absolute Pos: (%i,%i)", absolutePos.x, absolutePos.y);
 
 	Draw(dt); //Draw all the player
@@ -142,11 +142,11 @@ bool j1Player::PostUpdate()
 		speed *= -1.f;
 	}
 
-	if (App->player->absolutePos.x < 160) {
-		App->render->MoveCamera({ (int)roundf(speed * ceil(dt_variable * 50)), 0 });
+	if (App->player->absolutePos.x < 160 && -App->render->camera.x > App->scene->camera_limit_left) {
+ 		App->render->MoveCamera({ (int)roundf(speed * ceil(dt_variable * 50)), 0 });
 	}	
 
-	if (App->player->absolutePos.x > 285) {
+	if (App->player->absolutePos.x > 285 && -App->render->camera.x < App->scene->camera_limit_right) {
 		App->render->MoveCamera({ -(int)roundf(speed * ceil(dt_variable * 50)), 0 });
 	}
 

@@ -475,7 +475,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 		App->audio->PlayMusic(objects.attribute("value").as_string());
 	}
 	//Camera limit map loading ---------------------------------------------------------------------------------------------
-	else if (strcmp(node.attribute("name").as_string(), "Camera Limit") == 0 )
+	else if (strcmp(node.attribute("name").as_string(), "Camera_limits") == 0 )
 	{
 		objects = node.child("object");
 		App->scene->LoadSceneLimits(objects);
