@@ -215283,14 +215283,14 @@
  <objectgroup id="186" name="Enemy_pos">
   <object id="72" name="Kobold" x="368" y="0" width="16" height="16">
    <properties>
-    <property name="kobold_pos_x" type="int" value="500"/>
-    <property name="kobold_pos_y" type="int" value="400"/>
+    <property name="kobold_pos_x" type="int" value="710"/>
+    <property name="kobold_pos_y" type="int" value="395"/>
    </properties>
   </object>
   <object id="73" name="Whisp" x="384" y="0" width="16" height="16">
    <properties>
-    <property name="whisp_pos_x" type="int" value="700"/>
-    <property name="whisp_pos_y" type="int" value="400"/>
+    <property name="whisp_pos_x" type="int" value="1032"/>
+    <property name="whisp_pos_y" type="int" value="578"/>
    </properties>
   </object>
   <object id="74" name="Whisp" x="400" y="0" width="16" height="16">
