@@ -90,35 +90,32 @@ void Object_Enemy::StablishPath()
 	player_pos = App->tiles->WorldToMap(player_pos.x, player_pos.y);
 
 	if (origin.DistanceNoSqrt(player_pos) < 100) {
+		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 		App->pathfinding->CreatePath(origin, player_pos);
-	}
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+		if (path->At(1)) {
+			MoveToTarget(App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y));
 
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		if (origin.DistanceNoSqrt(player_pos) < 100) {
-			iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
-			App->render->Blit(App->scene->debug_tex, pos.x, pos.y, NULL, App->render->drawsize);
-		}
-		else
-		{
-			currentAnimation = idle;
+			if (origin.x < player_pos.x) {
+				flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+			}
+			else {
+				flip = SDL_RendererFlip::SDL_FLIP_NONE;
+			}
+			for (uint i = 0; i < path->Count(); ++i)
+			{
+				if (origin.DistanceNoSqrt(player_pos) < 100 && App->collider->collider_debug) {
+					iPoint pos = App->tiles->MapToWorld(path->At(i)->x, path->At(i)->y);
+					App->render->Blit(App->scene->debug_tex, pos.x, pos.y, NULL, App->render->drawsize);
+				}
+				else
+				{
+					currentAnimation = idle;
+				}
+			}
 		}
 	}
-	if (path->At(1)) {
-		MoveToTarget(App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y));
-
-		if (origin.x < player_pos.x) {
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		}
-		else {
-			flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		}
-		
-		LOG("Path(0) (%i,%i)", App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).x, App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).y);
-		LOG("Path(1) (%i,%i)", App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).x, App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).y);
-		LOG("Enemy (%i,%i)", App->tiles->MapToWorld(origin.x, origin.y).x, App->tiles->MapToWorld(origin.x, origin.y).y);
-		LOG("Enemy pos: (%i,%i)", position.x, position.y);
+	else {
+		App->pathfinding->ClearPath();
 	}
 }
 
