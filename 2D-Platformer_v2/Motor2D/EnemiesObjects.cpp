@@ -107,6 +107,13 @@ void Object_Enemy::StablishPath()
 	}
 	if (path->At(1)) {
 		MoveToTarget(App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y));
+
+		if (origin.x < player_pos.x) {
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else {
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
 		
 		LOG("Path(0) (%i,%i)", App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).x, App->tiles->MapToWorld(path->At(0)->x, path->At(0)->y).y);
 		LOG("Path(1) (%i,%i)", App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).x, App->tiles->MapToWorld(path->At(1)->x, path->At(1)->y).y);
@@ -121,15 +128,13 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 	if (path->At(1) != nullptr) {
 		if (position.x < target.x) {
 			position.x += 2;
-			currentAnimation = running;
-			//flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;		//check why player position delays on getting updated
+			currentAnimation = running;	//check why player position delays on getting updated
 		}
 		else if (position.x > target.x) {
 			position.x -= 2;
 			currentAnimation = running;
-			//flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
-		else if(position.y < target.y && type_object == Object_type::ENEMY_FLYING) {
+		if(position.y < target.y && type_object == Object_type::ENEMY_FLYING) {
 			position.y += 2;
 			currentAnimation = running;
 		}
