@@ -140,7 +140,11 @@ bool j1Colliders::LoadObject(pugi::xml_node& node, Collider* collider)
 	if (strcmp(node.attribute("type").as_string(), "Barrier") == 0)
 	{
 		collider->type = COLLIDER_WALL_SOLID;
-	}	
+	}
+	if (strcmp(node.attribute("type").as_string(), "Water") == 0)
+	{
+		collider->type = COLLIDER_WATER;
+	}
 	if (strcmp(node.attribute("type").as_string(), "Transition") == 0)
 	{
 		collider->type = COLLIDER_TRANSITION;	
@@ -189,7 +193,10 @@ void j1Colliders::Draw()
 				App->render->DrawQuad(rect, 0, 0, 255, 100);
 				break;
 			case COLLIDER_DEAD:
-				App->render->DrawQuad(rect, 0, 0, 0, 100);
+				App->render->DrawQuad(rect, 0, 0, 0, 200);
+				break;
+			case COLLIDER_WATER:
+				App->render->DrawQuad(rect, 0, 183, 235, 200);	
 				break;
 			case COLLIDER_PLAYER:
 				rect.x = collider->data->rect.x * size * scale;
@@ -314,6 +321,13 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type == COLLIDER_TRANSITION && c2->Enabled) {
 					//c2->Enabled = false;
 				App->scene->ColliderMapToLoad(c2); //EUDALD: change site
+				}
+				if (c1->checkerType == ColliderChecker::Ground && c2->type == COLLIDER_WATER && c2->Enabled) {
+					c2->Enabled = false;
+					App->debug->CallFade();
+				}
+				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type==COLLIDER_DEAD && c2->Enabled) {
+					App->player->alive = false;
 				}
 				ret = true;
 				

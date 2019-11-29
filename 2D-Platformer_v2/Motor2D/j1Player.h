@@ -141,6 +141,7 @@ public:
 
 	p2Point<int>		playerPos{ 0,0 };
 	p2Point<int>		absolutePos;
+	bool alive = true;
 
 private:
 	//Run Speeds
