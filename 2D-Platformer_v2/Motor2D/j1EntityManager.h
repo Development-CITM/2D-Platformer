@@ -33,6 +33,8 @@ private:
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
 public:
+	Collider* GetCollider() { return collider; }
+public:
 
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	Collider* collider = nullptr;

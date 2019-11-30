@@ -81,11 +81,15 @@ private:
 
 
 public:
+	p2Point<int>		absolutePos;
+	CharacterTMXData	character_tmx_data;
 
+	int					velocity_X = 0;
+	int					velocity_Y = 0;
+	p2Point<int>		currentVelocity{ 0,0 };
+	bool				onPlatform = false;
 
-	CharacterTMXData		character_tmx_data;
-
-	CharacterState_v2	state = CharacterState_v2::ST_Idle_v2;
+	CharacterState_v2		state = CharacterState_v2::ST_Idle_v2;
 	CharacterState_v2		previous_state = CharacterState_v2::ST_Idle_v2;
 
 	Animation* currentAnimation = nullptr;

@@ -91,8 +91,8 @@ bool j1EntityManager::CleanUp()
 
 void j1EntityManager::CreatePlayer()
 {
-	/*Object_Player* player = new Object_Player(1);
-	objects.add(player);*/
+	Object_Player* player = new Object_Player(1);
+	objects.add(player);
 }
 
 void j1EntityManager::DestroyEnemies()

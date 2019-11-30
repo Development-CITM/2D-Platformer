@@ -20,10 +20,6 @@ public:
 	void Draw();
 
 public:
-	int					velocity_X = 0;
-	int					velocity_Y = 0;
-	p2Point<int>		currentVelocity{ 0,0 };
-	bool				onPlatform = false;
 
 };
 

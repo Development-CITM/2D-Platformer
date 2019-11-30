@@ -6,10 +6,14 @@
 #include "j1App.h"
 #include "p2Defs.h"
 #include "p2Log.h"
+#include "j1Scene.h"
+#include "j1Input.h"
+#include "j1Tilesets.h"
 
+struct Collider;
 Object_Player::Object_Player(int var): Object_Character()
 {
-	aha = var;
+	absolutePos = { 0,0 };
 }
 
 Object_Player::~Object_Player()
@@ -28,16 +32,317 @@ bool Object_Player::Start()
 bool Object_Player::PreUpdate()
 {
 	bool ret = true;
+	velocity_X = position.x;
+	velocity_Y = position.y;
+
+	//Hold Movements
+	if (canMove) {
+		switch (state)
+		{
+		case ST_Idle:
+			HorizontalInputs();
+			JumpInput();
+			AttackInputs();
+			break;
+		case ST_Run:
+			HorizontalInputs();
+			JumpInput();
+			AttackInputs();
+			break;
+		case ST_Jump:
+			HorizontalInputs();
+			JumpInput();
+			break;
+		case ST_DoubleJump:
+			HorizontalInputs();
+			break;
+		case ST_Fall:
+			HorizontalInputs();
+			JumpInput();
+			break;
+		case ST_MP:
+			HorizontalInputs();
+			break;
+		case ST_LK:
+			HorizontalInputs();
+			break;
+		}
+	}
+	return true;
 	return ret;
 }
 
 bool Object_Player::Update(float dt)
 {
-	Object_Dynamic::Draw();
 	bool ret = true;
-	aha++;
+	velocity_X -= position.x;
+	velocity_Y -= position.y;
+
+	UpdateCheckersBools();
+
+	UpdateColliderSize();
+
+	Gravity(dt);
+
+	ChangeStates();
+
+	LogicStateMachine(dt);
+
+	UpdateCheckersPosition();
+
+	UpdatePlayerPosition();
+
+	absolutePos.x = collider->rect.x - App->tiles->culling_Collider->rect.x;
+	absolutePos.y = collider->rect.y - App->tiles->culling_Collider->rect.y;
+
+	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
+
+	Draw(dt); //Draw all the player
+	//dt_variable = dt;
 	return ret;
 }
+
+void Object_Player::LogicStateMachine(float dt)
+{
+	switch (state)
+	{
+	case ST_Idle:
+		JumpStart(dt);
+		break;
+	case ST_Walk:
+		break;
+	case ST_Run:
+		HorizontalMove(dt);
+		JumpStart(dt);
+		break;
+	case ST_Jump:
+		ChangeAnimation(disarmed_jump);
+		canDoubleJump = true;
+		if (verticalSpeed_v2 >= 1.f * dt * 45) {
+			jumping = false;
+			falling = true;
+		}
+		DoubleJumpStart(dt);
+		if (state == CharacterState::ST_Jump) {
+			int posY = 0;
+			collider->rect.y += (int)roundf(verticalSpeed_v2);
+			ceilingChecker->rect.x = collider->rect.x + ceilingChecker->offset.x;
+			ceilingChecker->rect.y = collider->rect.y + ceilingChecker->offset.y;
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+				collider->rect.y = posY;
+				verticalSpeed_v2 = 0.0f;
+			}
+		}
+		HorizontalMove(dt);
+		break;
+	case ST_DoubleJump:
+		ChangeAnimation(disarmed_double_jump);
+		if (verticalSpeed_v2 >= 1.f * dt * 45) {
+			jumping = false;
+			falling = true;
+		}
+		if (state == CharacterState::ST_DoubleJump) {
+			int posY = 0;
+			collider->rect.y += (int)roundf(verticalSpeed_v2);
+			ceilingChecker->rect.x = collider->rect.x + ceilingChecker->offset.x;
+			ceilingChecker->rect.y = collider->rect.y + ceilingChecker->offset.y;
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+				collider->rect.y = posY;
+				verticalSpeed_v2 = 0.0f;
+			}
+		}
+		HorizontalMove(dt);
+		break;
+	case ST_MP:
+		ChangeAnimation(disarmed_mp);
+		MP_attackPressed = false;
+		if (disarmed_mp->current_sprite == 3) {
+			collider_attack->Enabled = true;
+		}
+		else {
+			collider_attack->Enabled = false;
+		}
+		break;
+	case ST_LK:
+		ChangeAnimation(disarmed_lk);
+		LK_attackPressed = false;
+		break;
+	case ST_Fall:
+		canDoubleJump = true;
+		ChangeAnimation(disarmed_fall);
+		HorizontalMove(dt);
+		DoubleJumpStart(dt);
+		break;
+	case ST_GrabLedge:
+		break;
+	default:
+		break;
+	}
+}
+
+void Object_Player::JumpStart(float dt)
+{
+	if (jumpPressed) {
+		verticalSpeed_v2 = jumpSpeed_v2 * dt * 37;
+		state = CharacterState_v2::ST_Jump_v2;
+		jumpPressed = false;
+		jumping = true;
+		falling = false;
+		canDoubleJump = true;
+	}
+}
+
+void Object_Player::DoubleJumpStart(float dt)
+{
+	if (doubleJumped) {
+		verticalSpeed_v2 = double_jumpSpeed_v2 * dt * 35;
+		state = CharacterState_v2::ST_DoubleJump_v2;
+		canDoubleJump = false;
+		doubleJumped = false;
+		jumping = true;
+		falling = false;
+		doublejumpCount++;
+	}
+}
+
+void Object_Player::Gravity(float dt)
+{
+	if (verticalSpeed_v2 > -1.f && verticalSpeed_v2 < 2.f) {
+		gravitySpeed_v2 = 0.2f * dt * 60;
+	}
+
+	else if (verticalSpeed_v2 > -3.f && verticalSpeed_v2 < -1.f) {
+		gravitySpeed_v2 = 0.3f * dt * 40;
+	}
+	else {
+		gravitySpeed_v2 = max_gravitySpeed_v2;
+	}
+
+	if (verticalSpeed_v2 < max_verticalSpeed_v2) {
+		verticalSpeed_v2 += gravitySpeed_v2 * dt * 40;
+	}
+	else if (verticalSpeed_v2 > max_verticalSpeed_v2) {
+		verticalSpeed_v2 = max_verticalSpeed_v2 * dt * 40;
+	}
+
+	//Move and check if we are on Ground
+	int posY = 0;
+	collider->rect.y += (int)roundf(verticalSpeed_v2);
+	groundChecker->rect.y += (int)roundf(verticalSpeed_v2);
+	if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
+		collider->rect.y = posY;
+		onGround = true;
+		canDoubleJump = false;
+		doublejumpCount = 0;
+	}
+}
+
+void Object_Player::ChangeStates()
+{
+	switch (state)
+	{
+	case ST_Idle:
+		ChangeAnimation(disarmed_idle);
+		if (!onGround) {
+			state = CharacterState_v2::ST_Fall_v2;
+			break;
+		}
+		if (moveLeft != moveRight && onGround) {
+			state = CharacterState_v2::ST_Run_v2;
+			break;
+		}
+		if (jumping) {
+			state = CharacterState_v2::ST_Jump_v2;
+			break;
+		}
+		if (MP_attackPressed) {
+			state = CharacterState_v2::ST_MP_v2;
+			break;
+		}
+		if (LK_attackPressed) {
+			state = CharacterState_v2::ST_LK_v2;
+			break;
+		}
+		break;
+	case ST_Walk:
+		break;
+	case ST_Run:
+		ChangeAnimation(disarmed_run);
+		if (moveLeft == moveRight && onGround) {
+			state = CharacterState_v2::ST_Idle_v2;
+			break;
+		}
+		if (!onGround) {
+			state = CharacterState_v2::ST_Fall_v2;
+			verticalSpeed_v2 = 0.f;
+		}
+		if (jumping) {
+			state = CharacterState_v2::ST_Jump_v2;
+			break;
+		}
+		if (MP_attackPressed) {
+			state = CharacterState_v2::ST_MP_v2;
+			break;
+		}
+
+		if (LK_attackPressed) {
+			state = CharacterState_v2::ST_LK_v2;
+			break;
+		}
+		break;
+	case ST_Jump:
+		if (atCeiling) {
+			state = CharacterState_v2::ST_Fall_v2;
+			break;
+		}
+		if (falling) {
+			state = CharacterState_v2::ST_Fall_v2;
+			break;
+		}
+		break;
+	case ST_DoubleJump:
+
+		if (atCeiling) {
+			state = CharacterState_v2::ST_Fall_v2;
+			break;
+		}
+		if (falling) {
+			state = CharacterState_v2::ST_Fall_v2;
+			break;
+		}
+		break;
+	case ST_MP:
+		if (disarmed_mp->finished && moveLeft == moveRight) {
+			state = CharacterState_v2::ST_Idle_v2;
+		}
+		else if (disarmed_mp->finished) {
+			state = CharacterState_v2::ST_Run_v2;
+		}
+		break;
+	case ST_LK:
+		if (disarmed_lk->finished && moveLeft == moveRight) {
+			state = CharacterState_v2::ST_Idle_v2;
+		}
+		else if (disarmed_lk->finished) {
+			state = CharacterState_v2::ST_Run_v2;
+		}
+		break;
+	case ST_Fall:
+		if (onGround) {
+			state = CharacterState_v2::ST_Idle_v2;
+			break;
+		}
+		if (onGround && moveLeft != moveRight) {
+			state = CharacterState_v2::ST_Run_v2;
+			break;
+		}
+		break;
+	case ST_GrabLedge:
+		break;
+	}
+}
+
+
 
 bool Object_Player::PostUpdate()
 {
@@ -49,25 +354,26 @@ bool Object_Player::InitCheckers()
 {
 	bool ret = true;
 	// CHANGE CALLBACK TYPE IN ORDER TO CREATE CHECKERS ONCE ALL IS DONE AND WE CAN IGNORE PLAYERCPP
-	//
-	//player_Collider = App->collider->AddCollider({ characterPos.x,characterPos.y,20,45 }, COLLIDER_PLAYER, { 0,0 }, this);
+	
+	collider = App->collider->AddCollider({ position.x,position.y,20,45 }, COLLIDER_PLAYER, { 0,0 });
 
-	//groundChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,player_Collider->rect.w - 1,5 }, COLLIDER_CEILING_CHECKER, { 1,player_Collider->rect.h }, this);
-	//groundChecker->checkerType = ColliderChecker::Ground;
+	groundChecker = App->collider->AddCollider({ position.x,position.y,collider->rect.w - 1,5 }, COLLIDER_CEILING_CHECKER, { 1,collider->rect.h });
+	groundChecker->checkerType = ColliderChecker::Ground;
 
-	//ceilingChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,player_Collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,-4 }, this);
-	//ceilingChecker->checkerType = ColliderChecker::Top;
+	ceilingChecker = App->collider->AddCollider({ position.x,position.y,collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,-4 });
+	ceilingChecker->checkerType = ColliderChecker::Top;
 
-	//rightChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,4,player_Collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { player_Collider->rect.w,5 }, this);
-	//rightChecker->checkerType = ColliderChecker::Right;
+	rightChecker = App->collider->AddCollider({ position.x,position.y,4,collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { collider->rect.w,5 });
+	rightChecker->checkerType = ColliderChecker::Right;
 
-	//leftChecker = App->collider->AddCollider({ characterPos.x,characterPos.y,4,player_Collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { -3,5 }, this);
-	//leftChecker->checkerType = ColliderChecker::Left;
+	leftChecker = App->collider->AddCollider({ position.x,position.y,4,collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { -3,5 });
+	leftChecker->checkerType = ColliderChecker::Left;
 	return ret;
 }
 
 Animation* Object_Player::LoadAnimation(pugi::xml_node& obj_group)
 {
+	InitCheckers();
 	Animation* anim = new Animation();
 	anim->name = obj_group.attribute("name").as_string();
 
@@ -127,6 +433,268 @@ SDL_Rect Object_Player::LoadAABB(pugi::xml_node& AABB_object)
 	rect.x = position.x + offset.x;
 	rect.y = position.y + offset.y;
 	return rect;
+}
+
+
+void Object_Player::SetPos(pugi::xml_node& object)
+{
+	if (App->scene->loading == false)
+	{
+		if (App->scene->swapping)
+		{
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
+			{
+				SetPlayerPosFromCurrentLevel(it);
+			}
+		}
+		else
+		{
+			for (pugi::xml_node it = object.child("properties").child("property"); it; it = it.next_sibling("property"))
+			{
+				if (strcmp(it.attribute("name").as_string(), "player_pos_x") == 0)
+				{
+					position.x = it.attribute("value").as_int();
+					if (collider != nullptr)
+					{
+						collider->rect.x = it.attribute("value").as_int();
+					}
+
+				}
+				if (strcmp(it.attribute("name").as_string(), "player_pos_y") == 0)
+				{
+					position.y = it.attribute("value").as_int();
+					if (collider != nullptr)
+					{
+						collider->rect.y = it.attribute("value").as_int();
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		collider->rect.x = position.x;
+		collider->rect.y = position.y;
+	}
+}
+
+void Object_Player::SetPlayerPosFromCurrentLevel(pugi::xml_node& it)
+{
+	char* pos_x = "player_pos_x";
+	char* pos_y = "player_pos_y";
+
+	if (App->scene->current_level == App->scene->A1)
+	{
+		pos_x = "player_pos_x_swap_from_A1";
+		pos_y = "player_pos_y_swap_from_A1";
+
+	}
+	else if (App->scene->current_level == App->scene->A2)
+	{
+		pos_x = "player_pos_x_swap_from_A2";
+		pos_y = "player_pos_y_swap_from_A2";
+	}
+	else if (App->scene->current_level == App->scene->A3)
+	{
+		pos_x = "player_pos_x_swap_from_A3";
+		pos_y = "player_pos_y_swap_from_A3";
+	}
+	else if (App->scene->current_level == App->scene->A5)
+	{
+		pos_x = "player_pos_x_swap_from_A5";
+		pos_y = "player_pos_y_swap_from_A5";
+	}
+	else if (App->scene->current_level == App->scene->A6)
+	{
+		pos_x = "player_pos_x_swap_from_A6";
+		pos_y = "player_pos_y_swap_from_A6";
+	}
+
+	if (strcmp(it.attribute("name").as_string(), pos_x) == 0)
+	{
+		position.x = it.attribute("value").as_int();
+		if (collider != nullptr)
+		{
+			collider->rect.x = it.attribute("value").as_int();
+		}
+	}
+	if (strcmp(it.attribute("name").as_string(), pos_y) == 0)
+	{
+		position.y = it.attribute("value").as_int();
+		if (collider != nullptr)
+		{
+			collider->rect.y = it.attribute("value").as_int();
+		}
+	}
+}
+
+void Object_Player::ChangeAnimation(Animation* anim)
+{
+	if (currentAnimation != anim) {
+		previousAnimation = currentAnimation;
+		previousAnimation->ResetAnim();
+		currentAnimation = anim;
+	}
+}
+
+void Object_Player::HorizontalMove(float dt)
+{
+	if (moveLeft == moveRight) {
+		runSpeed_v2 = 0.f;
+	}
+	else if (moveRight) {
+		int posX = 0;
+		collider->rect.x += (int)roundf(runSpeed_v2 * ceil(dt * 50));
+		if (App->collider->CheckColliderCollision(rightChecker, Directions::DIR_RIGHT, &posX)) {
+			if (posX != 0) {
+				runSpeed_v2 = 0.f;
+				collider->rect.x = posX;
+			}
+		}
+		else {
+			runSpeed_v2 = max_runSpeed_v2;
+		}
+	}
+	else if (moveLeft) {
+		int posX = 0;
+		collider->rect.x += (int)roundf(runSpeed_v2 * ceil(dt * 50));
+		if (App->collider->CheckColliderCollision(leftChecker, Directions::DIR_LEFT, &posX)) {
+			if (posX != 0) {
+				runSpeed_v2 = 0.f;
+				collider->rect.x = posX;
+			}
+
+		}
+		else {
+			runSpeed_v2 = -max_runSpeed_v2;
+		}
+	}
+	if (runSpeed_v2 < 0.f) {
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+	else if (runSpeed_v2 > 0.f) {
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
+}
+
+void Object_Player::UpdatePlayerPosition()
+{
+	//Update Player Pos
+	if (App->scene->loading == false)
+	{
+		position.x = collider->rect.x - (int)roundf(character_tmx_data.tile_width * 0.5) - 2;
+		position.y = collider->rect.y - colliderOffsetY1;
+	}
+}
+
+void Object_Player::UpdateCheckersPosition()
+{
+	//Update Checkers position
+
+	ceilingChecker->rect.x = collider->rect.x + ceilingChecker->offset.x;
+	ceilingChecker->rect.y = collider->rect.y + ceilingChecker->offset.y;
+
+	groundChecker->rect.x = collider->rect.x + groundChecker->offset.x;
+	groundChecker->rect.y = collider->rect.y + groundChecker->offset.y;
+
+	leftChecker->rect.x = collider->rect.x + leftChecker->offset.x;
+	leftChecker->rect.y = collider->rect.y + leftChecker->offset.y;
+
+	rightChecker->rect.x = collider->rect.x + rightChecker->offset.x;
+	rightChecker->rect.y = collider->rect.y + rightChecker->offset.y;
+
+	//if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
+	//	collider_attack->rect.x = collider->rect.x + collider_attack->offset.x;
+	//	collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
+	//}
+	//else if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+	//	collider_attack->rect.x = collider->rect.x - collider_attack->offset.x + 6;
+	//	collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
+	//}
+}
+
+void Object_Player::UpdateCheckersBools()
+{
+	//Check Collisions
+	if (App->collider->CheckColliderCollision(rightChecker)) {
+		rightChecker->collided = true;
+	}
+	else {
+		rightChecker->collided = false;
+	}
+	if (App->collider->CheckColliderCollision(leftChecker)) {
+		leftChecker->collided = true;
+	}
+	else {
+		leftChecker->collided = false;
+	}
+	if (App->collider->CheckColliderCollision(groundChecker)) {
+		groundChecker->collided = true;
+	}
+	else {
+		groundChecker->collided = false;
+		onGround = false;
+	}
+
+	if (App->collider->CheckColliderCollision(ceilingChecker)) {
+		ceilingChecker->collided = true;
+	}
+	else {
+		ceilingChecker->collided = false;
+	}
+}
+
+void Object_Player::UpdateColliderSize()
+{
+	if (state == ST_Fall) {
+		collider->rect.h = 40;
+		groundChecker->offset.y = collider->rect.h;
+		leftChecker->rect.h = rightChecker->rect.h = collider->rect.h - 10;
+	}
+	else {
+		collider->rect.h = 45;
+		groundChecker->offset.y = collider->rect.h;
+		leftChecker->rect.h = rightChecker->rect.h = collider->rect.h - 10;
+	}
+}
+
+void Object_Player::JumpInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
+		jumpPressed = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && doublejumpCount == 0 && !atCeiling) {
+		doubleJumped = true;
+	}
+}
+
+void Object_Player::HorizontalInputs()
+{
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		moveRight = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		moveRight = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		moveLeft = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+		moveLeft = false;
+		//direction = DIR_UP;
+	}
+}
+
+void Object_Player::AttackInputs()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		MP_attackPressed = true;
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+		LK_attackPressed = true;
+	}
 }
 
 
