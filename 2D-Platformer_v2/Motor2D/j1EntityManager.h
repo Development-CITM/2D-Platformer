@@ -101,6 +101,8 @@ public:
 
 	void DestroyEnemies();
 
+	void DestroyPlayer();
+
 	void CreateEnemy(p2Point<int> pos, Object_type type);
 
 	void FillBackup(p2Point<int> pos, Object_type type);
@@ -112,6 +114,8 @@ public:
 	void LoadEnemiesFromBackup();
 
 	void CreatePlayer(pugi::xml_node& object);
+
+
 
 	Collider* RetreivePlayerCollider();
 

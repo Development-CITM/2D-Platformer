@@ -24,6 +24,7 @@ enum CharacterState_v2 {
 	ST_LK_v2,
 	ST_Fall_v2,
 	ST_GrabLedge_v2,
+	ST_Die_v2,
 };
 
 enum class Directions_v2
@@ -56,21 +57,22 @@ private:
 	
 
 
-public:
-	p2Point<int>		absolutePos;
+public:	
+	p2Point<int>			absolutePos;
 
-	int					velocity_X = 0;
-	int					velocity_Y = 0;
-	p2Point<int>		currentVelocity{ 0,0 };
-	bool				onPlatform = false;
+	int						velocity_X = 0;
+	int						velocity_Y = 0;
+	p2Point<int>			currentVelocity{ 0,0 };
+	bool					onPlatform = false;
 
 	CharacterState_v2		state = CharacterState_v2::ST_Idle_v2;
 	CharacterState_v2		previous_state = CharacterState_v2::ST_Idle_v2;
 
-	Animation* currentAnimation = nullptr;
-	Animation* previousAnimation = nullptr;
+	Animation*				currentAnimation = nullptr;
+	Animation*				previousAnimation = nullptr;
 
-	int					numCurrentAnimation = 0;
+	int						numCurrentAnimation = 0;
+	bool					alive;
 	
 };
 

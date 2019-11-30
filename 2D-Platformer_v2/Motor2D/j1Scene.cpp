@@ -37,13 +37,13 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	hasExit = false;
-	if (notfirst)
-	{
-		App->player->Start();
-	}
-
 	debug_tex = App->tex->Load("maps/path2.png");
 	DecideMapToLoad();
+
+	if (notfirst)
+	{
+		App->entity->Start();
+	}
 	return true;
 }
 
@@ -271,7 +271,6 @@ bool j1Scene::CleanUp()
 	levels.clear();
 	App->tiles->CleanUp();
 	App->collider->CleanUp();
-	App->player->CleanUp();
 	App->entity->CleanUp();
 	notfirst = true;
 	return true;

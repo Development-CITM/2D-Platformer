@@ -84,6 +84,7 @@ bool j1EntityManager::CleanUp()
 	bool ret = true;
 
 	DestroyEnemies();
+	DestroyPlayer();
 	
 	return ret;
 }
@@ -99,6 +100,18 @@ void j1EntityManager::DestroyEnemies()
 			objects.del(objects.At(i));
 		}
 	}				
+}
+
+void j1EntityManager::DestroyPlayer()
+{
+	for (int i = objects.count() - 1; i >= 0; i--)
+	{
+		if (objects.At(i)->data->type_object == Object_type::PLAYER)
+		{
+			objects.At(i)->data->CleanUp();
+			objects.del(objects.At(i));
+		}
+	}
 }
 
 void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)

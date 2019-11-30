@@ -96,6 +96,7 @@ public:
 	Animation* disarmed_jump = nullptr;
 	Animation* disarmed_fall = nullptr;
 	Animation* disarmed_double_jump = nullptr;
+	Animation* disarmed_dead = nullptr;
 
 	//Attacks
 	Animation* disarmed_mp = nullptr;

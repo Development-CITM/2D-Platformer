@@ -3,6 +3,7 @@
 #include "DynamicObjects.h"
 #include "CharacterObjects.h"
 #include "j1Colliders.h"
+#include "j1Debug.h"
 #include "j1App.h"
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -24,8 +25,9 @@ bool Object_Player::Start()
 {
 	bool ret = true;
 	Load("animations/Player.tmx");
-	//InitCheckers();
+	InitCheckers();
 	currentAnimation = disarmed_idle;
+	alive = true;
 	state = ST_Idle_v2;
 	return ret;
 }
@@ -65,6 +67,9 @@ bool Object_Player::PreUpdate()
 			HorizontalInputs();
 			break;
 		case ST_LK:
+			HorizontalInputs();
+			break;
+		case ST_Die:
 			HorizontalInputs();
 			break;
 		}
@@ -177,6 +182,10 @@ void Object_Player::LogicStateMachine(float dt)
 		break;
 	case ST_GrabLedge:
 		break;
+	case ST_Die:
+		ChangeAnimation(disarmed_dead);
+		App->debug->CallFade();
+		break;
 	default:
 		break;
 	}
@@ -265,6 +274,11 @@ void Object_Player::ChangeStates()
 			state = CharacterState_v2::ST_LK_v2;
 			break;
 		}
+		if (!alive) {
+			state = CharacterState_v2::ST_Die_v2;
+			break;
+		}
+		
 		break;
 	case ST_Walk:
 		break;
@@ -291,7 +305,13 @@ void Object_Player::ChangeStates()
 			state = CharacterState_v2::ST_LK_v2;
 			break;
 		}
+
+		if (!alive) {
+			state = CharacterState_v2::ST_Die_v2;
+			break;
+			}
 		break;
+
 	case ST_Jump:
 		if (atCeiling) {
 			state = CharacterState_v2::ST_Fall_v2;
@@ -299,6 +319,10 @@ void Object_Player::ChangeStates()
 		}
 		if (falling) {
 			state = CharacterState_v2::ST_Fall_v2;
+			break;
+		}
+		if (!alive) {
+			state = CharacterState_v2::ST_Die_v2;
 			break;
 		}
 		break;
@@ -320,6 +344,10 @@ void Object_Player::ChangeStates()
 		else if (disarmed_mp->finished) {
 			state = CharacterState_v2::ST_Run_v2;
 		}
+		if (!alive) {
+			state = CharacterState_v2::ST_Die_v2;
+			break;
+		}
 		break;
 	case ST_LK:
 		if (disarmed_lk->finished && moveLeft == moveRight) {
@@ -327,6 +355,10 @@ void Object_Player::ChangeStates()
 		}
 		else if (disarmed_lk->finished) {
 			state = CharacterState_v2::ST_Run_v2;
+		}
+		if (!alive) {
+			state = CharacterState_v2::ST_Die_v2;
+			break;
 		}
 		break;
 	case ST_Fall:
@@ -338,8 +370,14 @@ void Object_Player::ChangeStates()
 			state = CharacterState_v2::ST_Run_v2;
 			break;
 		}
+		if (!alive) {
+			state = CharacterState_v2::ST_Die_v2;
+			break;
+		}
 		break;
 	case ST_GrabLedge:
+		break;
+	case ST_Die:
 		break;
 	}
 }
@@ -387,12 +425,14 @@ bool Object_Player::InitCheckers()
 
 	leftChecker = App->collider->AddCollider({ position.x,position.y,4,collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { -3,5 });
 	leftChecker->checkerType = ColliderChecker::Left;
+
+	collider_attack = App->collider->AddCollider({ position.x,position.y,14,8 }, COLLIDER_PLAYER_HIT, { 27,16 });
+	collider_attack->Enabled = false;
 	return ret;
 }
 
 Animation* Object_Player::LoadAnimation(pugi::xml_node& obj_group)
 {
-	InitCheckers();
 	Animation* anim = new Animation();
 	anim->name = obj_group.attribute("name").as_string();
 
@@ -403,6 +443,7 @@ Animation* Object_Player::LoadAnimation(pugi::xml_node& obj_group)
 	else if (strcmp(anim->name.GetString(), "DISARMED_FALL") == 0) { disarmed_fall = anim; }
 	else if (strcmp(anim->name.GetString(), "DISARMED_MP") == 0) { disarmed_mp = anim; disarmed_mp->loop = false; }
 	else if (strcmp(anim->name.GetString(), "DISARMED_LK") == 0) { disarmed_lk = anim; disarmed_lk->loop = false; }
+	else if (strcmp(anim->name.GetString(), "DISARMED_DEAD") == 0) { disarmed_dead = anim; disarmed_dead->loop = false; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 
@@ -622,14 +663,14 @@ void Object_Player::UpdateCheckersPosition()
 	rightChecker->rect.x = collider->rect.x + rightChecker->offset.x;
 	rightChecker->rect.y = collider->rect.y + rightChecker->offset.y;
 
-	//if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
-	//	collider_attack->rect.x = collider->rect.x + collider_attack->offset.x;
-	//	collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
-	//}
-	//else if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
-	//	collider_attack->rect.x = collider->rect.x - collider_attack->offset.x + 6;
-	//	collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
-	//}
+	if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
+		collider_attack->rect.x = collider->rect.x + collider_attack->offset.x;
+		collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
+	}
+	else if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+		collider_attack->rect.x = collider->rect.x - collider_attack->offset.x + 6;
+		collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
+	}
 }
 
 void Object_Player::UpdateCheckersBools()
@@ -660,6 +701,13 @@ void Object_Player::UpdateCheckersBools()
 	}
 	else {
 		ceilingChecker->collided = false;
+	}
+
+	if (App->collider->CheckColliderCollision(collider, COLLIDER_DEAD)) {
+		alive = false;
+	}
+	if (App->collider->CheckColliderCollision(collider, COLLIDER_ENEMY)) {
+		alive = false;
 	}
 }
 
