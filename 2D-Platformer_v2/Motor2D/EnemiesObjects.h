@@ -30,8 +30,11 @@ public:
 	Animation* running;
 	Animation* hurt;
 	Animation* dead;
+	Animation* attack;
 
 	bool moving = false;
+
+	bool alive = true;
 
 
 };

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="5" height="7" tilewidth="68" tileheight="35" infinite="0" nextlayerid="19" nextobjectid="33">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="5" height="7" tilewidth="68" tileheight="35" infinite="0" nextlayerid="22" nextobjectid="38">
  <imagelayer id="3" name="Capa de Imagen 1">
   <image source="kobold-Sheet.png" width="340" height="245"/>
  </imagelayer>
@@ -79,11 +79,6 @@
     <properties>
      <property name="num_sprites" value="4"/>
     </properties>
-    <object id="11" name="HURT" x="0" y="105" width="68" height="35">
-     <properties>
-      <property name="Frames" type="int" value="0"/>
-     </properties>
-    </object>
     <object id="12" name="HURT" x="68" y="105" width="68" height="35">
      <properties>
       <property name="Frames" type="int" value="0"/>
@@ -142,6 +137,38 @@
     </object>
    </objectgroup>
    <objectgroup id="16" name="AABB" visible="0"/>
+  </group>
+  <group id="19" name="ATTACK">
+   <objectgroup id="20" name="ATTACK">
+    <properties>
+     <property name="num_sprites" value="5"/>
+    </properties>
+    <object id="33" name="ATTACK" x="0" y="70" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="34" name="ATTACK" x="68" y="70" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="35" name="ATTACK" x="136" y="70" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="36" name="ATTACK" x="204" y="70" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+    <object id="37" name="ATTACK" x="272" y="70" width="68" height="35">
+     <properties>
+      <property name="Frames" type="int" value="4"/>
+     </properties>
+    </object>
+   </objectgroup>
   </group>
  </group>
 </map>

@@ -9,6 +9,7 @@
 
 Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Character()
 {
+	alive = true;
 	position = pos;
 	type_object = type;
 	if (type == Object_type::ENEMY_GROUND)
@@ -19,7 +20,7 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 			firstkobold = false;
 		}
 
-		collider = App->collider->AddCollider({ position.x + 56,position.y + 5,25,46 }, COLLIDER_ENEMY);
+		collider = App->collider->AddCollider({ position.x,position.y,25,46 }, COLLIDER_ENEMY);
 	}
 	else if (type == Object_type::ENEMY_FLYING)
 	{
@@ -29,9 +30,12 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 			firstwhisp = false;
 		}
 
-		collider = App->collider->AddCollider({ position.x+25 ,position.y + 12,25,25 }, COLLIDER_ENEMY);
+		collider = App->collider->AddCollider({ position.x,position.y,25,25 }, COLLIDER_ENEMY);
 	}
-	currentAnimation = idle;
+	if (attack)
+		currentAnimation = attack;
+	else
+		currentAnimation = idle;
 }
 
 Object_Enemy::~Object_Enemy()
@@ -57,7 +61,33 @@ bool Object_Enemy::PreUpdate()
 bool Object_Enemy::Update(float dt)
 {
 	bool ret = true;
+
+	if (App->collider->CheckColliderCollision(collider, COLLIDER_PLAYER_HIT)) {
+		alive = false;		
+	}
+
 	StablishPath();
+
+	switch (type_object)
+	{
+	case ENEMY_GROUND:
+		collider->rect.x = position.x + 25;
+		collider->rect.y = position.y - 8;
+		break;
+	case ENEMY_FLYING:
+		if (currentAnimation == idle) {
+			collider->rect.x = position.x + 5;
+			collider->rect.y = position.y;
+		}
+		else if (currentAnimation == running) {
+			collider->rect.x = position.x + 15;
+			collider->rect.y = position.y;
+		}
+		break;
+
+	}
+
+
 	Draw(dt);
 	return ret;
 }
@@ -173,6 +203,7 @@ Animation* Object_Enemy::LoadAnimation(pugi::xml_node& obj_group)
 	else if (strcmp(anim->name.GetString(), "RUN") == 0) { running = anim; running->offset.x = 5; }
 	else if (strcmp(anim->name.GetString(), "HURT") == 0) { hurt = anim; hurt->loop = false; }
 	else if (strcmp(anim->name.GetString(), "DEAD") == 0) { dead = anim; dead->loop = false; }
+	else if (strcmp(anim->name.GetString(), "ATTACK") == 0) { attack = anim; attack->loop = false; }
 
 	anim->num_sprites = obj_group.child("properties").child("property").last_attribute().as_int();
 

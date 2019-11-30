@@ -352,6 +352,18 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 				ret = true;
 			}
 			break;
+
+		case COLLIDER_ENEMY:
+			if (c1->CheckCollision(c2->rect) && c2->type == type) {
+				ret = true;
+			}
+			break;
+
+		case COLLIDER_PLAYER_HIT:
+			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
+				ret = true;
+			}
+			break;
 		}
 		if (c->next != NULL)
 			c = c->next;

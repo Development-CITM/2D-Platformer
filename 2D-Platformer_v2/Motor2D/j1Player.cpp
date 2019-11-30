@@ -837,6 +837,9 @@ void j1Player::UpdateCheckersBools()
 	if (App->collider->CheckColliderCollision(player_Collider, COLLIDER_DEAD)) {
 		alive = false;
 	}
+	if (App->collider->CheckColliderCollision(player_Collider, COLLIDER_ENEMY)) {
+		alive = false;
+	}
 }
 
 #pragma endregion
