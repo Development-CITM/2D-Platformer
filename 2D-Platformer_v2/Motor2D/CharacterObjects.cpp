@@ -116,18 +116,22 @@ void Object_Character::Draw(float dt)
 	int offsetY = 0;
 	if (flip && type_object == Object_type::ENEMY_FLYING) {
 		offsetX = 0;
+		offsetY = -15;
 	}
 	else if(!flip && type_object == Object_type::ENEMY_FLYING){
 		offsetX = -20;
+		offsetY = -15;
 	}
 	if (flip && type_object == Object_type::ENEMY_GROUND) {
 		offsetX = 0;
+		offsetY = -15;
 	}
 	else if(!flip&& type_object == Object_type::ENEMY_GROUND){
 		offsetX = -30;
+		offsetY = -15;
 	}
 
-	App->render->Blit(character_tmx_data.texture, position.x + currentAnimation->offset.x + offsetX, position.y - 15, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
+	App->render->Blit(character_tmx_data.texture, position.x + currentAnimation->offset.x + offsetX, position.y +offsetY, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
 }
 
 
