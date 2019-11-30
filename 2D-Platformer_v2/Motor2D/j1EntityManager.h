@@ -20,6 +20,31 @@ enum Object_type {
 	ENEMY_GROUND,
 	ENEMY_FLYING,
 };
+
+enum MapTypes_v2
+{
+	MAPTYPE_UNKNOWN_v2 = 0,
+	MAPTYPE_ORTHOGONAL_v2,
+	MAPTYPE_ISOMETRIC_v2,
+	MAPTYPE_STAGGERED_v2
+};
+
+struct ObjectLayer_v2
+{
+	p2SString			name;
+	p2List<SDL_Rect*>	rects;
+};
+
+struct CharacterTMXData {
+	SDL_Texture* texture = nullptr;
+	uint					width = 0u;
+	uint					height = 0u;
+	int						tile_width = 0u;
+	int						tile_height = 0u;
+	MapTypes_v2				type;
+	p2List<ObjectLayer_v2*>	object_Layers;
+};
+
 class Object_Static;
 class Object_Dynamic;
 
@@ -32,14 +57,16 @@ private:
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
+	virtual void SetPos(pugi::xml_node& object);
 public:
 	Collider* GetCollider() { return collider; }
 public:
 
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
-	Collider* collider = nullptr;
-	p2Point<int> position;
-	Object_type type_object;
+	Collider*			collider = nullptr;
+	p2Point<int>		position;
+	Object_type		    type_object;
+	CharacterTMXData	character_tmx_data;
 
 	//Maybe we should think about a function which updates all entities through dt
 	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects
@@ -72,13 +99,25 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void CreatePlayer();
 	void DestroyEnemies();
+
 	void CreateEnemy(p2Point<int> pos, Object_type type);
+
 	void FillBackup(p2Point<int> pos, Object_type type);
-	void LoadEnemiesFromMap(pugi::xml_node& object);
-	void LoadEnemiesFromBackup();
+
 	void ClearBackup();
+
+	void LoadEnemiesFromMap(pugi::xml_node& object);
+
+	void LoadEnemiesFromBackup();
+
+	void CreatePlayer(pugi::xml_node& object);
+
+	Collider* RetreivePlayerCollider();
+
+	CharacterTMXData RetreivePlayerData();
+
+
 
 public:
 	p2List<GameObject*>  objects;

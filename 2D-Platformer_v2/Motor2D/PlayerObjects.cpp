@@ -11,9 +11,10 @@
 #include "j1Tilesets.h"
 
 struct Collider;
-Object_Player::Object_Player(int var): Object_Character()
+Object_Player::Object_Player(pugi::xml_node& object): Object_Character()
 {
 	absolutePos = { 0,0 };
+	SetPos(object);
 }
 
 Object_Player::~Object_Player()
@@ -95,10 +96,11 @@ bool Object_Player::Update(float dt)
 	absolutePos.x = collider->rect.x - App->tiles->culling_Collider->rect.x;
 	absolutePos.y = collider->rect.y - App->tiles->culling_Collider->rect.y;
 
-	LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
+	//LOG("Camera: (%i,%i)", App->render->camera.x, App->render->camera.y);
+	LOG("POS: (%i,%i)", position.x, position.y);
 
 	Draw(dt); //Draw all the player
-	//dt_variable = dt;
+	dt_variable = dt;
 	return ret;
 }
 
@@ -347,6 +349,23 @@ void Object_Player::ChangeStates()
 bool Object_Player::PostUpdate()
 {
 	bool ret = true;
+	float speed = runSpeed_v2 * 2;
+
+	if (runSpeed_v2 < 0) 
+		speed *= -1.f;
+	
+	if (absolutePos.x < 160 && -App->render->camera.x > App->scene->camera_limit_left) {
+		App->render->MoveCamera({ (int)roundf(speed * ceil(dt_variable * 50)), 0 });
+	}
+	if (absolutePos.x > 285 && -App->render->camera.x < App->scene->camera_limit_right) {
+		App->render->MoveCamera({ -(int)roundf(speed * ceil(dt_variable * 50)), 0 });
+	}
+	if (absolutePos.y < 100) {
+		App->render->MoveCamera({ 0, (int)roundf(6 * ceil(dt_variable * 32)) });
+	}
+	if (absolutePos.y > 260 && -App->render->camera.y < App->scene->camera_limit_bot) {
+		App->render->MoveCamera({ 0, -(int)roundf(10 * ceil(dt_variable * 32)) });
+	}
 	return ret;
 }
 

@@ -26,7 +26,6 @@ bool j1EntityManager::Awake(pugi::xml_node & conf)
 bool j1EntityManager::Start()
 {
 	bool ret = true;
-	CreatePlayer();
 	p2List_item<GameObject*>* item;
 	item = objects.start;
 
@@ -89,11 +88,6 @@ bool j1EntityManager::CleanUp()
 	return ret;
 }
 
-void j1EntityManager::CreatePlayer()
-{
-	Object_Player* player = new Object_Player(1);
-	objects.add(player);
-}
 
 void j1EntityManager::DestroyEnemies()
 {
@@ -189,6 +183,48 @@ void j1EntityManager::LoadEnemiesFromBackup()
 	}
 }
 
+void j1EntityManager::CreatePlayer(pugi::xml_node& object)
+{
+	Object_Player* player = new Object_Player(object);
+	objects.add(player);
+}
+
+Collider* j1EntityManager::RetreivePlayerCollider()
+{
+	p2List_item<GameObject*>* item;
+	Collider* ret = nullptr;
+	item = objects.start;
+
+	while (item != NULL)
+	{
+		if (item->data->type_object == Object_type::PLAYER)
+		{
+			ret = item->data->GetCollider();
+		}
+		item = item->next;
+	}
+	return ret;
+}
+
+
+
+CharacterTMXData j1EntityManager::RetreivePlayerData()
+{
+	CharacterTMXData tmx;
+	p2List_item<GameObject*>* item;
+	item = objects.start;
+
+	while (item != NULL)
+	{
+		if (item->data->type_object == Object_type::PLAYER)
+		{
+			tmx = item->data->character_tmx_data;
+		}
+		item = item->next;
+	}
+	return tmx;
+}
+
 void j1EntityManager::ClearBackup()
 {
 	for (int i = backup.count() - 1; i >= 0; i--)
@@ -227,5 +263,10 @@ bool GameObject::PostUpdate()
 bool GameObject::CleanUp()
 {
 	return false;
+}
+
+void GameObject::SetPos(pugi::xml_node& object)
+{
+
 }
 

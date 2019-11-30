@@ -38,30 +38,6 @@ enum class Directions_v2
 	DIR_NONE_v2,
 };
 
-enum MapTypes_v2
-{
-	MAPTYPE_UNKNOWN_v2 = 0,
-	MAPTYPE_ORTHOGONAL_v2,
-	MAPTYPE_ISOMETRIC_v2,
-	MAPTYPE_STAGGERED_v2
-};
-
-struct ObjectLayer_v2
-{
-	p2SString			name;
-	p2List<SDL_Rect*>	rects;
-};
-
-struct CharacterTMXData {
-	SDL_Texture* texture = nullptr;
-	uint					width = 0u;
-	uint					height = 0u;
-	int						tile_width = 0u;
-	int						tile_height = 0u;
-	MapTypes_v2				type;
-	p2List<ObjectLayer_v2*>	object_Layers;
-};
-
 class Object_Character : public Object_Dynamic{
 
 public:
@@ -82,7 +58,6 @@ private:
 
 public:
 	p2Point<int>		absolutePos;
-	CharacterTMXData	character_tmx_data;
 
 	int					velocity_X = 0;
 	int					velocity_Y = 0;

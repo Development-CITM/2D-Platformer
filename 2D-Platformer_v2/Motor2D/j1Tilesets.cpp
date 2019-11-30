@@ -494,7 +494,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 	else if (strcmp(node.attribute("name").as_string(), "Player_pos") == 0)
 	{
 		objects = node.child("object");
-		App->player->SetPlayerPos(objects);
+		App->entity->CreatePlayer(objects);
 	}
 	else if (strcmp(node.attribute("name").as_string(), "Enemy_pos") == 0)
 	{

@@ -13,7 +13,7 @@
 
 class Object_Player : public Object_Character {
 public:
-	Object_Player(int var);
+	Object_Player(pugi::xml_node &object);
 
 	~Object_Player();
 
@@ -116,7 +116,8 @@ public:
 
 	int					colliderOffsetY1 = 10;
 	int					colliderOffsetY2 = 9;
-	int aha;
+
+	float				dt_variable;
 
 
 };
