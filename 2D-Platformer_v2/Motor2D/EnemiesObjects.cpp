@@ -22,6 +22,8 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 		}
 
 		collider = App->collider->AddCollider({ position.x,position.y,25,46 }, COLLIDER_ENEMY);
+		groundChecker = App->collider->AddCollider({ position.x,position.y,collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,collider->rect.h });
+		groundChecker->checkerType = ColliderChecker::Ground;
 	}
 	else if (type == Object_type::ENEMY_FLYING)
 	{
@@ -59,19 +61,36 @@ bool Object_Enemy::PreUpdate()
 bool Object_Enemy::Update(float dt)
 {
 	bool ret = true;
-
+	if (groundChecker) {
+		if (App->collider->CheckColliderCollision(groundChecker,COLLIDER_CEILING_CHECKER)) {
+			groundChecker->collided = true;
+			onGround = true;
+		}
+		else {
+			groundChecker->collided = false;
+			onGround = false;
+		}
+	}
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_PLAYER_HIT)) {
 		alive = false;
 	}
 	switch (state)
 	{
+
 	case State::IDLE:
 		StablishPath();
 		ChangeAnimation(idle);
+		if (!onGround) {
+		state = State::FALL;
+
+		}
 		break;
 	case State::RUNNING:
 		StablishPath();
 		ChangeAnimation(running);
+		if (!onGround) {
+			state = State::FALL;
+		}
 		break;
 	case State::ATTACK:
 		StablishPath();
@@ -93,7 +112,16 @@ bool Object_Enemy::Update(float dt)
 		break;
 	case State::DIE:
 		break;
-	default:
+	case State::FALL:
+		ChangeAnimation(idle);
+		if (!onGround) {
+			position.y += 2;
+		}
+		else {
+			state = State::IDLE;
+			onGround = true;
+		}
+	
 		break;
 	}
 
@@ -101,6 +129,8 @@ bool Object_Enemy::Update(float dt)
 	switch (type_object)
 	{
 	case ENEMY_GROUND:
+		groundChecker->rect.x = collider->rect.x + groundChecker->offset.x;
+		groundChecker->rect.y = collider->rect.y + groundChecker->offset.y;
 		collider->rect.x = position.x + 25;
 		collider->rect.y = position.y - 8;
 		break;

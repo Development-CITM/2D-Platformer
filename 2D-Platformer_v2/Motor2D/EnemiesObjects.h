@@ -12,7 +12,8 @@ enum class State {
 	IDLE,
 	RUNNING,
 	ATTACK,
-	DIE
+	DIE,
+	FALL
 };
 
 class Object_Enemy : public Object_Character {
@@ -44,9 +45,12 @@ public:
 	bool canAttack = true;
 
 	bool moving = false;
+	bool onGround = true;
 
 	bool alive = true;
 	State state;
+
+	Collider* groundChecker = nullptr;
 
 };
 

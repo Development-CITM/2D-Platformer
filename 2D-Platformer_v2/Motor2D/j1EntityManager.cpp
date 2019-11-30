@@ -164,22 +164,22 @@ void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 				}
 				CreateEnemy(pos, type);
 			}
-			else if (strcmp(all.attribute("name").as_string(), "Whisp") == 0)
-			{
-				type = Object_type::ENEMY_FLYING;
-				for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
-				{
-					if (strcmp(it.attribute("name").as_string(), "whisp_pos_x") == 0)
-					{
-						pos.x = it.attribute("value").as_int();
-					}
-					else if (strcmp(it.attribute("name").as_string(), "whisp_pos_y") == 0)
-					{
-						pos.y = it.attribute("value").as_int();
-					}
-				}
-				CreateEnemy(pos, type);
-			}	
+			//else if (strcmp(all.attribute("name").as_string(), "Whisp") == 0)
+			//{
+			//	type = Object_type::ENEMY_FLYING;
+			//	for (pugi::xml_node it = all.child("properties").child("property"); it; it = it.next_sibling("property"))
+			//	{
+			//		if (strcmp(it.attribute("name").as_string(), "whisp_pos_x") == 0)
+			//		{
+			//			pos.x = it.attribute("value").as_int();
+			//		}
+			//		else if (strcmp(it.attribute("name").as_string(), "whisp_pos_y") == 0)
+			//		{
+			//			pos.y = it.attribute("value").as_int();
+			//		}
+			//	}
+			//	CreateEnemy(pos, type);
+			//}	
 	}
 	
 }

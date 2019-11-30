@@ -312,7 +312,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 	c2 = c->data;
 	for (int i = 0; i < colliders.count(); i++)
 	{
-		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_DEAD)
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_DEAD && c2->type != COLLIDER_ENEMY)
 		{
 			if (c1->CheckCollision(c2->rect)) {
 				if (c1->checkerType == ColliderChecker::Top && c2->type == COLLIDER_WALL_TRASPASSABLE && c2->Enabled) {
@@ -361,6 +361,11 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 
 		case COLLIDER_PLAYER_HIT:
 			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
+				ret = true;
+			}
+			break;
+		case COLLIDER_CEILING_CHECKER:
+			if (c1->CheckCollision(c2->rect) && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_CEILING_CHECKER && c2->type != COLLIDER_WINDOW) {
 				ret = true;
 			}
 			break;
