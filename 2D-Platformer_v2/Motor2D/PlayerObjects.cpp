@@ -533,8 +533,14 @@ void Object_Player::SetPos(pugi::xml_node& object)
 	}
 	else
 	{
-		collider->rect.x = position.x;
-		collider->rect.y = position.y;
+		position.x = App->scene->player_backup_x;
+		position.y = App->scene->player_backup_y;
+		if (collider != nullptr)
+		{
+			collider->rect.x = App->scene->player_backup_collider_x;
+
+			collider->rect.y = App->scene->player_backup_collider_y;
+		}
 	}
 }
 
@@ -727,40 +733,49 @@ void Object_Player::UpdateColliderSize()
 
 void Object_Player::JumpInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
-		jumpPressed = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && doublejumpCount == 0 && !atCeiling) {
-		doubleJumped = true;
+	if (App->debug->input)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
+			jumpPressed = true;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && doublejumpCount == 0 && !atCeiling) {
+			doubleJumped = true;
+		}
 	}
 }
 
 void Object_Player::HorizontalInputs()
 {
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		moveRight = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		moveRight = false;
-	}
+	if (App->debug->input)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			moveRight = true;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+			moveRight = false;
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		moveLeft = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		moveLeft = false;
-		//direction = DIR_UP;
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			moveLeft = true;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+			moveLeft = false;
+			//direction = DIR_UP;
+		}
 	}
 }
 
 void Object_Player::AttackInputs()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
-		MP_attackPressed = true;
-	}
+	if (App->debug->input)
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			MP_attackPressed = true;
+		}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		LK_attackPressed = true;
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+			LK_attackPressed = true;
+		}
 	}
 }
 

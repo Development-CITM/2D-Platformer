@@ -31,6 +31,7 @@ public:
 	void MoveToTarget(p2Point<int>);
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 	void ChangeAnimation(Animation*);
+	bool InitCheckers(Object_type type);
 public:
 	bool firstkobold = true;
 	bool firstwhisp = true;

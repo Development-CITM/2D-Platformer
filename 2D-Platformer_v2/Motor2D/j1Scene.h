@@ -64,6 +64,7 @@ public:
 	bool notfirst=false;
 
 	bool loading = false;
+	bool saving = false;
 	bool swapping = false;
 	p2List<p2SString*> levels;
 	p2SString A1 = "maps/A1.tmx";
@@ -78,6 +79,11 @@ public:
 	int camera_limit_right = 0;
 	int camera_limit_bot = 0;
 	int camera_limit_top = 0;
+
+	int player_backup_x = 0;
+	int player_backup_y = 0;
+	int player_backup_collider_x = 0;
+	int player_backup_collider_y = 0;
 
 	bool hasExit = false;
 

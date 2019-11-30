@@ -19,11 +19,7 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 		{
 			Load("animations/Enemy_Kobold.tmx");
 			firstkobold = false;
-		}
-
-		collider = App->collider->AddCollider({ position.x,position.y,25,46 }, COLLIDER_ENEMY);
-		groundChecker = App->collider->AddCollider({ position.x,position.y,collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,collider->rect.h });
-		groundChecker->checkerType = ColliderChecker::Ground;
+		}		
 	}
 	else if (type == Object_type::ENEMY_FLYING)
 	{
@@ -32,8 +28,6 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 			Load("animations/Enemy_Wwisp.tmx");
 			firstwhisp = false;
 		}
-
-		collider = App->collider->AddCollider({ position.x,position.y,25,25 }, COLLIDER_ENEMY);
 	}
 		currentAnimation = idle;
 }
@@ -46,7 +40,7 @@ bool Object_Enemy::Start()
 {
 	bool ret = true;
 	
-	
+	InitCheckers(type_object);
 	
 	
 	return ret;
@@ -297,4 +291,20 @@ void Object_Enemy::ChangeAnimation(Animation* anim)
 		previousAnimation->ResetAnim();
 		currentAnimation = anim;
 	}
+}
+
+bool Object_Enemy::InitCheckers(Object_type type)
+{
+	bool ret = true;
+	if (type == Object_type::ENEMY_FLYING)
+	{
+		collider = App->collider->AddCollider({ position.x,position.y,25,25 }, COLLIDER_ENEMY);
+	}
+	else if (type == Object_type::ENEMY_GROUND)
+	{
+		collider = App->collider->AddCollider({ position.x,position.y,25,46 }, COLLIDER_ENEMY);
+		groundChecker = App->collider->AddCollider({ position.x,position.y,collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,collider->rect.h });
+		groundChecker->checkerType = ColliderChecker::Ground;
+	}
+	return ret;
 }

@@ -61,7 +61,6 @@ bool j1Scene::PreUpdate()
 	p = App->tiles->WorldToMap(p.x, p.y);
 	
 
-
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		if (origin_selected == true)
@@ -92,6 +91,7 @@ bool j1Scene::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
+			App->scene->saving = true;
 			App->SaveGame("save_game.xml");
 		}	
 
@@ -157,8 +157,10 @@ bool j1Scene::Load(pugi::xml_node& data)
 		App->render->camera.y = data.child("camera").attribute("y").as_int();
 
 		//--------------PLAYER--------------//
-		App->player->playerPos.x = data.child("playerPos").attribute("player_pos_x").as_float();
-		App->player->playerPos.y = data.child("playerPos").attribute("player_pos_y").as_float();
+		player_backup_x = data.child("playerPos").attribute("player_pos_x").as_float();
+		player_backup_y = data.child("playerPos").attribute("player_pos_y").as_float();
+		player_backup_collider_x = data.child("playerPos").attribute("player_collider_pos_x").as_float();
+		player_backup_collider_y = data.child("playerPos").attribute("player_collider_pos_y").as_float();
 
 		//-------------LEVEL SELECTION----------------//
 		destination_level = data.child("scene").attribute("current_map").as_string();
@@ -188,6 +190,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 			enemy += enemy_identificator;
 			App->entity->backup.At(i)->data->position.y = data.child("enemies").attribute((enemy += y).GetString()).as_int();
 			enemy = "enemy_";
+			id++;
 		}	
 	return true;
 }
@@ -195,14 +198,23 @@ bool j1Scene::Load(pugi::xml_node& data)
 // Save Game State
 bool j1Scene::Save(pugi::xml_node& data) const
 {
+	p2List_item<GameObject*>* item;
 	//------------PLAYER-------------------//
 	pugi::xml_node player = data.append_child("playerPos");
 
-	player.append_attribute("player_pos_x") = App->player->playerPos.x;
-	player.append_attribute("player_pos_y") = App->player->playerPos.y;
-
-	pugi::xml_node player_collider = data.append_child("player_collider");
-
+	item = App->entity->objects.start;
+	while (item != NULL)
+	{
+		if (item->data->type_object == Object_type::PLAYER)
+		{
+			player.append_attribute("player_pos_x") = item->data->position.x;
+			player.append_attribute("player_pos_y") = item->data->position.y;
+			player.append_attribute("player_collider_pos_x") = item->data->collider->rect.x;
+			player.append_attribute("player_collider_pos_y") = item->data->collider->rect.y;
+		}
+		item = item->next;
+	}
+	
 	//------------CAMERA --------------------//
 	pugi::xml_node cam = data.append_child("camera");
 
@@ -224,7 +236,6 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	App->entity->ClearBackup();
 	pugi::xml_node enemies = data.append_child("enemies");
 
-	p2List_item<GameObject*>* item;
 	item = App->entity->objects.start;
 	int id = 1;
 	int type_id;

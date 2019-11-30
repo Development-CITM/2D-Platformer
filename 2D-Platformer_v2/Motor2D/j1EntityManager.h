@@ -50,16 +50,18 @@ class Object_Dynamic;
 
 
 class GameObject {
-	friend class j1EntityManager; //This way we can access Objects functions through the functions of GameObjects class which should be protected
-private:
+
+	friend class j1EntityManager; 
 	virtual bool Start();
 	virtual bool PreUpdate();
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
 	virtual void SetPos(pugi::xml_node& object);
+
 public:
 	Collider* GetCollider() { return collider; }
+
 public:
 
 	SDL_RendererFlip	flip = SDL_RendererFlip::SDL_FLIP_NONE;
@@ -67,11 +69,6 @@ public:
 	p2Point<int>		position;
 	Object_type		    type_object;
 	CharacterTMXData	character_tmx_data;
-
-	//Maybe we should think about a function which updates all entities through dt
-	//We need to create Game Objects and also destroy them. Functions to create static/dynamic and generically destroy game objects
-	//We need to check all collisions between objects so function 'OnCollision' or it's homologus should be in here
-	//All objects states need to be saved into the XML File so exclusive save and load for objects should be in here
 };
 
 
