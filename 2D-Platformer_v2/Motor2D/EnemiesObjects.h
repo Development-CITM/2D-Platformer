@@ -8,6 +8,12 @@
 #include "DynamicObjects.h"
 #include "CharacterObjects.h"
 
+enum class State {
+	IDLE,
+	RUNNING,
+	ATTACK,
+	DIE
+};
 
 class Object_Enemy : public Object_Character {
 
@@ -23,6 +29,7 @@ public:
 	void StablishPath();
 	void MoveToTarget(p2Point<int>);
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
+	void ChangeAnimation(Animation*);
 public:
 	bool firstkobold = true;
 	bool firstwhisp = true;
@@ -32,10 +39,14 @@ public:
 	Animation* dead;
 	Animation* attack;
 
+	int attackDelay = 50;
+	int timer = 0;
+	bool canAttack = true;
+
 	bool moving = false;
 
 	bool alive = true;
-
+	State state;
 
 };
 
