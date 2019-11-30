@@ -147,7 +147,7 @@ bool j1Player::PostUpdate()
 		speed *= -1.f;
 	}
 
-	if (App->player->absolutePos.x < 160 && -App->render->camera.x > App->scene->camera_limit_left) {
+	/*if (App->player->absolutePos.x < 160 && -App->render->camera.x > App->scene->camera_limit_left) {
  		App->render->MoveCamera({ (int)roundf(speed * ceil(dt_variable * 50)), 0 });
 	}	
 
@@ -161,7 +161,7 @@ bool j1Player::PostUpdate()
 	
 	if (App->player->absolutePos.y > 260 && -App->render->camera.y < App->scene->camera_limit_bot) {
 		App->render->MoveCamera({ 0, -(int)roundf(10 * ceil(dt_variable * 32)) });
-	}
+	}*/
 
 
 

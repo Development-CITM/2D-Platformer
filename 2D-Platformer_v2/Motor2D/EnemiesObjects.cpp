@@ -142,8 +142,8 @@ void Object_Enemy::StablishPath()
 	origin.x = position.x;
 	origin.y = position.y;
 
-	player_pos.x = App->player->GetCollider()->GetPosition().x;
-	player_pos.y = App->player->GetCollider()->GetPosition().y;
+	player_pos.x = App->entity->RetreivePlayerCollider()->GetPosition().x;
+	player_pos.y = App->entity->RetreivePlayerCollider()->GetPosition().y;
 
 	origin = App->tiles->WorldToMap(origin.x, origin.y);
 	player_pos = App->tiles->WorldToMap(player_pos.x, player_pos.y);
@@ -190,12 +190,12 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 			break;
 		case ENEMY_GROUND:
 
-			if (position.x < App->player->GetCollider()->GetPosition().x) {
+			if (position.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
 				position.x += 1;
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
-			if (position.x > App->player->GetCollider()->GetPosition().x) {
+			if (position.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
 				position.x -= 1;
 				currentAnimation = running;
 				state = State::RUNNING;

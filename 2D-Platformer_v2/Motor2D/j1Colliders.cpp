@@ -57,7 +57,7 @@ bool j1Colliders::PreUpdate()
 	 //Disable all colliders in the list ------------------------------------------------------------------
 	for (uint i = 0; i < detected_Colliders.count(); ++i)
 	{
-		if (App->player->GetCollider()->rect.y + 45 < detected_collider->data->rect.y) {
+		if (App->entity->RetreivePlayerCollider()->rect.y + 45 < detected_collider->data->rect.y) {
 			detected_collider->data->Enabled = true;
 			detected_Colliders.del(detected_collider);
 		}
@@ -281,7 +281,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 						ret = true;
 						break;
 					case Directions::DIR_DOWN:
-						*snapPos = c2->rect.y - App->player->GetCollider()->rect.h - 2;
+						*snapPos = c2->rect.y - App->entity->RetreivePlayerCollider()->rect.h - 2;
 						ret = true;
 						break;
 					case Directions::DIR_UP:
