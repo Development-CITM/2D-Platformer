@@ -12,6 +12,7 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 	alive = true;
 	position = pos;
 	type_object = type;
+	state = State::IDLE;
 	if (type == Object_type::ENEMY_GROUND)
 	{
 		if (firstkobold)
@@ -32,9 +33,6 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 
 		collider = App->collider->AddCollider({ position.x,position.y,25,25 }, COLLIDER_ENEMY);
 	}
-	if (attack)
-		currentAnimation = attack;
-	else
 		currentAnimation = idle;
 }
 
@@ -63,10 +61,42 @@ bool Object_Enemy::Update(float dt)
 	bool ret = true;
 
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_PLAYER_HIT)) {
-		alive = false;		
+		alive = false;
+	}
+	switch (state)
+	{
+	case State::IDLE:
+		StablishPath();
+		ChangeAnimation(idle);
+		break;
+	case State::RUNNING:
+		StablishPath();
+		ChangeAnimation(running);
+		break;
+	case State::ATTACK:
+		StablishPath();
+		if (attack && canAttack) {
+			ChangeAnimation(attack);
+			if (attack->finished) {
+				ChangeAnimation(idle);
+				canAttack = false;
+				timer = 0;
+			}
+		}
+		if (timer < attackDelay && !canAttack) {
+			timer++;
+		}
+		else {
+			timer = 0;
+			canAttack = true;
+		}
+		break;
+	case State::DIE:
+		break;
+	default:
+		break;
 	}
 
-	StablishPath();
 
 	switch (type_object)
 	{
@@ -86,7 +116,6 @@ bool Object_Enemy::Update(float dt)
 		break;
 
 	}
-
 
 	Draw(dt);
 	return ret;
@@ -146,6 +175,7 @@ void Object_Enemy::StablishPath()
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 	if ((origin.x - player_pos.x) * (origin.x - player_pos.x) <= 0) {
 		currentAnimation = idle;
+		state = State::ATTACK;
 	}
 	LOG("Count: %i", path->Count());
 }
@@ -163,29 +193,35 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 			if (position.x < App->player->GetCollider()->GetPosition().x) {
 				position.x += 1;
 				currentAnimation = running;
+				state = State::RUNNING;
 			}
 			if (position.x > App->player->GetCollider()->GetPosition().x) {
 				position.x -= 1;
 				currentAnimation = running;
+				state = State::RUNNING;
 			}
 			break;
 		case ENEMY_FLYING:
 			if (position.x < target.x) {
 				position.x += 1;
 				currentAnimation = running;
+				state = State::RUNNING;
 			}
 			if (position.x > target.x) {
 				position.x -= 1;
 				currentAnimation = running;
+				state = State::RUNNING;
 			}
 
 			if (position.y < target.y) {
 				position.y += 1;
 				currentAnimation = running;
+				state = State::RUNNING;
 			}
 			if (position.y > target.y) {
 				position.y -= 1;
 				currentAnimation = running;
+				state = State::RUNNING;
 			}
 			break;
 		}
@@ -222,4 +258,13 @@ Animation* Object_Enemy::LoadAnimation(pugi::xml_node& obj_group)
 		i++;
 	}
 	return anim;
+}
+
+void Object_Enemy::ChangeAnimation(Animation* anim)
+{
+	if (currentAnimation != anim) {
+		previousAnimation = currentAnimation;
+		previousAnimation->ResetAnim();
+		currentAnimation = anim;
+	}
 }
