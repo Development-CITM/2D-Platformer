@@ -39,7 +39,7 @@ bool j1Scene::Start()
 	hasExit = false;
 	if (notfirst)
 	{
-		App->player->Load("animations/Player.tmx");
+		App->player->Start();
 	}
 
 	debug_tex = App->tex->Load("maps/path2.png");

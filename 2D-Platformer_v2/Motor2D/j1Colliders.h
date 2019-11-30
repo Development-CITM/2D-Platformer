@@ -127,6 +127,7 @@ public:
 
 	bool CheckColliderCollision(Collider*, Directions dir, int* snapPos = nullptr);
 	bool CheckColliderCollision(Collider*);
+	bool CheckColliderCollision(Collider*,ColliderType);
 	void ChooseSwap(pugi::xml_node& node,Collider* c);
 
 	bool ThroughPlatform (Collider*);

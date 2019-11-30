@@ -21,6 +21,7 @@ enum CharacterState {
 	ST_LK,
 	ST_Fall,
 	ST_GrabLedge,
+	ST_Die,
 };
 
 enum class Directions

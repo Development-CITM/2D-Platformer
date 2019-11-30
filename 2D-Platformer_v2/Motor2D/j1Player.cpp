@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Player.h"
+#include "j1Debug.h"
 #include "j1Input.h"
 #include "j1Colliders.h"
 #include "j1Tilesets.h"
@@ -37,7 +38,8 @@ bool j1Player::Start()
 	//Load Player tmx (it contains animations and colliders properties)
 	Load("animations/Player.tmx");
 	state = ST_Idle;
-
+	alive = true;
+	
 	currentAnimation = disarmed_idle;
 	//App->render->SetCameraPos(playerPos);
 
@@ -82,6 +84,9 @@ bool j1Player::PreUpdate()
 			HorizontalInputs();
 			break;
 		case ST_LK:
+			HorizontalInputs();
+			break;
+		case ST_Die:
 			HorizontalInputs();
 			break;
 		}
@@ -240,6 +245,10 @@ void j1Player::LogicStateMachine(float dt)
 		break;
 	case ST_GrabLedge:
 		break;
+	case ST_Die:
+		ChangeAnimation(disarmed_dead);
+		App->debug->CallFade();
+		break;
 	default:
 		break;
 	}
@@ -330,6 +339,10 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_LK;
 			break;
 		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
+			break;
+		}
 		break;
 	case ST_Walk:
 		break;
@@ -356,6 +369,10 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_LK;
 			break;
 		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
+			break;
+		}
 		break;
 	case ST_Jump:
 		if (atCeiling) {
@@ -364,6 +381,10 @@ void j1Player::ChangeStates()
 		}
 		if (falling) {
 			state = CharacterState::ST_Fall;
+			break;
+		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
 			break;
 		}
 		break;
@@ -377,6 +398,10 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_Fall;
 			break;
 		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
+			break;
+		}
 		break;
 	case ST_MP:
 		if (disarmed_mp->finished && moveLeft == moveRight) {
@@ -385,6 +410,10 @@ void j1Player::ChangeStates()
 		else if (disarmed_mp->finished) {
 			state = CharacterState::ST_Run;
 		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
+			break;
+		}
 		break;
 	case ST_LK:
 		if (disarmed_lk->finished && moveLeft == moveRight) {
@@ -392,6 +421,10 @@ void j1Player::ChangeStates()
 		}
 		else if (disarmed_lk->finished) {
 			state = CharacterState::ST_Run;
+		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
+			break;
 		}
 		break;
 	case ST_Fall:
@@ -403,8 +436,14 @@ void j1Player::ChangeStates()
 			state = CharacterState::ST_Run;
 			break;
 		}
+		if (!alive) {
+			state = CharacterState::ST_Die;
+			break;
+		}
 		break;
 	case ST_GrabLedge:
+		break;
+	case ST_Die:
 		break;
 	}
 }
@@ -793,6 +832,10 @@ void j1Player::UpdateCheckersBools()
 	}
 	else {
 		ceilingChecker->collided = false;
+	}
+
+	if (App->collider->CheckColliderCollision(player_Collider, COLLIDER_DEAD)) {
+		alive = false;
 	}
 }
 

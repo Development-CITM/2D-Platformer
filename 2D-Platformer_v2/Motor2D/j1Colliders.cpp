@@ -264,7 +264,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 	c2 = c->data;
 	for (int i = 0; i < colliders.count(); i++)
 	{
-		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_HIT && c2->type != COLLIDER_ENEMY)
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_HIT && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_DEAD)
 		{
 			if (c1->CheckCollision(c2->rect) && c2->Enabled) {
 				if (dir != Directions::DIR_NONE && snapPos != nullptr) {
@@ -312,7 +312,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 	c2 = c->data;
 	for (int i = 0; i < colliders.count(); i++)
 	{
-		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER)
+		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_DEAD)
 		{
 			if (c1->CheckCollision(c2->rect)) {
 				if (c1->checkerType == ColliderChecker::Top && c2->type == COLLIDER_WALL_TRASPASSABLE && c2->Enabled) {
@@ -327,12 +327,31 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 					c2->Enabled = false;
 					App->debug->CallFade();
 				}
-				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type==COLLIDER_DEAD && c2->Enabled) {
-					App->player->alive = false;
-				}
-				ret = true;
-				
+				ret = true;				
 			}
+		}
+		if (c->next != NULL)
+			c = c->next;
+		c2 = c->data;
+	}
+	return ret;
+}
+
+bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
+{
+	bool ret = false;
+	Collider* c2 = nullptr;
+	p2List_item<Collider*>* c = colliders.start;
+	c2 = c->data;
+	for (int i = 0; i < colliders.count(); i++)
+	{
+		switch (type)
+		{
+		case COLLIDER_DEAD:
+			if (c1->CheckCollision(c2->rect) && c2->type == type) {
+				ret = true;
+			}
+			break;
 		}
 		if (c->next != NULL)
 			c = c->next;

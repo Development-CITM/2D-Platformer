@@ -19,7 +19,7 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 			firstkobold = false;
 		}
 
-		//collider = App->collider->AddCollider({ characterPos.x + 56,characterPos.y + 5,25,46 }, COLLIDER_ENEMY);
+		collider = App->collider->AddCollider({ position.x + 56,position.y + 5,25,46 }, COLLIDER_ENEMY);
 	}
 	else if (type == Object_type::ENEMY_FLYING)
 	{
@@ -29,7 +29,7 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 			firstwhisp = false;
 		}
 
-		//collider = App->collider->AddCollider({ characterPos.x+25 ,characterPos.y + 12,25,25 }, COLLIDER_ENEMY);
+		collider = App->collider->AddCollider({ position.x+25 ,position.y + 12,25,25 }, COLLIDER_ENEMY);
 	}
 	currentAnimation = idle;
 }
