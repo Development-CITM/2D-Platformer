@@ -309,7 +309,7 @@ bool Object_Enemy::InitCheckers(Object_type type)
 	bool ret = true;
 	if (type == Object_type::ENEMY_FLYING)
 	{
-		collider = App->collider->AddCollider({ position.x,position.y,25,25 }, COLLIDER_ENEMY);
+		collider = App->collider->AddCollider({ position.x,position.y,20,20 }, COLLIDER_ENEMY);
 	}
 	else if (type == Object_type::ENEMY_GROUND)
 	{

@@ -461,7 +461,7 @@ bool Object_Player::InitCheckers()
 	leftChecker = App->collider->AddCollider({ position.x,position.y,4,collider->rect.h - 10 }, COLLIDER_CEILING_CHECKER, { -3,5 });
 	leftChecker->checkerType = ColliderChecker::Left;
 
-	collider_attack = App->collider->AddCollider({ position.x,position.y,14,8 }, COLLIDER_PLAYER_HIT, { 27,16 });
+	collider_attack = App->collider->AddCollider({ position.x,position.y,20,8 }, COLLIDER_PLAYER_HIT, { 27,16 });
 	collider_attack->Enabled = false;
 	return ret;
 }
