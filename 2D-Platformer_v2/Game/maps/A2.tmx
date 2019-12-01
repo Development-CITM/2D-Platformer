@@ -206237,7 +206237,7 @@
      <tile/>
     </data>
    </layer>
-   <layer id="185" name="Path" width="112" height="80" visible="0">
+   <layer id="185" name="Path" width="112" height="80">
     <properties>
      <property name="Navigation" value="1"/>
     </properties>
@@ -215236,7 +215236,7 @@
   <object id="46" type="Dead" x="864" y="1168" width="80" height="16"/>
   <object id="47" type="Dead" x="624" y="1168" width="64" height="16"/>
   <object id="48" type="Dead" x="928" y="704" width="192" height="16"/>
-  <object id="49" type="Transition" x="304" y="288" width="16" height="144">
+  <object id="49" type="Barrier" x="304" y="288" width="16" height="144">
    <properties>
     <property name="swap" value="A2toA1"/>
    </properties>
