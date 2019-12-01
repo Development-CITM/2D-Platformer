@@ -58,50 +58,22 @@ bool j1Scene::Update(float dt)
 {
 	if (App->debug->input == true)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		if (App->scene->saving)
 		{
-			App->debug->CallFade();
-			App->LoadGame("save_game.xml");
+			if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+			{
+				App->debug->CallFade();
+				App->LoadGame("save_game.xml");
+			}
 		}
-
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
 			App->scene->saving = true;
 			App->SaveGame("save_game.xml");
 		}	
 
-	/*	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-			App->render->camera.y += 4;
-			App->tiles->culling_Collider->rect.y -= 2;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-			App->render->camera.y -= 4;
-			App->tiles->culling_Collider->rect.y += 2;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-
-			App->render->camera.x += 4;
-			App->tiles->culling_Collider->rect.x -= 2;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-			App->render->camera.x -= 4;
-			App->tiles->culling_Collider->rect.x += 2;
-		}	*/
 	}
 		App->tiles->Draw();
-	
-	
-	/*iPoint map_coordinates = App->tiles->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-					App->tiles->map_Data.width, App->tiles->map_Data.height,
-					App->tiles->map_Data.tile_width, App->tiles->map_Data.tile_height,
-					App->tiles->map_Data.tilesets.count(),
-					map_coordinates.x, map_coordinates.y);
-
-	App->win->SetTitle(title.GetString());*/
 	return true;
 }
 
