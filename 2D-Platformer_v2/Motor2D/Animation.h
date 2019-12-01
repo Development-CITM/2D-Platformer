@@ -46,7 +46,7 @@ public:
 			}
 			else
 			{
-				sprites[current_sprite].current_frame = sprites[current_sprite].current_frame + (1 * ceil(dt /50));//+ (int)(ceil(1 * dt * 50));
+				sprites[current_sprite].current_frame = sprites[current_sprite].current_frame + 1; /*+ (ceil(dt /50));*///+ (int)(ceil(1 * dt * 50));
 			}
 		}
 		else {
