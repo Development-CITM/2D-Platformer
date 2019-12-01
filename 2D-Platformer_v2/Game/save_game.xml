@@ -5,12 +5,12 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos player_pos_x="569" player_pos_y="1095" player_collider_pos_x="596" player_collider_pos_y="1105" />
-		<camera x="-750" y="-1750" />
-		<culling x="375" y="875" />
+		<playerPos player_pos_x="381" player_pos_y="375" player_collider_pos_x="408" player_collider_pos_y="385" />
+		<camera x="-660" y="-260" />
+		<culling x="330" y="130" />
 		<current_lvl />
-		<scene current_map="maps/A3.tmx" />
-		<enemies enemy_1_x="1085" enemy_1_y="474" enemy_1_type="2" />
+		<scene current_map="maps/A2.tmx" />
+		<enemies enemy_1_x="1206" enemy_1_y="603" enemy_1_type="1" enemy_2_x="1032" enemy_2_y="578" enemy_2_type="2" enemy_3_x="600" enemy_3_y="440" enemy_3_type="2" enemy_4_x="825" enemy_4_y="936" enemy_4_type="1" />
 	</scene>
 	<map />
 	<:anonymous />

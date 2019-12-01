@@ -200,11 +200,23 @@ void Object_Player::LogicStateMachine(float dt)
 	case ST_MP:
 		ChangeAnimation(disarmed_mp);
 		MP_attackPressed = false;
-		if (disarmed_mp->current_sprite == 3) {
-			collider_attack->Enabled = true;
+		if (App->maxcapFrames)
+		{
+			if (disarmed_mp->current_sprite == 3) {
+				collider_attack->Enabled = true;
+			}
+			else {
+				collider_attack->Enabled = false;
+			}
 		}
-		else {
-			collider_attack->Enabled = false;
+		else if (!App->maxcapFrames)
+		{
+			if (disarmed_mp->current_sprite == 2) {
+				collider_attack->Enabled = true;
+			}
+			else {
+				collider_attack->Enabled = false;
+			}
 		}
 		break;
 	case ST_LK:
