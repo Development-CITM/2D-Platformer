@@ -83,6 +83,8 @@ private:
 	//Inputs for attacking
 	void AttackInputs();
 
+	void GodMove();
+
 
 public:
 

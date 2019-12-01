@@ -94,6 +94,14 @@ bool Object_Player::Update(float dt)
 	velocity_X -= position.x;
 	velocity_Y -= position.y;
 
+	if (App->debug->godmode) {
+		GodMove();
+		UpdateCheckersPosition();
+		UpdatePlayerPosition();
+		Draw(dt);
+		return true;
+	}
+
 	UpdateCheckersBools();
 
 	UpdateColliderSize();
@@ -815,6 +823,24 @@ void Object_Player::AttackInputs()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 			LK_attackPressed = true;
 		}
+	}
+}
+
+void Object_Player::GodMove()
+{
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		collider->rect.x += 4;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		collider->rect.x -= 4;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		collider->rect.y -= 4;
+	}	
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		collider->rect.y += 4;
 	}
 }
 

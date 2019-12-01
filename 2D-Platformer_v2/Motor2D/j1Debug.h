@@ -22,8 +22,11 @@ public:
 	//Function that fades through scenes
 	void CallFade();
 
+	bool godmode = false;
+
 public:
 	bool input = true;
+	
 };
 #endif
 

@@ -13,6 +13,7 @@
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+#include "PlayerObjects.h"
 #include <math.h>
 #include "j1Debug.h"
 
@@ -76,7 +77,12 @@ bool j1Debug::Update(float dt)
 		//Enables god mode ------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
-			//GOD MODE
+			if (godmode) {
+				godmode = false;
+			}
+			else if (!godmode) {
+				godmode = true;
+			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		{
