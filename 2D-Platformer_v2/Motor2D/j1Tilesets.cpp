@@ -542,7 +542,7 @@ void j1Tilesets::SetCullingPos(pugi::xml_node& object)
 	}
 	//Sets Culling Collider ------------------------------------------------------------------------------------------------
 	p2Point<int> culling_Pos{ culling_pos_x,culling_pos_y };
-	if (App->scene->loading == false)
+	if (App->scene->loading == true)
 	{
 		
 		culling_Collider = App->collider->AddCollider({ culling_Pos.x,culling_Pos.y,App->win->GetWidth() / 2,App->win->GetHeight() / 2 }, COLLIDER_WINDOW);

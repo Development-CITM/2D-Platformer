@@ -211425,7 +211425,7 @@
  <objectgroup id="57" name="Camera_limits">
   <object id="65" name="Camera limits" x="368" y="0" width="16" height="16">
    <properties>
-    <property name="limit_bot" type="int" value="1224"/>
+    <property name="limit_bot" type="int" value="1724"/>
     <property name="limit_left" type="int" value="770"/>
     <property name="limit_right" type="int" value="2000"/>
     <property name="limit_top" type="int" value="0"/>
