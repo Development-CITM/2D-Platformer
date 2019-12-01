@@ -27,6 +27,7 @@ Object_Player::~Object_Player()
 
 bool Object_Player::Start()
 {
+	BROFILER_CATEGORY("StartPlayer", Profiler::Color::Black)
 	bool ret = true;
 	Load("animations/Player.tmx");
 	App->audio->LoadFx("audio/fx/jump_fx.wav");

@@ -187,6 +187,7 @@ bool Object_Enemy::CleanUp()
 
 void Object_Enemy::StablishPath()
 {
+	BROFILER_CATEGORY("PathLogic", Profiler::Color::AntiqueWhite)
 	iPoint origin;
 	iPoint player_pos;
 
@@ -242,6 +243,7 @@ void Object_Enemy::StablishPath()
 
 void Object_Enemy::MoveToTarget(p2Point<int> target)
 {
+	BROFILER_CATEGORY("MoveEnemy", Profiler::Color::Red)
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 	if (path->At(1) != nullptr) {
 		switch (type_object)
@@ -250,16 +252,19 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 			break;
 		case ENEMY_GROUND:
 			if (state != State::ATTACK) {
-				if (collider->rect.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
+				if (collider->rect.x < App->entity->RetreivePlayerCollider()->GetPosition().x && collider->rect.y < App->entity->RetreivePlayerCollider()->GetPosition().y +10) {
 					position.x += 1 * ceil(deltavar * 50);
 					currentAnimation = running;
 					state = State::RUNNING;
 				}
 
-				if (collider->rect.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
+				if (collider->rect.x > App->entity->RetreivePlayerCollider()->GetPosition().x&& collider->rect.y < App->entity->RetreivePlayerCollider()->GetPosition().y+ 10) {
 					position.x -= 1 * ceil(deltavar * 50);
 					currentAnimation = running;
 					state = State::RUNNING;
+				}
+				if (collider->rect.y < App->entity->RetreivePlayerCollider()->GetPosition().y) {
+					state = State::IDLE;
 				}
 			}
 			break;

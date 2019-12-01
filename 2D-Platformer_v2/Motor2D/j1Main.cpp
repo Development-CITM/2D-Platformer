@@ -67,17 +67,19 @@ int main(int argc, char* args[])
 			break;
 
 			// Call all modules before first frame  ----------------------------
-			case START:
-			LOG("START PHASE ===============================");
-			if(App->Start() == true)
-			{
-				state = LOOP;
-				LOG("UPDATE PHASE ===============================");
-			}
-			else
-			{
-				state = FAIL;
-				LOG("ERROR: Start failed");
+			case START: {
+				LOG("START PHASE ===============================");
+				BROFILER_FRAME("Update");
+				if (App->Start() == true)
+				{
+					state = LOOP;
+					LOG("UPDATE PHASE ===============================");
+				}
+				else
+				{
+					state = FAIL;
+					LOG("ERROR: Start failed");
+				}
 			}
 			break;
 

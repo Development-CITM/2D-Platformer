@@ -108,6 +108,7 @@ SDL_Rect Object_Character::LoadAABB(pugi::xml_node& AABB_object)
 
 void Object_Character::Draw(float dt)
 {
+	BROFILER_CATEGORY("DrawLogic", Profiler::Color::Aqua)
 	numCurrentAnimation = currentAnimation->GetSprite(dt);
 	int offsetX = 0;
 	int offsetY = 0;

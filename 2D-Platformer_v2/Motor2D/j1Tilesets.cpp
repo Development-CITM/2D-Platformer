@@ -88,6 +88,7 @@ bool j1Tilesets::CleanUp()
 //Draw all layers from each tileset used using GIDs ----------------------------------------------------------------------------------------------------------------
 void j1Tilesets::Draw()
 {
+	BROFILER_CATEGORY("DrawMap", Profiler::Color::Aquamarine)
 	if (map_loaded == false)
 		return;
 

@@ -7,6 +7,7 @@
 #include "j1Module.h"
 #include "j1Render.h"
 #include "j1App.h"
+#include "Brofiler/Brofiler.h"
 
 //Map types_v2 to avoid confflict while traslating
 enum Object_type {
