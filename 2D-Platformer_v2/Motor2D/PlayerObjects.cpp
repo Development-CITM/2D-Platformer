@@ -841,10 +841,12 @@ void Object_Player::AttackInputs()
 	if (App->debug->input)
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			App->audio->PlayFx(5);
 			MP_attackPressed = true;
 		}
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+			App->audio->PlayFx(6);
 			LK_attackPressed = true;
 		}
 	}

@@ -5,6 +5,7 @@
 #include "j1Pathfinding.h"
 #include "j1Tilesets.h"
 #include "j1Scene.h"
+#include "j1Audio.h"
 
 Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Character()
 {
@@ -65,7 +66,14 @@ bool Object_Enemy::Update(float dt)
 	}
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_PLAYER_HIT)) {
 		alive = false;
-
+		if (type_object == Object_type::ENEMY_FLYING)
+		{
+			App->audio->PlayFx(7);
+		}
+		else if (type_object == Object_type::ENEMY_GROUND)
+		{
+			App->audio->PlayFx(8);
+		}
 		collider->to_delete = true;
 		collider->Enabled = false;
 		if (groundChecker) {
