@@ -222,6 +222,25 @@ void Object_Player::LogicStateMachine(float dt)
 	case ST_LK:
 		ChangeAnimation(disarmed_lk);
 		LK_attackPressed = false;
+
+		if (App->maxcapFrames)
+		{
+			if (disarmed_lk->current_sprite == 3) {
+				collider_attack->Enabled = true;
+			}
+			else {
+				collider_attack->Enabled = false;
+			}
+		}
+		else if (!App->maxcapFrames)
+		{
+			if (disarmed_lk->current_sprite == 2) {
+				collider_attack->Enabled = true;
+			}
+			else {
+				collider_attack->Enabled = false;
+			}
+		}
 		break;
 	case ST_Fall:
 		canDoubleJump = true;
@@ -720,11 +739,20 @@ void Object_Player::UpdateCheckersPosition()
 
 	if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
 		collider_attack->rect.x = collider->rect.x + collider_attack->offset.x;
-		collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
+
 	}
 	else if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
 		collider_attack->rect.x = collider->rect.x - collider_attack->offset.x + 6;
+	}
+	if (currentAnimation == disarmed_lk) {
+		collider_attack->rect.y = collider->rect.y + collider_attack->offset.y - 15;
+		collider_attack->rect.w = 12;
+		collider_attack->rect.h = 25;
+	}
+	else {
 		collider_attack->rect.y = collider->rect.y + collider_attack->offset.y;
+		collider_attack->rect.w = 20;
+		collider_attack->rect.h = 8;
 	}
 }
 

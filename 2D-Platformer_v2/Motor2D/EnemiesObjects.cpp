@@ -101,6 +101,12 @@ bool Object_Enemy::Update(float dt)
 		StablishPath();
 		if (attack && canAttack && type_object==Object_type::ENEMY_GROUND) {
 			ChangeAnimation(attack);
+			if (attack->current_sprite == 2) {
+				enemyHit->Enabled = true;
+			}
+			else {
+				enemyHit->Enabled = false;
+			}
 			if (attack->finished) {
 				ChangeAnimation(idle);
 				canAttack = false;
@@ -137,6 +143,15 @@ bool Object_Enemy::Update(float dt)
 			if (groundChecker != nullptr) {
 				groundChecker->rect.x = collider->rect.x + groundChecker->offset.x;
 				groundChecker->rect.y = collider->rect.y + groundChecker->offset.y;
+			}	
+			if (enemyHit != nullptr) {
+				if (flip) {
+					enemyHit->rect.x = collider->rect.x + enemyHit->offset.x - 20;
+				}
+				else {
+					enemyHit->rect.x = collider->rect.x - enemyHit->offset.x;
+				}
+				enemyHit->rect.y = collider->rect.y + enemyHit->offset.y;
 			}
 			collider->rect.x = position.x + 25;
 			collider->rect.y = position.y - 8;
@@ -204,14 +219,23 @@ void Object_Enemy::StablishPath()
 				}
 			}
 		}
+		inRange = true;
 	}
 	else {
 		App->pathfinding->ClearPath();
+		inRange = false;
 	}
 	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-	if ((origin.x - player_pos.x) * (origin.x - player_pos.x) <= 0) {
+	if ((origin.x - player_pos.x) * (origin.x - player_pos.x) <= 10 && inRange) {
 		currentAnimation = idle;
 		state = State::ATTACK;
+	}
+	else if(inRange) {
+		state = State::RUNNING;
+	}
+
+	if (!inRange) {
+		state = State::IDLE;
 	}
 	//LOG("Count: %i", path->Count());
 }
@@ -225,16 +249,18 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 		case PLAYER:
 			break;
 		case ENEMY_GROUND:
+			if (state != State::ATTACK) {
+				if (collider->rect.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
+					position.x += 1 * ceil(deltavar * 50);
+					currentAnimation = running;
+					state = State::RUNNING;
+				}
 
-			if (collider->rect.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
-				position.x += 1 * ceil(deltavar * 50);
-				currentAnimation = running;
-				state = State::RUNNING;
-			}
-			if (collider->rect.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
-				position.x -= 1 * ceil(deltavar * 50);
-				currentAnimation = running;
-				state = State::RUNNING;
+				if (collider->rect.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
+					position.x -= 1 * ceil(deltavar * 50);
+					currentAnimation = running;
+					state = State::RUNNING;
+				}
 			}
 			break;
 		case ENEMY_FLYING:
@@ -315,6 +341,8 @@ bool Object_Enemy::InitCheckers(Object_type type)
 	else if (type == Object_type::ENEMY_GROUND)
 	{
 		collider = App->collider->AddCollider({ position.x,position.y,25,46 }, COLLIDER_ENEMY);
+		enemyHit = App->collider->AddCollider({ position.x,position.y,45,20 }, COLLIDER_ENEMY, { 50,15 });
+		enemyHit->Enabled = false;
 		groundChecker = App->collider->AddCollider({ position.x,position.y,collider->rect.w - 1 ,4 }, COLLIDER_CEILING_CHECKER, { 1,collider->rect.h });
 		groundChecker->checkerType = ColliderChecker::Ground;
 	}

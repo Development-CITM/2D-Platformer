@@ -222,7 +222,7 @@ void j1Colliders::Draw()
 				rect.y = collider->data->rect.y * size * scale;
 				rect.w = collider->data->rect.w * size * scale;
 				rect.h = collider->data->rect.h * size * scale;
-				if(!collider->data->to_delete)
+				if(!collider->data->to_delete && collider->data->Enabled)
 				App->render->DrawQuad(rect, 255, 0, 0, 60);
 				break;
 			case COLLIDER_WINDOW:

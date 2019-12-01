@@ -78,8 +78,11 @@ public:
 	//Checker for enemy_ground falling
 	Collider* groundChecker = nullptr;
 	Collider* collider_test = nullptr;
+	Collider* enemyHit = nullptr;
 
 	float deltavar = 0;
+
+	bool inRange = false;
 
 };
 
