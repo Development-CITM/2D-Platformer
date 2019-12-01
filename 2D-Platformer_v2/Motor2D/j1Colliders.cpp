@@ -10,7 +10,6 @@
 #include "j1Scene.h"
 #include "j1Window.h"
 #include "j1Input.h"
-#include "j1Player.h"
 #include "j1Debug.h"
 #include <math.h>
 
@@ -261,7 +260,7 @@ Collider* j1Colliders::AddCollider(SDL_Rect rect, ColliderType type,p2Point<int>
 #pragma region CheckFunctions
 
 
-bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapPos)
+bool j1Colliders::CheckColliderCollision(Collider* c1,Directions_v2 dir, int* snapPos)
 { 
 	bool ret = false;
 	Collider* c2 = nullptr;
@@ -272,24 +271,24 @@ bool j1Colliders::CheckColliderCollision(Collider* c1,Directions dir, int* snapP
 		if (c1->type != c2->type && c2->type != COLLIDER_WINDOW && c2->type != COLLIDER_PLAYER && c2->type != COLLIDER_PLAYER_HIT && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_DEAD)
 		{
 			if (c1->CheckCollision(c2->rect) && c2->Enabled) {
-				if (dir != Directions::DIR_NONE && snapPos != nullptr) {
+				if (dir != Directions_v2::DIR_NONE_v2 && snapPos != nullptr) {
 					switch (dir)
 					{
-					case Directions::DIR_RIGHT:	
+					case Directions_v2::DIR_RIGHT_v2:
 							*snapPos = c2->rect.x - 22;						
 						ret = true;
 						break;
 
-					case Directions::DIR_LEFT:				
+					case Directions_v2::DIR_LEFT_v2:
 							*snapPos = c2->rect.x + c2->rect.w + 2;
 
 						ret = true;
 						break;
-					case Directions::DIR_DOWN:
+					case Directions_v2::DIR_DOWN_v2:
 						*snapPos = c2->rect.y - App->entity->RetreivePlayerCollider()->rect.h - 2;
 						ret = true;
 						break;
-					case Directions::DIR_UP:
+					case Directions_v2::DIR_UP_v2:
 						if (c2->type != COLLIDER_WALL_TRASPASSABLE) {
 							*snapPos = c2->rect.y + c2->rect.h + 5;
 							ret = true;

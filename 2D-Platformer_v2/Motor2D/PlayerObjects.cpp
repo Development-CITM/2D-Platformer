@@ -1,6 +1,5 @@
 #include "PlayerObjects.h"
 #include "j1EntityManager.h"
-#include "DynamicObjects.h"
 #include "CharacterObjects.h"
 #include "j1Colliders.h"
 #include "j1Debug.h"
@@ -52,34 +51,34 @@ bool Object_Player::PreUpdate()
 	if (canMove) {
 		switch (state)
 		{
-		case ST_Idle:
+		case ST_Idle_v2:
 			HorizontalInputs();
 			JumpInput();
 			AttackInputs();
 			break;
-		case ST_Run:
+		case ST_Run_v2:
 			HorizontalInputs();
 			JumpInput();
 			AttackInputs();
 			break;
-		case ST_Jump:
+		case ST_Jump_v2:
 			HorizontalInputs();
 			JumpInput();
 			break;
-		case ST_DoubleJump:
+		case ST_DoubleJump_v2:
 			HorizontalInputs();
 			break;
-		case ST_Fall:
+		case ST_Fall_v2:
 			HorizontalInputs();
 			JumpInput();
 			break;
-		case ST_MP:
+		case ST_MP_v2:
 			HorizontalInputs();
 			break;
-		case ST_LK:
+		case ST_LK_v2:
 			HorizontalInputs();
 			break;
-		case ST_Die:
+		case ST_Die_v2:
 			HorizontalInputs();
 			break;
 		}
@@ -150,16 +149,16 @@ void Object_Player::LogicStateMachine(float dt)
 {
 	switch (state)
 	{
-	case ST_Idle:
+	case ST_Idle_v2:
 		JumpStart(dt);
 		break;
-	case ST_Walk:
+	case ST_Walk_v2:
 		break;
-	case ST_Run:
+	case ST_Run_v2:
 		HorizontalMove(dt);
 		JumpStart(dt);
 		break;
-	case ST_Jump:
+	case ST_Jump_v2:
 		ChangeAnimation(disarmed_jump);
 		canDoubleJump = true;
 		if (verticalSpeed_v2 >= 1.f * dt * 45) {
@@ -167,37 +166,37 @@ void Object_Player::LogicStateMachine(float dt)
 			falling = true;
 		}
 		DoubleJumpStart(dt);
-		if (state == CharacterState::ST_Jump) {
+		if (state == CharacterState_v2::ST_Jump_v2) {
 			int posY = 0;
 			collider->rect.y += (int)roundf(verticalSpeed_v2);
 			ceilingChecker->rect.x = collider->rect.x + ceilingChecker->offset.x;
 			ceilingChecker->rect.y = collider->rect.y + ceilingChecker->offset.y;
-			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions_v2::DIR_UP_v2, &posY)) {
 				collider->rect.y = posY;
 				verticalSpeed_v2 = 0.0f;
 			}
 		}
 		HorizontalMove(dt);
 		break;
-	case ST_DoubleJump:
+	case ST_DoubleJump_v2:
 		ChangeAnimation(disarmed_double_jump);
 		if (verticalSpeed_v2 >= 1.f * dt * 45) {
 			jumping = false;
 			falling = true;
 		}
-		if (state == CharacterState::ST_DoubleJump) {
+		if (state == CharacterState_v2::ST_DoubleJump_v2) {
 			int posY = 0;
 			collider->rect.y += (int)roundf(verticalSpeed_v2);
 			ceilingChecker->rect.x = collider->rect.x + ceilingChecker->offset.x;
 			ceilingChecker->rect.y = collider->rect.y + ceilingChecker->offset.y;
-			if (App->collider->CheckColliderCollision(ceilingChecker, Directions::DIR_UP, &posY)) {
+			if (App->collider->CheckColliderCollision(ceilingChecker, Directions_v2::DIR_UP_v2, &posY)) {
 				collider->rect.y = posY;
 				verticalSpeed_v2 = 0.0f;
 			}
 		}
 		HorizontalMove(dt);
 		break;
-	case ST_MP:
+	case ST_MP_v2:
 		ChangeAnimation(disarmed_mp);
 		MP_attackPressed = false;
 		if (App->maxcapFrames)
@@ -219,7 +218,7 @@ void Object_Player::LogicStateMachine(float dt)
 			}
 		}
 		break;
-	case ST_LK:
+	case ST_LK_v2:
 		ChangeAnimation(disarmed_lk);
 		LK_attackPressed = false;
 
@@ -242,15 +241,15 @@ void Object_Player::LogicStateMachine(float dt)
 			}
 		}
 		break;
-	case ST_Fall:
+	case ST_Fall_v2:
 		canDoubleJump = true;
 		ChangeAnimation(disarmed_fall);
 		HorizontalMove(dt);
 		DoubleJumpStart(dt);
 		break;
-	case ST_GrabLedge:
+	case ST_GrabLedge_v2:
 		break;
-	case ST_Die:
+	case ST_Die_v2:
 		ChangeAnimation(disarmed_dead);
 		App->debug->CallFade();
 		break;
@@ -308,7 +307,7 @@ void Object_Player::Gravity(float dt)
 	int posY = 0;
 	collider->rect.y += (int)roundf(verticalSpeed_v2);
 	groundChecker->rect.y += (int)roundf(verticalSpeed_v2);
-	if (App->collider->CheckColliderCollision(groundChecker, Directions::DIR_DOWN, &posY)) {
+	if (App->collider->CheckColliderCollision(groundChecker, Directions_v2::DIR_DOWN_v2, &posY)) {
 		collider->rect.y = posY;
 		onGround = true;
 		canDoubleJump = false;
@@ -320,7 +319,7 @@ void Object_Player::ChangeStates()
 {
 	switch (state)
 	{
-	case ST_Idle:
+	case ST_Idle_v2:
 		ChangeAnimation(disarmed_idle);
 		if (!onGround) {
 			state = CharacterState_v2::ST_Fall_v2;
@@ -348,9 +347,9 @@ void Object_Player::ChangeStates()
 		}
 		
 		break;
-	case ST_Walk:
+	case ST_Walk_v2:
 		break;
-	case ST_Run:
+	case ST_Run_v2:
 		ChangeAnimation(disarmed_run);
 		if (moveLeft == moveRight && onGround) {
 			state = CharacterState_v2::ST_Idle_v2;
@@ -380,7 +379,7 @@ void Object_Player::ChangeStates()
 			}
 		break;
 
-	case ST_Jump:
+	case ST_Jump_v2:
 		if (atCeiling) {
 			state = CharacterState_v2::ST_Fall_v2;
 			break;
@@ -394,7 +393,7 @@ void Object_Player::ChangeStates()
 			break;
 		}
 		break;
-	case ST_DoubleJump:
+	case ST_DoubleJump_v2:
 
 		if (atCeiling) {
 			state = CharacterState_v2::ST_Fall_v2;
@@ -405,7 +404,7 @@ void Object_Player::ChangeStates()
 			break;
 		}
 		break;
-	case ST_MP:
+	case ST_MP_v2:
 		if (disarmed_mp->finished && moveLeft == moveRight) {
 			state = CharacterState_v2::ST_Idle_v2;
 		}
@@ -417,7 +416,7 @@ void Object_Player::ChangeStates()
 			break;
 		}
 		break;
-	case ST_LK:
+	case ST_LK_v2:
 		if (disarmed_lk->finished && moveLeft == moveRight) {
 			state = CharacterState_v2::ST_Idle_v2;
 		}
@@ -429,7 +428,7 @@ void Object_Player::ChangeStates()
 			break;
 		}
 		break;
-	case ST_Fall:
+	case ST_Fall_v2:
 		if (onGround) {
 			state = CharacterState_v2::ST_Idle_v2;
 			break;
@@ -443,9 +442,9 @@ void Object_Player::ChangeStates()
 			break;
 		}
 		break;
-	case ST_GrabLedge:
+	case ST_GrabLedge_v2:
 		break;
-	case ST_Die:
+	case ST_Die_v2:
 		break;
 	}
 }
@@ -679,7 +678,7 @@ void Object_Player::HorizontalMove(float dt)
 	else if (moveRight) {
 		int posX = 0;
 		collider->rect.x += (int)roundf(runSpeed_v2 * ceil(dt * 50));
-		if (App->collider->CheckColliderCollision(rightChecker, Directions::DIR_RIGHT, &posX)) {
+		if (App->collider->CheckColliderCollision(rightChecker, Directions_v2::DIR_RIGHT_v2, &posX)) {
 			if (posX != 0) {
 				runSpeed_v2 = 0.f;
 				collider->rect.x = posX;
@@ -692,7 +691,7 @@ void Object_Player::HorizontalMove(float dt)
 	else if (moveLeft) {
 		int posX = 0;
 		collider->rect.x += (int)roundf(runSpeed_v2 * ceil(dt * 50));
-		if (App->collider->CheckColliderCollision(leftChecker, Directions::DIR_LEFT, &posX)) {
+		if (App->collider->CheckColliderCollision(leftChecker, Directions_v2::DIR_LEFT_v2, &posX)) {
 			if (posX != 0) {
 				runSpeed_v2 = 0.f;
 				collider->rect.x = posX;
@@ -806,7 +805,7 @@ void Object_Player::UpdateCheckersBools()
 
 void Object_Player::UpdateColliderSize()
 {
-	if (state == ST_Fall) {
+	if (state == ST_Fall_v2) {
 		collider->rect.h = 40;
 		groundChecker->offset.y = collider->rect.h;
 		leftChecker->rect.h = rightChecker->rect.h = collider->rect.h - 10;

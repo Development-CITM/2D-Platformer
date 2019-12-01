@@ -1,6 +1,5 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
-#include "DynamicObjects.h"
 #include "CharacterObjects.h"
 #include "PlayerObjects.h"
 #include "EnemiesObjects.h"

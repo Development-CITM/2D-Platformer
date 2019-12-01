@@ -80,7 +80,6 @@
     <ClCompile Include="EnemiesObjects.cpp" />
     <ClCompile Include="j1Colliders.cpp" />
     <ClCompile Include="j1Debug.cpp" />
-    <ClCompile Include="DynamicObjects.cpp" />
     <ClCompile Include="j1Fade2Black.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1Main.cpp" />
@@ -89,7 +88,6 @@
     <ClCompile Include="j1Input.cpp" />
     <ClCompile Include="j1Pathfinding.cpp" />
     <ClCompile Include="j1PerfTimer.cpp" />
-    <ClCompile Include="j1Player.cpp" />
     <ClCompile Include="j1Tilesets.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
@@ -106,13 +104,11 @@
     <ClInclude Include="EnemiesObjects.h" />
     <ClInclude Include="j1Colliders.h" />
     <ClInclude Include="j1Debug.h" />
-    <ClInclude Include="DynamicObjects.h" />
     <ClInclude Include="j1Fade2Black.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="j1Pathfinding.h" />
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Tilesets.h" />
-    <ClInclude Include="j1Player.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="MemLeaks.h" />

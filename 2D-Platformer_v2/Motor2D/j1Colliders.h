@@ -5,7 +5,6 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
-#include "j1Player.h"
 #include "PlayerObjects.h"
 
 enum ColliderType
@@ -125,7 +124,7 @@ public:
 
 public:
 
-	bool CheckColliderCollision(Collider*, Directions dir, int* snapPos = nullptr);
+	bool CheckColliderCollision(Collider*, Directions_v2 dir, int* snapPos = nullptr);
 	bool CheckColliderCollision(Collider*);
 	bool CheckColliderCollision(Collider*,ColliderType);
 	void ChooseSwap(pugi::xml_node& node,Collider* c);

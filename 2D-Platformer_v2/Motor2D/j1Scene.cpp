@@ -7,7 +7,6 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Tilesets.h"
-#include "j1Player.h"
 #include "j1Colliders.h"
 #include "j1Fade2Black.h"
 #include "j1PathFinding.h"
@@ -51,31 +50,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	// debug pathfing ------------------
-	static iPoint origin;
-	static bool origin_selected = false;
-
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->tiles->WorldToMap(p.x, p.y);
-	
-
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	{
-		if (origin_selected == true)
-		{
-			App->pathfinding->CreatePath(origin, p);
-			origin_selected = false;
-		}
-		else
-		{
-			origin = App->tiles->WorldToMap(App->player->GetCollider()->GetPosition().x, App->player->GetCollider()->GetPosition().y);
-			origin_selected = true;
-		}
-	}
 	return true;
-
 }
 
 // Called each loop iteration

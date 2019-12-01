@@ -4,7 +4,6 @@
 #include "j1Module.h"
 #include "j1Audio.h"
 #include "j1Tilesets.h"
-#include "j1Player.h"
 #include "j1Colliders.h"
 #include "SDL\include\SDL_rect.h"
 

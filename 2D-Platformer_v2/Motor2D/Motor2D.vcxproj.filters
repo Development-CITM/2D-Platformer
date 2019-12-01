@@ -34,9 +34,6 @@
     <ClCompile Include="j1Tilesets.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Player.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Colliders.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
@@ -51,9 +48,6 @@
     </ClCompile>
     <ClCompile Include="j1Timer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicObjects.cpp">
-      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
     </ClCompile>
     <ClCompile Include="CharacterObjects.cpp">
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects</Filter>
@@ -126,9 +120,6 @@
     <ClInclude Include="j1Tilesets.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Player.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1Colliders.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
@@ -146,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="j1Timer.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicObjects.h">
-      <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
     </ClInclude>
     <ClInclude Include="CharacterObjects.h">
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects</Filter>
