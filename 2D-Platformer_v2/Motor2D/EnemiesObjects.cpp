@@ -2,7 +2,6 @@
 #include "p2Log.h"
 #include "j1Colliders.h"
 #include "j1App.h"
-#include "j1Player.h"
 #include "j1Pathfinding.h"
 #include "j1Tilesets.h"
 #include "j1Scene.h"

@@ -1,6 +1,5 @@
 #include "j1EntityManager.h"
 #include "CharacterObjects.h"
-#include "DynamicObjects.h"
 #include "PlayerObjects.h"
 #include "j1App.h"
 #include "j1Textures.h"
@@ -9,7 +8,7 @@
 
 
 
-Object_Character::Object_Character():Object_Dynamic()
+Object_Character::Object_Character():GameObject()
 {}
 
 Object_Character::~Object_Character()

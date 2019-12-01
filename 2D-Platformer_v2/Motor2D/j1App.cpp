@@ -13,7 +13,6 @@
 #include "j1Scene.h"
 #include "j1PathFinding.h"
 #include "j1Tilesets.h"
-#include "j1Player.h"
 #include "j1Colliders.h"
 #include "j1Fade2Black.h"
 #include "j1EntityManager.h"
@@ -34,7 +33,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	tiles = new j1Tilesets();
 	collider = new j1Colliders();
-	//player = new j1Player();
 	fade2black = new j1Fade2Black();
 	debug = new j1Debug();
 	entity = new j1EntityManager();
@@ -50,7 +48,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(tiles);
 	AddModule(entity);
-//	AddModule(player);
 	AddModule(collider);
 	AddModule(fade2black);
 	AddModule(debug);
@@ -248,7 +245,7 @@ void j1App::FinishUpdate()
 	static char title[256];
 	if (maxcapFrames)
 	{
-		sprintf_s(title, 256, "Current FPS: %i | Avg. FPS: %.2f  | Last Frame Ms: %02u | Cap: OFF | Vsync: OFF",
+		sprintf_s(title, 256, "Current FPS: %i | Avg. FPS: %.2f  | Last Frame Ms: %02u | Cap: OFF | Vsync: ON",
 			frames_on_last_update, avg_fps, last_frame_ms);
 	}
 	else

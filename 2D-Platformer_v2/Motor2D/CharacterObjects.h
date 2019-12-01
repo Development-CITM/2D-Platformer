@@ -5,7 +5,6 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1EntityManager.h"
-#include "DynamicObjects.h"
 #include "Animation.h"
 #include "j1Render.h"
 
@@ -39,7 +38,7 @@ enum class Directions_v2
 	DIR_NONE_v2,
 };
 
-class Object_Character : public Object_Dynamic{
+class Object_Character : public GameObject {
 
 public:
 	Object_Character();

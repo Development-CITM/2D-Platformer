@@ -1,11 +1,14 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
-#include "DynamicObjects.h"
 #include "CharacterObjects.h"
 #include "PlayerObjects.h"
 #include "EnemiesObjects.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
+#include "j1Audio.h"
+#include "SDL/include/SDL.h"
+#include "SDL_mixer\include\SDL_mixer.h"
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 j1EntityManager::j1EntityManager()
 {
@@ -22,6 +25,10 @@ bool j1EntityManager::Awake(pugi::xml_node & conf)
 
 bool j1EntityManager::Start()
 {
+	App->audio->LoadFx("audio/fx/jump_fx.wav");
+	App->audio->LoadFx("audio/fx/double_jump_fx.wav");
+	App->audio->LoadFx("audio/fx/water_sfx.wav");
+	App->audio->LoadFx("audio/fx/dead_fx.wav");
 	bool ret = true;
 	p2List_item<GameObject*>* item;
 	item = objects.start;
@@ -80,6 +87,16 @@ bool j1EntityManager::PostUpdate()
 bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
+
+	p2List_item<Mix_Chunk*>* item = App->audio->fx.start;
+	{
+		for (int i = App->audio->fx.count() - 1; i >= 0; i--)
+		{
+			Mix_FreeChunk(item->data);
+			App->audio->fx.del(App->audio->fx.At(i));
+		}
+
+	}
 
 	DestroyEnemies();
 	DestroyPlayer();

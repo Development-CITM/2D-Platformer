@@ -9,7 +9,6 @@
 #include "j1Window.h"
 #include "j1Audio.h"
 #include "j1Input.h"
-#include "j1Player.h"
 #include "j1Fade2Black.h"
 #include <math.h>
 
