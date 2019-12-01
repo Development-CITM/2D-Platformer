@@ -30,45 +30,48 @@ bool j1Debug::Update(float dt)
 	if (input == true)
 	{
 		//Single map selection ------------------------------------------------------------------------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_KP_1))
+		if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 		{
 			App->scene->destination_level = "maps/A1.tmx";
 			CallFade();
 		}
-		if (App->input->GetKey(SDL_SCANCODE_KP_2))
+		if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
 		{
 			App->scene->destination_level = "maps/A2.tmx";
 			CallFade();
 		}
-		if (App->input->GetKey(SDL_SCANCODE_KP_3))
+		if (App->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
 		{
 			App->scene->destination_level = "maps/A3.tmx";
 			CallFade();
 		}
-		if (App->input->GetKey(SDL_SCANCODE_KP_5))
+		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
 		{
 			App->scene->destination_level = "maps/A5.tmx";
 			CallFade();
 		}
-		if (App->input->GetKey(SDL_SCANCODE_KP_6))
+		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_DOWN)
 		{
 			App->scene->destination_level = "maps/A6.tmx";
 			CallFade();
 		}
 
 		//Swaps to lvl 1 --------------------------------------------------------------------------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 			App->scene->destination_level = "maps/A1.tmx";
 			CallFade();
+		}
 		
 		//Swaps to lvl2 ---------------------------------------------------------------------------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 			App->scene->destination_level = "maps/A3.tmx";
 			CallFade();
+		}
 
 		//Resets current lvl ----------------------------------------------------------------------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 			CallFade();
+		}
 		
 		//Enables god mode ------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
