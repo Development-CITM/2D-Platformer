@@ -5,6 +5,10 @@
 #include "EnemiesObjects.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
+#include "j1Audio.h"
+#include "SDL/include/SDL.h"
+#include "SDL_mixer\include\SDL_mixer.h"
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 j1EntityManager::j1EntityManager()
 {
@@ -83,6 +87,16 @@ bool j1EntityManager::PostUpdate()
 bool j1EntityManager::CleanUp()
 {
 	bool ret = true;
+
+	p2List_item<Mix_Chunk*>* item = App->audio->fx.start;
+	{
+		for (int i = App->audio->fx.count() - 1; i >= 0; i--)
+		{
+			Mix_FreeChunk(item->data);
+			App->audio->fx.del(App->audio->fx.At(i));
+		}
+
+	}
 
 	DestroyEnemies();
 	DestroyPlayer();

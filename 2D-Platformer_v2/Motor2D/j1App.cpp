@@ -245,7 +245,7 @@ void j1App::FinishUpdate()
 	static char title[256];
 	if (maxcapFrames)
 	{
-		sprintf_s(title, 256, "Current FPS: %i | Avg. FPS: %.2f  | Last Frame Ms: %02u | Cap: OFF | Vsync: OFF",
+		sprintf_s(title, 256, "Current FPS: %i | Avg. FPS: %.2f  | Last Frame Ms: %02u | Cap: OFF | Vsync: ON",
 			frames_on_last_update, avg_fps, last_frame_ms);
 	}
 	else
