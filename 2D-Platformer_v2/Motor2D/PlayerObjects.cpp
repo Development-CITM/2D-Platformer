@@ -95,6 +95,8 @@ bool Object_Player::Update(float dt)
 	velocity_Y -= position.y;
 
 	if (App->debug->godmode) {
+		absolutePos.x = collider->rect.x - App->tiles->culling_Collider->rect.x;
+		absolutePos.y = collider->rect.y - App->tiles->culling_Collider->rect.y;
 		GodMove();
 		UpdateCheckersPosition();
 		UpdatePlayerPosition();
@@ -837,10 +839,10 @@ void Object_Player::GodMove()
 		collider->rect.x -= 4;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		collider->rect.y -= 4;
+		collider->rect.y -= max_verticalSpeed_v2;
 	}	
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		collider->rect.y += 4;
+		collider->rect.y += max_verticalSpeed_v2;
 	}
 }
 
