@@ -222,6 +222,14 @@ void j1Colliders::Draw()
 				rect.y = collider->data->rect.y * size * scale;
 				rect.w = collider->data->rect.w * size * scale;
 				rect.h = collider->data->rect.h * size * scale;
+				if(!collider->data->to_delete)
+				App->render->DrawQuad(rect, 255, 0, 0, 60);
+				break;	
+			case COLLIDER_ENEMY_HIT:
+				rect.x = collider->data->rect.x * size * scale;
+				rect.y = collider->data->rect.y * size * scale;
+				rect.w = collider->data->rect.w * size * scale;
+				rect.h = collider->data->rect.h * size * scale;
 				if(!collider->data->to_delete && collider->data->Enabled)
 				App->render->DrawQuad(rect, 255, 0, 0, 60);
 				break;
@@ -363,6 +371,11 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
 				ret = true;
 			}
+			break;	
+		case COLLIDER_ENEMY_HIT:
+			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
+				ret = true;
+			}
 			break;
 
 		case COLLIDER_PLAYER_HIT:
@@ -371,7 +384,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 			}
 			break;
 		case COLLIDER_CEILING_CHECKER:
-			if (c1->CheckCollision(c2->rect) && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_CEILING_CHECKER && c2->type != COLLIDER_WINDOW && c2->Enabled) {
+			if (c1->CheckCollision(c2->rect) && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_ENEMY_HIT && c2->type != COLLIDER_CEILING_CHECKER && c2->type != COLLIDER_WINDOW && c2->Enabled) {
 				ret = true;
 			}
 			break;
