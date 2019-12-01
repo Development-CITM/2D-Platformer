@@ -1,27 +1,38 @@
-# Rumble in the Jungle
+# Snowy Mists
 
 Hi there! We're a pair of students from CITM's-UPC currently coursing the degree: Videogame Design & Development.
 This right here is our little game for Development subject. We used C++ Language for the coding stuff via SDL and pugi libraries. Plus we used Tiled for creating the structure of the map, loading it's colliders and even the player animations.
 
 #### Team members
 
-* Eudald Garrofé: https://github.com/Hevne <br>
-Eudald has been in charge of the game and level design, plus searching and implementing the art of the game, in addition he has been coding too.<br>
-Tiled map,levels loading, colliders in tiled, debug functions, spritesheet in tiled, audio...
-
-* Jordi Pardo: https://github.com/Jordi-Pardo <br>
-Jordi has been the lead programmer, building the major part of the project skeleton, although he helped with art research and some of the game design desicions.<br>
-Camera, Movement, dash, loading animations from tiled, colliders prediction, culling...  <br>
-
-Concluding, even if we have different kind of profiles and interests, each one tried to generally work at everything.<br>
+* Eudald Garrofé: https://github.com/Hevne
+* Jordi Pardo: https://github.com/Jordi-Pardo
 
 ### Controls
 
 * D: Move Right
 * A: Move Left
-* S while on top of a small floating platform: Traspass platform down
-* W while jumping: Small dash on air
+* Right click: High Kick
+* Left click: Linear punch
 * SPACE/SPACE+A/SPACE+D: Jump/Jump left/Jump right
+* SPACE + SPACE: Double Jump
+* SPACE while falling: Jumping on air
+
+## Debug
+
+* F1: Goes to level 1
+* F2: Goes to level 2
+* F3: Resets current level
+* F5: Saves player, enemies, camera and culling current state
+* F6: Loads saved state
+* F9: Shows colliders + Enemy paths
+* F10: God Mode Enable/Disable
+* F11: Enables cap to 30/Sets max frames to 60(Vsync)
+
+## Enemy mechanics
+
+* Enemy ground: Jump to dodge the attack from the enemy since it goes usually first then attack
+* Enemy flying: Use high kick to kill the enemy if he's too high for linear punch
 
 ### Github Repository
 
@@ -33,23 +44,32 @@ https://github.com/Development-CITM/2D-Platformer
 We do not own any of the sprites, tilesets, music or sfx used for the game. We're not gonna get any profit from it. All the artistic credit to authors of the art :
 
 * Tileset: <br>
-Ansimuz: https://ansimuz.itch.io/ <br>
-Link to download: https://ansimuz.itch.io/magic-cliffs-environment
+Author: https://szadiart.itch.io/ <br>
+Link to download: https://szadiart.itch.io/pixel-fantasy
    
 * Sprites: <br>
-Jesse Munguia: https://jesse-m.itch.io/<br>
-Link to download: https://jesse-m.itch.io/jungle-pack
+Jesse Munguia: https://rvros.itch.io/<br>
+Link to download Enemy sprites: https://rvros.itch.io/pixel-monsters <br>
+Link to download Player sprites: https://rvros.itch.io/animated-pixel-hero
             
 * Music:<br>
-Track 1: レオン・カルナク: https://www.youtube.com/watch?v=B0YIBMmoRsk<br>
-         Artist: 森田朋子 (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))<br><br>
-Track 2: Delirium Lava Ruins: https://www.youtube.com/watch?v=k_2fFLS-Dd0&t=4s<br>
-Artist: Unknown (Licensed by Marvelous Inc. (on behalf of Marvelous Inc.))
+Track 1: Sanctuary Of Winter: https://www.youtube.com/watch?v=ZGOYchPtWtk<br>
+         Artist: Brandon & Derek Fiechter  (Licensed by TuneCore (on behalf of Various Artists); BMI - Broadcast Music Inc., CMRRA, TuneCore Publishing, and 1 Music Rights Societies))<br><br>
                 
 * SFX:<br>
-Jump SFX: Swoosh 1 sound: http://soundbible.com/682-Swoosh-1.html<br>
-License: Sampling Plus 1.0<br><br>
-Dead SFX: Medium water splash: Downloaded from: https://www.zapsplat.com/
+Jump Double Jump Dead SFX: https://opengameart.org/content/generic-hero-effort-noises<br>
+Author: Tinsin License: Public Domain<br><br>
+
+Medium water splash: Downloaded from: https://www.zapsplat.com/<br>
+
+Punch, Kick fx: https://opengameart.org/content/battle-sound-effects<br>
+Author: Artisticdude License: Public Domain<br><br>
+
+Enemy flying kill sound: https://opengameart.org/content/40-cc0-water-splash-slime-sfx<br>
+Author: Rubberduck License: Public Domain<br><br>
+
+Enemy ground kill sound: https://opengameart.org/content/rat-monster-screams<br>
+Author: Iwan 'qubodup' License: GPL 3.0, GPL 2.0, CC-BY 3.0<br><br>
           
 ### License:
 
