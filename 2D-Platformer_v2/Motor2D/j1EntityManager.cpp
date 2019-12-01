@@ -29,6 +29,10 @@ bool j1EntityManager::Start()
 	App->audio->LoadFx("audio/fx/double_jump_fx.wav");
 	App->audio->LoadFx("audio/fx/water_sfx.wav");
 	App->audio->LoadFx("audio/fx/dead_fx.wav");
+	App->audio->LoadFx("audio/fx/punch.wav");
+	App->audio->LoadFx("audio/fx/kick.wav");
+	App->audio->LoadFx("audio/fx/whisp_die.wav");
+	App->audio->LoadFx("audio/fx/kobold_die.wav");
 	bool ret = true;
 	p2List_item<GameObject*>* item;
 	item = objects.start;
