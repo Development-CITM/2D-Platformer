@@ -72,7 +72,6 @@ public:
 	Animation*				previousAnimation = nullptr;
 
 	int						numCurrentAnimation = 0;
-	bool					alive;
 	
 };
 

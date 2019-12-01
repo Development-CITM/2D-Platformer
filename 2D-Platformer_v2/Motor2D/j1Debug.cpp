@@ -58,10 +58,12 @@ bool j1Debug::Update(float dt)
 
 		//Swaps to lvl 1 --------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+			App->scene->destination_level = "maps/A1.tmx";
 			CallFade();
 		
 		//Swaps to lvl2 ---------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+			App->scene->destination_level = "maps/A3.tmx";
 			CallFade();
 
 		//Resets current lvl ----------------------------------------------------------------------------------------------

@@ -88,7 +88,7 @@ bool Object_Enemy::Update(float dt)
 		break;
 	case State::ATTACK:
 		StablishPath();
-		if (attack && canAttack) {
+		if (attack && canAttack && type_object==Object_type::ENEMY_GROUND) {
 			ChangeAnimation(attack);
 			if (attack->finished) {
 				ChangeAnimation(idle);
@@ -154,7 +154,6 @@ bool Object_Enemy::PostUpdate()
 bool Object_Enemy::CleanUp()
 {
 	bool ret = true;
-	
 	return ret;
 }
 

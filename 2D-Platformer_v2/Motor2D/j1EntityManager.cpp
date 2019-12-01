@@ -5,9 +5,7 @@
 #include "PlayerObjects.h"
 #include "EnemiesObjects.h"
 #include "j1Scene.h"
-
-
-
+#include "j1Audio.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -55,6 +53,7 @@ bool j1EntityManager::Update(float dt)
 	bool ret = true;
 	p2List_item<GameObject*>* item;
 	item = objects.start;
+	DestroyEnemyDead();
 
 	while (item != NULL && ret == true)
 	{
@@ -99,6 +98,18 @@ void j1EntityManager::DestroyEnemies()
 			objects.del(objects.At(i));
 		}
 	}				
+}
+
+void j1EntityManager::DestroyEnemyDead()
+{
+	for (int i = objects.count() - 1; i >= 0; i--)
+	{
+		if ((objects.At(i)->data->type_object == Object_type::ENEMY_GROUND || objects.At(i)->data->type_object == Object_type::ENEMY_FLYING) && objects.At(i)->data->alive==false)
+		{
+			objects.At(i)->data->CleanUp();
+			objects.del(objects.At(i));
+		}
+	}
 }
 
 void j1EntityManager::DestroyPlayer()
@@ -179,8 +190,7 @@ void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 				}
 				CreateEnemy(pos, type);
 			}	
-	}
-	
+		}
 }
 
 void j1EntityManager::LoadEnemiesFromBackup()
@@ -217,8 +227,6 @@ Collider* j1EntityManager::RetreivePlayerCollider()
 	}
 	return ret;
 }
-
-
 
 CharacterTMXData j1EntityManager::RetreivePlayerData()
 {
@@ -275,10 +283,5 @@ bool GameObject::PostUpdate()
 bool GameObject::CleanUp()
 {
 	return false;
-}
-
-void GameObject::SetPos(pugi::xml_node& object)
-{
-
 }
 

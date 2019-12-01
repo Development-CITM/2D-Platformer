@@ -10,13 +10,10 @@
 
 
 Object_Character::Object_Character():Object_Dynamic()
-{
-
-}
+{}
 
 Object_Character::~Object_Character()
-{
-}
+{}
 
 bool Object_Character::PreUpdate()
 {

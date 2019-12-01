@@ -9,8 +9,6 @@
 #include "CharacterObjects.h"
 #include "Animation.h"
 
-
-
 class Object_Player : public Object_Character {
 public:
 	Object_Player(pugi::xml_node &object);
@@ -23,46 +21,72 @@ public:
 
 	bool Update(float dt);
 
-	void LogicStateMachine(float dt);
-
-	void JumpStart(float dt);
-
-	void DoubleJumpStart(float dt);
-
-	void Gravity(float dt);
-
-	void ChangeStates();
+	bool CleanUp();
 
 	bool PostUpdate();
 
+	//State machine
+	void LogicStateMachine(float dt);
+
+	//Jump start logic
+	void JumpStart(float dt);
+
+	//Double jump start logic
+	void DoubleJumpStart(float dt);
+
+	//Gravity effect on velocity
+	void Gravity(float dt);
+
+	//States changing function
+	void ChangeStates();
+
+	//Inits checkers for player in each direction
 	bool InitCheckers();
 
+	//Sets player position
 	void SetPos(pugi::xml_node& object);
+
+	//Sets player position depending on the access to the zone
 	void SetPlayerPosFromCurrentLevel(pugi::xml_node& it);
+
 private:
+	//Loads all animations from tmx
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
 
+	//Loads all AABB from tmx
 	SDL_Rect LoadAABB(pugi::xml_node& AABB_object);
 
+	//Changes animation
 	void ChangeAnimation(Animation*);
 
+	//HorizontalMove logic
 	void HorizontalMove(float dt);
 
+	//Updates the player position and its collider
 	void UpdatePlayerPosition();
 
+	//Updates the checkers in all directions 
 	void UpdateCheckersPosition();
 
+	//Updates the current state of the checkers
 	void UpdateCheckersBools();
 
+	//Modifies player collider depending on his animation
 	void UpdateColliderSize();
 
+	//Inputs for jumping
 	void JumpInput();
+
+	//Inputs for horizontal movement
 	void HorizontalInputs();
+
+	//Inputs for attacking
 	void AttackInputs();
 
 
 public:
-	//Move bools
+
+	//Moving and attacking bools
 	bool				moveRight = false;
 	bool				moveLeft = false;
 	bool				jumpPressed = false;
@@ -76,6 +100,7 @@ public:
 	bool				jumping = false;
 	bool				falling = true;
 	bool				doubleJumped = false;
+	bool				dead_once = true;
 
 	//Jump ints
 	int					doublejumpCount = 0;
@@ -114,10 +139,11 @@ public:
 	float				verticalSpeed_v2 = 0.f;
 	float				max_verticalSpeed_v2 = 6.f;
 
-
+	//Collider offsets
 	int					colliderOffsetY1 = 10;
 	int					colliderOffsetY2 = 9;
 
+	//dt variable filled with dt in order to access to dt in PostUpdate to perform camera following
 	float				dt_variable;
 
 

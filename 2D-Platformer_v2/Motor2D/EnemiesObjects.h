@@ -8,6 +8,7 @@
 #include "DynamicObjects.h"
 #include "CharacterObjects.h"
 
+//Enemy particular states
 enum class State {
 	IDLE,
 	RUNNING,
@@ -21,36 +22,60 @@ class Object_Enemy : public Object_Character {
 public:
 
 	Object_Enemy(Object_type type, p2Point<int> posInit = { 0,0 });
+
 	~Object_Enemy();
+
 	bool Start();
+
 	bool PreUpdate();
+
 	bool Update(float dt);
+
 	bool PostUpdate();
+
 	bool CleanUp();
+
+	//Creates a path with origin enemy and target player
 	void StablishPath();
+
+	//Enemy moves to path target
 	void MoveToTarget(p2Point<int>);
+
+	//Loads animations for each enemy type
 	Animation* LoadAnimation(pugi::xml_node& obj_group);
+
+	//Changes animations
 	void ChangeAnimation(Animation*);
+
+	//Init checkers for each direction
 	bool InitCheckers(Object_type type);
+
 public:
+
+	//Condition to not be loading enemies tmx for each one
 	bool firstkobold = true;
 	bool firstwhisp = true;
+
+	//Enemies animation types
 	Animation* idle;
 	Animation* running;
 	Animation* hurt;
 	Animation* dead;
 	Animation* attack;
 
+	//Timing for enemy attacks
 	int attackDelay = 50;
 	int timer = 0;
-	bool canAttack = true;
 
+	//Conditions for enemies
+	bool canAttack = true;
 	bool moving = false;
 	bool onGround = true;
 
-	bool alive = true;
+	//Current enemy state
 	State state;
 
+	//Checker for enemy_ground falling
 	Collider* groundChecker = nullptr;
 
 };

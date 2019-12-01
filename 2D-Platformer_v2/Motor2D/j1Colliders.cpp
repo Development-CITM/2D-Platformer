@@ -324,6 +324,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 				App->scene->ColliderMapToLoad(c2); //EUDALD: change site
 				}
 				if (c1->checkerType == ColliderChecker::Ground && c2->type == COLLIDER_WATER && c2->Enabled) {
+					App->audio->PlayFx(3);
 					c2->Enabled = false;
 					App->debug->CallFade();
 				}

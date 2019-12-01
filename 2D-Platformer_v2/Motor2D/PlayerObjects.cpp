@@ -10,6 +10,10 @@
 #include "j1Scene.h"
 #include "j1Input.h"
 #include "j1Tilesets.h"
+#include "j1Audio.h"
+#include "SDL/include/SDL.h"
+#include "SDL_mixer\include\SDL_mixer.h"
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 struct Collider;
 Object_Player::Object_Player(pugi::xml_node& object): Object_Character()
@@ -25,9 +29,15 @@ bool Object_Player::Start()
 {
 	bool ret = true;
 	Load("animations/Player.tmx");
+	App->audio->LoadFx("audio/fx/jump_fx.wav");
+	App->audio->LoadFx("audio/fx/double_jump_fx.wav");
+	App->audio->LoadFx("audio/fx/water_sfx.wav");
+	App->audio->LoadFx("audio/fx/dead_fx.wav");
+	
 	InitCheckers();
 	currentAnimation = disarmed_idle;
 	alive = true;
+	dead_once = true;
 	state = ST_Idle_v2;
 	return ret;
 }
@@ -106,6 +116,23 @@ bool Object_Player::Update(float dt)
 
 	Draw(dt); //Draw all the player
 	dt_variable = dt;
+	return ret;
+}
+
+bool Object_Player::CleanUp()
+{
+	bool ret = true;
+
+	p2List_item<Mix_Chunk*>* item =App->audio->fx.start;
+	{
+		for (int i = App->audio->fx.count() - 1; i >= 0; i--)
+		{
+			Mix_FreeChunk(item->data);
+			App->audio->fx.del(App->audio->fx.At(i));
+		}
+			
+	}
+
 	return ret;
 }
 
@@ -708,13 +735,23 @@ void Object_Player::UpdateCheckersBools()
 	else {
 		ceilingChecker->collided = false;
 	}
-
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_DEAD)) {
+		if (dead_once)
+		{
+			App->audio->PlayFx(4);
+			dead_once = false;
+		}
 		alive = false;
 	}
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_ENEMY)) {
+		if (dead_once)
+		{
+			App->audio->PlayFx(4);
+			dead_once = false;
+		}
 		alive = false;
 	}
+		
 }
 
 void Object_Player::UpdateColliderSize()
@@ -736,9 +773,11 @@ void Object_Player::JumpInput()
 	if (App->debug->input)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround && !atCeiling) {
+			App->audio->PlayFx(1);
 			jumpPressed = true;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && canDoubleJump && doublejumpCount == 0 && !atCeiling) {
+			App->audio->PlayFx(2);
 			doubleJumped = true;
 		}
 	}
