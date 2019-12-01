@@ -41,8 +41,6 @@ bool Object_Enemy::Start()
 	bool ret = true;
 	
 	InitCheckers(type_object);
-	
-	
 	return ret;
 }
 
@@ -67,7 +65,17 @@ bool Object_Enemy::Update(float dt)
 	}
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_PLAYER_HIT)) {
 		alive = false;
+
+		collider->to_delete = true;
+		if (groundChecker) {
+			groundChecker->to_delete = true;
+		}
+
 	}
+
+	//LOG("Collider to delete: %i", collider->to_delete);
+	LOG("Collider: %d", collider);
+	LOG("Collider: %d", groundChecker);
 	switch (state)
 	{
 
@@ -119,28 +127,30 @@ bool Object_Enemy::Update(float dt)
 		break;
 	}
 
+	if (alive) {
+		switch (type_object)
+		{
+		case ENEMY_GROUND:
+			if (groundChecker != nullptr) {
+				groundChecker->rect.x = collider->rect.x + groundChecker->offset.x;
+				groundChecker->rect.y = collider->rect.y + groundChecker->offset.y;
+			}
+			collider->rect.x = position.x + 25;
+			collider->rect.y = position.y - 8;
+			break;
+		case ENEMY_FLYING:
+			if (currentAnimation == idle) {
+				collider->rect.x = position.x + 5;
+				collider->rect.y = position.y;
+			}
+			else if (currentAnimation == running) {
+				collider->rect.x = position.x + 15;
+				collider->rect.y = position.y;
+			}
+			break;
 
-	switch (type_object)
-	{
-	case ENEMY_GROUND:
-		groundChecker->rect.x = collider->rect.x + groundChecker->offset.x;
-		groundChecker->rect.y = collider->rect.y + groundChecker->offset.y;
-		collider->rect.x = position.x + 25;
-		collider->rect.y = position.y - 8;
-		break;
-	case ENEMY_FLYING:
-		if (currentAnimation == idle) {
-			collider->rect.x = position.x + 5;
-			collider->rect.y = position.y;
 		}
-		else if (currentAnimation == running) {
-			collider->rect.x = position.x + 15;
-			collider->rect.y = position.y;
-		}
-		break;
-
 	}
-
 	Draw(dt);
 	return ret;
 }
@@ -200,7 +210,7 @@ void Object_Enemy::StablishPath()
 		currentAnimation = idle;
 		state = State::ATTACK;
 	}
-	LOG("Count: %i", path->Count());
+	//LOG("Count: %i", path->Count());
 }
 
 void Object_Enemy::MoveToTarget(p2Point<int> target)

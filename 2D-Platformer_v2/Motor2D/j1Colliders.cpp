@@ -42,16 +42,17 @@ bool j1Colliders::Awake(pugi::xml_node& conf)
 //Removes all colliders scheduled to be deleted -------------------------------------------------------------------------------------------------
 bool j1Colliders::PreUpdate()
 {
-	p2List_item<Collider*>* collider = colliders.start;
-	for (uint i = 0; i < colliders.count(); ++i)
-	{
-		if (collider != nullptr && collider->data->to_delete == true)
-		{
-			colliders.del(collider);
-		}
-
-		collider = collider->next;
-	}
+	//p2List_item<Collider*>* collider = colliders.start;
+	//for (uint i = 0; i < colliders.count(); ++i)
+	//{
+	//	if (collider != nullptr && collider->data->to_delete == true)
+	//	{
+	//		colliders.del(collider);
+	//	}
+	//	if (collider != nullptr) {
+	//		collider = collider->next;
+	//	}
+	//}
 	p2List_item<Collider*>* detected_collider = detected_Colliders.start;
 
 	 //Disable all colliders in the list ------------------------------------------------------------------
@@ -172,6 +173,9 @@ void j1Colliders::Draw()
 		p2List_item<Collider*>* collider = this->colliders.start;
 		for (int i = 0; i < colliders.count(); i++)
 		{
+			if (collider->data->to_delete) {
+				collider->data->Enabled = false;
+			}
 			//Sets the rect to be printed and it's properties --------------------------------------------
 			SDL_Rect rect = { 0,0,0,0 };
 			rect.x = collider->data->rect.x * size * scale;
@@ -218,13 +222,14 @@ void j1Colliders::Draw()
 				rect.y = collider->data->rect.y * size * scale;
 				rect.w = collider->data->rect.w * size * scale;
 				rect.h = collider->data->rect.h * size * scale;
+				if(!collider->data->to_delete)
 				App->render->DrawQuad(rect, 255, 0, 0, 60);
 				break;
 			case COLLIDER_WINDOW:
 				App->render->DrawQuad(rect, 0, 255, 255, 50);
 				break;
 			case COLLIDER_CEILING_CHECKER:
-
+				if (!collider->data->to_delete)
 				App->render->DrawQuad(rect, 0, 0, 0, 255,collider->data->collided);
 				break;
 			case COLLIDER_EXIT:
@@ -349,13 +354,13 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 		switch (type)
 		{
 		case COLLIDER_DEAD:
-			if (c1->CheckCollision(c2->rect) && c2->type == type) {
+			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
 				ret = true;
 			}
 			break;
 
 		case COLLIDER_ENEMY:
-			if (c1->CheckCollision(c2->rect) && c2->type == type) {
+			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
 				ret = true;
 			}
 			break;
@@ -366,7 +371,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 			}
 			break;
 		case COLLIDER_CEILING_CHECKER:
-			if (c1->CheckCollision(c2->rect) && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_CEILING_CHECKER && c2->type != COLLIDER_WINDOW) {
+			if (c1->CheckCollision(c2->rect) && c2->type != COLLIDER_ENEMY && c2->type != COLLIDER_CEILING_CHECKER && c2->type != COLLIDER_WINDOW && c2->Enabled) {
 				ret = true;
 			}
 			break;
