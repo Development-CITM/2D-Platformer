@@ -15,19 +15,13 @@ Object_Enemy::Object_Enemy(Object_type type, p2Point<int> pos) : Object_Characte
 	state = State::IDLE;
 	if (type == Object_type::ENEMY_GROUND)
 	{
-		if (firstkobold)
-		{
 			Load("animations/Enemy_Kobold.tmx");
-			firstkobold = false;
-		}		
+			firstkobold = false;		
 	}
 	else if (type == Object_type::ENEMY_FLYING)
 	{
-		if (firstwhisp)
-		{
 			Load("animations/Enemy_Wwisp.tmx");
 			firstwhisp = false;
-		}
 	}
 		currentAnimation = idle;
 }

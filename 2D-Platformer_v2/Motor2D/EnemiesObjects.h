@@ -63,7 +63,7 @@ public:
 	Animation* attack;
 
 	//Timing for enemy attacks
-	int attackDelay = 50;
+	int attackDelay = 100;
 	int timer = 0;
 
 	//Conditions for enemies
