@@ -28,11 +28,6 @@ bool Object_Player::Start()
 {
 	bool ret = true;
 	Load("animations/Player.tmx");
-	App->audio->LoadFx("audio/fx/jump_fx.wav");
-	App->audio->LoadFx("audio/fx/double_jump_fx.wav");
-	App->audio->LoadFx("audio/fx/water_sfx.wav");
-	App->audio->LoadFx("audio/fx/dead_fx.wav");
-	
 	InitCheckers();
 	currentAnimation = disarmed_idle;
 	alive = true;

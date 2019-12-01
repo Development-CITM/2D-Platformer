@@ -21,6 +21,10 @@ bool j1EntityManager::Awake(pugi::xml_node & conf)
 
 bool j1EntityManager::Start()
 {
+	App->audio->LoadFx("audio/fx/jump_fx.wav");
+	App->audio->LoadFx("audio/fx/double_jump_fx.wav");
+	App->audio->LoadFx("audio/fx/water_sfx.wav");
+	App->audio->LoadFx("audio/fx/dead_fx.wav");
 	bool ret = true;
 	p2List_item<GameObject*>* item;
 	item = objects.start;
