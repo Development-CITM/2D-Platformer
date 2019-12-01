@@ -792,7 +792,7 @@ void Object_Player::UpdateCheckersBools()
 		}
 		alive = false;
 	}
-	if (App->collider->CheckColliderCollision(collider, COLLIDER_ENEMY)) {
+	if (App->collider->CheckColliderCollision(collider, COLLIDER_ENEMY_HIT)) {
 		if (dead_once)
 		{
 			App->audio->PlayFx(4);
