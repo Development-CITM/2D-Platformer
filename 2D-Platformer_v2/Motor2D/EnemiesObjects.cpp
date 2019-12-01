@@ -67,8 +67,10 @@ bool Object_Enemy::Update(float dt)
 		alive = false;
 
 		collider->to_delete = true;
+		collider->Enabled = false;
 		if (groundChecker) {
 			groundChecker->to_delete = true;
+			groundChecker->Enabled = false;
 		}
 
 	}
@@ -172,8 +174,8 @@ void Object_Enemy::StablishPath()
 	iPoint origin;
 	iPoint player_pos;
 
-	origin.x = position.x;
-	origin.y = position.y;
+	origin.x = collider->rect.x;
+	origin.y = collider->rect.y;
 
 	player_pos.x = App->entity->RetreivePlayerCollider()->GetPosition().x;
 	player_pos.y = App->entity->RetreivePlayerCollider()->GetPosition().y;
@@ -223,12 +225,12 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 			break;
 		case ENEMY_GROUND:
 
-			if (position.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
+			if (collider->rect.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
 				position.x += 1;
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
-			if (position.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
+			if (collider->rect.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
 				position.x -= 1;
 				currentAnimation = running;
 				state = State::RUNNING;
