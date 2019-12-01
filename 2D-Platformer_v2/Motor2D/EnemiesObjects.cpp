@@ -52,6 +52,7 @@ bool Object_Enemy::PreUpdate()
 
 bool Object_Enemy::Update(float dt)
 {
+	deltavar=dt;
 	bool ret = true;
 	if (groundChecker) {
 		if (App->collider->CheckColliderCollision(groundChecker,COLLIDER_CEILING_CHECKER)) {
@@ -226,35 +227,35 @@ void Object_Enemy::MoveToTarget(p2Point<int> target)
 		case ENEMY_GROUND:
 
 			if (collider->rect.x < App->entity->RetreivePlayerCollider()->GetPosition().x) {
-				position.x += 1;
+				position.x += 1 * ceil(deltavar * 50);
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
 			if (collider->rect.x > App->entity->RetreivePlayerCollider()->GetPosition().x) {
-				position.x -= 1;
+				position.x -= 1 * ceil(deltavar * 50);
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
 			break;
 		case ENEMY_FLYING:
 			if (position.x < target.x) {
-				position.x += 1;
+				position.x += 1 * ceil(deltavar*50);
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
 			if (position.x > target.x) {
-				position.x -= 1;
+				position.x -= 1 * ceil(deltavar * 50);
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
 
 			if (position.y < target.y) {
-				position.y += 1;
+				position.y += 1 * ceil(deltavar * 50);
 				currentAnimation = running;
 				state = State::RUNNING;
 			}
 			if (position.y > target.y) {
-				position.y -= 1;
+				position.y -= 1 * ceil(deltavar * 50);
 				currentAnimation = running;
 				state = State::RUNNING;
 			}

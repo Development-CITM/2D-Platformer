@@ -79,6 +79,8 @@ public:
 	Collider* groundChecker = nullptr;
 	Collider* collider_test = nullptr;
 
+	float deltavar = 0;
+
 };
 
 #endif
