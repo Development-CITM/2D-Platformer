@@ -26,7 +26,8 @@ public:
 
 	void Draw();
 
-	void CreateUIElement(SDL_Rect image, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type);
+	void CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type);
+	void CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type);
 	p2List<UI_Element*> UI_Elements_list;
 };
 

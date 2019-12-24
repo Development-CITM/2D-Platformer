@@ -98,7 +98,9 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PlayerObjects.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_Element.cpp" />
+    <ClCompile Include="UI_Image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -133,6 +135,7 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_Element.h" />
+    <ClInclude Include="UI_Image.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

@@ -5,11 +5,17 @@
 class UI_Button : public UI_Element
 {
 public:
-	UI_Button();
-	~UI_Button();
+	UI_Button(SDL_Rect image,SDL_Rect hover,SDL_Rect pressed, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type);
+	virtual ~UI_Button();
 
-private:
+	SDL_Rect hover_rect;
+	SDL_Rect pressed_rect;
+	
 
+	bool isPressed;
+	bool isHover;
+
+	void SetRectToShow(SDL_Rect rect);
 };
 
 #endif // !__UI_Button_H__
