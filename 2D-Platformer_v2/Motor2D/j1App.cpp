@@ -16,6 +16,7 @@
 #include "j1Colliders.h"
 #include "j1Fade2Black.h"
 #include "j1EntityManager.h"
+#include "j1UI.h"
 #include "j1Debug.h"
 #include "j1App.h"
 
@@ -36,6 +37,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade2black = new j1Fade2Black();
 	debug = new j1Debug();
 	entity = new j1EntityManager();
+	ui = new j1UI();
 	pathfinding = new j1PathFinding();
 	
 
@@ -52,6 +54,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade2black);
 	AddModule(debug);
 	AddModule(pathfinding);
+	AddModule(ui);
 
 	// render last to swap buffer
 	AddModule(render);

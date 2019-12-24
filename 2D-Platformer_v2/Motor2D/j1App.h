@@ -21,6 +21,7 @@ class j1Player;
 class j1Fade2Black;
 class j1Debug;
 class j1EntityManager;
+class j1UI;
 
 class j1App
 {
@@ -92,6 +93,7 @@ public:
 	j1Scene*			scene;
 	j1Tilesets*			tiles;
 	j1EntityManager*	entity;
+	j1UI*				ui;
 	j1Player*			player;
 	j1Colliders*		collider;
 	j1Fade2Black*		fade2black;

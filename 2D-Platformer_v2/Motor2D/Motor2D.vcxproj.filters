@@ -64,6 +64,12 @@
     <ClCompile Include="j1EntityManager.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1UI.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Element.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -153,6 +159,15 @@
     <ClInclude Include="j1EntityManager.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="j1UI.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Element.h">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Button.h">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -187,6 +202,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Game Objects\Dynamic Objects\Character_Objects\Enemies_Objects">
       <UniqueIdentifier>{a7e1744d-4b70-4b18-a207-0161447e86dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\UI Elements">
+      <UniqueIdentifier>{e22f0bef-3cfd-401c-8e13-0661732d5d2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
