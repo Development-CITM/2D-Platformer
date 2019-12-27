@@ -5,6 +5,7 @@
 #include "p2DynArray.h"
 #include "UI_Element.h"
 
+enum ButtonType;
 
 class j1UI : public j1Module
 {
@@ -27,8 +28,10 @@ public:
 	void Draw();
 	void UpdateUI();
 
+	bool quit = false;
+
 	UI_Element* CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
-	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type, UI_Element* parent = nullptr);
+	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent = nullptr);
 	p2List<UI_Element*> UI_Elements_list;
 
 

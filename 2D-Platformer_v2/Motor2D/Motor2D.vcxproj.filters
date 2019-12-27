@@ -76,6 +76,7 @@
     <ClCompile Include="UI_Image.cpp">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -175,6 +176,9 @@
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_Image.h">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Functions.h">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
   </ItemGroup>
