@@ -1,10 +1,12 @@
-# Snowy Mists
+# Snowy Mists: About The game
 
 Hi there! We're a pair of students from CITM's-UPC currently coursing the degree: Videogame Design & Development.
 This right here is our little game for Development subject. We used C++ Language for the coding stuff via SDL and pugi libraries. Plus we used Tiled for creating the structure of the map, loading it's colliders and even the player animations. <br> <br>
 <p align="center">
-<img src="Web_Pics/software.png"> <br>
+<img src="Web_Pics/software.png"> <br> <br>
 </p>
+
+Our goal was to develop a 2D platformer using xml documents as configs and also xml documents for maps, player, ui, and enemies loading generated from Tiled. We tried to make a more likish Metroidvania game althought we ran out of time we are quite proud of the results and our work. <br> <br>
 
 # Team
 
@@ -16,9 +18,16 @@ As we said before, we are a team of two students, now we're gonna introduce some
 
 * Eudald Garrofé. Github user: [Hevne](https://github.com/Hevne)<br>
 <img src="Web_Pics/eudald_pic.png"><br>
+Hi! My name is Eudald Garrofé, I've been in charge of the major design decisions of the game as the game theme, the mechanics, music, sounds... the maps creation using Tiled and the code to load and unload each of them (Player position, colliders definition, path definition) has been my work too.<br> <br>
+Also I've been working on the transitions from scene to scene since as we said before we tried to make some kind of Metroidvania game but even if we couldn't implement all of our maps into the game the solid algorithm for transition between multiple interconnected maps is there. <br> <br>
+My proudest job in this project has been the whole Entity Manager system in which I defined all the character types and it's load and deletion plus the UML document. <br> <br>
+Making the game to work with Delta time it's something I dedicated time too <br> <br>
 
 * Jordi Pardo. Github user: [Jordi-Pardo](https://github.com/Jordi-Pardo)<br>
 <img src="Web_Pics/jordi_pic.png"><br>
+And I'm Jordi Pardo, I'm like the code guy here, I've been in charge of the collision system using sensors and the colliders boxes defined on Tiled by my team mate.<br> <br>
+The whole player system: state machine, lives, game feel... I've done the Pathfinding algorithm and the different states for enemies: movement, attacks, dead conditions... <br> <br>
+The camera and culling movement is part of my work too. <br> <br>
 
 ### Controls
 
