@@ -68,41 +68,8 @@ Once done you will get to the main menu where u can choose to start a new game, 
 
 * Enemy ground: Jump to dodge the attack from the enemy since it goes usually first then attack
 * Enemy flying: Use high kick to kill the enemy if he's too high for linear punch
-
-
-### Disclaimer
-
-We do not own any of the sprites, tilesets, music or sfx used for the game. We're not gonna get any profit from it. All the artistic credit to authors of the art :
-
-* Tileset: <br>
-Author: https://szadiart.itch.io/ <br>
-Link to download: https://szadiart.itch.io/pixel-fantasy
-   
-* Sprites: <br>
-Jesse Munguia: https://rvros.itch.io/<br>
-Link to download Enemy sprites: https://rvros.itch.io/pixel-monsters <br>
-Link to download Player sprites: https://rvros.itch.io/animated-pixel-hero
-            
-* Music:<br>
-Track 1: Sanctuary Of Winter: https://www.youtube.com/watch?v=ZGOYchPtWtk<br>
-         Artist: Brandon & Derek Fiechter  (Licensed by TuneCore (on behalf of Various Artists); BMI - Broadcast Music Inc., CMRRA, TuneCore Publishing, and 1 Music Rights Societies))<br><br>
-                
-* SFX:<br>
-Jump Double Jump Dead SFX: https://opengameart.org/content/generic-hero-effort-noises<br>
-Author: Tinsin License: Public Domain<br><br>
-
-Medium water splash: Downloaded from: https://www.zapsplat.com/<br>
-
-Punch, Kick fx: https://opengameart.org/content/battle-sound-effects<br>
-Author: Artisticdude License: Public Domain<br><br>
-
-Enemy flying kill sound: https://opengameart.org/content/40-cc0-water-splash-slime-sfx<br>
-Author: Rubberduck License: Public Domain<br><br>
-
-Enemy ground kill sound: https://opengameart.org/content/rat-monster-screams<br>
-Author: Iwan 'qubodup' License: GPL 3.0, GPL 2.0, CC-BY 3.0<br><br>
           
-### License:
+# License:
 
 MIT License
 
