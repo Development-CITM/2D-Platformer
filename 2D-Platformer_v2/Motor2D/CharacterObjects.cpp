@@ -84,6 +84,7 @@ bool Object_Character::LoadCharacterTMX(pugi::xml_node& character_node)
 		p2SString image_source("animations/");
 		image_source += character_node.child("imagelayer").child("image").attribute("source").as_string();
 		character_tmx_data.texture = App->tex->Load(image_source.GetString());
+
 		if (character_tmx_data.texture) {
 			LOG("Player Texture succesfull loaded");
 		}
@@ -107,28 +108,28 @@ SDL_Rect Object_Character::LoadAABB(pugi::xml_node& AABB_object)
 
 void Object_Character::Draw(float dt)
 {
-	BROFILER_CATEGORY("DrawLogic", Profiler::Color::Aqua)
-	numCurrentAnimation = currentAnimation->GetSprite(dt);
-	int offsetX = 0;
-	int offsetY = 0;
-	if (flip && type_object == Object_type::ENEMY_FLYING) {
-		offsetX = 0;
-		offsetY = -15;
-	}
-	else if(!flip && type_object == Object_type::ENEMY_FLYING){
-		offsetX = -20;
-		offsetY = -15;
-	}
-	if (flip && type_object == Object_type::ENEMY_GROUND) {
-		offsetX = 0;
-		offsetY = -15;
-	}
-	else if(!flip&& type_object == Object_type::ENEMY_GROUND){
-		offsetX = -30;
-		offsetY = -15;
-	}
+		BROFILER_CATEGORY("DrawLogic", Profiler::Color::Aqua)
+			numCurrentAnimation = currentAnimation->GetSprite(dt);
+		int offsetX = 0;
+		int offsetY = 0;
+		if (flip && type_object == Object_type::ENEMY_FLYING) {
+			offsetX = 0;
+			offsetY = -15;
+		}
+		else if (!flip && type_object == Object_type::ENEMY_FLYING) {
+			offsetX = -20;
+			offsetY = -15;
+		}
+		if (flip && type_object == Object_type::ENEMY_GROUND) {
+			offsetX = 0;
+			offsetY = -15;
+		}
+		else if (!flip && type_object == Object_type::ENEMY_GROUND) {
+			offsetX = -30;
+			offsetY = -15;
+		}
 
-	App->render->Blit(character_tmx_data.texture, position.x + currentAnimation->offset.x + offsetX, position.y +offsetY, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
+		App->render->Blit(character_tmx_data.texture, position.x + currentAnimation->offset.x + offsetX, position.y + offsetY, &currentAnimation->sprites[numCurrentAnimation].rect, 2.f, true, flip);
 }
 
 

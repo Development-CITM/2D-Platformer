@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="9" height="1" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="11">
+ <layer id="1" name="Capa de Patrones 1" width="9" height="1">
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <group id="4" name="ANIMATIONS">
+  <group id="5" name="SPIN">
+   <objectgroup id="3" name="SPIN">
+    <properties>
+     <property name="num_sprites" type="int" value="9"/>
+    </properties>
+    <object id="1" name="SPIN" x="0" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="2" name="SPIN" x="32" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="3" name="SPIN" x="64" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="4" name="SPIN" x="96" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="5" name="SPIN" x="128" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="6" name="SPIN" x="160" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="7" name="SPIN" x="192" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="8" name="SPIN" x="224" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+    <object id="9" name="SPIN" x="256" y="0" width="32" height="32">
+     <properties>
+      <property name="Frames" type="int" value="5"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </group>
+ </group>
+ <imagelayer id="2" name="Coins">
+  <image source="coin_spritesheet.png" width="288" height="32"/>
+ </imagelayer>
+</map>

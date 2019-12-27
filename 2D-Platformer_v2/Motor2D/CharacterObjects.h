@@ -10,6 +10,7 @@
 
 class Object_Player;
 class Object_Enemy;
+class Object_Coin;
 class SDL_Texture;
 
 

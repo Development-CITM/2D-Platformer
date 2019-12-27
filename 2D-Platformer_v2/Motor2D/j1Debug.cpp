@@ -59,7 +59,7 @@ bool j1Debug::Update(float dt)
 
 		//Swaps to lvl 1 --------------------------------------------------------------------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-			App->scene->destination_level = "maps/A1.tmx";
+			App->scene->destination_level = "maps/A2.tmx";
 			CallFade();
 		}
 		

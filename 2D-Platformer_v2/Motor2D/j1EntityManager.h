@@ -14,6 +14,7 @@ enum Object_type {
 	PLAYER,
 	ENEMY_GROUND,
 	ENEMY_FLYING,
+	COIN,
 };
 
 //Map types_v2 to avoid confflict while traslating
@@ -120,6 +121,14 @@ public:
 
 	//Destroys player
 	void DestroyPlayer();
+
+
+	//Destroy coin
+	void DestroyCoin();
+
+
+	//Create Coin
+	void CreateCoin(pugi::xml_node& object);
 
 	//CreatesEnemy
 	void CreateEnemy(p2Point<int> pos, Object_type type);

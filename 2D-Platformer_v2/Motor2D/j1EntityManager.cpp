@@ -3,9 +3,11 @@
 #include "CharacterObjects.h"
 #include "PlayerObjects.h"
 #include "EnemiesObjects.h"
+#include "CoinObjects.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "j1Audio.h"
+#include "j1Textures.h"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
@@ -33,6 +35,7 @@ bool j1EntityManager::Start()
 	App->audio->LoadFx("audio/fx/kick.wav");
 	App->audio->LoadFx("audio/fx/whisp_die.wav");
 	App->audio->LoadFx("audio/fx/kobold_die.wav");
+
 	bool ret = true;
 	p2List_item<GameObject*>* item;
 	item = objects.start;
@@ -99,9 +102,7 @@ bool j1EntityManager::CleanUp()
 			Mix_FreeChunk(item->data);
 			App->audio->fx.del(App->audio->fx.At(i));
 		}
-
 	}
-
 	DestroyEnemies();
 	DestroyPlayer();
 	
@@ -143,6 +144,25 @@ void j1EntityManager::DestroyPlayer()
 			objects.del(objects.At(i));
 		}
 	}
+}
+
+void j1EntityManager::DestroyCoin()
+{
+	for (int i = objects.count() - 1; i >= 0; i--)
+	{
+		if (objects.At(i)->data->type_object == Object_type::COIN)
+		{
+			objects.At(i)->data->CleanUp();
+			objects.del(objects.At(i));
+		}
+	}
+}
+
+void j1EntityManager::CreateCoin(pugi::xml_node& object)
+{
+	
+	Object_Coin* coin = new Object_Coin(object);
+	objects.add(coin);
 }
 
 void j1EntityManager::CreateEnemy(p2Point<int> pos, Object_type type)

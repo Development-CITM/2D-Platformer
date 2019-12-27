@@ -508,6 +508,11 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 			App->entity->LoadEnemiesFromBackup();
 		}
 	}
+	else if (strcmp(node.attribute("name").as_string(), "Coin") == 0)
+	{
+		objects = node.child("object");
+		App->entity->CreateCoin(objects);
+	}
 
 	return ret;
 }
