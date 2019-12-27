@@ -79,6 +79,9 @@
     <ClCompile Include="CoinObjects.cpp">
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Functions.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="CoinObjects.h">
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Functions.h">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
