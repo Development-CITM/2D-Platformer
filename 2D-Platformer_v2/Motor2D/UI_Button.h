@@ -27,7 +27,6 @@ public:
 	bool isHover;
 	bool clicked;
 
-	j1Timer timer;
 
 	void Update() override;
 

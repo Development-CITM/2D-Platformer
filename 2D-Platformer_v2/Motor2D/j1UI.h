@@ -4,6 +4,7 @@
 #include "p2List.h"
 #include "p2DynArray.h"
 #include "UI_Element.h"
+#include "UI_Button.h"
 
 enum ButtonType;
 
@@ -41,11 +42,11 @@ public:
 	UI_Element* backgroundImage = nullptr;
 
 	//Buttons
-	UI_Element* playButton = nullptr;
-	UI_Element* continueButton = nullptr;
-	UI_Element* creditsButton = nullptr;
-	UI_Element* settingsButton = nullptr;
-	UI_Element* quitButton = nullptr;
+	UI_Button* playButton = nullptr;
+	UI_Button* continueButton = nullptr;
+	UI_Button* creditsButton = nullptr;
+	UI_Button* settingsButton = nullptr;
+	UI_Button* quitButton = nullptr;
 };
 
 #endif // !__J1UI_H__

@@ -19,27 +19,30 @@ void UI_Button::Update()
 	if (UI_Type != TYPE::UI_Button)
 		return;
 
+	if (!isEnabled) {
+		activeRect = pressed_rect;
+	}
 	int x, y;
 
 	App->input->GetMousePosition(x, y);
 	//LOG("(%i,%i)", x, y);
 
-	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_DOWN) {
+	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_DOWN && isEnabled) {
 		OnClick();
 		isPressed = true;
 		activeRect = pressed_rect;
 	}
-	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_REPEAT) {
+	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_REPEAT && isEnabled) {
 		isPressed = true;
 		activeRect = pressed_rect;
 	}
-	else if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h)
+	else if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && isEnabled)
 	{
 		isPressed = false;
 		isHover = true;
 		activeRect = hover_rect;
 	}
-	else {
+	else if(isEnabled){
 		isHover = false;
 		isPressed = false;
 		activeRect = base_rect;
