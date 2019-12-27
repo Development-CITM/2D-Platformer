@@ -7,7 +7,7 @@ This right here is our little game for Development subject. We used C++ Language
 
 As we said before, we are a team of two students, now we're gonna introduce some of the tasks that each one has been in charge during the process of the project. <br>
 
-<img src="https://github.com/Development-CITM/2D-Platformer/tree/master/Web_Pics/team_pic.PNG"><br>
+<img src="Web_Pics/team_pic.PNG"><br>
 
 * Eudald Garrofé: [Hevne](https://github.com/Hevne)
 * Jordi Pardo: [Jordi-Pardo](https://github.com/Jordi-Pardo)
