@@ -29,7 +29,21 @@ And I'm Jordi Pardo, I'm like the code guy here, I've been in charge of the coll
 The whole player system: state machine, lives, game feel... I've done the Pathfinding algorithm and the different states for enemies: movement, attacks, dead conditions... <br> <br>
 The camera and culling movement is part of my work too. <br> <br>
 
-### Controls
+# Github Repository
+
+Our Github repository for the project:
+https://github.com/Development-CITM/2D-Platformer <br>
+
+Link to our latest release:
+<br>
+
+
+# Instructions to Play
+
+Download the release and execute the: Snowy Mists.exe <br>
+Once done you will get to the main menu where u can choose to start a new game, load from a previous save if it exists, choose your settings and take a look at our names and license in "Credits".
+
+## Controls in game
 
 * D: Move Right
 * A: Move Left
@@ -39,7 +53,7 @@ The camera and culling movement is part of my work too. <br> <br>
 * SPACE + SPACE: Double Jump
 * SPACE while falling: Jumping on air
 
-## Debug
+## Debug controls
 
 * F1: Goes to level 1
 * F2: Goes to level 2
@@ -55,10 +69,6 @@ The camera and culling movement is part of my work too. <br> <br>
 * Enemy ground: Jump to dodge the attack from the enemy since it goes usually first then attack
 * Enemy flying: Use high kick to kill the enemy if he's too high for linear punch
 
-### Github Repository
-
-Our Github repository for the project:
-https://github.com/Development-CITM/2D-Platformer
 
 ### Disclaimer
 
