@@ -70,8 +70,12 @@
     <ClCompile Include="UI_Element.cpp">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Button.cpp" />
-    <ClCompile Include="UI_Image.cpp" />
+    <ClCompile Include="UI_Button.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Image.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

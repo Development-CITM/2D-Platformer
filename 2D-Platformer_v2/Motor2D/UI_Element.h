@@ -17,20 +17,22 @@ enum class TYPE
 
 class UI_Element
 {
-private:
+protected:
 	SDL_Rect base_rect;
 	SDL_Rect activeRect;
 	SDL_Texture* texture;
+	UI_Element* parent = nullptr;
 
 	p2Point<int> localPos;
 	p2Point<int> screenPos;
+	p2Point<int> offset;
 
 	TYPE UI_Type;
 
 	bool hide;
 	//Public Functions
 public:
-	UI_Element(SDL_Rect image,SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type);
+	UI_Element(SDL_Rect image,SDL_Texture* text, p2Point<int> offset,p2Point<int> local, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
 	~UI_Element();
 
 	virtual void SetTexture(const char* path);
@@ -40,6 +42,7 @@ public:
 	virtual SDL_Texture* GetTexture();
 	virtual SDL_Rect GetRect();
 	virtual void Draw();
+	virtual void Update();
 
 	virtual void SetBaseRect(SDL_Rect);
 	virtual void ToggleHide(bool flag);

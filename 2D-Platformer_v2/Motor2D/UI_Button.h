@@ -5,7 +5,7 @@
 class UI_Button : public UI_Element
 {
 public:
-	UI_Button(SDL_Rect image,SDL_Rect hover,SDL_Rect pressed, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type);
+	UI_Button(SDL_Rect image,SDL_Rect hover,SDL_Rect pressed, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type, UI_Element* parent);
 	virtual ~UI_Button();
 
 	SDL_Rect hover_rect;

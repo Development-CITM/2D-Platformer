@@ -6,6 +6,8 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
+#include "j1Window.h"
+
 j1UI::j1UI()
 {
 }
@@ -28,8 +30,8 @@ bool j1UI::Awake(pugi::xml_node&)
 bool j1UI::Start()
 {
 	bool ret = true;
-	CreateUIButton({ 16,90,234,63 }, { 0,0,0,0 }, { 0,0,0,0 }, App->tex->Load("UI/Buttons.png"), { 0,0 },App->render->ScreenToWorld(100,100), TYPE::UI_Button);
-	//CreateUIImage({ 0,0,0,0 },nullptr, { 0,0 }, { 0,0 }, TYPE::UI_Image);
+	backgroundImage = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 200,100 }, TYPE::UI_Image);
+	playButton =  CreateUIButton({ 16,90,234,63 }, { 0,0,0,0 }, { 0,0,0,0 }, App->tex->Load("UI/Buttons.png"), { 0,20 }, {App->win->GetWidth() /2,100 }, TYPE::UI_Button,backgroundImage);
 	return ret;
 }
 
@@ -62,16 +64,18 @@ void j1UI::Draw()
 	}
 }
 
-void j1UI::CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type)
+UI_Element* j1UI::CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent)
 {
-	UI_Element* element = new UI_Image(image, text, local, screen, ui_type);
+	UI_Element* element = new UI_Image(image, text, offset , screen, ui_type, parent);
 	LOG("Image created");
 	UI_Elements_list.add(element);
+	return element;
 }
 
-void j1UI::CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type)
+UI_Element* j1UI::CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent)
 {
-	UI_Element* element = new UI_Button(image,hover,pressed, text, local, screen, ui_type);
+	UI_Element* element = new UI_Button(image,hover,pressed, text, offset, screen, ui_type,parent);
 	LOG("Button created");
 	UI_Elements_list.add(element);
+	return element;
 }

@@ -5,7 +5,7 @@
 #include "j1Render.h"
 
 
-UI_Element::UI_Element(SDL_Rect image, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type): base_rect(image),texture(text),localPos(local),screenPos(screen),UI_Type(ui_type),hide(false),activeRect(image)
+UI_Element::UI_Element(SDL_Rect image, SDL_Texture* text, p2Point<int> offset,p2Point<int> local, p2Point<int> screen, TYPE ui_type, UI_Element* parent_base): base_rect(image),texture(text),offset(offset),localPos(local),screenPos(screen),UI_Type(ui_type),hide(false),activeRect(image),parent(parent_base)
 {
 }
 
@@ -41,7 +41,23 @@ SDL_Rect UI_Element::GetRect()
 
 void UI_Element::Draw()
 {	
-	App->render->Blit(texture, screenPos.x,screenPos.y, &activeRect);
+	if (hide)
+		return;
+
+	if (parent == nullptr) {
+		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
+		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y, &activeRect);
+	}
+	else {
+		App->render->Blit(texture, parent->GetLocalPos().x  - activeRect.w / 2 + offset.x, parent->GetLocalPos().y + offset.y, &activeRect);
+	}
+		
+	
+}
+
+void UI_Element::Update()
+{
+
 }
 
 void UI_Element::SetBaseRect(SDL_Rect rect)
