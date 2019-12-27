@@ -25,13 +25,24 @@ public:
 	bool PostUpdate();
 
 	void Draw();
+	void UpdateUI();
 
 	UI_Element* CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
 	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type, UI_Element* parent = nullptr);
 	p2List<UI_Element*> UI_Elements_list;
 
+
+	/* MAIN MENU*/
+
+	//Images
 	UI_Element* backgroundImage = nullptr;
+
+	//Buttons
 	UI_Element* playButton = nullptr;
+	UI_Element* continueButton = nullptr;
+	UI_Element* creditsButton = nullptr;
+	UI_Element* settingsButton = nullptr;
+	UI_Element* quitButton = nullptr;
 };
 
 #endif // !__J1UI_H__

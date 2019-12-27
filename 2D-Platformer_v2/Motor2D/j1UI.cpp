@@ -21,7 +21,7 @@ j1UI::~j1UI()
 }
 
 bool j1UI::Awake(pugi::xml_node&)
-{
+{ 
 	bool ret = true;
 	return ret;
 
@@ -31,7 +31,8 @@ bool j1UI::Start()
 {
 	bool ret = true;
 	backgroundImage = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 200,100 }, TYPE::UI_Image);
-	playButton =  CreateUIButton({ 16,90,234,63 }, { 0,0,0,0 }, { 0,0,0,0 }, App->tex->Load("UI/Buttons.png"), { 0,20 }, {App->win->GetWidth() /2,100 }, TYPE::UI_Button,backgroundImage);
+	playButton = CreateUIButton({ 16,90,234,64 }, { 15,855,234,64 }, { 16,471,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,20 }, { 0,0 }, TYPE::UI_Button, backgroundImage);
+
 	return ret;
 }
 
@@ -45,6 +46,8 @@ bool j1UI::Update(float dt)
 {
 	bool ret = true;
 
+	UpdateUI();
+	LOG("SCREEN POS : (%i,%i)", playButton->GetScreenPos().x, playButton->GetScreenPos().y);
 	Draw();
 
 	return ret;
@@ -61,6 +64,14 @@ void j1UI::Draw()
 	for (int i = 0; i < UI_Elements_list.count(); i++)
 	{
 		UI_Elements_list[i]->Draw();
+	}
+}
+
+void j1UI::UpdateUI() 
+{
+	for (int i = 0; i < UI_Elements_list.count(); i++)
+	{
+		UI_Elements_list[i]->Update();
 	}
 }
 

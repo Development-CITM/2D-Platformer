@@ -45,11 +45,15 @@ void UI_Element::Draw()
 		return;
 
 	if (parent == nullptr) {
+
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
 		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y, &activeRect);
 	}
 	else {
-		App->render->Blit(texture, parent->GetLocalPos().x  - activeRect.w / 2 + offset.x, parent->GetLocalPos().y + offset.y, &activeRect);
+		localPos = parent->GetLocalPos();
+		screenPos.x = parent->GetScreenPos().x - activeRect.w / 2 + offset.x;
+		screenPos.y = parent->GetScreenPos().y + offset.y;
+		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y, &activeRect);
 	}
 		
 	

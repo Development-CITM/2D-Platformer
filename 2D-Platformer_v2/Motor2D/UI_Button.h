@@ -11,9 +11,11 @@ public:
 	SDL_Rect hover_rect;
 	SDL_Rect pressed_rect;
 	
-
+	bool isEnabled;
 	bool isPressed;
 	bool isHover;
+
+	void Update() override;
 
 	void SetRectToShow(SDL_Rect rect);
 };
