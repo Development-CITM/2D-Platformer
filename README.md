@@ -5,8 +5,8 @@ This right here is our little game for Development subject. We used C++ Language
 
 #### Team members
 
-* Eudald Garrofé: https://github.com/Hevne
-* Jordi Pardo: https://github.com/Jordi-Pardo
+* Eudald Garrofé: [Hevne](https://github.com/Hevne)
+* Jordi Pardo: [Jordi-Pardo](https://github.com/Jordi-Pardo)
 
 ### Controls
 
