@@ -17,6 +17,7 @@ enum class TYPE
 
 class UI_Element
 {
+
 protected:
 	SDL_Rect base_rect;
 	SDL_Rect activeRect;
