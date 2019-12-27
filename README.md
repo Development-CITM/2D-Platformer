@@ -9,10 +9,12 @@ As we said before, we are a team of two students, now we're gonna introduce some
 
 <img src="Web_Pics/team_pic.PNG"><br>
 
+
+* Eudald Garrofé. Github user: [Hevne](https://github.com/Hevne)<br>
 <img src="Web_Pics/eudald_pic.png"><br>
-* Eudald Garrofé: [Hevne](https://github.com/Hevne) <br>
+
+* Jordi Pardo. Github user: [Jordi-Pardo](https://github.com/Jordi-Pardo)<br>
 <img src="Web_Pics/jordi_pic.png"><br>
-* Jordi Pardo: [Jordi-Pardo](https://github.com/Jordi-Pardo) <br>
 
 ### Controls
 
