@@ -6,8 +6,9 @@ This right here is our little game for Development subject. We used C++ Language
 # Team
 
 As we said before, we are a team of two students, now we're gonna introduce some of the tasks that each one has been in charge during the process of the project. <br>
-
-<img src="Web_Pics/team_pic.PNG"><br>
+<p align="center">
+<img width="700" height="500" src="Web_Pics/team_pic.PNG"><br>
+</p>
 
 
 * Eudald Garrofé. Github user: [Hevne](https://github.com/Hevne)<br>
