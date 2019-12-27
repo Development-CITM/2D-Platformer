@@ -232,6 +232,14 @@ void j1Colliders::Draw()
 				if(!collider->data->to_delete && collider->data->Enabled)
 				App->render->DrawQuad(rect, 255, 0, 0, 60);
 				break;
+			case COLLIDER_COIN:
+				rect.x = collider->data->rect.x * size * scale;
+				rect.y = collider->data->rect.y * size * scale;
+				rect.w = collider->data->rect.w * size * scale;
+				rect.h = collider->data->rect.h * size * scale;
+				if (collider->data->Enabled)
+				App->render->DrawQuad(rect, 128, 0, 128, 60);
+				break;
 			case COLLIDER_WINDOW:
 				App->render->DrawQuad(rect, 0, 255, 255, 50);
 				break;
@@ -340,6 +348,10 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 					c2->Enabled = false;
 					App->debug->CallFade();
 				}
+				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type == COLLIDER_COIN && c2->Enabled) {
+					c2->Enabled = false;
+					App->audio->PlayFx(9);
+				}
 				ret = true;				
 			}
 		}
@@ -365,7 +377,11 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 				ret = true;
 			}
 			break;
-
+		case COLLIDER_COIN:
+			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
+				ret = true;
+			}
+			break;
 		case COLLIDER_ENEMY:
 			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
 				ret = true;

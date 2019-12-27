@@ -783,6 +783,7 @@ void Object_Player::UpdateCheckersBools()
 		}
 		alive = false;
 	}
+
 		
 }
 

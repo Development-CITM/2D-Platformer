@@ -1,8 +1,10 @@
 #include "CoinObjects.h"
 #include "j1EntityManager.h"
 #include "CharacterObjects.h"
+#include "j1Colliders.h"
 #include "PlayerObjects.h"
 #include "j1App.h"
+#include "j1Audio.h"
 #include "j1Textures.h"
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -10,6 +12,7 @@
 Object_Coin::Object_Coin(pugi::xml_node& object) : Object_Character()
 {
 	SetPos(object);
+	collider = App->collider->AddCollider({ position.x+13,position.y+13,20,25 }, COLLIDER_COIN);
 }
 
 Object_Coin::~Object_Coin()
@@ -33,7 +36,11 @@ bool Object_Coin::PreUpdate()
 
 bool Object_Coin::Update(float dt)
 {
-	Draw(dt);
+		if (!collider->Enabled)
+			alive = false;
+		else
+			Draw(dt);
+
 	return true;
 }
 

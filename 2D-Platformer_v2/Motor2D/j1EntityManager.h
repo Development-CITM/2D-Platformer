@@ -119,6 +119,8 @@ public:
 	//Destroys a dead enemy
 	void DestroyEnemyDead();
 
+	void DestroyPickedCoins();
+
 	//Destroys player
 	void DestroyPlayer();
 

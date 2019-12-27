@@ -35,6 +35,7 @@ bool j1EntityManager::Start()
 	App->audio->LoadFx("audio/fx/kick.wav");
 	App->audio->LoadFx("audio/fx/whisp_die.wav");
 	App->audio->LoadFx("audio/fx/kobold_die.wav");
+	App->audio->LoadFx("audio/fx/coin.wav");
 
 	bool ret = true;
 	p2List_item<GameObject*>* item;
@@ -67,13 +68,13 @@ bool j1EntityManager::Update(float dt)
 	bool ret = true;
 	p2List_item<GameObject*>* item;
 	item = objects.start;
-	DestroyEnemyDead();
-
 	while (item != NULL && ret == true)
 	{
 		ret = item->data->Update(dt);
 		item = item->next;
 	}
+	DestroyEnemyDead();
+	DestroyPickedCoins();
 	return ret;
 }
 
@@ -105,6 +106,7 @@ bool j1EntityManager::CleanUp()
 	}
 	DestroyEnemies();
 	DestroyPlayer();
+	DestroyCoin();
 	
 	return ret;
 }
@@ -127,6 +129,18 @@ void j1EntityManager::DestroyEnemyDead()
 	for (int i = objects.count() - 1; i >= 0; i--)
 	{
 		if ((objects.At(i)->data->type_object == Object_type::ENEMY_GROUND || objects.At(i)->data->type_object == Object_type::ENEMY_FLYING) && objects.At(i)->data->alive==false)
+		{
+			objects.At(i)->data->CleanUp();
+			objects.del(objects.At(i));
+		}
+	}
+}
+
+void j1EntityManager::DestroyPickedCoins()
+{
+	for (int i = objects.count() - 1; i >= 0; i--)
+	{
+		if (objects.At(i)->data->type_object == Object_type::COIN && objects.At(i)->data->alive == false)
 		{
 			objects.At(i)->data->CleanUp();
 			objects.del(objects.At(i));
