@@ -207,6 +207,12 @@ void j1EntityManager::FillBackup(p2Point<int> pos, Object_type type)
 	}
 }
 
+void j1EntityManager::FillCoinBackup(p2Point<int> pos, p2Point<int> collider)
+{
+	Object_Coin* coin = new Object_Coin(pos,collider);
+	coin_backup.add(coin);
+}
+
 void j1EntityManager::LoadEnemiesFromMap(pugi::xml_node& object)
 {
 		Object_type type;
@@ -260,6 +266,18 @@ void j1EntityManager::LoadEnemiesFromBackup()
 	}
 }
 
+void j1EntityManager::LoadCoinsFromBackup()
+{
+	p2List_item<GameObject*>* it_objects = objects.start;
+	p2List_item<GameObject*>* it_backups = coin_backup.start;
+
+	while (it_backups != NULL)
+	{
+		objects.add(it_backups->data);
+		it_backups = it_backups->next;
+	}
+}
+
 void j1EntityManager::CreatePlayer(pugi::xml_node& object)
 {
 	Object_Player* player = new Object_Player(object);
@@ -306,6 +324,15 @@ void j1EntityManager::ClearBackup()
 	{
 		backup.At(i)->data->CleanUp();
 		backup.del(backup.At(i));
+	}
+}
+
+void j1EntityManager::ClearCoinBackup()
+{
+	for (int i = coin_backup.count() - 1; i >= 0; i--)
+	{
+		coin_backup.At(i)->data->CleanUp();
+		coin_backup.del(coin_backup.At(i));
 	}
 }
 

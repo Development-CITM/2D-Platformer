@@ -115,7 +115,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 
 		//-------------ENEMIES-----------------------//
 		
-	
 		int type_id;
 		int id = 1;
 		p2SString enemy_identificator;
@@ -139,6 +138,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 			enemy = "enemy_";
 			id++;
 		}	
+	
 	return true;
 }
 
@@ -211,6 +211,35 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 				App->entity->FillBackup({ item->data->position.x,item->data->position.y }, item->data->type_object);
 				id++;
+		}
+		item = item->next;
+	}
+	//----------COINS-----------------//
+	App->entity->ClearCoinBackup();
+	pugi::xml_node coins = data.append_child("coins");
+	item = App->entity->objects.start;
+	id = 1;
+	p2SString coin_id;
+	p2SString coin = "coin_";
+	p2SString collider = "_collider";
+	while (item != NULL)
+	{
+		if (item->data->type_object == Object_type::COIN)
+		{
+			coin_id = p2SString("%d", id);
+
+			coin += coin_id;
+			coins.append_attribute((coin += x).GetString()) = item->data->position.x;
+			coins.append_attribute((coin += collider).GetString()) = item->data->collider->rect.x;
+			coin = "coin_";
+
+			coin += coin_id;
+			coins.append_attribute((coin += y).GetString()) = item->data->position.y;
+			coins.append_attribute((coin += collider).GetString()) = item->data->collider->rect.y;
+			coin = "coin_";
+
+			App->entity->FillCoinBackup({ item->data->position.x,item->data->position.y }, { item->data->collider->rect.x, item->data->collider->rect.y});
+			id++;
 		}
 		item = item->next;
 	}

@@ -450,6 +450,7 @@ bool j1Tilesets::LoadAllObjects(pugi::xml_node& object)
 	{
 		LoadObject(object);
 	}
+	coins_backup_once = true;
 	if (App->scene->swapping)
 	{
 		App->scene->swapping = false;
@@ -475,7 +476,7 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 		App->audio->PlayMusic(objects.attribute("value").as_string());
 	}
 	//Camera limit map loading ---------------------------------------------------------------------------------------------
-	else if (strcmp(node.attribute("name").as_string(), "Camera_limits") == 0 )
+	else if (strcmp(node.attribute("name").as_string(), "Camera_limits") == 0)
 	{
 		objects = node.child("object");
 		App->scene->LoadSceneLimits(objects);
@@ -508,10 +509,15 @@ bool j1Tilesets::LoadObject(pugi::xml_node& node)
 			App->entity->LoadEnemiesFromBackup();
 		}
 	}
-	else if (strcmp(node.attribute("name").as_string(), "Coin") == 0)
+	else if ((strcmp(node.attribute("name").as_string(), "Coin") == 0) && !App->scene->loading)
 	{
 		objects = node.child("object");
 		App->entity->CreateCoin(objects);
+	}
+	else if ((strcmp(node.attribute("name").as_string(), "Coin") == 0) && App->scene->loading && coins_backup_once)
+	{
+		App->entity->LoadCoinsFromBackup();
+		coins_backup_once = false;
 	}
 
 	return ret;

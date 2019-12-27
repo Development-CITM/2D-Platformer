@@ -124,7 +124,6 @@ public:
 	//Destroys player
 	void DestroyPlayer();
 
-
 	//Destroy coin
 	void DestroyCoin();
 
@@ -138,14 +137,20 @@ public:
 	//Fills a temp list to backup enemies
 	void FillBackup(p2Point<int> pos, Object_type type);
 
+	void FillCoinBackup(p2Point<int> pos, p2Point<int> collider);
+
 	//Cleans temp backup list
 	void ClearBackup();
+
+	void ClearCoinBackup();
 
 	//Loads enemies from map
 	void LoadEnemiesFromMap(pugi::xml_node& object);
 
 	//Loads enemies from backup list
 	void LoadEnemiesFromBackup();
+
+	void LoadCoinsFromBackup();
 
 	//Creates player
 	void CreatePlayer(pugi::xml_node& object);
@@ -162,6 +167,7 @@ public:
 	//Game objects lists
 	p2List<GameObject*>  objects;
 	p2List<GameObject*> backup;
+	p2List<GameObject*> coin_backup;
 };
 
 #endif // 

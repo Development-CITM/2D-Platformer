@@ -193,6 +193,8 @@ private:
 	int						currentFrame=0;
 	int						maxFrames=0;
 
+	bool					coins_backup_once = true;
+
 };
 
 #endif // __j1MAP_H__

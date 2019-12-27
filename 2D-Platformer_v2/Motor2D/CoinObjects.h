@@ -11,6 +11,7 @@ class Object_Coin : public Object_Character {
 
 public:
 	Object_Coin(pugi::xml_node& object);
+	Object_Coin(p2Point<int> pos, p2Point<int> collider);
 	~Object_Coin();
 	bool Start();
 	bool PreUpdate();
@@ -25,6 +26,7 @@ public:
 	Animation* spin;
 	
 	int			numCurrentAnimation = 0;
+	p2List<p2Point<int>> collider_backup;
 };
 
 

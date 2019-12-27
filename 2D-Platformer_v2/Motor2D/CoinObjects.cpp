@@ -15,6 +15,12 @@ Object_Coin::Object_Coin(pugi::xml_node& object) : Object_Character()
 	collider = App->collider->AddCollider({ position.x+13,position.y+13,20,25 }, COLLIDER_COIN);
 }
 
+Object_Coin::Object_Coin(p2Point<int> pos, p2Point<int> coll): Object_Character()
+{
+	position = pos;
+	collider_backup.add(coll);
+}
+
 Object_Coin::~Object_Coin()
 {
 }
@@ -23,6 +29,17 @@ bool Object_Coin::Start()
 {
 	bool ret = true;
 	Load("animations/Coin.tmx");
+	if (collider_backup.start != NULL)
+	{
+		for (int i = 0; i < collider_backup.count(); i++)
+		{
+			collider = App->collider->AddCollider({collider_backup.start->data.x,collider_backup.start->data.y,20,25 }, COLLIDER_COIN);
+		}
+		for (int i = collider_backup.count() - 1; i >= 0; i--)
+		{
+			collider_backup.del(collider_backup.At(i));
+		}
+	}
 	alive = true;
 	type_object = COIN;
 	currentAnimation = spin;
