@@ -29,6 +29,19 @@ And I'm Jordi Pardo, I'm like the code guy here, I've been in charge of the coll
 The whole player system: state machine, lives, game feel... I've done the Pathfinding algorithm and the different states for enemies: movement, attacks, dead conditions... <br> <br>
 The camera and culling movement is part of my work too. <br> <br>
 
+# Features and our own innovation
+
+Our game, Snowy Mists uses all these features:
+* Map Loading from XML documents
+* Save and Load
+* Enemies with Pathifinding and lives
+* Delta time for adjusting framerate 
+* Camera movement and culling
+* Console commands
+* UI elements
+
+We introduced some innovation too loading player and enemies from Tiled maps aswell.
+
 # Github Repository
 
 Our Github repository for the project:
