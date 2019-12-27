@@ -24,11 +24,14 @@ void UI_Button::Update()
 	App->input->GetMousePosition(x, y);
 	//LOG("(%i,%i)", x, y);
 
-	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !clicked) {
-		clicked = true;
+	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_DOWN) {
+		OnClick();
 		isPressed = true;
 		activeRect = pressed_rect;
-		timer.Start();
+	}
+	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_REPEAT) {
+		isPressed = true;
+		activeRect = pressed_rect;
 	}
 	else if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h)
 	{
@@ -41,16 +44,6 @@ void UI_Button::Update()
 		isPressed = false;
 		activeRect = base_rect;
 	}
-
-	if (isPressed) {
-		OnClick();
-	}
-
-	if (timer.ReadSec() > 0.2f) {
-		clicked = false;
-	}
-	
-
 
 }
 
