@@ -2,7 +2,9 @@
 
 Hi there! We're a pair of students from CITM's-UPC currently coursing the degree: Videogame Design & Development.
 This right here is our little game for Development subject. We used C++ Language for the coding stuff via SDL and pugi libraries. Plus we used Tiled for creating the structure of the map, loading it's colliders and even the player animations. <br> <br>
-<img align="left" src="Web_Pics/xml_pic.png"> <br><img align="center" src="Web_Pics/sdl_pic.png"> <img align="right" src="Web_Pics/tiled_pic.png">  <br><br>
+<img align="left" src="Web_Pics/xml_pic.png"> <br> 
+<p align="center"> <img align="center" src="Web_Pics/sdl_pic.png"> </p>
+<img align="right" src="Web_Pics/tiled_pic.png">  <br><br>
 # Team
 
 As we said before, we are a team of two students, now we're gonna introduce some of the tasks that each one has been in charge during the process of the project. <br>
