@@ -5,7 +5,7 @@
 #include "UI_Image.h"
 #include "j1App.h"
 #include "j1Render.h"
-
+#include "j1Textures.h"
 j1UI::j1UI()
 {
 }
@@ -28,8 +28,8 @@ bool j1UI::Awake(pugi::xml_node&)
 bool j1UI::Start()
 {
 	bool ret = true;
-	CreateUIButton({ 0,0,0,0 }, { 0,0,0,0 }, { 0,0,0,0 }, nullptr, { 0,0 }, { 0,0 }, TYPE::UI_Button);
-	CreateUIImage({ 0,0,0,0 },nullptr, { 0,0 }, { 0,0 }, TYPE::UI_Image);
+	CreateUIButton({ 16,90,234,63 }, { 0,0,0,0 }, { 0,0,0,0 }, App->tex->Load("UI/Buttons.png"), { 0,0 },App->render->ScreenToWorld(100,100), TYPE::UI_Button);
+	//CreateUIImage({ 0,0,0,0 },nullptr, { 0,0 }, { 0,0 }, TYPE::UI_Image);
 	return ret;
 }
 
@@ -58,8 +58,7 @@ void j1UI::Draw()
 {
 	for (int i = 0; i < UI_Elements_list.count(); i++)
 	{
-		LOG("%i",UI_Elements_list[i]->UI_Type);
-	
+		UI_Elements_list[i]->Draw();
 	}
 }
 

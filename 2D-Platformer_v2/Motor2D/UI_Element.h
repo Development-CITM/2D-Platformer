@@ -37,7 +37,10 @@ public:
 
 	virtual p2Point<int> GetLocalPos();
 	virtual p2Point<int> GetScreenPos();
+	virtual SDL_Texture* GetTexture();
 	virtual SDL_Rect GetRect();
+	virtual void Draw();
+
 	virtual void SetBaseRect(SDL_Rect);
 	virtual void ToggleHide(bool flag);
 	virtual bool isHide();
