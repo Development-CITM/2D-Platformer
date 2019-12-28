@@ -9,6 +9,10 @@ UI_Element::UI_Element(SDL_Rect image, SDL_Texture* text, p2Point<int> offset,p2
 {
 }
 
+UI_Element::UI_Element()
+{
+}
+
 UI_Element::~UI_Element()
 {
 	texture = nullptr;

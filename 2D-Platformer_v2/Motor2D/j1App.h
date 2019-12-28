@@ -99,6 +99,7 @@ public:
 	j1Fade2Black*		fade2black;
 	j1Debug*			debug;
 	j1PathFinding*		pathfinding;
+
 	bool				maxcapFrames = false;
 	bool				transition = false;
 

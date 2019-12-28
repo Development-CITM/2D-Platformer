@@ -82,6 +82,9 @@
     <ClCompile Include="UI_Functions.cpp">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Fonts.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -187,6 +190,9 @@
       <Filter>Desenvolupament  ========\Game Objects\Dynamic Objects</Filter>
     </ClInclude>
     <ClInclude Include="UI_Functions.h">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Fonts.h">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
   </ItemGroup>

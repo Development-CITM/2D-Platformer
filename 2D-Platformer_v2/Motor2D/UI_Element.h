@@ -13,6 +13,7 @@ enum class TYPE
 	UI_Button,
 	UI_Window,
 	UI_Console,
+	UI_Font,
 };
 
 class UI_Element
@@ -34,6 +35,7 @@ protected:
 	//Public Functions
 public:
 	UI_Element(SDL_Rect image,SDL_Texture* text, p2Point<int> offset,p2Point<int> local, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
+	UI_Element();
 	~UI_Element();
 
 	virtual void SetTexture(const char* path);
