@@ -8,6 +8,7 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "UI_Functions.h"
+#include "UI_Fonts.h"
 
 j1UI::j1UI()
 {
@@ -33,6 +34,8 @@ bool j1UI::Start()
 	//Menu
 	bool ret = true;
 	backgroundImage = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 200,100 }, TYPE::UI_Image);
+	coin_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 930,20 }, TYPE::UI_Image);
+	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { 0,0 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image);
 
 	playButton = (UI_Button*)CreateUIButton({ 16,90,234,64 }, { 15,855,234,64 }, { 16,471,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,40 }, { 0,0 }, TYPE::UI_Button, ButtonType::Start, backgroundImage);
 
@@ -60,6 +63,9 @@ bool j1UI::Start()
 	//Credits
 	creditsImage = CreateUIImage({ 0,0,862,534 }, App->tex->Load("UI/HUD_Menus Alt2.png"), { 0,0 }, { App->win->GetWidth()/2, 100 }, TYPE::UI_Image);
 	creditsImage->ToggleHide(true);
+
+	//Score
+	CreateNewFont(coin_background);
 	return ret;
 }
 
@@ -76,8 +82,8 @@ bool j1UI::Update(float dt)
 	if (quit) {
 		ret = false;
 	}
-	UpdateUI();
 	Draw();
+	UpdateUI();
 
 	
 	return ret;
@@ -119,4 +125,20 @@ UI_Element* j1UI::CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect presse
 	LOG("Button created");
 	UI_Elements_list.add(element);
 	return element;
+}
+void j1UI::CreateNewFont(UI_Element* parent)
+{
+	UI_Fonts* font = new UI_Fonts(TYPE::UI_Font, parent);
+	UI_Elements_list.add(font);
+}
+
+void j1UI::AddScore()
+{
+	for (int i = 0; i < UI_Elements_list.count(); i++)
+	{
+		if (UI_Elements_list.At(i)->data->UI_Type == TYPE::UI_Font)
+		{
+			UI_Elements_list.At(i)->data->addScoreCoin = true;
+		}
+	}
 }
