@@ -12,10 +12,13 @@
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
-UI_Fonts::UI_Fonts(TYPE type_element, UI_Element* parent_) : UI_Element()
+UI_Fonts::UI_Fonts(font_type type_font, TYPE type_element, UI_Element* parent_) : UI_Element()
 {
 	UI_Type = type_element;
 	parent = parent_;
+	type_of_font = type_font;
+
+	//Init for each font, for the moment each font with the same default font
 	if (TTF_Init() == -1)
 	{
 		LOG("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
@@ -26,22 +29,41 @@ UI_Fonts::UI_Fonts(TYPE type_element, UI_Element* parent_) : UI_Element()
 		int size = DEFAULT_FONT_SIZE;
 		default = LoadFont(path, size);
 	}
-	score = "0";
-	texture = BlitText(score.GetString(), { (0,0,0,0) }, default);
+
+	if (type_of_font == font_type::FONT_SCORE)
+	{
+		score_font.score = "0";
+		texture = BlitText(score_font.score.GetString(), { (0,0,0,0) }, default);
+	}
+	else if (type_of_font == font_type::FONT_TIMER)
+	{
+		timer_font.time = "0";
+		timer_font.time_int = 0;
+		timer_font.timer.Start();
+		texture = BlitText(timer_font.time.GetString(), { (0,0,0,0) }, default);
+	}
 }
 
 UI_Fonts::~UI_Fonts()
 {}
 
-
-
-
 void UI_Fonts::Update()
 {
-	if (addScoreCoin)
+	if (type_of_font == font_type::FONT_TIMER)
 	{
-		AddScore(1);
-		addScoreCoin = false;
+		timer_font.time_int = timer_font.timer.ReadSec();
+		if (timer_font.time_int <= 120)
+		{
+			AddTime(timer_font.time_int);
+		}
+	}
+	else if (type_of_font == font_type::FONT_SCORE)
+	{
+		if (addScoreCoin)
+		{
+			AddScore(1);
+			addScoreCoin = false;
+		}
 	}
 }
 
@@ -125,10 +147,18 @@ void UI_Fonts::Draw()
 
 void UI_Fonts::AddScore(int add)
 {
-	score_int += add;
-	p2SString score = p2SString("%d", score_int);
+	score_font.score_int += add;
+	p2SString score = p2SString("%d", score_font.score_int);
 
 	texture = BlitText(score.GetString(), { (0,0,0,0) }, default);
+}
+
+void UI_Fonts::AddTime(int add)
+{
+	timer_font.time_int = add;
+	p2SString time = p2SString("%d", timer_font.time_int);
+
+	texture = BlitText(time.GetString(), { (0,0,0,0) }, default);
 }
 
 

@@ -33,7 +33,8 @@ public:
 
 	UI_Element* CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
 	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent = nullptr);
-	void CreateNewFont(UI_Element* parent);
+	void CreateNewScoreFont(UI_Element* parent);
+	void CreateNewTimerFont(UI_Element* parent);
 	void AddScore();
 	p2List<UI_Element*> UI_Elements_list;
 
@@ -43,6 +44,7 @@ public:
 	UI_Element* backgroundImage = nullptr;
 	UI_Element* coin_background = nullptr;
 	UI_Element* coin_image = nullptr;
+	UI_Element* timer_image = nullptr;
 	UI_Element* timer_background = nullptr;
 
 	//Buttons

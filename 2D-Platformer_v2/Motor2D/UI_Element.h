@@ -16,6 +16,12 @@ enum class TYPE
 	UI_Font,
 };
 
+enum class font_type {
+	FONT_SCORE,
+	FONT_TIMER,
+	FONT_CONSOLE
+};
+
 class UI_Element
 {
 	friend class j1UI;
