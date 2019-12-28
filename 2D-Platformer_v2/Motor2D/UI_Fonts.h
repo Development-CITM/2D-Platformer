@@ -22,7 +22,7 @@ public:
 	_TTF_Font* const LoadFont(const char* path, int size = 12);
 	SDL_Texture* BlitText(const char* text, SDL_Color color , _TTF_Font* font = NULL);
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
-	void TextDraw();
+	void Draw();
 	void AddScore(int add);
 
 public:

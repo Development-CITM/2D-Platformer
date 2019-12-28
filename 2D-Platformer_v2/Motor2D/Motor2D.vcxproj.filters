@@ -85,8 +85,12 @@
     <ClCompile Include="UI_Fonts.cpp">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
-    <ClCompile Include="UI_InputText.cpp" />
-    <ClCompile Include="UI_ScrollBar.cpp" />
+    <ClCompile Include="UI_ScrollBar.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_InputText.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

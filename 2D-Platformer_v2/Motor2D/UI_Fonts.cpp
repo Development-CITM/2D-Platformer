@@ -27,7 +27,7 @@ UI_Fonts::UI_Fonts(TYPE type_element, UI_Element* parent_) : UI_Element()
 		default = LoadFont(path, size);
 	}
 	score = "0";
-	text = BlitText(score.GetString(), { (0,0,0,0) }, default);
+	texture = BlitText(score.GetString(), { (0,0,0,0) }, default);
 }
 
 UI_Fonts::~UI_Fonts()
@@ -43,7 +43,6 @@ void UI_Fonts::Update()
 		AddScore(1);
 		addScoreCoin = false;
 	}
-	TextDraw();
 }
 
 bool UI_Fonts::CleanUp()
@@ -108,21 +107,20 @@ bool UI_Fonts::CalcSize(const char* text, int& width, int& height, _TTF_Font* fo
 	return ret;
 }
 
-void UI_Fonts::TextDraw()
+void UI_Fonts::Draw()
 {
 	if (parent == nullptr)
 	{
 		localPos = App->render->ScreenToWorld(75, 23);
-		App->render->Blit(text, localPos.x, localPos.y);
+		App->render->Blit(texture, localPos.x, localPos.y);
 	}
 	else
 	{
 		localPos = parent->GetLocalPos();
 		screenPos.x = parent->GetScreenPos().x - activeRect.w / 2 + offset.x;
 		screenPos.y = parent->GetScreenPos().y + offset.y;
-		App->render->Blit(text, localPos.x - 17, localPos.y+7);
+		App->render->Blit(texture, localPos.x - 17, localPos.y+7);
 	}
-
 }
 
 void UI_Fonts::AddScore(int add)
@@ -130,7 +128,7 @@ void UI_Fonts::AddScore(int add)
 	score_int += add;
 	p2SString score = p2SString("%d", score_int);
 
-	text = BlitText(score.GetString(), { (0,0,0,0) }, default);
+	texture = BlitText(score.GetString(), { (0,0,0,0) }, default);
 }
 
 
