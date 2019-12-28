@@ -11,6 +11,7 @@ public:
 	void Update();
 	bool PostUpdate();
 	int LoadFont(const char* path, const char* characters, int rows, int w, int h, int rc);
+	void BlitText(int x, int y, const char* text, int font_id, int space);
 
 
 private:

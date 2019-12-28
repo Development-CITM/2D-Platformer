@@ -38,3 +38,7 @@ int UI_Fonts::LoadFont(const char* path, const char* characters, int rows, int w
 
 	return id;
 }
+
+void UI_Fonts::BlitText(int x, int y, const char* text, int font_id, int space)
+{
+}
