@@ -104,6 +104,8 @@
     <ClCompile Include="UI_Fonts.cpp" />
     <ClCompile Include="UI_Functions.cpp" />
     <ClCompile Include="UI_Image.cpp" />
+    <ClCompile Include="UI_InputText.cpp" />
+    <ClCompile Include="UI_ScrollBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -142,6 +144,8 @@
     <ClInclude Include="UI_Fonts.h" />
     <ClInclude Include="UI_Functions.h" />
     <ClInclude Include="UI_Image.h" />
+    <ClInclude Include="UI_InputText.h" />
+    <ClInclude Include="UI_ScrollBar.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
