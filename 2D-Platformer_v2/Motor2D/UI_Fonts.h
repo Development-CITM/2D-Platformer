@@ -51,6 +51,10 @@ public:
 	//TIMER FONT
 	TIMER timer_font;
 
+	p2SString text;
+
+	
+
 };
 
 

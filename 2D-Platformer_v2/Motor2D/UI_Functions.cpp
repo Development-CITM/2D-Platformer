@@ -21,7 +21,10 @@ void UI_Functions::StartButton(UI_Element* current)
 		App->scene->destination_level = "maps/A2.tmx";
 		App->debug->CallFade();
 		current->ToggleHide(true);
+
 }
+
+
 
 void UI_Functions::ContinueButton()
 {
@@ -49,6 +52,14 @@ void UI_Functions::CreditsButton(UI_Element* current, UI_Element* target)
 {
 	current->ToggleHide(true);
 	target->ToggleHide(false);
+}
+
+void UI_Functions::ShowUI(UI_Element* coins, UI_Element*timer,UI_Element* coin_image, UI_Element* timer_image)
+{
+	coins->ToggleHide(false);
+	timer->ToggleHide(false);
+	coin_image->ToggleHide(false);
+	timer_image->ToggleHide(false);
 }
 
 void UI_Functions::ReturnButton(UI_Element* current, UI_Element* mainmenu)

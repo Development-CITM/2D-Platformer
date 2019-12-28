@@ -42,6 +42,9 @@ UI_Fonts::UI_Fonts(font_type type_font, TYPE type_element, UI_Element* parent_) 
 		timer_font.timer.Start();
 		texture = BlitText(timer_font.time.GetString(), { (0,0,0,0) }, default);
 	}
+	else if (type_of_font == font_type::FONT_CONSOLE) {
+
+	}
 }
 
 UI_Fonts::~UI_Fonts()

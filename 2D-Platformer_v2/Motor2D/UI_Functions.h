@@ -15,6 +15,7 @@ public:
 	static void ActiveSoundButton(bool flag);
 	static void ReturnButton(UI_Element*, UI_Element*);
 	static void CreditsButton(UI_Element*, UI_Element*);
+	static void ShowUI(UI_Element*, UI_Element*, UI_Element*, UI_Element*);
 	static void QuitButton();
 
 };

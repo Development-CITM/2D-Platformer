@@ -5,7 +5,7 @@
 #include "p2DynArray.h"
 #include "UI_Element.h"
 #include "UI_Button.h"
-
+#include "UI_Fonts.h"
 enum ButtonType;
 
 class j1UI : public j1Module
@@ -35,6 +35,7 @@ public:
 	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent = nullptr);
 	void CreateNewScoreFont(UI_Element* parent);
 	void CreateNewTimerFont(UI_Element* parent);
+	UI_Fonts* CreateUIText(UI_Element* parent);
 	void AddScore();
 	p2List<UI_Element*> UI_Elements_list;
 

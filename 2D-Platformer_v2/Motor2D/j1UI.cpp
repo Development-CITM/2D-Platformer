@@ -35,9 +35,11 @@ bool j1UI::Start()
 	bool ret = true;
 	backgroundImage = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 200,100 }, TYPE::UI_Image);
 	coin_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 930,20 }, TYPE::UI_Image);
+	coin_background->ToggleHide(true);
 	timer_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 110,20 }, TYPE::UI_Image);
-	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { 0,0 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image);
-	timer_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/timer.png"), { 0,0 }, { App->win->GetWidth() - 156,13 }, TYPE::UI_Image);
+	timer_background->ToggleHide(true);
+	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { -70,0 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image,coin_background);
+	timer_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/timer.png"), { -70,0 }, { App->win->GetWidth() - 156,13 }, TYPE::UI_Image,timer_background);
 
 	playButton = (UI_Button*)CreateUIButton({ 16,90,234,64 }, { 15,855,234,64 }, { 16,471,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,40 }, { 0,0 }, TYPE::UI_Button, ButtonType::Start, backgroundImage);
 
@@ -151,6 +153,16 @@ void j1UI::CreateNewTimerFont(UI_Element* parent)
 	UI_Fonts* font = new UI_Fonts(font_type::FONT_TIMER, TYPE::UI_Font, parent);
 	UI_Elements_list.add(font);
 }
+
+UI_Fonts* j1UI::CreateUIText(UI_Element* parent)
+{
+	UI_Fonts* font = new UI_Fonts(font_type::FONT_CONSOLE, TYPE::UI_Font, parent);
+	UI_Elements_list.add(font);
+	
+	return font;
+}
+
+
 
 void j1UI::AddScore()
 {

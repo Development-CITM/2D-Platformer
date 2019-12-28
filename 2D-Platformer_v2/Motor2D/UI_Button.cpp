@@ -57,6 +57,7 @@ void UI_Button::OnClick()
 	{
 	case Start:
 		UI_Functions::StartButton(GetUIParent());
+		UI_Functions::ShowUI(App->ui->coin_background, App->ui->timer_background,App->ui->coin_image,App->ui->timer_image);
 		break;
 	case Continue:
 		UI_Functions::ContinueButton();
