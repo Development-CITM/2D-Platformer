@@ -34,9 +34,10 @@ void UI_Functions::ActiveSoundButton(bool flag)
 	//Toggle enable
 }
 
-void UI_Functions::CreditsButton()
+void UI_Functions::CreditsButton(UI_Element* current, UI_Element* target)
 {
-
+	current->ToggleHide(true);
+	target->ToggleHide(false);
 }
 
 void UI_Functions::ReturnButton(UI_Element* current, UI_Element* mainmenu)

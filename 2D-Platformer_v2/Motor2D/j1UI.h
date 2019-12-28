@@ -56,6 +56,9 @@ public:
 	UI_Button* muteButton = nullptr;
 	UI_Button* soundButton = nullptr;
 	UI_Button* returnButton = nullptr;
+
+	/*---CREDITS---*/
+	UI_Element* creditsImage = nullptr;
 };
 
 #endif // !__J1UI_H__

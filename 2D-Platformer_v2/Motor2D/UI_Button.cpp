@@ -74,7 +74,7 @@ void UI_Button::OnClick()
 		UI_Functions::ReturnButton(GetUIParent(),App->ui->backgroundImage);
 		break;
 	case Credits:
-		UI_Functions::CreditsButton();
+		UI_Functions::CreditsButton(App->ui->backgroundImage, App->ui->creditsImage);
 		break;
 	case Quit:
 		UI_Functions::QuitButton();
