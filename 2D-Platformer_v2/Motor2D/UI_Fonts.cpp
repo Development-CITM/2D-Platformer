@@ -12,45 +12,38 @@
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
-UI_Fonts::UI_Fonts(const char* path, int size) : UI_Element()
+UI_Fonts::UI_Fonts(TYPE type_element, UI_Element* parent_) : UI_Element()
 {
-	
-}
-
-UI_Fonts::~UI_Fonts()
-{
-}
-
-bool UI_Fonts::Start()
-{
-	LOG("Init True Type Font library");
-	bool ret = true;
-
+	UI_Type = type_element;
+	parent = parent_;
 	if (TTF_Init() == -1)
 	{
 		LOG("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-		ret = false;
 	}
 	else
 	{
-		//A afegir EUDALD  
 		const char* path = DEFAULT_FONT;
-		int size =DEFAULT_FONT_SIZE;
+		int size = DEFAULT_FONT_SIZE;
 		default = LoadFont(path, size);
 	}
-
-	return ret;
+	score = "0";
+	text = BlitText(score.GetString(), { (0,0,0,0) }, default);
 }
+
+UI_Fonts::~UI_Fonts()
+{}
+
+
 
 
 void UI_Fonts::Update()
 {
-	SDL_Texture* text = NULL;
-	for (int i = 0; i < fonts.count(); i++)
+	if (addScoreCoin)
 	{
-		text = BlitText("Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", { (255,255,255,255) }, default);
-		App->render->Blit(text, 416, 208);
+		AddScore(1);
+		addScoreCoin = false;
 	}
+	TextDraw();
 }
 
 bool UI_Fonts::CleanUp()
@@ -113,6 +106,31 @@ bool UI_Fonts::CalcSize(const char* text, int& width, int& height, _TTF_Font* fo
 		ret = true;
 
 	return ret;
+}
+
+void UI_Fonts::TextDraw()
+{
+	if (parent == nullptr)
+	{
+		localPos = App->render->ScreenToWorld(75, 23);
+		App->render->Blit(text, localPos.x, localPos.y);
+	}
+	else
+	{
+		localPos = parent->GetLocalPos();
+		screenPos.x = parent->GetScreenPos().x - activeRect.w / 2 + offset.x;
+		screenPos.y = parent->GetScreenPos().y + offset.y;
+		App->render->Blit(text, localPos.x - 17, localPos.y+7);
+	}
+
+}
+
+void UI_Fonts::AddScore(int add)
+{
+	score_int += add;
+	p2SString score = p2SString("%d", score_int);
+
+	text = BlitText(score.GetString(), { (0,0,0,0) }, default);
 }
 
 

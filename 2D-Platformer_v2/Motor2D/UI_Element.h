@@ -18,7 +18,7 @@ enum class TYPE
 
 class UI_Element
 {
-
+	friend class j1UI;
 protected:
 	SDL_Rect base_rect;
 	SDL_Rect activeRect;
@@ -28,6 +28,7 @@ protected:
 	p2Point<int> localPos;
 	p2Point<int> screenPos;
 	p2Point<int> offset;
+	bool addScoreCoin=false;
 
 	TYPE UI_Type;
 
