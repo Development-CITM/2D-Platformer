@@ -25,6 +25,7 @@ void UI_Functions::SettingsButton(UI_Element* settings, UI_Element* mainmenu)
 	//Open settings menu
 	settings->ToggleHide(false);
 	mainmenu->ToggleHide(true);
+	LOG("OPEN SETTINGS");
 }
 
 void UI_Functions::ActiveSoundButton(bool flag)
@@ -41,8 +42,9 @@ void UI_Functions::CreditsButton()
 void UI_Functions::ReturnButton(UI_Element* current, UI_Element* mainmenu)
 {
 	//Hide current menu and show main menu
-	current->ToggleHide(true);
 	mainmenu->ToggleHide(false);
+	current->ToggleHide(true);
+	LOG("Close");
 
 }
 

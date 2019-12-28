@@ -62,7 +62,7 @@ void UI_Button::OnClick()
 		UI_Functions::ContinueButton();
 		break;
 	case Settings:
-		UI_Functions::SettingsButton(App->ui->settingsBackground, App->ui->backgroundImage);
+		UI_Functions::SettingsButton(App->ui->settingsBackground, GetUIParent());
 		break;
 	case Sound:
 		UI_Functions::ActiveSoundButton(true);
