@@ -4,6 +4,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "UI_Button.h"
+#include "j1Scene.h"
 
 class UI_Button;
 UI_Element::UI_Element(SDL_Rect image, SDL_Texture* text, p2Point<int> offset,p2Point<int> local, p2Point<int> screen, TYPE ui_type, UI_Element* parent_base): base_rect(image),texture(text),offset(offset),localPos(local),screenPos(screen),UI_Type(ui_type),hide(false),activeRect(image),parent(parent_base)
@@ -46,12 +47,28 @@ SDL_Rect UI_Element::GetRect()
 
 void UI_Element::Draw()
 {	
-	if (hide)
+	if (hide) {
+		UI_Button* button = (UI_Button*)this;
+		button->isEnabled = false;
 		return;
+	}
+	else {
+		UI_Button* button = (UI_Button*)this;
+		button->isEnabled = true;
+	}
 
 	if (parent != nullptr) {
-		if (parent->isHide())
+		if (parent->isHide()) {
+			ToggleHide(true);
 			return;
+		}
+	}
+
+	if (!App->scene->saving) {
+		UI_Button* button = (UI_Button*)this;
+		if (button->button_type == ButtonType::Continue) {
+			button->isEnabled = false;
+		}
 	}
 
 	if (parent == nullptr) {

@@ -56,7 +56,7 @@ void UI_Button::OnClick()
 	switch (button_type)
 	{
 	case Start:
-		UI_Functions::StartButton();
+		UI_Functions::StartButton(GetUIParent());
 		break;
 	case Continue:
 		UI_Functions::ContinueButton();

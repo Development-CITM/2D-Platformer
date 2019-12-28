@@ -49,16 +49,27 @@ bool j1UI::Start()
 
 	quitButton = (UI_Button*)CreateUIButton({ 16,243,234,64 }, { 15,1008,234,64 }, { 16,624,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,372 }, { 0,0 }, TYPE::UI_Button, ButtonType::Quit, backgroundImage);
 
+	backgroundImage->childs.add(playButton);
+	backgroundImage->childs.add(continueButton);
+	backgroundImage->childs.add(settingsButton);
+	backgroundImage->childs.add(creditsButton);
+	backgroundImage->childs.add(quitButton);
+
+
 	//Settings
 	//Background
 	settingsBackground = CreateUIImage({ 3,3,335,192 }, App->tex->Load("UI/SettingsBackground.png"), { 0,0 }, { App->win->GetWidth() - 200,250 }, TYPE::UI_Image);
 	settingsBackground->ToggleHide(true);
 	//Buttons
 	soundButton = (UI_Button*)CreateUIButton({ 498,18,64,63 }, { 498,783,64,63 }, { 498,399,64,63 }, App->tex->Load("UI/Buttons.png"), { -50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Sound, settingsBackground);	
-	
+
 	muteButton = (UI_Button*)CreateUIButton({ 581,18,64,63 }, { 581,783,64,63 }, { 581,399,64,63 }, App->tex->Load("UI/Buttons.png"), { 50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Mute, settingsBackground);
 
 	returnButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,100 }, { 0,0 }, TYPE::UI_Button, ButtonType::Return, settingsBackground);
+
+	settingsBackground->childs.add(soundButton);
+	settingsBackground->childs.add(muteButton);
+	settingsBackground->childs.add(returnButton);
 
 	//Credits
 	creditsImage = CreateUIImage({ 0,0,862,534 }, App->tex->Load("UI/HUD_Menus Alt2.png"), { 0,0 }, { App->win->GetWidth()/2, 100 }, TYPE::UI_Image);

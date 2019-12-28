@@ -2,6 +2,11 @@
 #include "p2Log.h"
 #include "j1UI.h"
 #include "j1App.h"
+#include "j1Input.h"
+#include "SDL/include/SDL_scancode.h"
+#include "j1Scene.h"
+#include "j1Debug.h"
+
 
 UI_Functions::UI_Functions()
 {
@@ -11,9 +16,11 @@ UI_Functions::~UI_Functions()
 {
 }
 
-void UI_Functions::StartButton()
+void UI_Functions::StartButton(UI_Element* current)
 {
-	LOG("START BUTTON");
+		App->scene->destination_level = "maps/A2.tmx";
+		App->debug->CallFade();
+		current->ToggleHide(true);
 }
 
 void UI_Functions::ContinueButton()
@@ -24,6 +31,10 @@ void UI_Functions::SettingsButton(UI_Element* settings, UI_Element* mainmenu)
 {
 	//Open settings menu
 	settings->ToggleHide(false);
+	for (int i = 0; i < settings->childs.count(); i++)
+	{
+		settings->childs[i]->ToggleHide(false);
+	}
 	mainmenu->ToggleHide(true);
 	LOG("OPEN SETTINGS");
 }
@@ -45,6 +56,10 @@ void UI_Functions::ReturnButton(UI_Element* current, UI_Element* mainmenu)
 	//Hide current menu and show main menu
 	mainmenu->ToggleHide(false);
 	current->ToggleHide(true);
+	for (int i = 0; i < mainmenu->childs.count(); i++)
+	{
+		mainmenu->childs[i]->ToggleHide(false);
+	}
 	LOG("Close");
 
 }

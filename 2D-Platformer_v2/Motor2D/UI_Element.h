@@ -2,7 +2,7 @@
 #define __UI_ELEMENT_H__
 #include "SDL/include/SDL_rect.h"
 #include "p2Point.h"
-
+#include "p2List.h"
 
 struct SDL_Texture;
 
@@ -53,6 +53,7 @@ public:
 	virtual void SetBaseRect(SDL_Rect);
 	virtual void ToggleHide(bool flag);
 	virtual bool isHide();
+	p2List<UI_Element*> childs;
 };
 
 
