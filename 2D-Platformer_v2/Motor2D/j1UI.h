@@ -36,8 +36,7 @@ public:
 	p2List<UI_Element*> UI_Elements_list;
 
 
-	/* MAIN MENU*/
-
+	/* ----MAIN MENU----*/
 	//Images
 	UI_Element* backgroundImage = nullptr;
 
@@ -47,6 +46,16 @@ public:
 	UI_Button* creditsButton = nullptr;
 	UI_Button* settingsButton = nullptr;
 	UI_Button* quitButton = nullptr;
+
+
+	/*------SETTINGS------*/
+	//Background
+	UI_Element* settingsBackground = nullptr;
+
+	//Buttons
+	UI_Button* muteButton = nullptr;
+	UI_Button* soundButton = nullptr;
+	UI_Button* returnButton = nullptr;
 };
 
 #endif // !__J1UI_H__

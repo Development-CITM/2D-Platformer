@@ -4,6 +4,7 @@
 #include "SDL/include/SDL_mouse.h"
 #include "p2Log.h"
 #include "UI_Functions.h"
+#include "j1UI.h"
 
 UI_Button::UI_Button(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent) : hover_rect(hover), pressed_rect(pressed), isHover(false), isPressed(false),wasPressed(false),isEnabled(true),button_type(button), UI_Element(image, text, offset, { 0,0 }, screen, ui_type, parent)
 {
@@ -61,7 +62,16 @@ void UI_Button::OnClick()
 		UI_Functions::ContinueButton();
 		break;
 	case Settings:
-		UI_Functions::SettingsButton();
+		UI_Functions::SettingsButton(App->ui->settingsBackground, App->ui->backgroundImage);
+		break;
+	case Sound:
+		UI_Functions::ActiveSoundButton(true);
+		break;
+	case Mute:
+		UI_Functions::ActiveSoundButton(false);
+		break;		
+	case Return:
+		UI_Functions::ReturnButton(GetUIParent(),App->ui->backgroundImage);
 		break;
 	case Credits:
 		UI_Functions::CreditsButton();

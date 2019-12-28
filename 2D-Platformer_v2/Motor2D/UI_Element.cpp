@@ -48,6 +48,11 @@ void UI_Element::Draw()
 	if (hide)
 		return;
 
+	if (parent != nullptr) {
+		if (parent->isHide())
+			return;
+	}
+
 	if (parent == nullptr) {
 
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
@@ -66,6 +71,16 @@ void UI_Element::Draw()
 void UI_Element::Update()
 {
 
+}
+
+UI_Element* UI_Element::GetUIElement()
+{
+	return this;
+}
+
+UI_Element* UI_Element::GetUIParent()
+{
+	return parent;
 }
 
 void UI_Element::SetBaseRect(SDL_Rect rect)

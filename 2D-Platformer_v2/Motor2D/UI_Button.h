@@ -7,6 +7,9 @@ enum ButtonType {
 	Start,
 	Continue,
 	Settings,
+	Mute,
+	Sound,
+	Return,
 	Credits,
 	Quit
 };
