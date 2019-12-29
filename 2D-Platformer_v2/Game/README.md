@@ -8,6 +8,19 @@ This right here is our little game for Development subject. We used C++ Language
 * Eudald Garrofé: https://github.com/Hevne
 * Jordi Pardo: https://github.com/Jordi-Pardo
 
+### UI
+* Play: Start the game
+* Continue: Continue the game if it has been saved
+* Setting: Open settings menu, up/down volume music
+* Credits: Open credits  
+* Quit: Exit the game
+* Github: Open github's web
+
+* Pause menu: Stops running time, you can resume or exit the game
+
+#### UI Features
+* If timer arrives to one minute on each level, player loses one life
+
 ### Controls
 
 * D: Move Right

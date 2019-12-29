@@ -20,7 +20,7 @@ j1Console::~j1Console()
 
 bool j1Console::Start()
 {
-	input_text = App->ui->CreateUIInputText({ 600,30 }, { 0,0 }, { 0,400 });
+	input_text = App->ui->CreateUIInputText({ 700,30 }, { 0,0 }, { 0,400 });
 	input_text->ToggleHide(true);
 
 	for (int i = 0; i < App->logs.count(); i++)
@@ -71,7 +71,7 @@ bool j1Console::Update(float dt)
 	}
 
 	p2Point<int> pos = App->render->ScreenToWorld(0, 0);
-	App->render->DrawQuad({pos.x,pos.y,600,400 }, 0, 0, 0, 220);
+	App->render->DrawQuad({pos.x,pos.y,700,400 }, 0, 0, 0, 220);
 
 	for (int i = 0; i < text_list.count(); i++)
 	{
@@ -116,6 +116,9 @@ void j1Console::ExecuteCommand(p2SString string)
 		command = fps;
 		
 	}
+	else if (string == "clear") {
+		command = clear;
+	}
 	else {
 		command = error;
 	}
@@ -129,7 +132,7 @@ void j1Console::ExecuteCommand(p2SString string)
 		App->ui->quit = true;
 		break;
 	case list:
-		App->console->AddLog("List option: list, quit, map<A2>, map<A3>, change_fps");
+		App->console->AddLog("List option: clear, list, quit, map<A2>, map<A3>, change_fps");
 		break;
 	case mapA2:
 		App->ui->backgroundImage->ToggleHide(true);
@@ -151,6 +154,9 @@ void j1Console::ExecuteCommand(p2SString string)
 		break;
 	case error:
 		App->console->AddLog("Error command try another one");
+		break;
+	case clear:
+		App->console->text_list.clear();
 		break;
 	}
 }

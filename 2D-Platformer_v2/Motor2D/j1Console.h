@@ -12,9 +12,8 @@ enum Commands {
 	mapA2,
 	mapA3,
 	fps,
+	clear,
 	error,
-
-
 };
 
 class j1Console : public j1Module
