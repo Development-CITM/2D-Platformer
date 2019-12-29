@@ -173,4 +173,9 @@ UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> s
 	return element;
 }
 
+UI_Text* j1UI::CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
+{
+	return nullptr;
+}
+
 
