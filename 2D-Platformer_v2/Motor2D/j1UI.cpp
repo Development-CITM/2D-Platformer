@@ -10,6 +10,7 @@
 #include "UI_Functions.h"
 #include "PlayerObjects.h"
 #include "j1Scene.h"
+#include "j1Audio.h"
 #include "UI_Text.h"
 #include "j1Fonts.h"
 
@@ -35,13 +36,14 @@ bool j1UI::Awake(pugi::xml_node&)
 
 bool j1UI::Start()
 {
+
 	//HUD
 	coin_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 930,20 }, TYPE::UI_Image);
 	coin_background->ToggleHide(true);
 	timer_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 110,20 }, TYPE::UI_Image);
 	timer_background->ToggleHide(true);
-	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { -70,0 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image, coin_background);
-	timer_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/timer.png"), { -70,0 }, { App->win->GetWidth() - 156,13 }, TYPE::UI_Image, timer_background);
+	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { -55,-5 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image, coin_background);
+	timer_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/timer.png"), { -45,-5 }, { App->win->GetWidth() - 156,13 }, TYPE::UI_Image, timer_background);
 
 	fiveLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_5.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
 	fourLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_4.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
@@ -160,7 +162,6 @@ void j1UI::UpdateUI()
 	//Score
 	p2SString text = p2SString("%d", score);
 	score_text->UpdateText(text.GetString());
-
 	//Timer
 	if (strcmp(App->scene->current_level.GetString(), "maps/A5.tmx") != 0)
 	{
@@ -181,18 +182,23 @@ void j1UI::UpdateUI()
 		}
 
 
-		if (timer_int <= 35)
+		if (timer_int <= 70)
 		{
+			kill_player_once = true;
 			substract_lives_once = true;
 			p2SString timer_text_aux = p2SString("%d", timer_int);
 			timer_text->UpdateText(timer_text_aux.GetString());
 		}
-		else if(timer_int>35)
+		else 
 		{
 			timer_int = 0;
-			App->entity->KillPlayerTimeOff();
-			if (substract_lives_once)
+			if (kill_player_once)
 			{
+				App->entity->KillPlayerTimeOff();
+				kill_player_once = false;
+			}
+			if (substract_lives_once)
+			{	
 				SubstractLives();
 				substract_lives_once = false;
 			}
@@ -238,7 +244,7 @@ UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> s
 UI_InputText* j1UI::CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
 {
 	UI_InputText* element = new UI_InputText({0,0,size.x,size.y} ,"hola");
-	element->input_text->UpdateText(element->input_text->text.GetString());
+	
 	element->SetScreen(screen);
 	UI_Elements_list.add(element);
 	return element;
