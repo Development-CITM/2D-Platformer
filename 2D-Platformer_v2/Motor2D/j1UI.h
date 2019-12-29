@@ -83,7 +83,6 @@ public:
 	UI_Element* pausemenuBackground = nullptr;
 
 	//Buttons
-	
 	UI_Button* pausereturnButton = nullptr;
 	UI_Button* pausequitButton = nullptr;
 
@@ -97,6 +96,7 @@ public:
 	UI_Button* muteButton = nullptr;
 	UI_Button* soundButton = nullptr;
 	UI_Button* returnButton = nullptr;
+	UI_Button* creditBackToMenuButton = nullptr;
 
 	/*---CREDITS---*/
 	UI_Element* creditsImage = nullptr;

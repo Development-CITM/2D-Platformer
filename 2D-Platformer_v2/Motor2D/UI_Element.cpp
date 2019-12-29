@@ -98,9 +98,6 @@ void UI_Element::Draw()
 		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y);
 	}
 	
-
-
-
 	if (parent == nullptr) {
 
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);

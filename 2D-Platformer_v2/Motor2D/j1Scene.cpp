@@ -164,7 +164,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 		App->ui->score = data.child("score").attribute("score_count").as_int();
 
 		//Time
-		App->ui->timer_int = data.child("timer").attribute("timer_load").as_int();
+		App->ui->loading_timer_int = data.child("timer").attribute("timer_load").as_int() -2;
 	
 	return true;
 }

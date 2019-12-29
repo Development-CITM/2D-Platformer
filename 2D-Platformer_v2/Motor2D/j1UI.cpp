@@ -104,6 +104,8 @@ bool j1UI::Start()
 
 	//Credits
 	creditsImage = CreateUIImage({ 0,0,862,534 }, App->tex->Load("UI/HUD_Menus Alt2.png"), { 0,0 }, { App->win->GetWidth()/2, 100 }, TYPE::UI_Image);
+	creditBackToMenuButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,510 }, { 0,0 }, TYPE::UI_Button, ButtonType::Return, creditsImage);
+	creditsImage->childs.add(creditBackToMenuButton);
 	creditsImage->ToggleHide(true);
 
 	//Score
@@ -163,16 +165,9 @@ void j1UI::UpdateUI()
 	if (strcmp(App->scene->current_level.GetString(), "maps/A5.tmx") != 0)
 	{
 		UI_Functions::ChooseLivesToShow(fiveLives, fourLives, threeLives, twoLives, oneLives, zeroLives);
-		if (!App->pause)
-		{
-			if (App->scene->loading)
-			{
-				timer.Start();
-			}
-			
-			timer_int = timer.ReadSec() + pause_timer_int;
-			timer_int = timer.ReadSec() + pause_timer_int;
-			loading_timer_int = timer.ReadSec() + pause_timer_int;
+		if (!App->pause && !App->scene->loading)
+		{	
+			timer_int = timer.ReadSec() + pause_timer_int + loading_timer_int;
 			resetPause = true;
 		}
 		if (App->pause)
@@ -180,13 +175,19 @@ void j1UI::UpdateUI()
 			pause_timer_int = timer_int;
 			timer.Start();
 		}
+		if (App->scene->loading)
+		{
+			timer.Start();
+		}
+
+
 		if (timer_int <= 35)
 		{
 			substract_lives_once = true;
 			p2SString timer_text_aux = p2SString("%d", timer_int);
 			timer_text->UpdateText(timer_text_aux.GetString());
 		}
-		else
+		else if(timer_int>35)
 		{
 			timer_int = 0;
 			App->entity->KillPlayerTimeOff();
@@ -201,6 +202,8 @@ void j1UI::UpdateUI()
 	else
 	{
 		UI_Functions::HideLives(App->ui->fiveLives, App->ui->fourLives, App->ui->threeLives, App->ui->twoLives, App->ui->oneLives, App->ui->zeroLives);
+		timer.Start();
+		timer_int = 0;
 	}
 
 	for (int i = 0; i < UI_Elements_list.count(); i++)

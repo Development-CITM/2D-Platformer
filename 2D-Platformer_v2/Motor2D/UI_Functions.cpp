@@ -59,6 +59,10 @@ void UI_Functions::CreditsButton(UI_Element* current, UI_Element* target)
 {
 	current->ToggleHide(true);
 	target->ToggleHide(false);
+	for (int i = 0; i < target->childs.count(); i++)
+	{
+		target->childs[i]->ToggleHide(false);
+	}
 }
 
 void UI_Functions::BackToMainMenu(UI_Element* pause, UI_Element* main_menu)
