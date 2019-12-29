@@ -6,14 +6,16 @@ UI_Text::UI_Text()
 {
 }
 
-UI_Text::UI_Text(const char* char_text, p2Point<int> offsetPos, p2Point<int> screen, UI_Element* m_parent)
+UI_Text::UI_Text(const char* char_text, p2Point<int> offsetPos, p2Point<int> screen,TextType type, UI_Element* m_parent)
 {
+	text_type = type;
 	parent = m_parent;
 	UI_Type = TYPE::UI_Font;
 	text = char_text;
 	offset = offsetPos;
 	screenPos = screen;
 	texture = App->fonts->Print(text.GetString());
+	
 }
 
 

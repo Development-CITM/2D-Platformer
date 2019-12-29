@@ -35,7 +35,7 @@ public:
 
 	UI_Element* CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
 	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent = nullptr);
-	UI_Text* CreateUIText(const char*, p2Point<int> offset, p2Point<int> screen, UI_Element* parent = nullptr);
+	UI_Text* CreateUIText(const char*, p2Point<int> offset, p2Point<int> screen,TextType type = HUD, UI_Element* parent = nullptr);
 	UI_InputText* CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2Point<int> screen, UI_Element* parent = nullptr);
 	p2List<UI_Element*> UI_Elements_list;
 
@@ -85,6 +85,7 @@ public:
 
 	/*Text*/
 	UI_Element* image_font = nullptr;
+	UI_InputText* input_area = nullptr;
 
 };
 

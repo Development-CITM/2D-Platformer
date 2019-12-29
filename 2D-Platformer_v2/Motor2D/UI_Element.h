@@ -50,11 +50,14 @@ public:
 	virtual p2Point<int> GetLocalPos();
 	virtual p2Point<int> GetScreenPos();
 	virtual SDL_Texture* GetTexture();
+	virtual void SetScreen(p2Point<int> newScreen);
 	virtual SDL_Rect GetRect();
 	virtual void Draw();
 	virtual void Update();
 	virtual UI_Element* GetUIElement();
 	virtual UI_Element* GetUIParent();
+	virtual void SetUIParent(UI_Element* parent);
+	virtual void SetUIType(TYPE type);
 
 	virtual void SetBaseRect(SDL_Rect);
 	virtual void ToggleHide(bool flag);

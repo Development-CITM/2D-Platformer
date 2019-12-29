@@ -16,14 +16,12 @@ j1Console::~j1Console()
 
 bool j1Console::Start()
 {
-	input_text = new UI_InputText({ 300,300,20,100 });
+
 	return true;
 }
 
 bool j1Console::Update(float dt)
 {
-	input_text->DrawCursor({ 300,300 }, {2,20});
-	LOG("CONSOLE");
 	return true;
 }
 

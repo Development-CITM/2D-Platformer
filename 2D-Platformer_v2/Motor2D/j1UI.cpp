@@ -93,8 +93,10 @@ bool j1UI::Start()
 	creditsImage->ToggleHide(true);
 
 	//Score
-	score_text = CreateUIText("0", { -5,4 }, {100,100},coin_background);
+	score_text = CreateUIText("0", { -5,4 }, {100,100},HUD,coin_background);
 	coin_background->childs.add(score_text);
+
+	input_area = CreateUIInputText({ 500,30 }, { 0,0 }, { 200,200 });
 	return ret;
 }
 
@@ -166,16 +168,22 @@ UI_Element* j1UI::CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect presse
 	return element;
 }
 
-UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
+UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> screen,TextType type, UI_Element* parent)
 {
-	UI_Text* element = new UI_Text(text,offset,screen,parent);
+	UI_Text* element = new UI_Text(text,offset,screen,type,parent);
+	
 	UI_Elements_list.add(element);
 	return element;
 }
 
-UI_Text* j1UI::CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
+
+UI_InputText* j1UI::CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
 {
-	return nullptr;
+	UI_InputText* element = new UI_InputText({0,0,size.x,size.y} ,"hola");
+	
+	element->SetScreen(screen);
+	UI_Elements_list.add(element);
+	return element;
 }
 
 

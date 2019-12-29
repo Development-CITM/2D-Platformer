@@ -41,6 +41,11 @@ SDL_Texture* UI_Element::GetTexture()
 	return texture;
 }
 
+void UI_Element::SetScreen(p2Point<int> newScreen)
+{
+	screenPos = newScreen;
+}
+
 SDL_Rect UI_Element::GetRect()
 {
 	return base_rect;
@@ -76,6 +81,10 @@ void UI_Element::Draw()
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
 		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y);
 	}
+	
+	if (UI_Type == TYPE::UI_Console) {
+		return;
+	}
 
 	if (parent == nullptr) {
 
@@ -105,6 +114,16 @@ UI_Element* UI_Element::GetUIElement()
 UI_Element* UI_Element::GetUIParent()
 {
 	return parent;
+}
+
+void UI_Element::SetUIParent(UI_Element* m_parent)
+{
+	parent = m_parent;
+}
+
+void UI_Element::SetUIType(TYPE type)
+{
+	UI_Type = type;
 }
 
 void UI_Element::SetBaseRect(SDL_Rect rect)

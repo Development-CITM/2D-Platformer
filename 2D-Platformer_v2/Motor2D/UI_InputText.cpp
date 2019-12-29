@@ -1,28 +1,58 @@
 #include "UI_InputText.h"
 #include "j1Render.h"
 #include "j1App.h"
-
-
-UI_InputText::UI_InputText(SDL_Rect rect)
+#include "j1Input.h"
+#include "p2Log.h"
+#include "j1UI.h"
+UI_InputText::UI_InputText(SDL_Rect rect, const char* text)
 {
+
+	input_text = App->ui->CreateUIText(text, offset, screenPos);
+	input_text->SetUIType(TYPE::UI_Console);
 	background_rect = rect;
+	activeRect = background_rect;
 }
 
 UI_InputText::~UI_InputText()
 {
 }
 
+void UI_InputText::Update()
+{
+	int x, y;
+
+	App->input->GetMousePosition(x, y);
+	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !hasFocus) {
+		hasFocus = true;
+		LOG("FOCUSED");
+	}
+}
+
 void UI_InputText::Draw()
 {
-	p2Point<int> pos;
-	pos.x = App->render->ScreenToWorld(background_rect.x, background_rect.y).x;
-	pos.y = App->render->ScreenToWorld(background_rect.x, background_rect.y).y;
+	if (parent == nullptr) {
 
-	App->render->DrawQuad({ pos.x,pos.y,background_rect.w,background_rect.h }, 255, 255, 255);
+		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
+		App->render->DrawQuad({ localPos.x + offset.x,localPos.y + offset.y,background_rect.w,background_rect.h }, 0, 0, 255, 200);
+		if(hasFocus)
+		DrawCursor({ localPos.x + 2 ,localPos.y }, { 2,30 });
+		App->render->Blit(input_text->GetTexture(), localPos.x, localPos.y);
+	}
+	else {
+		localPos = parent->GetLocalPos();
+		screenPos.x = parent->GetScreenPos().x - activeRect.w / 2 + offset.x;
+		screenPos.y = parent->GetScreenPos().y + offset.y;
+		App->render->DrawQuad({ localPos.x + offset.x,localPos.y + offset.y,background_rect.w,background_rect.h }, 0, 0, 255, 200);
+		if(hasFocus)
+		DrawCursor({ localPos.x + 2 ,localPos.y }, { 2,30 });
+		App->render->Blit(input_text->GetTexture(), localPos.x, localPos.y);
+	}
+
+
 }
 
 void UI_InputText::DrawCursor(p2Point<int> pos, p2Point<int> size)
 {
-	App->render->DrawQuad({ App->render->ScreenToWorld(pos.x,pos.y).x,App->render->ScreenToWorld(pos.x,pos.y).y,size.x,size.y },255,255,255);
+	App->render->DrawQuad({localPos.x,localPos.y,size.x,size.y },255,255,255);
 }
 	
