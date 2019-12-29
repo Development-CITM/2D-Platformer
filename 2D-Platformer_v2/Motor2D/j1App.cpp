@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <sstream> 
+#include "j1App.h"
 
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -16,11 +17,16 @@
 #include "j1Colliders.h"
 #include "j1Fade2Black.h"
 #include "j1EntityManager.h"
-#include "j1UI.h"
-#include "j1Debug.h"
-#include "j1Console.h"
 #include "j1Fonts.h"
-#include "j1App.h"
+#include "UI_Element.h"
+#include "UI_Button.h"
+#include "UI_Image.h"
+#include "UI_InputText.h"
+#include "UI_ScrollBar.h"
+#include "UI_Text.h"
+#include "j1UI.h"
+#include "j1Console.h"
+#include "j1Debug.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -39,10 +45,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade2black = new j1Fade2Black();
 	debug = new j1Debug();
 	entity = new j1EntityManager();
-	ui = new j1UI();
-	pathfinding = new j1PathFinding();
-	console = new j1Console();
 	fonts = new j1Fonts();
+	ui = new j1UI();
+	console = new j1Console();
+	pathfinding = new j1PathFinding();
 	
 
 	// Ordered for awake / Start / Update
@@ -58,9 +64,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade2black);
 	AddModule(debug);
 	AddModule(pathfinding);
+	AddModule(fonts);
 	AddModule(ui);
 	AddModule(console);
-	AddModule(fonts);
 
 	// render last to swap buffer
 	AddModule(render);

@@ -1,19 +1,19 @@
 #include "j1UI.h"
-#include "UI_Element.h"
 #include "p2Log.h"
-#include "UI_Button.h"
-#include "UI_Image.h"
 #include "j1App.h"
+#include "j1Window.h"
 #include "j1Render.h"
 #include "j1Textures.h"
-#include "j1Window.h"
-#include "UI_Functions.h"
 #include "PlayerObjects.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
+#include "j1Fonts.h"
+#include "UI_Element.h"
+#include "UI_Image.h"
+#include "UI_Button.h"
 #include "UI_Text.h"
 #include "UI_ScrollBar.h"
-#include "j1Fonts.h"
+#include "UI_Functions.h"
 
 
 j1UI::j1UI()
@@ -40,9 +40,9 @@ bool j1UI::Start()
 
 	//HUD
 	coin_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 930,20 }, TYPE::UI_Image);
-	coin_background->ToggleHide(true);
+
 	timer_background = CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 110,20 }, TYPE::UI_Image);
-	timer_background->ToggleHide(true);
+
 	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { -55,-5 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image, coin_background);
 	timer_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/timer.png"), { -45,-5 }, { App->win->GetWidth() - 156,13 }, TYPE::UI_Image, timer_background);
 
@@ -93,12 +93,12 @@ bool j1UI::Start()
 	pausemenuBackground->childs.add(pausereturnButton);
 	pausemenuBackground->childs.add(pausequitButton);
 
-	pausemenuBackground->ToggleHide(true);
+
 
 	//Settings
 	//Background
 	settingsBackground = CreateUIImage({ 3,3,335,192 }, App->tex->Load("UI/SettingsBackground.png"), { 0,0 }, { App->win->GetWidth() - 200,250 }, TYPE::UI_Image);
-	settingsBackground->ToggleHide(true);
+
 	//Slider
 	slider = CreateScrollBar({9,18,28,42}, App->tex->Load("UI/slider.png"), { 0,33 }, { 50,50 },TYPE::UI_Scrollbar, settingsBackground);
 	slide_bar = CreateUIImage({ 9,6,249,5 }, App->tex->Load("UI/slider.png"), { 0,20 }, { 50,50 }, TYPE::UI_Image, settingsBackground);
@@ -119,7 +119,7 @@ bool j1UI::Start()
 	creditsImage = CreateUIImage({ 0,0,862,534 }, App->tex->Load("UI/HUD_Menus Alt2.png"), { 0,0 }, { App->win->GetWidth()/2, 100 }, TYPE::UI_Image);
 	creditBackToMenuButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,510 }, { 0,0 }, TYPE::UI_Button, ButtonType::Return, creditsImage);
 	creditsImage->childs.add(creditBackToMenuButton);
-	creditsImage->ToggleHide(true);
+
 
 	//Score
 	score_text = CreateUIText("0", { -5,4 }, {100,100},HUD,coin_background);
@@ -129,6 +129,13 @@ bool j1UI::Start()
 	timer_text = CreateUIText("0", { -5,4 }, { 100,100 },HUD, timer_background);
 	timer_background->childs.add(timer_text);
 
+
+
+	coin_background->hide = true;
+	timer_background->hide = true;
+	settingsBackground->hide = true;
+	pausemenuBackground->hide = true;
+	creditsImage->hide = true;
 	return ret;
 }
 
@@ -258,6 +265,13 @@ UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> s
 	UI_Text* element = new UI_Text(text,offset,screen,type,parent);
 	
 	UI_Elements_list.add(element);
+	return element;
+}
+
+UI_Text* j1UI::CreateLogText(const char* text,p2Point<int> offset, p2Point<int> screen,TextType type, UI_Element* parent)
+{
+	UI_Text* element = new UI_Text(text,offset,screen,type,parent);
+	
 	return element;
 }
 

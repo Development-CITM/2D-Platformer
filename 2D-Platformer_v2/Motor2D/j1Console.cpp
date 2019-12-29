@@ -90,7 +90,7 @@ bool j1Console::CleanUp()
 
 void j1Console::AddLog(const char* text)
 {
-	text_list.add(App->ui->CreateUIText(text, { 0,0 }, { 0,0 }, CONSOLE));
+	text_list.add(App->ui->CreateLogText(text, { 0,0 }, { 0,0 }, CONSOLE));
 }
 
 void j1Console::ExecuteCommand(p2SString string)
