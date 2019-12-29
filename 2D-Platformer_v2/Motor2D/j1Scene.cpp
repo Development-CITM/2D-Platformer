@@ -11,7 +11,9 @@
 #include "j1Fade2Black.h"
 #include "j1PathFinding.h"
 #include "j1Debug.h"
+#include "j1UI.h"
 #include "j1EntityManager.h"
+#include "UI_Functions.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -82,8 +84,18 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && strcmp(current_level.GetString(),"maps/A5.tmx")!=0)
+	{
+		if (!pause)
+		{
+			UI_Functions::ShowPauseMenu(App->ui->pausemenuBackground);
+		}
+		else
+		{
+			App->ui->pausemenuBackground->ToggleHide(true);
+		}
+		pause = !pause;
+	}
 
 	return ret;
 }
@@ -314,6 +326,10 @@ void j1Scene::DecideMapToLoad()
 				RELEASE_ARRAY(data);
 			}
 			current_level = level->GetString();
+			/*if (strcmp(current_level.GetString(), "maps / A5.tmx") == 0)
+			{
+				UI_Functions::ShowUI(App->ui->backgroundImage, App->ui->continueButton, App->ui->creditsButton, App->ui->playButton)
+			}*/
 			break;
 		}
 

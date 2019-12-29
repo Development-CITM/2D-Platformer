@@ -77,6 +77,9 @@ void UI_Button::OnClick()
 	case Credits:
 		UI_Functions::CreditsButton(App->ui->backgroundImage, App->ui->creditsImage);
 		break;
+	case MainScreen:
+		UI_Functions::BackToMainMenu(App->ui->pausemenuBackground, App->ui->backgroundImage);
+		break;
 	case Quit:
 		UI_Functions::QuitButton();
 		break;

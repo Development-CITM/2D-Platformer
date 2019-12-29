@@ -11,7 +11,8 @@ enum ButtonType {
 	Sound,
 	Return,
 	Credits,
-	Quit
+	Quit,
+	MainScreen,
 };
 
 class UI_Button : public UI_Element

@@ -58,7 +58,13 @@ public:
 	UI_Button* quitButton = nullptr;
 
 	/*----PAUSE MENU----*/
+	//Images
+	UI_Element* pausemenuBackground = nullptr;
 
+	//Buttons
+	
+	UI_Button* pausereturnButton = nullptr;
+	UI_Button* pausequitButton = nullptr;
 
 
 

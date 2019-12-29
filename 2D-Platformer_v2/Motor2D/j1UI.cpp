@@ -63,6 +63,16 @@ bool j1UI::Start()
 	backgroundImage->childs.add(quitButton);
 
 
+	//Pausemenu
+	pausemenuBackground = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 500,100 }, TYPE::UI_Image);
+	pausereturnButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,280 }, { 0,0 }, TYPE::UI_Button, ButtonType::MainScreen, pausemenuBackground);
+	pausequitButton = (UI_Button*)CreateUIButton({ 16,243,234,64 }, { 15,1008,234,64 }, { 16,624,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,372 }, { 0,0 }, TYPE::UI_Button, ButtonType::Quit, pausemenuBackground);
+
+	pausemenuBackground->childs.add(pausereturnButton);
+	pausemenuBackground->childs.add(pausequitButton);
+
+	pausemenuBackground->ToggleHide(true);
+
 	//Settings
 	//Background
 	settingsBackground = CreateUIImage({ 3,3,335,192 }, App->tex->Load("UI/SettingsBackground.png"), { 0,0 }, { App->win->GetWidth() - 200,250 }, TYPE::UI_Image);

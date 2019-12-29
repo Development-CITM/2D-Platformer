@@ -86,6 +86,7 @@ public:
 	int player_backup_collider_y = 0;
 
 	bool hasExit = false;
+	bool pause = false;
 
 	Collider* exitCollider = nullptr;
 	SDL_Texture* debug_tex;

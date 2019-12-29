@@ -54,6 +54,19 @@ void UI_Functions::CreditsButton(UI_Element* current, UI_Element* target)
 	target->ToggleHide(false);
 }
 
+void UI_Functions::BackToMainMenu(UI_Element* pause, UI_Element* main_menu)
+{
+	pause->ToggleHide(true);
+	main_menu->ToggleHide(false);
+	for (int i = 0; i < main_menu->childs.count(); i++)
+	{
+		main_menu->childs[i]->ToggleHide(false);
+	}
+	HideUI(App->ui->coin_background, App->ui->timer_background, App->ui->coin_image, App->ui->timer_image);
+	App->scene->destination_level = "maps/A5.tmx";
+	App->debug->CallFade();	
+}
+
 void UI_Functions::ShowUI(UI_Element* coins, UI_Element*timer,UI_Element* coin_image, UI_Element* timer_image)
 {
 	coins->ToggleHide(false);
@@ -61,6 +74,24 @@ void UI_Functions::ShowUI(UI_Element* coins, UI_Element*timer,UI_Element* coin_i
 	coin_image->ToggleHide(false);
 	timer_image->ToggleHide(false);
 	coins->childs[0]->ToggleHide(false);
+}
+
+void UI_Functions::ShowPauseMenu(UI_Element* pause)
+{
+	pause->ToggleHide(false);
+	for (int i = 0; i < pause->childs.count(); i++)
+	{
+		pause->childs[i]->ToggleHide(false);
+	}
+}
+
+void UI_Functions::HideUI(UI_Element* coins, UI_Element* timer, UI_Element* coin_image, UI_Element* timer_image)
+{
+	coins->ToggleHide(true);
+	timer->ToggleHide(true);
+	coin_image->ToggleHide(true);
+	timer_image->ToggleHide(true);
+	coins->childs[0]->ToggleHide(true);
 }
 
 void UI_Functions::ReturnButton(UI_Element* current, UI_Element* mainmenu)
