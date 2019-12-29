@@ -248,6 +248,7 @@ public:
 		return true;
 	}
 
+
 	void Trim()
 	{
 		// cut right --

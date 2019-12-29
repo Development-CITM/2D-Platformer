@@ -11,7 +11,9 @@ enum Commands {
 	list,
 	mapA2,
 	mapA3,
+	fps,
 	error,
+
 
 };
 

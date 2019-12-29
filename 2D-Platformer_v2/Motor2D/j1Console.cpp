@@ -110,6 +110,11 @@ void j1Console::ExecuteCommand(p2SString string)
 	else if (string == "map<A3>") {
 		command = mapA3;
 		
+	}	
+	
+	else if (string == "change_fps") {
+		command = fps;
+		
 	}
 	else {
 		command = error;
@@ -124,7 +129,7 @@ void j1Console::ExecuteCommand(p2SString string)
 		App->ui->quit = true;
 		break;
 	case list:
-		App->console->AddLog("List option: list, quit, map, fps");
+		App->console->AddLog("List option: list, quit, map<A2>, map<A3>, change_fps");
 		break;
 	case mapA2:
 		App->ui->backgroundImage->ToggleHide(true);
@@ -139,6 +144,10 @@ void j1Console::ExecuteCommand(p2SString string)
 		App->scene->destination_level = "maps/A3.tmx";
 		App->debug->CallFade();
 
+		break;
+	case fps:
+		App->maxcapFrames = !App->maxcapFrames;
+		App->console->AddLog("Changed fps");
 		break;
 	case error:
 		App->console->AddLog("Error command try another one");
