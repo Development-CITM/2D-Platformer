@@ -46,6 +46,8 @@ bool j1EntityManager::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+
+	
 	return ret;
 }
 

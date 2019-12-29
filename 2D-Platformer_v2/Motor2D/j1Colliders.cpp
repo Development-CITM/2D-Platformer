@@ -352,7 +352,15 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 				}
 				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type == COLLIDER_COIN && c2->Enabled) {
 					c2->Enabled = false;
-					App->audio->PlayFx(9);					
+					App->audio->PlayFx(9);
+					
+					for (int i = 0; i < App->entity->objects.count(); i++)
+					{
+						if (App->entity->objects[i]->type_object == Object_type::PLAYER) {
+							App->entity->objects[i]->score++;
+						}
+					}
+					
 				}
 				ret = true;				
 			}
@@ -378,7 +386,8 @@ bool j1Colliders::CheckColliderCollision(Collider* c1 , ColliderType type)
 			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
 				ret = true;
 			}
-			break;
+			break;	
+
 		case COLLIDER_COIN:
 			if (c1->CheckCollision(c2->rect) && c2->type == type && c2->Enabled) {
 				ret = true;

@@ -84,6 +84,8 @@ public:
 	//On map?
 	bool				alive;
 
+	int					score = 0;
+
 	//Each object data loaded from tmx
 	CharacterTMXData	character_tmx_data;
 };

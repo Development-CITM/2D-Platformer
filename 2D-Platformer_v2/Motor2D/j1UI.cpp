@@ -8,6 +8,7 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "UI_Functions.h"
+#include "PlayerObjects.h"
 #include "j1Fonts.h"
 
 
@@ -125,6 +126,14 @@ void j1UI::Draw()
 
 void j1UI::UpdateUI() 
 {
+	for (int i = 0; i < App->entity->objects.count(); i++)
+	{
+		if (App->entity->objects[i]->type_object == Object_type::PLAYER) {
+			p2SString text = p2SString("%d",App->entity->objects[i]->score);
+			score_text->UpdateText(text.GetString());
+		}
+	}
+
 	for (int i = 0; i < UI_Elements_list.count(); i++)
 	{
 		UI_Elements_list[i]->Update();
