@@ -56,6 +56,29 @@ Link to our latest release: [Release](https://github.com/Development-CITM/2D-Pla
 Download the release and execute the: Snowy Mists.exe <br>
 Once done you will get to the main menu where u can choose to start a new game, load from a previous save if it exists, choose your settings and take a look at our names and license in "Credits".
 
+## UI
+* Play: Start the game
+* Continue: Continue the game if it has been saved
+* Setting: Open settings menu, up/down volume music
+* Credits: Open credits  
+* Quit: Exit the game
+* Github: Open github's web
+* Console: º key to toggle console
+
+## Console
+
+* map<A2> to change to the first map
+* map<A3> to change to the second map
+* clear to clear all logs
+* change_fps to swap between 30 and 60 fps
+* quit to close exe
+* list to see all these commands in the console
+
+* Pause menu: Stops running time, you can resume or exit the game
+
+### UI Features
+* If timer arrives to one minute on each level, player loses one life
+
 ## Controls in game
 
 * D: Move Right
