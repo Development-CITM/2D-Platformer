@@ -84,7 +84,7 @@ Once done you will get to the main menu where u can choose to start a new game, 
 
 # Gameplay Video
 <br>
-<iframe width="420" height="315" src="https://www.youtube.com/watch?v=mlpxr2GmcT4e"></iframe>
+<iframe width="420" height="315" src="https://youtu.be/mlpxr2GmcT4"></iframe>
           
 # License:
 
