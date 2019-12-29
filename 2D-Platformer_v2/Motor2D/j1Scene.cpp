@@ -94,11 +94,13 @@ bool j1Scene::PostUpdate()
 		{
 			UI_Functions::ShowPauseMenu(App->ui->pausemenuBackground);
 			App->pause = true;
+			App->IsPaused = true;
 		}
 		else
 		{
 			App->ui->pausemenuBackground->ToggleHide(true);
 			App->pause = false;
+			App->IsPaused = false;
 		}
 		pause = !pause;
 	}

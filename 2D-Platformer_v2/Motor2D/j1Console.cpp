@@ -50,9 +50,13 @@ bool j1Console::Update(float dt)
 	}
 
 	if (!showConsole) {
-		App->pause = false;
+		if (!App->IsPaused)
+		{
+			App->pause = false;
+		}
 		return true;
 	}
+
 
 	if (showConsole) {
 		App->pause = true;

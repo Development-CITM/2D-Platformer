@@ -108,6 +108,7 @@ public:
 	bool				maxcapFrames = false;
 	bool				transition = false;
 	bool				pause = false;
+	bool				IsPaused = false;
 
 	p2List<j1Module*>	modules;
 
