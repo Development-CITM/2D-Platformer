@@ -30,6 +30,9 @@ void UI_InputText::Update()
 
 void UI_InputText::Draw()
 {
+	if (hide)
+		return;
+
 	if (parent == nullptr) {
 
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);

@@ -77,14 +77,14 @@ void UI_Element::Draw()
 		}
 	}
 
+	if (UI_Type == TYPE::UI_Console) {
+		return;
+	}
 	if (UI_Type == TYPE::UI_Font) {
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
 		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y);
 	}
 	
-	if (UI_Type == TYPE::UI_Console) {
-		return;
-	}
 
 
 
