@@ -4,6 +4,7 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
+#include "j1Console.h"
 
 #define MAX_KEYS 300
 
@@ -106,7 +107,10 @@ bool j1Input::PreUpdate()
 					break;
 				}
 			break;
-
+			case SDL_TEXTINPUT:
+				App->console->input_text->input_text->CreateText(event.text.text);
+				LOG(event.text.text);
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				mouse_buttons[event.button.button - 1] = KEY_DOWN;
 				//LOG("Mouse button %d down", event.button.button-1);
