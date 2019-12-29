@@ -47,7 +47,7 @@ We introduced some innovation too loading player and enemies from Tiled maps asw
 Our Github repository for the project:
 [Repository](https://github.com/Development-CITM/2D-Platformer) <br>
 
-Link to our latest release:
+Link to our latest release: [Release](https://github.com/Development-CITM/2D-Platformer/releases/tag/2.0) <br>
 <br>
 
 
