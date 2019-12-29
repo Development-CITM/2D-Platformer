@@ -346,6 +346,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 				App->scene->ColliderMapToLoad(c2); //EUDALD: change site
 				}
 				if (c1->checkerType == ColliderChecker::Ground && c2->type == COLLIDER_WATER && c2->Enabled) {
+					App->ui->SubstractLives();
 					App->audio->PlayFx(3);
 					c2->Enabled = false;
 					App->debug->CallFade();
@@ -357,7 +358,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 					for (int i = 0; i < App->entity->objects.count(); i++)
 					{
 						if (App->entity->objects[i]->type_object == Object_type::PLAYER) {
-							App->entity->objects[i]->score++;
+							App->ui->score++;
 						}
 					}
 					

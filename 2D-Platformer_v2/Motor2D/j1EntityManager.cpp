@@ -7,6 +7,7 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "j1Audio.h"
+#include "j1UI.h"
 #include "j1Textures.h"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -284,6 +285,23 @@ void j1EntityManager::CreatePlayer(pugi::xml_node& object)
 {
 	Object_Player* player = new Object_Player(object);
 	objects.add(player);
+}
+
+void j1EntityManager::KillPlayerTimeOff()
+{
+	bool just_once = true;
+	for (int i = objects.count() - 1; i >= 0; i--)
+	{
+		if (objects.At(i)->data->type_object == Object_type::PLAYER)
+		{
+			if (just_once)
+			{
+				App->audio->PlayFx(4);
+				just_once = false;
+			}
+			objects.At(i)->data->alive = false;
+		}
+	}
 }
 
 Collider* j1EntityManager::RetreivePlayerCollider()

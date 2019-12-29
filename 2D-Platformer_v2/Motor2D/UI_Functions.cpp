@@ -5,6 +5,7 @@
 #include "j1Input.h"
 #include "SDL/include/SDL_scancode.h"
 #include "j1Scene.h"
+#include "j1EntityManager.h"
 #include "j1Debug.h"
 
 
@@ -19,9 +20,10 @@ UI_Functions::~UI_Functions()
 void UI_Functions::StartButton(UI_Element* current)
 {
 		App->scene->destination_level = "maps/A2.tmx";
+		App->ui->lives = 5;
+		App->ui->score = 0;
 		App->debug->CallFade();
 		current->ToggleHide(true);
-
 }
 
 
@@ -71,9 +73,81 @@ void UI_Functions::ShowUI(UI_Element* coins, UI_Element*timer,UI_Element* coin_i
 {
 	coins->ToggleHide(false);
 	timer->ToggleHide(false);
+	for (int i = 0; i < timer->childs.count(); i++)
+	{
+		timer->childs[i]->ToggleHide(false);
+	}
 	coin_image->ToggleHide(false);
 	timer_image->ToggleHide(false);
 	coins->childs[0]->ToggleHide(false);
+}
+
+void UI_Functions::ChooseLivesToShow(UI_Element* five, UI_Element* four, UI_Element* three, UI_Element* two, UI_Element* one, UI_Element* zero)
+{
+			if (App->ui->lives == 5)
+			{
+				five->ToggleHide(false);
+				four->ToggleHide(true);
+				three->ToggleHide(true);
+				two->ToggleHide(true);
+				one->ToggleHide(true);
+				zero->ToggleHide(true);
+			}
+			else if (App->ui->lives == 4)
+			{
+				five->ToggleHide(true);
+				four->ToggleHide(false);
+				three->ToggleHide(true);
+				two->ToggleHide(true);
+				one->ToggleHide(true);
+				zero->ToggleHide(true);
+			}
+			else if (App->ui->lives == 3)
+			{
+				five->ToggleHide(true);
+				four->ToggleHide(true);
+				three->ToggleHide(false);
+				two->ToggleHide(true);
+				one->ToggleHide(true);
+				zero->ToggleHide(true);
+			}
+			else if (App->ui->lives == 2)
+			{
+				five->ToggleHide(true);
+				four->ToggleHide(true);
+				three->ToggleHide(true);
+				two->ToggleHide(false);
+				one->ToggleHide(true);
+				zero->ToggleHide(true);
+			}
+			else if (App->ui->lives == 1)
+			{
+				five->ToggleHide(true);
+				four->ToggleHide(true);
+				three->ToggleHide(true);
+				two->ToggleHide(true);
+				one->ToggleHide(false);
+				zero->ToggleHide(true);
+			}
+			else if (App->ui->lives == 0)
+			{
+				five->ToggleHide(true);
+				four->ToggleHide(true);
+				three->ToggleHide(true);
+				two->ToggleHide(true);
+				one->ToggleHide(true);
+				zero->ToggleHide(false);
+			}
+}
+
+void UI_Functions::HideLives(UI_Element* five, UI_Element* four, UI_Element* three, UI_Element* two, UI_Element* one, UI_Element* zero)
+{
+	five->ToggleHide(true);
+	four->ToggleHide(true);
+	three->ToggleHide(true);
+	two->ToggleHide(true);
+	one->ToggleHide(true);
+	zero->ToggleHide(true);
 }
 
 void UI_Functions::ShowPauseMenu(UI_Element* pause)

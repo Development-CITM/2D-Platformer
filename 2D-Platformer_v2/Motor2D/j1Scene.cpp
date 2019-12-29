@@ -40,6 +40,10 @@ bool j1Scene::Start()
 	hasExit = false;
 	debug_tex = App->tex->Load("maps/path2.png");
 	DecideMapToLoad();
+	if (strcmp(current_level.GetString(), "maps/A5.tmx") != 0)
+	{
+		App->ui->timer.Start();
+	}
 
 	if (notfirst)
 	{
@@ -89,10 +93,12 @@ bool j1Scene::PostUpdate()
 		if (!pause)
 		{
 			UI_Functions::ShowPauseMenu(App->ui->pausemenuBackground);
+			App->pause = true;
 		}
 		else
 		{
 			App->ui->pausemenuBackground->ToggleHide(true);
+			App->pause = false;
 		}
 		pause = !pause;
 	}

@@ -239,16 +239,19 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	if (maxcapFrames)
-	{
-		uint32 delay = MAX(0, (int)maxcapTime - (int)last_frame_ms);
-		SDL_Delay(delay);
-	}
-	else
-	{
-		uint32 delay = MAX(0, (int)mincapTime - (int)last_frame_ms);
-		SDL_Delay(delay);
-	}
+	
+		if (maxcapFrames)
+		{
+			uint32 delay = MAX(0, (int)maxcapTime - (int)last_frame_ms);
+			SDL_Delay(delay);
+		}
+		else
+		{
+			uint32 delay = MAX(0, (int)mincapTime - (int)last_frame_ms);
+			SDL_Delay(delay);
+		}
+
+
 	
 	//Information about frames LOGs
 	static char title[256];
@@ -303,7 +306,10 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
+		if(!pause)
 		ret = item->data->Update(dt);
+		else
+		ret = item->data->Update(0);
 	}
 
 	return ret;

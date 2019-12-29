@@ -8,6 +8,7 @@
 #include "p2Log.h"
 #include "j1Scene.h"
 #include "j1Input.h"
+#include "j1UI.h"
 #include "j1Tilesets.h"
 #include "j1Audio.h"
 
@@ -16,6 +17,7 @@ Object_Player::Object_Player(pugi::xml_node& object): Object_Character()
 {
 	absolutePos = { 0,0 };
 	SetPos(object);
+	App->ui->substract_lives_once = true;
 }
 
 Object_Player::~Object_Player()
@@ -770,6 +772,11 @@ void Object_Player::UpdateCheckersBools()
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_DEAD)) {
 		if (dead_once)
 		{
+			if (App->ui->substract_lives_once)
+			{
+				App->ui->SubstractLives();
+				App->ui->substract_lives_once = false;
+			}
 			App->audio->PlayFx(4);
 			dead_once = false;
 		}
@@ -778,6 +785,11 @@ void Object_Player::UpdateCheckersBools()
 	if (App->collider->CheckColliderCollision(collider, COLLIDER_ENEMY_HIT)) {
 		if (dead_once)
 		{
+			if (App->ui->substract_lives_once)
+			{
+				App->ui->SubstractLives();
+				App->ui->substract_lives_once = false;
+			}
 			App->audio->PlayFx(4);
 			dead_once = false;
 		}

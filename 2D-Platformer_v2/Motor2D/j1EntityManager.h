@@ -84,8 +84,6 @@ public:
 	//On map?
 	bool				alive;
 
-	int					score = 0;
-
 	//Each object data loaded from tmx
 	CharacterTMXData	character_tmx_data;
 };
@@ -156,6 +154,9 @@ public:
 
 	//Creates player
 	void CreatePlayer(pugi::xml_node& object);
+
+	//Time off
+	void KillPlayerTimeOff();
 
 	//Returns exclusively player collider ( for purpose )
 	Collider* RetreivePlayerCollider();

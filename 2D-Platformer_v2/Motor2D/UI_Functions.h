@@ -17,6 +17,8 @@ public:
 	static void CreditsButton(UI_Element*, UI_Element*);
 	static void BackToMainMenu(UI_Element*, UI_Element*);
 	static void ShowUI(UI_Element*, UI_Element*, UI_Element*, UI_Element*);
+	static void ChooseLivesToShow(UI_Element*, UI_Element*, UI_Element*, UI_Element*, UI_Element*, UI_Element*);
+	static void HideLives(UI_Element*, UI_Element*, UI_Element*, UI_Element*, UI_Element*, UI_Element*);
 	static void ShowPauseMenu(UI_Element*);
 	static void HideUI(UI_Element*, UI_Element*, UI_Element*, UI_Element*);
 	static void QuitButton();

@@ -106,6 +106,7 @@ public:
 
 	bool				maxcapFrames = false;
 	bool				transition = false;
+	bool				pause = false;
 
 private:
 
