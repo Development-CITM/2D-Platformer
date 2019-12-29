@@ -12,6 +12,7 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "UI_Text.h"
+#include "UI_ScrollBar.h"
 #include "j1Fonts.h"
 
 
@@ -79,6 +80,7 @@ bool j1UI::Start()
 	backgroundImage->childs.add(githubButton);
 
 
+
 	//Pausemenu
 	pausemenuBackground = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 500,100 }, TYPE::UI_Image);
 	pausereturnButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,280 }, { 0,0 }, TYPE::UI_Button, ButtonType::MainScreen, pausemenuBackground);
@@ -93,6 +95,11 @@ bool j1UI::Start()
 	//Background
 	settingsBackground = CreateUIImage({ 3,3,335,192 }, App->tex->Load("UI/SettingsBackground.png"), { 0,0 }, { App->win->GetWidth() - 200,250 }, TYPE::UI_Image);
 	settingsBackground->ToggleHide(true);
+	//Slider
+	slider = CreateScrollBar({7,18,28,42}, App->tex->Load("UI/slider.png"), { 0,0 }, { 50,50 },TYPE::UI_Scrollbar, settingsBackground);
+	settingsBackground->childs.add(slider);
+	
+
 	//Buttons
 	soundButton = (UI_Button*)CreateUIButton({ 498,18,64,63 }, { 498,783,64,63 }, { 498,399,64,63 }, App->tex->Load("UI/Buttons.png"), { -50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Sound, settingsBackground);	
 
@@ -238,6 +245,13 @@ UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> s
 	
 	UI_Elements_list.add(element);
 	return element;
+}
+
+UI_Element* j1UI::CreateScrollBar(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type, UI_Element* parent)
+{
+	UI_ScrollBar* scrollbar = new UI_ScrollBar(image,text,offset,screen,ui_type,parent);
+	UI_Elements_list.add(scrollbar);
+	return scrollbar;
 }
 
 

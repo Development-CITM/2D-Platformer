@@ -4,6 +4,7 @@
 #include "p2List.h"
 #include "p2DynArray.h"
 #include "UI_Element.h"
+#include "UI_ScrollBar.h"
 #include "UI_Button.h"
 #include "UI_Text.h"
 #include "UI_InputText.h"
@@ -37,6 +38,7 @@ public:
 	UI_Element* CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
 	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent = nullptr);
 	UI_Text* CreateUIText(const char*, p2Point<int> offset, p2Point<int> screen,TextType type = HUD, UI_Element* parent = nullptr);
+	UI_Element* CreateScrollBar(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type, UI_Element* parent = nullptr);
 	UI_InputText* CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2Point<int> screen, UI_Element* parent = nullptr);
 	void SubstractLives();
 	p2List<UI_Element*> UI_Elements_list;
@@ -53,6 +55,9 @@ public:
 	UI_Element* twoLives = nullptr;
 	UI_Element* oneLives = nullptr;
 	UI_Element* zeroLives = nullptr;
+
+	//SLIDER
+	UI_Element* slider = nullptr;
 
 	//Text
 	UI_Text* score_text = nullptr;

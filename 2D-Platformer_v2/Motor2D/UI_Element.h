@@ -14,6 +14,7 @@ enum class TYPE
 	UI_Window,
 	UI_Console,
 	UI_Font,
+	UI_Scrollbar,
 };
 
 enum class font_type {
