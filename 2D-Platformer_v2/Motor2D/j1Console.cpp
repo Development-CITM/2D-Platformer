@@ -8,7 +8,8 @@
 #include "j1Input.h"
 #include "j1Scene.h"
 #include "j1Debug.h"
-
+#include "j1UI.h"
+#include "UI_Functions.h"
 j1Console::j1Console()
 {
 }
@@ -48,8 +49,14 @@ bool j1Console::Update(float dt)
 		input_text->ToggleHide(!input_text->isHide());
 	}
 
-	if (!showConsole)
+	if (!showConsole) {
+		App->pause = false;
 		return true;
+	}
+
+	if (showConsole) {
+		App->pause = true;
+	}
 
 	int posX = -20;
 	for (int i = 0; i < text_list.count(); i++)
@@ -94,13 +101,16 @@ void j1Console::ExecuteCommand(p2SString string)
 	
 	else if (string == "map<A2>") {
 		command = mapA2;
+		
 	}
 	else if (string == "map<A3>") {
 		command = mapA3;
+		
 	}
 	else {
 		command = error;
 	}
+
 
 
 
@@ -113,12 +123,18 @@ void j1Console::ExecuteCommand(p2SString string)
 		App->console->AddLog("List option: list, quit, map, fps");
 		break;
 	case mapA2:
+		App->ui->backgroundImage->ToggleHide(true);
+		UI_Functions::ShowUI(App->ui->coin_background, App->ui->timer_background, App->ui->coin_image, App->ui->timer_image);
 		App->scene->destination_level = "maps/A2.tmx";
 		App->debug->CallFade();
+
 		break;
 	case mapA3:
+		App->ui->backgroundImage->ToggleHide(true);
+		UI_Functions::ShowUI(App->ui->coin_background, App->ui->timer_background, App->ui->coin_image, App->ui->timer_image);
 		App->scene->destination_level = "maps/A3.tmx";
 		App->debug->CallFade();
+
 		break;
 	case error:
 		App->console->AddLog("Error command try another one");
