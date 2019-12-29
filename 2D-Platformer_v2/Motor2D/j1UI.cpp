@@ -96,19 +96,18 @@ bool j1UI::Start()
 	settingsBackground = CreateUIImage({ 3,3,335,192 }, App->tex->Load("UI/SettingsBackground.png"), { 0,0 }, { App->win->GetWidth() - 200,250 }, TYPE::UI_Image);
 	settingsBackground->ToggleHide(true);
 	//Slider
-	slider = CreateScrollBar({7,18,28,42}, App->tex->Load("UI/slider.png"), { 0,0 }, { 50,50 },TYPE::UI_Scrollbar, settingsBackground);
+	slider = CreateScrollBar({ 9,18,28,42 }, App->tex->Load("UI/slider.png"), { 0,27 }, { 50,50 }, TYPE::UI_Scrollbar, settingsBackground);
+	slide_bar = CreateUIImage({ 9,6,249,5 }, App->tex->Load("UI/slider.png"), { 0,20 }, { 50,50 }, TYPE::UI_Image, settingsBackground);
 	settingsBackground->childs.add(slider);
+	settingsBackground->childs.add(slide_bar);
 	
 
 	//Buttons
-	soundButton = (UI_Button*)CreateUIButton({ 498,18,64,63 }, { 498,783,64,63 }, { 498,399,64,63 }, App->tex->Load("UI/Buttons.png"), { -50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Sound, settingsBackground);	
-
-	muteButton = (UI_Button*)CreateUIButton({ 581,18,64,63 }, { 581,783,64,63 }, { 581,399,64,63 }, App->tex->Load("UI/Buttons.png"), { 50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Mute, settingsBackground);
+	soundButton = CreateUIImage({ 498,18,64,63 }, App->tex->Load("UI/Buttons.png"), { -140,-10 }, { 0,0 }, TYPE::UI_Image, settingsBackground);	
 
 	returnButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,100 }, { 0,0 }, TYPE::UI_Button, ButtonType::Return, settingsBackground);
 
 	settingsBackground->childs.add(soundButton);
-	settingsBackground->childs.add(muteButton);
 	settingsBackground->childs.add(returnButton);
 
 	//Credits

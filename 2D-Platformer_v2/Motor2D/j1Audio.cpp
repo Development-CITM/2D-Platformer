@@ -166,3 +166,8 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+void j1Audio::ModifyVolume(int new_volume)
+{
+	Mix_VolumeMusic(new_volume);
+}

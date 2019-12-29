@@ -14,6 +14,7 @@
 #include "j1UI.h"
 #include "j1EntityManager.h"
 #include "UI_Functions.h"
+#include "UI_Element.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -394,12 +395,11 @@ void j1Scene::ColliderMapToLoad(Collider* c2)
 		App->debug->CallFade();
 		c2->Enabled = true;
 	}
-	/*else if (c2->swap == A3_TO_A2)
+	else if (c2->swap == A3_TO_A2)
 	{
-		destination_level = "maps/A2.tmx";
-		App->debug->CallFade();
+		UI_Functions::BackToMainMenu(App->ui->pausemenuBackground, App->ui->backgroundImage);
 		c2->Enabled = true;
-	}*/
+	}
 	else if (c2->swap == A2_TO_A3)
 	{
 		preservecoins = true;

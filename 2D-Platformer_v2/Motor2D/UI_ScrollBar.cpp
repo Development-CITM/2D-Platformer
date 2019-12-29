@@ -4,6 +4,7 @@
 #include "j1Input.h"
 #include "UI_Element.h"
 #include "p2Log.h"
+#include "j1Audio.h"
 #include "SDL/include/SDL_mouse.h"
 #include "j1UI.h"
 
@@ -37,8 +38,8 @@ void UI_ScrollBar::Update()
 		{
 			int x_1, y_2;
 			App->input->GetMouseMotion(x_1, y_2);
-			offset.x = +x_1/2;
-			LOG("%i", offset.x);
+			offset.x = +x_1*2;
+			App->audio->ModifyVolume(offset.x);
 		}
 	}
 	//LOG("(%i,%i)", x, y);

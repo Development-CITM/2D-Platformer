@@ -58,6 +58,7 @@ public:
 
 	//SLIDER
 	UI_Element* slider = nullptr;
+	UI_Element* slide_bar = nullptr;
 
 	//Text
 	UI_Text* score_text = nullptr;
@@ -98,8 +99,7 @@ public:
 	UI_Element* settingsBackground = nullptr;
 
 	//Buttons
-	UI_Button* muteButton = nullptr;
-	UI_Button* soundButton = nullptr;
+	UI_Element* soundButton = nullptr;
 	UI_Button* returnButton = nullptr;
 	UI_Button* creditBackToMenuButton = nullptr;
 

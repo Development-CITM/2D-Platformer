@@ -32,6 +32,8 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	void ModifyVolume(int new_volume);
+
 	p2List<Mix_Chunk*>	fx;
 
 private:
