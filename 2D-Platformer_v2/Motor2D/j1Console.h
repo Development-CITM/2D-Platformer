@@ -11,7 +11,7 @@ public:
 	virtual ~j1Console();
 
 	bool Start();
-	bool Update();
+	bool Update(float dt) override;
 	bool CleanUp();
 
 

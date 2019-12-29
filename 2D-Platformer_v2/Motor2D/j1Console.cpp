@@ -4,6 +4,7 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "p2Log.h"
 
 j1Console::j1Console()
 {
@@ -15,14 +16,14 @@ j1Console::~j1Console()
 
 bool j1Console::Start()
 {
-	//window =App->ui->CreateUIImage({ 11,15,89,41 }, App->tex->Load("UI/coin_timer.png"), { 0,0 }, { App->win->GetWidth() - 930,20 }, TYPE::UI_Image);
-	//text_console = App->ui->CreateUIText(window);
+	input_text = new UI_InputText({ 300,300,20,100 });
 	return true;
 }
 
-bool j1Console::Update()
+bool j1Console::Update(float dt)
 {
-	input_text->DrawCursor({ 300,300 }, {100,100});
+	input_text->DrawCursor({ 300,300 }, {2,20});
+	LOG("CONSOLE");
 	return true;
 }
 

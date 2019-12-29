@@ -7,13 +7,16 @@
 class UI_InputText : public UI_Element
 {
 public:
-	UI_InputText();
+	UI_InputText(SDL_Rect);
 	virtual ~UI_InputText();
 
-	bool hasFocus;
+	bool hasFocus  = false;
 
-	SDL_Rect rect;
+	SDL_Rect cursor_rect;
+	SDL_Rect background_rect;
 
+
+	void Draw() override;
 	void DrawCursor(p2Point<int> pos, p2Point<int> size);
 
 
