@@ -81,6 +81,10 @@ Once done you will get to the main menu where u can choose to start a new game, 
 
 * Enemy ground: Jump to dodge the attack from the enemy since it goes usually first then attack
 * Enemy flying: Use high kick to kill the enemy if he's too high for linear punch
+
+# Gameplay Video
+<br>
+<iframe width="420" height="315" src="https://www.youtube.com/watch?v=mlpxr2GmcT4&feature=youtu.be"></iframe>
           
 # License:
 
