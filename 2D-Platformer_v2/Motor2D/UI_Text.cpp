@@ -16,6 +16,9 @@ UI_Text::UI_Text(const char* char_text, p2Point<int> offsetPos, p2Point<int> scr
 	screenPos = screen;
 	texture = App->fonts->Print(text.GetString());
 	
+	App->fonts->CalcSize(text.GetString(), length, height);
+	int num = length;
+	int num1 = height;
 }
 
 
@@ -26,5 +29,11 @@ UI_Text::~UI_Text()
 void UI_Text::UpdateText(const char* textInput)
 {
 	text = textInput;
+	texture = App->fonts->Print(text.GetString());
+}
+
+void UI_Text::CreateText(const char* m_text)
+{
+	text += m_text;
 	texture = App->fonts->Print(text.GetString());
 }

@@ -25,6 +25,7 @@ enum j1KeyState
 	KEY_UP
 };
 
+
 class j1Input : public j1Module
 {
 
@@ -76,6 +77,8 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+
 };
+
 
 #endif // __j1INPUT_H__

@@ -5,6 +5,16 @@
 #include "UI_InputText.h"
 #include "UI_Text.h"
 
+enum Commands {
+	none,
+	quit,
+	list,
+	mapA2,
+	mapA3,
+	error,
+
+};
+
 class j1Console : public j1Module
 {
 public:
@@ -17,7 +27,7 @@ public:
 
 
 	UI_Element* window;
-	UI_Element* input_text;
+	UI_InputText* input_text;
 
 	UI_Text* text = nullptr;
 
@@ -26,6 +36,8 @@ public:
 
 	bool showConsole = false;
 	void AddLog(const char* text);
+
+	void ExecuteCommand(p2SString);
 };
 
 #endif // !__j1Console_H__
