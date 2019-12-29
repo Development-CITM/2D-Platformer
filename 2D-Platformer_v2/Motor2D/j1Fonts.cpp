@@ -20,6 +20,7 @@ j1Fonts::~j1Fonts()
 // Called before render is available
 bool j1Fonts::Awake(pugi::xml_node& conf)
 {
+	BROFILER_CATEGORY("Fonts awake", Profiler::Color::AliceBlue)
 	LOG("Init True Type Font library");
 	bool ret = true;
 

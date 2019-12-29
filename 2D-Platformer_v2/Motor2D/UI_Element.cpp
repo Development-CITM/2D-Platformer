@@ -45,6 +45,7 @@ SDL_Texture* UI_Element::GetTexture()
 
 void UI_Element::SetScreen(p2Point<int> newScreen)
 {
+
 	screenPos = newScreen;
 }
 

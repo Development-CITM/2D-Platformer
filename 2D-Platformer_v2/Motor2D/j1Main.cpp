@@ -69,7 +69,7 @@ int main(int argc, char* args[])
 			case START: {
 				LOG("START PHASE ===============================");
 				App->logs.add("START PHASE");
-				BROFILER_FRAME("Update");
+				BROFILER_FRAME("Start");
 				if (App->Start() == true)
 				{
 					state = LOOP;

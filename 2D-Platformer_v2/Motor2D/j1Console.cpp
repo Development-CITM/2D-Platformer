@@ -20,6 +20,7 @@ j1Console::~j1Console()
 
 bool j1Console::Start()
 {
+	BROFILER_CATEGORY("StartConsole", Profiler::Color::Bisque)
 	input_text = App->ui->CreateUIInputText({ 700,30 }, { 0,0 }, { 0,400 });
 	input_text->ToggleHide(true);
 
@@ -43,6 +44,7 @@ bool j1Console::Start()
 
 bool j1Console::Update(float dt)
 {
+	BROFILER_CATEGORY("Update Console", Profiler::Color::Bisque)
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
 		
 		showConsole = !showConsole;

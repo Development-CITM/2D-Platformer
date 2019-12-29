@@ -3,7 +3,7 @@
 
 #include "j1Module.h"
 #include "SDL\include\SDL_pixels.h"
-
+#include "Brofiler/Brofiler.h"
 #define DEFAULT_FONT "fonts/open_sans/acknowtt.ttf"
 #define DEFAULT_FONT_SIZE 25
 
