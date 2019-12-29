@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="112" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="196" nextobjectid="89">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="112" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="201" nextobjectid="94">
  <tileset firstgid="1" name="mainlevbuild2" tilewidth="16" tileheight="16" tilecount="2500" columns="50">
   <image source="New_Assets/Snow/mainlevbuild2.png" width="800" height="800"/>
  </tileset>
@@ -215311,6 +215311,46 @@
    <properties>
     <property name="coin_pos_x" type="int" value="400"/>
     <property name="coin_pos_y" type="int" value="375"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="196" name="Coin">
+  <object id="89" name="Coin" x="448" y="16" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="700"/>
+    <property name="coin_pos_y" type="int" value="375"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="197" name="Coin">
+  <object id="90" name="Coin" x="448" y="32" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="730"/>
+    <property name="coin_pos_y" type="int" value="375"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="198" name="Coin">
+  <object id="91" name="Coin" x="464" y="16" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="730"/>
+    <property name="coin_pos_y" type="int" value="470"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="199" name="Coin">
+  <object id="92" name="Coin" x="480" y="16" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="900"/>
+    <property name="coin_pos_y" type="int" value="480"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="200" name="Coin">
+  <object id="93" name="Coin" x="496" y="16" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="960"/>
+    <property name="coin_pos_y" type="int" value="440"/>
    </properties>
   </object>
  </objectgroup>

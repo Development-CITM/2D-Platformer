@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="59" nextobjectid="68">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="69" nextobjectid="78">
  <tileset firstgid="1" name="mainlevbuild1" tilewidth="16" tileheight="16" tilecount="3200" columns="50">
   <image source="New_Assets/Snow/mainlevbuild1.png" width="800" height="1024"/>
  </tileset>
@@ -211404,6 +211404,70 @@
   </object>
   <object id="55" type="Barrier" x="1440" y="336" width="48" height="144"/>
   <object id="60" type="Jumpable" x="640" y="928" width="32" height="16"/>
+ </objectgroup>
+ <objectgroup id="59" name="Coin">
+  <object id="68" name="Coin" x="416" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="500"/>
+    <property name="coin_pos_y" type="int" value="1100"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="62" name="Coin">
+  <object id="71" name="Coin" x="432" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="860"/>
+    <property name="coin_pos_y" type="int" value="1060"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="63" name="Coin">
+  <object id="72" name="Coin" x="448" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="880"/>
+    <property name="coin_pos_y" type="int" value="1060"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="64" name="Coin">
+  <object id="73" name="Coin" x="464" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="900"/>
+    <property name="coin_pos_y" type="int" value="1060"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="65" name="Coin">
+  <object id="74" name="Coin" x="480" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="910"/>
+    <property name="coin_pos_y" type="int" value="950"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="66" name="Coin">
+  <object id="75" name="Coin" x="496" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="720"/>
+    <property name="coin_pos_y" type="int" value="820"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="67" name="Coin">
+  <object id="76" name="Coin" x="512" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="1100"/>
+    <property name="coin_pos_y" type="int" value="690"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="68" name="Coin">
+  <object id="77" name="Coin" x="528" y="0" width="16" height="16">
+   <properties>
+    <property name="coin_pos_x" type="int" value="920"/>
+    <property name="coin_pos_y" type="int" value="470"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="25" name="Culling_pos">
   <object id="56" name="Culling Pos" x="320" y="0" width="16" height="16">
