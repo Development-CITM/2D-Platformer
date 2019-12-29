@@ -14,6 +14,7 @@
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+#include "j1Console.h"
 #include <math.h>
 
 #pragma region Constructor/Destructor
@@ -32,6 +33,7 @@ bool j1Fade2Black::Start()
 	screen = { 0,0,App->win->GetWidth() * App->win->GetScale(),App->win->GetHeight() * App->win->GetScale() };
 
 	LOG("Preparing Fade Screen");
+	logs.add("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 	IsFading = false;
 	return true;

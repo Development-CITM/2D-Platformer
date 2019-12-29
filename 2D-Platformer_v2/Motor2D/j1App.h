@@ -6,6 +6,7 @@
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
+#include "p2SString.h"
 
 // Modules
 class j1Window;
@@ -108,9 +109,11 @@ public:
 	bool				transition = false;
 	bool				pause = false;
 
+	p2List<j1Module*>	modules;
+
+	p2List<p2SString> logs;
 private:
 
-	p2List<j1Module*>	modules;
 	float				dt;
 	int					argc;
 	char**				args;

@@ -415,19 +415,19 @@ bool j1Tilesets::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 //Logs all layers data loaded ---------------------------------------------------------------------------------------------------------------------------------------
 void j1Tilesets::LogLayerInfo(const char* file_name)
 {
-	LOG("Successfully parsed map XML file: %s", file_name);
-	LOG("width: %d height: %d", map_Data.width, map_Data.height);
-	LOG("tile_width: %d tile_height: %d", map_Data.tile_width, map_Data.tile_height);
+	//LOG("Successfully parsed map XML file: %s", file_name);
+	//LOG("width: %d height: %d", map_Data.width, map_Data.height);
+	//LOG("tile_width: %d tile_height: %d", map_Data.tile_width, map_Data.tile_height);
 
 	//Logging tilesets used ------------------------------------------------------------------------------------------------
 	p2List_item<TileSet*>* item = map_Data.tilesets.start;
 	while (item != NULL)
 	{
 		TileSet* s = item->data;
-		LOG("Tileset ----");
-		LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
-		LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
-		LOG("spacing: %d margin: %d", s->spacing, s->margin);
+		//LOG("Tileset ----");
+		//LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+		//LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
+		//LOG("spacing: %d margin: %d", s->spacing, s->margin);
 		item = item->next;
 	}
 	//Logging layers info --------------------------------------------------------------------------------------------------
@@ -435,9 +435,9 @@ void j1Tilesets::LogLayerInfo(const char* file_name)
 	while (item_layer != NULL)
 	{
 		MapLayer* l = item_layer->data;
-		LOG("Layer ----");
-		LOG("name: %s", l->name.GetString());
-		LOG("tile width: %d tile height: %d", l->width, l->height);
+		//LOG("Layer ----");
+		//LOG("name: %s", l->name.GetString());
+		//LOG("tile width: %d tile height: %d", l->width, l->height);
 		item_layer = item_layer->next;
 	}
 }

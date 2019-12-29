@@ -78,8 +78,8 @@ bool Object_Enemy::Update(float dt)
 	}
 
 	//LOG("Collider to delete: %i", collider->to_delete);
-	LOG("Collider: %d", collider);
-	LOG("Collider: %d", groundChecker);
+	//LOG("Collider: %d", collider);
+	//LOG("Collider: %d", groundChecker);
 	switch (state)
 	{
 

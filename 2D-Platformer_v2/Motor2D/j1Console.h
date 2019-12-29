@@ -23,6 +23,9 @@ public:
 
 	p2List<UI_Text*> text_list;
 	p2List<p2SString> log_list;
+
+	bool showConsole = false;
+	void AddLog(const char* text);
 };
 
 #endif // !__j1Console_H__

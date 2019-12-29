@@ -126,6 +126,8 @@ bool j1App::Awake()
 		}
 	}
 	PERF_PEEK(ptimer);
+	p2SString text = p2SString("%s took %f ms", __FUNCTION__, ptimer.ReadMs());
+	App->logs.add(text.GetString());
 	return ret;
 }
 
@@ -145,6 +147,8 @@ bool j1App::Start()
 	startup_time.Start();
 
 	PERF_PEEK(ptimer);
+	p2SString text = p2SString("%s took %f ms", __FUNCTION__, ptimer.ReadMs());
+	App->logs.add(text.GetString());
 	transition = true;
 	return ret;
 }

@@ -7,6 +7,7 @@
 #define __j1MODULE_H__
 
 #include "p2SString.h"
+#include "p2List.h"
 #include "PugiXml\src\pugixml.hpp"
 
 class j1App;
@@ -98,6 +99,8 @@ public:
 
 	p2SString	name;
 	bool		active;
+
+	p2List<p2SString> logs;
 
 };
 

@@ -110,6 +110,7 @@ bool j1UI::Start()
 	//Timer
 	timer_text = CreateUIText("0", { -5,4 }, { 100,100 },HUD, timer_background);
 	timer_background->childs.add(timer_text);
+
 	return ret;
 }
 
@@ -199,7 +200,6 @@ void j1UI::UpdateUI()
 UI_Element* j1UI::CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent)
 {
 	UI_Element* element = new UI_Image(image, text, offset , screen, ui_type, parent);
-	LOG("Image created");
 	UI_Elements_list.add(element);
 	return element;
 }
@@ -207,7 +207,6 @@ UI_Element* j1UI::CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> 
 UI_Element* j1UI::CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent)
 {
 	UI_Element* element = new UI_Button(image,hover,pressed, text, offset, screen, ui_type,button,parent);
-	LOG("Button created");
 	UI_Elements_list.add(element);
 	return element;
 }

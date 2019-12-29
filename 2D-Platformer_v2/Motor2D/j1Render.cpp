@@ -6,6 +6,7 @@
 #include "j1Scene.h"
 #include "j1Tilesets.h"
 #include "j1Colliders.h"
+#include "j1Console.h"
 
 #define VSYNC true
 
@@ -59,6 +60,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 bool j1Render::Start()
 {
 	LOG("render start");
+	App->logs.add("Render Start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;

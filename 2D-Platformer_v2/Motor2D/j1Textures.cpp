@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
+#include "j1Console.h"
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
@@ -38,6 +39,7 @@ bool j1Textures::Awake(pugi::xml_node& config)
 bool j1Textures::Start()
 {
 	LOG("start textures");
+	logs.add("start textures");
 	bool ret = true;
 	return ret;
 }

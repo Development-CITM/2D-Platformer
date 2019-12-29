@@ -5,6 +5,8 @@
 #include "j1Render.h"
 #include "UI_Button.h"
 #include "j1Scene.h"
+#include "UI_Text.h"
+#include "j1Console.h"
 
 class UI_Button;
 UI_Element::UI_Element(SDL_Rect image, SDL_Texture* text, p2Point<int> offset,p2Point<int> local, p2Point<int> screen, TYPE ui_type, UI_Element* parent_base): base_rect(image),texture(text),offset(offset),localPos(local),screenPos(screen),UI_Type(ui_type),hide(false),activeRect(image),parent(parent_base)
@@ -81,6 +83,10 @@ void UI_Element::Draw()
 		return;
 	}
 	if (UI_Type == TYPE::UI_Font) {
+		UI_Text* element = (UI_Text*)this;
+		if (element->text_type == CONSOLE && !App->console->showConsole) {
+			return;
+		}
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);
 		App->render->Blit(texture, localPos.x - activeRect.w / 2 + offset.x, localPos.y + offset.y);
 	}

@@ -3,6 +3,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
+#include "j1Console.h"
 
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
@@ -69,6 +70,7 @@ int main(int argc, char* args[])
 			// Call all modules before first frame  ----------------------------
 			case START: {
 				LOG("START PHASE ===============================");
+				App->logs.add("START PHASE");
 				BROFILER_FRAME("Update");
 				if (App->Start() == true)
 				{
@@ -93,6 +95,7 @@ int main(int argc, char* args[])
 			// Cleanup allocated memory -----------------------------------------
 			case CLEAN:
 			LOG("CLEANUP PHASE ===============================");
+			App->logs.add("CLEANUP PHASE");
 			if(App->CleanUp() == true)
 			{
 				RELEASE(App);
@@ -114,6 +117,7 @@ int main(int argc, char* args[])
 	}
 
 	LOG("... Bye! :)\n");
+
 
 	// Dump memory leaks
 	return result;
