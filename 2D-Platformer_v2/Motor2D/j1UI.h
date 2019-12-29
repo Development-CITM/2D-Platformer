@@ -62,6 +62,7 @@ public:
 	j1Timer timer;
 	j1Timer pause_timer;
 	int pause_timer_int = 0;
+	int loading_timer_int = 0;
 	int timer_int = 0;
 	bool resetPause = true;
 
@@ -75,6 +76,7 @@ public:
 	UI_Button* creditsButton = nullptr;
 	UI_Button* settingsButton = nullptr;
 	UI_Button* quitButton = nullptr;
+	UI_Button* githubButton = nullptr;
 
 	/*----PAUSE MENU----*/
 	//Images

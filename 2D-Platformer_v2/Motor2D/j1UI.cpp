@@ -56,22 +56,25 @@ bool j1UI::Start()
 	bool ret = true;
 	backgroundImage = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 200,100 }, TYPE::UI_Image);
 	
-	playButton = (UI_Button*)CreateUIButton({ 16,90,234,64 }, { 15,855,234,64 }, { 16,471,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,40 }, { 0,0 }, TYPE::UI_Button, ButtonType::Start, backgroundImage);
+	playButton = (UI_Button*)CreateUIButton({ 16,90,234,64 }, { 15,855,234,64 }, { 16,471,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,25 }, { 0,0 }, TYPE::UI_Button, ButtonType::Start, backgroundImage);
 
-	continueButton = (UI_Button*)CreateUIButton({ 16,167,234,64 }, { 15,932,234,64 }, { 16,548,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,123 }, { 0,0 }, TYPE::UI_Button, ButtonType::Continue, backgroundImage);
+	continueButton = (UI_Button*)CreateUIButton({ 16,167,234,64 }, { 15,932,234,64 }, { 16,548,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,103 }, { 0,0 }, TYPE::UI_Button, ButtonType::Continue, backgroundImage);
 	continueButton->isEnabled = false;
 	
-	settingsButton = (UI_Button*)CreateUIButton({ 16,317,234,64 }, { 15,1082,234,64 }, { 16,698,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,206 }, { 0,0 }, TYPE::UI_Button, ButtonType::Settings, backgroundImage);
+	settingsButton = (UI_Button*)CreateUIButton({ 16,317,234,64 }, { 15,1082,234,64 }, { 16,698,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,186 }, { 0,0 }, TYPE::UI_Button, ButtonType::Settings, backgroundImage);
 
-	creditsButton = (UI_Button*)CreateUIButton({ 16,18,234,64 }, { 15,783,234,64 }, { 16,399,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,289 }, { 0,0 }, TYPE::UI_Button, ButtonType::Credits, backgroundImage);
+	creditsButton = (UI_Button*)CreateUIButton({ 16,18,234,64 }, { 15,783,234,64 }, { 16,399,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,269 }, { 0,0 }, TYPE::UI_Button, ButtonType::Credits, backgroundImage);
 
-	quitButton = (UI_Button*)CreateUIButton({ 16,243,234,64 }, { 15,1008,234,64 }, { 16,624,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,372 }, { 0,0 }, TYPE::UI_Button, ButtonType::Quit, backgroundImage);
+	quitButton = (UI_Button*)CreateUIButton({ 16,243,234,64 }, { 15,1008,234,64 }, { 16,624,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,352 }, { 0,0 }, TYPE::UI_Button, ButtonType::Quit, backgroundImage);
+
+	githubButton = (UI_Button*)CreateUIButton({ 411,253,234,64 }, { 411,1019,234,64 }, { 411,637,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,430 }, { 0,0 }, TYPE::UI_Button, ButtonType::Github, backgroundImage);
 
 	backgroundImage->childs.add(playButton);
 	backgroundImage->childs.add(continueButton);
 	backgroundImage->childs.add(settingsButton);
 	backgroundImage->childs.add(creditsButton);
 	backgroundImage->childs.add(quitButton);
+	backgroundImage->childs.add(githubButton);
 
 
 	//Pausemenu
@@ -162,7 +165,14 @@ void j1UI::UpdateUI()
 		UI_Functions::ChooseLivesToShow(fiveLives, fourLives, threeLives, twoLives, oneLives, zeroLives);
 		if (!App->pause)
 		{
+			if (App->scene->loading)
+			{
+				timer.Start();
+			}
+			
 			timer_int = timer.ReadSec() + pause_timer_int;
+			timer_int = timer.ReadSec() + pause_timer_int;
+			loading_timer_int = timer.ReadSec() + pause_timer_int;
 			resetPause = true;
 		}
 		if (App->pause)
@@ -233,7 +243,14 @@ UI_InputText* j1UI::CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2
 
 void j1UI::SubstractLives()
 {
-	score = 0;
+	if (App->scene->preservecoins)
+	{
+		score = App->scene->score_preserved;
+	}
+	else
+	{
+		score = 0;
+	}
 	lives--;
 	if (lives == 0)
 	{

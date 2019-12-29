@@ -87,6 +87,8 @@ public:
 
 	bool hasExit = false;
 	bool pause = false;
+	bool preservecoins = false;
+	int score_preserved = 0;
 
 	Collider* exitCollider = nullptr;
 	SDL_Texture* debug_tex;

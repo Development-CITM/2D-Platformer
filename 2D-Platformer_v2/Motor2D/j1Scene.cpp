@@ -40,7 +40,7 @@ bool j1Scene::Start()
 	hasExit = false;
 	debug_tex = App->tex->Load("maps/path2.png");
 	DecideMapToLoad();
-	if (strcmp(current_level.GetString(), "maps/A5.tmx") != 0)
+	if (strcmp(current_level.GetString(), "maps/A5.tmx") != 0 && !loading)
 	{
 		App->ui->timer.Start();
 	}
@@ -156,6 +156,15 @@ bool j1Scene::Load(pugi::xml_node& data)
 			enemy = "enemy_";
 			id++;
 		}	
+
+		//Lives
+		App->ui->lives = data.child("lives").attribute("live_count").as_int();
+
+		//Score
+		App->ui->score = data.child("score").attribute("score_count").as_int();
+
+		//Time
+		App->ui->timer_int = data.child("timer").attribute("timer_load").as_int();
 	
 	return true;
 }
@@ -261,8 +270,17 @@ bool j1Scene::Save(pugi::xml_node& data) const
 		}
 		item = item->next;
 	}
+	//---------Lives---------//
+	pugi::xml_node lives = data.append_child("lives");
+	lives.append_attribute("live_count") = App->ui->lives;
 
+	//---------Score---------//
+	pugi::xml_node score = data.append_child("score");
+	score.append_attribute("score_count") = App->ui->score;
 
+	//---------Time----------//
+	pugi::xml_node timer = data.append_child("timer");
+	timer.append_attribute("timer_load") = App->ui->timer_int;
 	return true;
 }
 #pragma endregion
@@ -373,14 +391,16 @@ void j1Scene::ColliderMapToLoad(Collider* c2)
 		App->debug->CallFade();
 		c2->Enabled = true;
 	}
-	else if (c2->swap == A3_TO_A2)
+	/*else if (c2->swap == A3_TO_A2)
 	{
 		destination_level = "maps/A2.tmx";
 		App->debug->CallFade();
 		c2->Enabled = true;
-	}
+	}*/
 	else if (c2->swap == A2_TO_A3)
 	{
+		preservecoins = true;
+		score_preserved = App->ui->score;
 		destination_level = "maps/A3.tmx";
 		App->debug->CallFade();
 		c2->Enabled = true;

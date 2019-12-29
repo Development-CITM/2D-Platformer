@@ -28,8 +28,12 @@ void UI_Functions::StartButton(UI_Element* current)
 
 
 
-void UI_Functions::ContinueButton()
+void UI_Functions::ContinueButton(UI_Element* menu)
 {
+	App->debug->CallFade();
+	App->LoadGame("save_game.xml");
+	menu->ToggleHide(true);
+	App->pause = false;
 }
 
 void UI_Functions::SettingsButton(UI_Element* settings, UI_Element* mainmenu)

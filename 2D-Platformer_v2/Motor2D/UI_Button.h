@@ -13,6 +13,7 @@ enum ButtonType {
 	Credits,
 	Quit,
 	MainScreen,
+	Github,
 };
 
 class UI_Button : public UI_Element

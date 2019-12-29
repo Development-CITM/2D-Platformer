@@ -60,7 +60,8 @@ void UI_Button::OnClick()
 		UI_Functions::ShowUI(App->ui->coin_background, App->ui->timer_background,App->ui->coin_image,App->ui->timer_image);
 		break;
 	case Continue:
-		UI_Functions::ContinueButton();
+		UI_Functions::ContinueButton(App->ui->backgroundImage);
+		UI_Functions::ShowUI(App->ui->coin_background, App->ui->timer_background, App->ui->coin_image, App->ui->timer_image);
 		break;
 	case Settings:
 		UI_Functions::SettingsButton(App->ui->settingsBackground, GetUIParent());
@@ -79,6 +80,9 @@ void UI_Button::OnClick()
 		break;
 	case MainScreen:
 		UI_Functions::BackToMainMenu(App->ui->pausemenuBackground, App->ui->backgroundImage);
+		break;
+	case Github:
+		ShellExecuteA(NULL, "open", "https://development-citm.github.io/2D-Platformer/", NULL, NULL, SW_SHOWNORMAL);
 		break;
 	case Quit:
 		UI_Functions::QuitButton();

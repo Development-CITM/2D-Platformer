@@ -10,7 +10,7 @@ class UI_Functions
 
 public:
 	static void StartButton(UI_Element*);
-	static void ContinueButton();
+	static void ContinueButton(UI_Element*);
 	static void SettingsButton(UI_Element*, UI_Element*);
 	static void ActiveSoundButton(bool flag);
 	static void ReturnButton(UI_Element*, UI_Element*);

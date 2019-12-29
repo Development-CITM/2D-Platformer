@@ -72,7 +72,14 @@ void UI_Element::Draw()
 		}
 	}
 
-	if (!App->scene->saving) {
+	if (App->scene->saving) {
+		UI_Button* button = (UI_Button*)this;
+		if (button->button_type == ButtonType::Continue) {
+			button->isEnabled = true;
+		}
+	}
+	else
+	{
 		UI_Button* button = (UI_Button*)this;
 		if (button->button_type == ButtonType::Continue) {
 			button->isEnabled = false;

@@ -33,8 +33,6 @@ int main(int argc, char* args[])
 
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
-	
-
 
 	while(state != EXIT)
 	{
