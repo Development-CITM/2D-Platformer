@@ -24,6 +24,7 @@ void UI_Functions::StartButton(UI_Element* current)
 		App->ui->score = 0;
 		App->debug->CallFade();
 		current->ToggleHide(true);
+		App->pause = false;
 }
 
 
