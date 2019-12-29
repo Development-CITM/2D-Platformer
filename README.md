@@ -45,7 +45,7 @@ We introduced some innovation too loading player and enemies from Tiled maps asw
 # Github Repository
 
 Our Github repository for the project:
-https://github.com/Development-CITM/2D-Platformer <br>
+[Repository](https://github.com/Development-CITM/2D-Platformer) <br>
 
 Link to our latest release:
 <br>
@@ -84,7 +84,7 @@ Once done you will get to the main menu where u can choose to start a new game, 
 
 # Gameplay Video
 <br>
-<iframe width="420" height="315" src="https://www.youtube.com/watch?v=mlpxr2GmcT4&feature=youtu.be"></iframe>
+<iframe width="420" height="315" src="https://www.youtube.com/watch?v=mlpxr2GmcT4e"></iframe>
           
 # License:
 
