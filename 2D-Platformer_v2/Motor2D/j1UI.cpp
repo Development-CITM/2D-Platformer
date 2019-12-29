@@ -85,6 +85,10 @@ bool j1UI::Start()
 	pausemenuBackground = CreateUIImage({ 67,49,266,510 }, App->tex->Load("UI/HUD_Menus.png"), { 0,0 }, { App->win->GetWidth() - 500,100 }, TYPE::UI_Image);
 	pausereturnButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,280 }, { 0,0 }, TYPE::UI_Button, ButtonType::MainScreen, pausemenuBackground);
 	pausequitButton = (UI_Button*)CreateUIButton({ 16,243,234,64 }, { 15,1008,234,64 }, { 16,624,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,372 }, { 0,0 }, TYPE::UI_Button, ButtonType::Quit, pausemenuBackground);
+	slider_pause = CreateScrollBar({ 9,18,28,42 }, App->tex->Load("UI/slider.png"), { 0,27 }, { 50,50 }, TYPE::UI_Scrollbar, pausemenuBackground);
+	slide_bar_pause = CreateUIImage({ 9,6,249,5 }, App->tex->Load("UI/slider.png"), { 0,20 }, { 50,50 }, TYPE::UI_Image, pausemenuBackground);
+	pausemenuBackground->childs.add(slider_pause);
+	pausemenuBackground->childs.add(slide_bar_pause);
 
 	pausemenuBackground->childs.add(pausereturnButton);
 	pausemenuBackground->childs.add(pausequitButton);
@@ -96,19 +100,19 @@ bool j1UI::Start()
 	settingsBackground = CreateUIImage({ 3,3,335,192 }, App->tex->Load("UI/SettingsBackground.png"), { 0,0 }, { App->win->GetWidth() - 200,250 }, TYPE::UI_Image);
 	settingsBackground->ToggleHide(true);
 	//Slider
-	slider = CreateScrollBar({7,18,28,42}, App->tex->Load("UI/slider.png"), { 0,0 }, { 50,50 },TYPE::UI_Scrollbar, settingsBackground);
+	slider = CreateScrollBar({9,18,28,42}, App->tex->Load("UI/slider.png"), { 0,33 }, { 50,50 },TYPE::UI_Scrollbar, settingsBackground);
+	slide_bar = CreateUIImage({ 9,6,249,5 }, App->tex->Load("UI/slider.png"), { 0,20 }, { 50,50 }, TYPE::UI_Image, settingsBackground);
+	soundButton = CreateUIImage({ 498,18,64,63 }, App->tex->Load("UI/Buttons.png"), { -120,-10 }, { 0,0 }, TYPE::UI_Image, settingsBackground);
 	settingsBackground->childs.add(slider);
-	
+	settingsBackground->childs.add(slide_bar);
+	settingsBackground->childs.add(soundButton);
+
 
 	//Buttons
-	soundButton = (UI_Button*)CreateUIButton({ 498,18,64,63 }, { 498,783,64,63 }, { 498,399,64,63 }, App->tex->Load("UI/Buttons.png"), { -50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Sound, settingsBackground);	
-
-	muteButton = (UI_Button*)CreateUIButton({ 581,18,64,63 }, { 581,783,64,63 }, { 581,399,64,63 }, App->tex->Load("UI/Buttons.png"), { 50,20 }, { 0,0 }, TYPE::UI_Button, ButtonType::Mute, settingsBackground);
 
 	returnButton = (UI_Button*)CreateUIButton({ 411,178,234,64 }, { 411,943,234,64 }, { 411,559,234,64 }, App->tex->Load("UI/Buttons.png"), { 0,100 }, { 0,0 }, TYPE::UI_Button, ButtonType::Return, settingsBackground);
 
 	settingsBackground->childs.add(soundButton);
-	settingsBackground->childs.add(muteButton);
 	settingsBackground->childs.add(returnButton);
 
 	//Credits
@@ -139,6 +143,7 @@ bool j1UI::Update(float dt)
 	bool ret = true;
 
 	if (quit) {
+		Cleanup();
 		ret = false;
 	}
 	Draw();
@@ -146,6 +151,15 @@ bool j1UI::Update(float dt)
 
 	
 	return ret;
+}
+
+bool j1UI::Cleanup()
+{
+	for (int i = UI_Elements_list.count() - 1; i >= 0; i--)
+	{
+		UI_Elements_list.del(UI_Elements_list.At(i));
+	}
+	return true;
 }
 
 bool j1UI::PostUpdate()

@@ -5,16 +5,16 @@
 	<textures />
 	<audio />
 	<scene>
-		<playerPos player_pos_x="651" player_pos_y="1095" player_collider_pos_x="678" player_collider_pos_y="1105" />
-		<camera x="-790" y="-1750" />
-		<culling x="395" y="875" />
+		<playerPos player_pos_x="898" player_pos_y="487" player_collider_pos_x="925" player_collider_pos_y="497" />
+		<camera x="-1284" y="-496" />
+		<culling x="642" y="248" />
 		<current_lvl />
-		<scene current_map="maps/A3.tmx" />
-		<enemies enemy_1_x="1085" enemy_1_y="474" enemy_1_type="2" />
-		<coins />
+		<scene current_map="maps/A2.tmx" />
+		<enemies enemy_1_x="1206" enemy_1_y="603" enemy_1_type="1" enemy_2_x="825" enemy_2_y="936" enemy_2_type="1" />
+		<coins coin_1_x="0" coin_1_x_collider="13" coin_1_y="375" coin_1_y_collider="388" />
 		<lives live_count="5" />
-		<score score_count="5" />
-		<timer timer_load="5" />
+		<score score_count="10" />
+		<timer timer_load="23" />
 	</scene>
 	<map />
 	<:anonymous />

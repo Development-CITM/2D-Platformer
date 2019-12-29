@@ -33,6 +33,7 @@ public:
 	void Draw();
 	void UpdateUI();
 
+	bool Cleanup();
 	bool quit = false;
 
 	UI_Element* CreateUIImage(SDL_Rect image, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,UI_Element* parent = nullptr);
@@ -59,6 +60,8 @@ public:
 	//SLIDER
 	UI_Element* slider = nullptr;
 	UI_Element* slide_bar = nullptr;
+	UI_Element* slider_pause = nullptr;
+	UI_Element* slide_bar_pause = nullptr;
 
 	//Text
 	UI_Text* score_text = nullptr;
