@@ -86,6 +86,8 @@ void UI_Element::Draw()
 		return;
 	}
 
+
+
 	if (parent == nullptr) {
 
 		localPos = App->render->ScreenToWorld(screenPos.x, screenPos.y);

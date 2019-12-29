@@ -36,6 +36,8 @@ void UI_InputText::Draw()
 		App->render->DrawQuad({ localPos.x + offset.x,localPos.y + offset.y,background_rect.w,background_rect.h }, 0, 0, 255, 200);
 		if(hasFocus)
 		DrawCursor({ localPos.x + 2 ,localPos.y }, { 2,30 });
+
+		if(!hasFocus)
 		App->render->Blit(input_text->GetTexture(), localPos.x, localPos.y);
 	}
 	else {
@@ -45,6 +47,8 @@ void UI_InputText::Draw()
 		App->render->DrawQuad({ localPos.x + offset.x,localPos.y + offset.y,background_rect.w,background_rect.h }, 0, 0, 255, 200);
 		if(hasFocus)
 		DrawCursor({ localPos.x + 2 ,localPos.y }, { 2,30 });
+
+		if(!hasFocus)
 		App->render->Blit(input_text->GetTexture(), localPos.x, localPos.y);
 	}
 
