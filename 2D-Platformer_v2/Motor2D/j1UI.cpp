@@ -9,6 +9,8 @@
 #include "j1Window.h"
 #include "UI_Functions.h"
 #include "PlayerObjects.h"
+#include "j1Scene.h"
+#include "UI_Text.h"
 #include "j1Fonts.h"
 
 
@@ -40,6 +42,15 @@ bool j1UI::Start()
 	timer_background->ToggleHide(true);
 	coin_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/coin.png"), { -70,0 }, { App->win->GetWidth() - 976,12 }, TYPE::UI_Image, coin_background);
 	timer_image = CreateUIImage({ 0,0,52,55 }, App->tex->Load("UI/timer.png"), { -70,0 }, { App->win->GetWidth() - 156,13 }, TYPE::UI_Image, timer_background);
+
+	fiveLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_5.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
+	fourLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_4.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
+	threeLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_3.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
+	twoLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_2.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
+	oneLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_1.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
+	zeroLives = CreateUIImage({ 36,108,174,30 }, App->tex->Load("UI/HP_0.png"), { 0,0 }, { App->win->GetWidth() - 930,93 }, TYPE::UI_Image);
+
+	UI_Functions::HideLives(fiveLives, fourLives, threeLives, twoLives, oneLives, zeroLives);
 
 	//Menu
 	bool ret = true;
@@ -96,6 +107,10 @@ bool j1UI::Start()
 	score_text = CreateUIText("0", { -5,4 }, {100,100},HUD,coin_background);
 	coin_background->childs.add(score_text);
 
+	//Timer
+	timer_text = CreateUIText("0", { -5,4 }, { 100,100 },HUD, timer_background);
+	timer_background->childs.add(timer_text);
+
 	input_area = CreateUIInputText({ 500,30 }, { 0,0 }, { 200,200 });
 	return ret;
 }
@@ -138,12 +153,43 @@ void j1UI::Draw()
 
 void j1UI::UpdateUI() 
 {
-	for (int i = 0; i < App->entity->objects.count(); i++)
+	//Score
+	p2SString text = p2SString("%d", score);
+	score_text->UpdateText(text.GetString());
+
+	//Timer
+	if (strcmp(App->scene->current_level.GetString(), "maps/A5.tmx") != 0)
 	{
-		if (App->entity->objects[i]->type_object == Object_type::PLAYER) {
-			p2SString text = p2SString("%d",App->entity->objects[i]->score);
-			score_text->UpdateText(text.GetString());
+		UI_Functions::ChooseLivesToShow(fiveLives, fourLives, threeLives, twoLives, oneLives, zeroLives);
+		if (!App->pause)
+		{
+			timer_int = timer.ReadSec();
 		}
+		else
+		{
+			timer_int = timer_int;
+		}
+		if (timer_int <= 35)
+		{
+			substract_lives_once = true;
+			p2SString timer_text_aux = p2SString("%d", timer_int);
+			timer_text->UpdateText(timer_text_aux.GetString());
+		}
+		else
+		{
+			timer_int = 0;
+			App->entity->KillPlayerTimeOff();
+			if (substract_lives_once)
+			{
+				SubstractLives();
+				substract_lives_once = false;
+			}
+		}
+	}
+	//Lives
+	else
+	{
+		UI_Functions::HideLives(App->ui->fiveLives, App->ui->fourLives, App->ui->threeLives, App->ui->twoLives, App->ui->oneLives, App->ui->zeroLives);
 	}
 
 	for (int i = 0; i < UI_Elements_list.count(); i++)
@@ -184,6 +230,16 @@ UI_InputText* j1UI::CreateUIInputText(p2Point<int> size, p2Point<int> offset, p2
 	element->SetScreen(screen);
 	UI_Elements_list.add(element);
 	return element;
+}
+
+void j1UI::SubstractLives()
+{
+	score = 0;
+	lives--;
+	if (lives == 0)
+	{
+		UI_Functions::BackToMainMenu(pausemenuBackground, backgroundImage);
+	}
 }
 
 
