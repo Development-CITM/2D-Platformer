@@ -12,6 +12,10 @@
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
+UI_Fonts::UI_Fonts()
+{
+}
+
 UI_Fonts::UI_Fonts(font_type type_font, TYPE type_element, UI_Element* parent_) : UI_Element()
 {
 	UI_Type = type_element;
@@ -43,8 +47,31 @@ UI_Fonts::UI_Fonts(font_type type_font, TYPE type_element, UI_Element* parent_) 
 		texture = BlitText(timer_font.time.GetString(), { (0,0,0,0) }, default);
 	}
 	else if (type_of_font == font_type::FONT_CONSOLE) {
-
+		
+		text = "Hola";
+		texture = BlitText(text.GetString(), { (0,0,0,0) }, default);
 	}
+}
+
+UI_Fonts::UI_Fonts(const char* input_text, p2Point<int> offset, p2Point<int> screen, font_type type_font, TYPE type_element, UI_Element* parent_)
+{
+	UI_Type = type_element;
+	parent = parent_;
+	type_of_font = type_font;
+
+	//Init for each font, for the moment each font with the same default font
+	if (TTF_Init() == -1)
+	{
+		LOG("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+	}
+	else
+	{
+		const char* path = DEFAULT_FONT;
+		int size = DEFAULT_FONT_SIZE;
+		default = LoadFont(path, size);
+	}
+	text = input_text;
+	texture = BlitText(score_font.score.GetString(), { (0,0,0,0) }, default);
 }
 
 UI_Fonts::~UI_Fonts()
@@ -106,6 +133,8 @@ SDL_Texture* UI_Fonts::BlitText(const char* text, SDL_Color color, _TTF_Font* fo
 {
 	SDL_Texture* ret = NULL;
 	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
+
+
 
 	if (surface == NULL)
 	{

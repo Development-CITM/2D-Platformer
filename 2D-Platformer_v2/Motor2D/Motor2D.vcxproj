@@ -80,6 +80,7 @@
     <ClCompile Include="CoinObjects.cpp" />
     <ClCompile Include="EnemiesObjects.cpp" />
     <ClCompile Include="j1Colliders.cpp" />
+    <ClCompile Include="j1Console.cpp" />
     <ClCompile Include="j1Debug.cpp" />
     <ClCompile Include="j1Fade2Black.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="CoinObjects.h" />
     <ClInclude Include="EnemiesObjects.h" />
     <ClInclude Include="j1Colliders.h" />
+    <ClInclude Include="j1Console.h" />
     <ClInclude Include="j1Debug.h" />
     <ClInclude Include="j1Fade2Black.h" />
     <ClInclude Include="j1EntityManager.h" />

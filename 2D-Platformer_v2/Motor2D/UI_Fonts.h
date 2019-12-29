@@ -26,15 +26,18 @@ struct TIMER {
 class UI_Fonts :public UI_Element {
 
 public:
+	UI_Fonts();
 	UI_Fonts(font_type type_font, TYPE type_element, UI_Element* parent_);
+	UI_Fonts(const char* text,p2Point<int> offset, p2Point<int> screen, font_type type_font, TYPE type_element, UI_Element* parent_);
 
 	~UI_Fonts();
 	void Update();
 	bool CleanUp();
 	_TTF_Font* const LoadFont(const char* path, int size = 12);
-	SDL_Texture* BlitText(const char* text, SDL_Color color , _TTF_Font* font = NULL);
+	SDL_Texture* BlitText(const char* text, SDL_Color color = { 255, 255, 255, 255 }, _TTF_Font* font = NULL);
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 	void Draw();
+
 
 	void AddScore(int add);
 	void AddTime(int add);
@@ -52,8 +55,6 @@ public:
 	TIMER timer_font;
 
 	p2SString text;
-
-	
 
 };
 

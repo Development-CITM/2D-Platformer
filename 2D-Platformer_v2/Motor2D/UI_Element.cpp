@@ -32,6 +32,7 @@ p2Point<int> UI_Element::GetLocalPos()
 
 p2Point<int> UI_Element::GetScreenPos()
 {
+	
 	return screenPos;
 }
 

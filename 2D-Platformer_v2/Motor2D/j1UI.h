@@ -35,18 +35,20 @@ public:
 	UI_Element* CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect pressed, SDL_Texture* text, p2Point<int> offset, p2Point<int> screen, TYPE ui_type,ButtonType button, UI_Element* parent = nullptr);
 	void CreateNewScoreFont(UI_Element* parent);
 	void CreateNewTimerFont(UI_Element* parent);
-	UI_Fonts* CreateUIText(UI_Element* parent);
+	UI_Fonts* CreateUIText(const char* text,p2Point<int> offset,p2Point<int> screen, UI_Element* parent = nullptr);
+	UI_Fonts* CreateUIText(UI_Element* parent = nullptr);
 	void AddScore();
 	p2List<UI_Element*> UI_Elements_list;
 
-
-	/* ----MAIN MENU----*/
-	//Images
-	UI_Element* backgroundImage = nullptr;
+	/*----HUD----*/
 	UI_Element* coin_background = nullptr;
 	UI_Element* coin_image = nullptr;
 	UI_Element* timer_image = nullptr;
 	UI_Element* timer_background = nullptr;
+
+	/* ----MAIN MENU----*/
+	//Images
+	UI_Element* backgroundImage = nullptr;
 
 	//Buttons
 	UI_Button* playButton = nullptr;
@@ -54,6 +56,10 @@ public:
 	UI_Button* creditsButton = nullptr;
 	UI_Button* settingsButton = nullptr;
 	UI_Button* quitButton = nullptr;
+
+	/*----PAUSE MENU----*/
+
+
 
 
 	/*------SETTINGS------*/
@@ -67,6 +73,11 @@ public:
 
 	/*---CREDITS---*/
 	UI_Element* creditsImage = nullptr;
+
+
+	/*Text*/
+	UI_Element* image_font = nullptr;
+	UI_Fonts* font = nullptr;
 };
 
 #endif // !__J1UI_H__
