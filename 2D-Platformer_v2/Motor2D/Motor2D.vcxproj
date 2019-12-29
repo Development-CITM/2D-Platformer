@@ -84,6 +84,7 @@
     <ClCompile Include="j1Debug.cpp" />
     <ClCompile Include="j1Fade2Black.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
+    <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
@@ -102,11 +103,11 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_Element.cpp" />
-    <ClCompile Include="UI_Fonts.cpp" />
     <ClCompile Include="UI_Functions.cpp" />
     <ClCompile Include="UI_Image.cpp" />
     <ClCompile Include="UI_InputText.cpp" />
     <ClCompile Include="UI_ScrollBar.cpp" />
+    <ClCompile Include="UI_Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -118,6 +119,7 @@
     <ClInclude Include="j1Debug.h" />
     <ClInclude Include="j1Fade2Black.h" />
     <ClInclude Include="j1EntityManager.h" />
+    <ClInclude Include="j1Fonts.h" />
     <ClInclude Include="j1Pathfinding.h" />
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Tilesets.h" />
@@ -143,11 +145,11 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_Element.h" />
-    <ClInclude Include="UI_Fonts.h" />
     <ClInclude Include="UI_Functions.h" />
     <ClInclude Include="UI_Image.h" />
     <ClInclude Include="UI_InputText.h" />
     <ClInclude Include="UI_ScrollBar.h" />
+    <ClInclude Include="UI_Text.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

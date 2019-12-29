@@ -784,6 +784,10 @@ void Object_Player::UpdateCheckersBools()
 		alive = false;
 	}
 
+	if (App->collider->CheckColliderCollision(collider, COLLIDER_COIN)) {
+		score++;
+	}
+
 		
 }
 

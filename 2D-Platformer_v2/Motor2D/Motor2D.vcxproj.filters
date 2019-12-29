@@ -82,9 +82,6 @@
     <ClCompile Include="UI_Functions.cpp">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Fonts.cpp">
-      <Filter>Desenvolupament  ========\UI Elements</Filter>
-    </ClCompile>
     <ClCompile Include="UI_ScrollBar.cpp">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
@@ -93,6 +90,12 @@
     </ClCompile>
     <ClCompile Include="j1Console.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Text.cpp">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,9 +204,6 @@
     <ClInclude Include="UI_Functions.h">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
-    <ClInclude Include="UI_Fonts.h">
-      <Filter>Desenvolupament  ========\UI Elements</Filter>
-    </ClInclude>
     <ClInclude Include="UI_InputText.h">
       <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
@@ -212,6 +212,12 @@
     </ClInclude>
     <ClInclude Include="j1Console.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Text.h">
+      <Filter>Desenvolupament  ========\UI Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

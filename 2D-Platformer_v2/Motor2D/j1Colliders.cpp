@@ -12,6 +12,7 @@
 #include "j1Input.h"
 #include "j1Debug.h"
 #include "j1UI.h"
+#include "PlayerObjects.h"
 #include <math.h>
 
 #pragma region Constructor / Destructor
@@ -351,8 +352,7 @@ bool j1Colliders::CheckColliderCollision(Collider* c1)
 				}
 				if ((c1->checkerType == ColliderChecker::Right || c1->checkerType == ColliderChecker::Left || c1->checkerType == ColliderChecker::Ground || c1->checkerType == ColliderChecker::Top) && c2->type == COLLIDER_COIN && c2->Enabled) {
 					c2->Enabled = false;
-					App->audio->PlayFx(9);
-					App->ui->AddScore();
+					App->audio->PlayFx(9);					
 				}
 				ret = true;				
 			}

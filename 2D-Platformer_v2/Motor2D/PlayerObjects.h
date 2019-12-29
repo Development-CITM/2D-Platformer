@@ -86,6 +86,7 @@ private:
 
 
 public:
+	int					score = 0;
 
 	//Moving and attacking bools
 	bool				moveRight = false;

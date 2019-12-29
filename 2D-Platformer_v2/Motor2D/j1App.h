@@ -23,6 +23,7 @@ class j1Debug;
 class j1EntityManager;
 class j1UI;
 class j1Console;
+class j1Fonts;
 
 class j1App
 {
@@ -101,6 +102,7 @@ public:
 	j1Debug*			debug;
 	j1PathFinding*		pathfinding;
 	j1Console*			console;
+	j1Fonts*			fonts;
 
 	bool				maxcapFrames = false;
 	bool				transition = false;

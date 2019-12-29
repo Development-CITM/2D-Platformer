@@ -60,6 +60,7 @@ void UI_Functions::ShowUI(UI_Element* coins, UI_Element*timer,UI_Element* coin_i
 	timer->ToggleHide(false);
 	coin_image->ToggleHide(false);
 	timer_image->ToggleHide(false);
+	coins->childs[0]->ToggleHide(false);
 }
 
 void UI_Functions::ReturnButton(UI_Element* current, UI_Element* mainmenu)

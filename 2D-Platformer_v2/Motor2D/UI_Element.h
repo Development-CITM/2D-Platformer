@@ -34,7 +34,7 @@ protected:
 	p2Point<int> localPos;
 	p2Point<int> screenPos;
 	p2Point<int> offset;
-	bool addScoreCoin=false;
+
 
 	TYPE UI_Type;
 

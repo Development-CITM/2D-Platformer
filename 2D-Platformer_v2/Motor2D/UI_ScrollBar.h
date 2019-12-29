@@ -6,7 +6,7 @@ class UI_ScrollBar : public UI_Element
 {
 public:
 	UI_ScrollBar();
-	~UI_ScrollBar();
+	virtual ~UI_ScrollBar();
 
 	SDL_Rect thumb_rect;
 

@@ -6,7 +6,7 @@ class UI_Image : public UI_Element
 {
 public:
 	UI_Image(SDL_Rect image, SDL_Texture* text, p2Point<int> local, p2Point<int> screen, TYPE ui_type,UI_Element* parent);
-	~UI_Image();
+	virtual ~UI_Image();
 
 };
 

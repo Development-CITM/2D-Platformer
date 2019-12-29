@@ -8,7 +8,8 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "UI_Functions.h"
-#include "UI_Fonts.h"
+#include "j1Fonts.h"
+
 
 j1UI::j1UI()
 {
@@ -81,9 +82,8 @@ bool j1UI::Start()
 	creditsImage->ToggleHide(true);
 
 	//Score
-	CreateNewScoreFont(coin_background);
-	CreateNewTimerFont(timer_background);
-
+	score_text = CreateUIText("0", { -5,4 }, {100,100},coin_background);
+	coin_background->childs.add(score_text);
 	return ret;
 }
 
@@ -119,6 +119,8 @@ void j1UI::Draw()
 	{
 		UI_Elements_list[i]->Draw();
 	}
+
+	
 }
 
 void j1UI::UpdateUI() 
@@ -144,46 +146,12 @@ UI_Element* j1UI::CreateUIButton(SDL_Rect image, SDL_Rect hover, SDL_Rect presse
 	UI_Elements_list.add(element);
 	return element;
 }
-void j1UI::CreateNewScoreFont(UI_Element* parent)
+
+UI_Text* j1UI::CreateUIText(const char* text,p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
 {
-	UI_Fonts* font = new UI_Fonts(font_type::FONT_SCORE,TYPE::UI_Font, parent);
-	UI_Elements_list.add(font);
-}
-
-void j1UI::CreateNewTimerFont(UI_Element* parent)
-{
-	UI_Fonts* font = new UI_Fonts(font_type::FONT_TIMER, TYPE::UI_Font, parent);
-	UI_Elements_list.add(font);
-}
-
-UI_Fonts* j1UI::CreateUIText(const char* text, p2Point<int> offset, p2Point<int> screen, UI_Element* parent)
-{
-	UI_Fonts* font = new UI_Fonts(text,offset,screen, font_type::FONT_CONSOLE, TYPE::UI_Font, parent);
-	font->text = text;
-	UI_Elements_list.add(font);
-
-	return font;
-}
-
-UI_Fonts* j1UI::CreateUIText(UI_Element* parent)
-{
-	UI_Fonts* font = new UI_Fonts(font_type::FONT_CONSOLE, TYPE::UI_Font, parent);
-	font->text = "Hola";
-	UI_Elements_list.add(font);
-
-	return font;
+	UI_Text* element = new UI_Text(text,offset,screen,parent);
+	UI_Elements_list.add(element);
+	return element;
 }
 
 
-
-
-void j1UI::AddScore()
-{
-	for (int i = 0; i < UI_Elements_list.count(); i++)
-	{
-		if (UI_Elements_list.At(i)->data->UI_Type == TYPE::UI_Font)
-		{
-			UI_Elements_list.At(i)->data->addScoreCoin = true;
-		}
-	}
-}
