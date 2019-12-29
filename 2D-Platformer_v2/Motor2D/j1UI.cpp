@@ -110,8 +110,6 @@ bool j1UI::Start()
 	//Timer
 	timer_text = CreateUIText("0", { -5,4 }, { 100,100 },HUD, timer_background);
 	timer_background->childs.add(timer_text);
-
-	input_area = CreateUIInputText({ 500,30 }, { 0,0 }, { 200,200 });
 	return ret;
 }
 

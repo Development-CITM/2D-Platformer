@@ -99,7 +99,6 @@ public:
 
 	/*Text*/
 	UI_Element* image_font = nullptr;
-	UI_InputText* input_area = nullptr;
 
 	/*Lives*/
 	int lives = 5;
