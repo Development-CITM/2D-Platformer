@@ -3,6 +3,7 @@
 #include "j1Input.h"
 #include "SDL/include/SDL_mouse.h"
 #include "p2Log.h"
+#include "j1Audio.h"
 #include "UI_Functions.h"
 #include "j1UI.h"
 
@@ -30,6 +31,11 @@ void UI_Button::Update()
 
 	if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)== KEY_DOWN && isEnabled) {
 		OnClick();
+		if (ClickaudioOnce)
+		{
+			App->audio->PlayFx(11);
+			ClickaudioOnce = false;
+		}
 		isPressed = true;
 		activeRect = pressed_rect;
 	}
@@ -39,14 +45,24 @@ void UI_Button::Update()
 	}
 	else if (x > screenPos.x&& x < screenPos.x + activeRect.w && y > screenPos.y&& y < screenPos.y + activeRect.h && isEnabled)
 	{
+		if (HoveraudioOnce)
+		{
+			App->audio->PlayFx(10);
+			HoveraudioOnce = false;
+		}
 		isPressed = false;
 		isHover = true;
 		activeRect = hover_rect;
 	}
 	else if(isEnabled){
+		HoveraudioOnce = true;
 		isHover = false;
 		isPressed = false;
 		activeRect = base_rect;
+	}
+	if (!isPressed)
+	{
+		ClickaudioOnce = true;
 	}
 
 }

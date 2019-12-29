@@ -32,6 +32,9 @@ public:
 	bool isHover;
 	bool clicked;
 
+	bool HoveraudioOnce = true;
+	bool ClickaudioOnce = true;
+
 
 	void Update() override;
 

@@ -37,6 +37,9 @@ bool j1EntityManager::Start()
 	App->audio->LoadFx("audio/fx/whisp_die.wav");
 	App->audio->LoadFx("audio/fx/kobold_die.wav");
 	App->audio->LoadFx("audio/fx/coin.wav");
+	App->audio->LoadFx("audio/UI/hover.wav");
+	App->audio->LoadFx("audio/UI/click.wav");
+	App->audio->LoadFx("audio/UI/pause.wav");
 
 	bool ret = true;
 	p2List_item<GameObject*>* item;

@@ -90,6 +90,7 @@ bool j1Scene::PostUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && strcmp(current_level.GetString(),"maps/A5.tmx")!=0)
 	{
+		App->audio->PlayFx(12);
 		if (!pause)
 		{
 			UI_Functions::ShowPauseMenu(App->ui->pausemenuBackground);

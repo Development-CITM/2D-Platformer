@@ -108,6 +108,7 @@ public:
 	/*Lives*/
 	int lives = 5;
 	bool substract_lives_once = true;
+	bool kill_player_once = true;
 
 	/*Score*/
 	int score = 0;
