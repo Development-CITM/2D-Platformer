@@ -60,7 +60,10 @@ public:
 
 	//Timer
 	j1Timer timer;
+	j1Timer pause_timer;
+	int pause_timer_int = 0;
 	int timer_int = 0;
+	bool resetPause = true;
 
 	/* ----MAIN MENU----*/
 	//Images

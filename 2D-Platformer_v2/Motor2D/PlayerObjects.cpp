@@ -43,7 +43,7 @@ bool Object_Player::PreUpdate()
 	velocity_Y = position.y;
 
 	//Hold Movements
-	if (canMove) {
+	if (canMove && !App->pause) {
 		switch (state)
 		{
 		case ST_Idle_v2:

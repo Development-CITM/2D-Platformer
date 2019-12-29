@@ -162,11 +162,13 @@ void j1UI::UpdateUI()
 		UI_Functions::ChooseLivesToShow(fiveLives, fourLives, threeLives, twoLives, oneLives, zeroLives);
 		if (!App->pause)
 		{
-			timer_int = timer.ReadSec();
+			timer_int = timer.ReadSec() + pause_timer_int;
+			resetPause = true;
 		}
-		else
+		if (App->pause)
 		{
-			timer_int = timer_int;
+			pause_timer_int = timer_int;
+			timer.Start();
 		}
 		if (timer_int <= 35)
 		{
